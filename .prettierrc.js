@@ -1,5 +1,5 @@
-import blueprintPrettier from "@calblueprint/prettier-config";
+const blueprintPrettier = require("@calblueprint/prettier-config");
 
-export default {
+module.exports = {
   ...blueprintPrettier,
 };

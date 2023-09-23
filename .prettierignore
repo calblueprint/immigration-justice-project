@@ -1,3 +1,10 @@
 .github/
 README.md
 package-lock.json
+# .eslintrc.js
+# .next/
+# .prettierrc.js
+# .vscode/
+# next-env.d.ts
+# next.config.js
+# package.json
