@@ -8,3 +8,4 @@ package-lock.json
 next-env.d.ts
 next.config.js
 package.json
+tsconfig.json
