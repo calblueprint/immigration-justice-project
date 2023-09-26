@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "@calblueprint/prettier-config": "^0.0.1",
+    "@supabase/supabase-js": "^2.36.0",
     "@types/node": "20.6.3",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
+    "dotenv": "^16.3.1",
     "eslint-config-next": "13.5.2",
     "next": "13.5.2",
     "react": "18.2.0",
