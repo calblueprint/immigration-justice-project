@@ -1,9 +1,16 @@
-"use client"
+"use client";
 
-import React from 'react'
+import { useEffect } from 'react'
 import { getAllCases } from "../../api/supabase/queries/cases";
 
-export default async function page() {
+export default async function Page() {
+
+    const data = await getAllCases();
+
+    useEffect(() => {
+        // console.log(data)
+    }, [data]);
+
 
     return (
         <div>
