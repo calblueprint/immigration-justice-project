@@ -13,5 +13,45 @@ export interface CaseListing {
   program: string;
   upcoming_hearing_date: string;
   needs_interpreter: boolean;
-  interest_ids: number[];
+  interest_ids: UUID[];
+}
+
+export interface LimitedAssistance {
+  id: UUID;
+  summary: string;
+  languages: string[];
+  country: string;
+  experience_level: string;
+  deadline: string;
+  interest_ids: UUID[];
+}
+
+export interface TranslationRequest {
+  id: UUID;
+  summary: string;
+  languages: string[];
+  interest_ids: UUID[];
+}
+
+export interface Profile {
+  id: UUID;
+  roles: string[];
+  languages: string[];
+  accreditations: string[];
+  hours_per_week: number;
+  immigration_law_experience: string;
+  bar_number: string;
+  start_date: string;
+  interest_ids: UUID[];
+}
+
+export interface Interest {
+  id: UUID;
+  listing_id: UUID;
+  listing_type: string;
+  user_id: UUID;
+  form_response: {
+    interestType: string[];
+    whyInterested: string;
+  };
 }
