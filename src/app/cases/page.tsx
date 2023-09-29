@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getAllCases } from '../../api/supabase/queries/cases';
-import { CaseListing } from '../../types/schemaTypes';
+import { CaseListing } from '@/types/schemaTypes';
+import { getAllCases } from '@/api/supabase/queries/cases';
 
 export default function Page() {
   const [data, setData] = useState<CaseListing[]>([]);
