@@ -34,7 +34,7 @@ export interface TranslationRequest {
 }
 
 export interface Profile {
-  id: UUID;
+  user_id: UUID;
   roles: string[];
   languages: string[];
   accreditations: string[];
