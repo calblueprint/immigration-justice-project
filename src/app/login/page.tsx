@@ -16,13 +16,16 @@ export default function Login() {
 
     const signInWithEmail = async () => {
         const { data, error } = await supabase.auth.signInWithPassword({
-        email, password,
+        email, 
+        password
         })
     }
-    
+    /* get rid of signOut 
     const signOut = async () => {
         const { error } = await supabase.auth.signOut()
-    }  
+    } 
+    <button type="button" onClick={signOut}>Sign out</button>
+    */
 
     return (
     <>
@@ -35,7 +38,6 @@ export default function Login() {
       />
       <button type="button" onClick={handleSignUp}>Sign up</button>
       <button type="button" onClick={signInWithEmail}>Sign in</button>
-      <button type="button" onClick={signOut}>Sign out</button>
     </>
   )
 }
