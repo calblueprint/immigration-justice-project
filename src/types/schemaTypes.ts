@@ -46,7 +46,7 @@ export interface Profile {
 }
 
 export interface Interest {
-  id: UUID;
+  id: UUID | string;
   listing_id: UUID;
   listing_type: string;
   user_id: UUID;

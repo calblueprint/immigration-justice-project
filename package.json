@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@calblueprint/prettier-config": "^0.0.1",
-    "@supabase/supabase-js": "^2.36.0",
+    "@supabase/supabase-js": "^2.37.0",
     "@types/node": "20.6.3",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
