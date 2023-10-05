@@ -1,5 +1,9 @@
 'use client';
 
+// import { useEffect } from 'react';
+// import { getAllCases } from '../../api/supabase/queries/cases';
+
+// import { error } from 'console';
 import 'crypto';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,6 +13,7 @@ import {
 } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
+// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import styles from '../page.module.css';
 
 export default function Page() {
@@ -42,6 +47,8 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
+
+      console.log('test');
     })();
   }, []);
 
@@ -62,11 +69,12 @@ export default function Page() {
             <p>Languages: {profile.languages.join(', ')}</p>
             <p>hoursPerMonth: {profile.hours_per_month}</p>
             <p>
-              immigrationLawExperience: {profile.immigration_law_experience}
+              immigrationLawExperience:{' '}
+              {profile.immigration_law_experience.toString()}
             </p>
-            <p>barNumber: {profile.bar_number}</p>
-            <p>startDate: {profile.start_date}</p>
-            <p>interestIds: {profile.interest_ids}</p>
+            <p>barNumber: {profile.bar_number.toString()}</p>
+            <p>startDate: {profile.start_date.toString()}</p>
+            <p>interestIds: {profile.interest_ids.toString()}</p>
           </li>
         ))}
       </ul>
