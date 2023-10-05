@@ -18,8 +18,8 @@ export default function Interest() {
         listing_type: 'IJP6 Test',
         user_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
         form_response: {
-          interestReason: ['IJP-6-test'],
-          whyInterested: reason,
+          interestType: ['IJP-6-test'],
+          interestReason: reason,
         },
       };
       await insertInterest(newInterest);
