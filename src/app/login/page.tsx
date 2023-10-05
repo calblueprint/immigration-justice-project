@@ -11,22 +11,14 @@ export default function Login() {
       email,
       password,
     });
-    // console.log(error);
   };
 
   const signInWithEmail = async () => {
     await supabase.auth.signInWithPassword({
-      // const { data, error } =
       email,
       password,
     });
   };
-  /* get rid of signOut 
-    const signOut = async () => {
-        const { error } = await supabase.auth.signOut()
-    } 
-    <button type="button" onClick={signOut}>Sign out</button>
-    */
 
   return (
     <>
