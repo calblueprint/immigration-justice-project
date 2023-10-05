@@ -1,10 +1,15 @@
 'use client';
 
+// import { useEffect } from 'react';
+// import { getAllCases } from '../../api/supabase/queries/cases';
+
+// import { error } from 'console';
 import 'crypto';
 import React, { useEffect, useState } from 'react';
 import { fetchProfiles } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
+// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import styles from '../page.module.css';
 
 export default function Page() {
@@ -18,9 +23,7 @@ export default function Page() {
       /** 
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
-      const mockProfile: Profile = {
-        first_name: 'First',
-        last_name: 'Last',
+      const mockProfile = {
         user_id: crypto.randomUUID() as UUID,
         roles: ['attorney'],
         languages: ['English', 'Spanish'],
@@ -39,7 +42,8 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
-      */
+
+      console.log('test');
     })();
   }, []);
 
@@ -51,14 +55,10 @@ export default function Page() {
         {profiles.map(profile => (
           <li key={profile.user_id}>
             <h2>Profile ID: {profile.user_id}</h2>
-            <p>Location: {profile.location}</p>
-            <p>Availability Description: {profile.availability_description}</p>
-            <p>EOIR Registered: {profile.eoir_registered}</p>
-            <p>First Name: {profile.first_name}</p>
-            <p>Last Name: {profile.last_name}</p>
             <p>Roles: {profile.roles.join(', ')}</p>
             <p>Languages: {profile.languages.join(', ')}</p>
-            <p>hoursPerMonth: {profile.hours_per_month}</p>
+            <p>Accreditations: {profile.accreditations.join(', ')}</p>
+            <p>hoursPerWeek: {profile.hours_per_week.toString()}</p>
             <p>
               immigrationLawExperience:{' '}
               {profile.immigration_law_experience.toString()}
