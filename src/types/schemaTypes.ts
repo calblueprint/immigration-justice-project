@@ -46,12 +46,12 @@ export interface Profile {
 }
 
 export interface Interest {
-  id: UUID | string;
+  id: UUID;
   listing_id: UUID;
   listing_type: string;
   user_id: UUID;
   form_response: {
-    interestType: string[];
+    interestReason: string[];
     whyInterested: string;
   };
 }

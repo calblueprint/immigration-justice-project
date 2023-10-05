@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { UUID } from 'crypto';
 import { insertInterest } from '../../api/supabase/queries/interest';
 import { Interest } from '../../types/schemaTypes';
 import styles from '../page.module.css';
@@ -12,12 +13,12 @@ export default function Interest() {
     if (reason !== '') {
       const newInterest: Interest = {
         // hardcoded values for now
-        id: crypto.randomUUID(),
+        id: crypto.randomUUID() as UUID,
         listing_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
         listing_type: 'IJP6 Test',
         user_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
         form_response: {
-          interestType: ['IJP-6-test'],
+          interestReason: ['IJP-6-test'],
           whyInterested: reason,
         },
       };
