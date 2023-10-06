@@ -52,6 +52,6 @@ export interface Interest {
   user_id: UUID;
   form_response: {
     interestType: string[];
-    whyInterested: string;
+    interestReason: string;
   };
 }
