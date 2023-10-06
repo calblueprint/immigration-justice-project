@@ -13,7 +13,7 @@ export default function Login() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to read interests: ${error}`);
+      throw new Error(`An error occurred trying to sign up: ${error}`);
     }
 
     return data;
@@ -26,7 +26,7 @@ export default function Login() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to read interests: ${error}`);
+      throw new Error(`An error occurred trying to sign in: ${error}`);
     }
 
     return data;
