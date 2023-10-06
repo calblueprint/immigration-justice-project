@@ -1,9 +1,5 @@
 'use client';
 
-// import { useEffect } from 'react';
-// import { getAllCases } from '../../api/supabase/queries/cases';
-
-// import { error } from 'console';
 import 'crypto';
 import React, { useEffect, useState } from 'react';
 import {
@@ -13,7 +9,6 @@ import {
 } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schemaTypes';
 
-// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import styles from '../page.module.css';
 
 export default function Page() {
@@ -27,6 +22,8 @@ export default function Page() {
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
       const mockProfile = {
+        first_name: 'First',
+        last_name: 'Last',
         user_id: crypto.randomUUID() as UUID,
         roles: ['attorney'],
         languages: ['English', 'Spanish'],
@@ -43,8 +40,6 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_week: 100, // Update the roles field with new data
       });
-
-      console.log('test');
     })();
   }, []);
 
@@ -56,17 +51,18 @@ export default function Page() {
         {profiles.map(profile => (
           <li key={profile.user_id}>
             <h2>Profile ID: {profile.user_id}</h2>
+            <p>First Name: {profile.first_name}</p>
+            <p>Last Name: {profile.last_name}</p>
             <p>Roles: {profile.roles.join(', ')}</p>
             <p>Languages: {profile.languages.join(', ')}</p>
             <p>Accreditations: {profile.accreditations.join(', ')}</p>
-            <p>hoursPerWeek: {profile.hours_per_week.toString()}</p>
+            <p>hoursPerWeek: {profile.hours_per_week}</p>
             <p>
-              immigrationLawExperience:{' '}
-              {profile.immigration_law_experience.toString()}
+              immigrationLawExperience: {profile.immigration_law_experience}
             </p>
-            <p>barNumber: {profile.bar_number.toString()}</p>
-            <p>startDate: {profile.start_date.toString()}</p>
-            <p>interestIds: {profile.interest_ids.toString()}</p>
+            <p>barNumber: {profile.bar_number}</p>
+            <p>startDate: {profile.start_date}</p>
+            <p>interestIds: {profile.interest_ids}</p>
           </li>
         ))}
       </ul>

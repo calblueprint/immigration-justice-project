@@ -34,6 +34,8 @@ export interface TranslationRequest {
 }
 
 export interface Profile {
+  first_name: string;
+  last_name: string;
   user_id: UUID;
   roles: string[];
   languages: string[];
