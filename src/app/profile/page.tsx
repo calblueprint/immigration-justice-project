@@ -40,8 +40,6 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_week: 100, // Update the roles field with new data
       });
-
-      console.log('test');
     })();
   }, []);
 
