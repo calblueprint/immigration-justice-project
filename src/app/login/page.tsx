@@ -7,17 +7,29 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSignUp = async () => {
-    await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
+
+    if (error) {
+      throw new Error(`An error occurred trying to read interests: ${error}`);
+    }
+
+    return data;
   };
 
   const signInWithEmail = async () => {
-    await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (error) {
+      throw new Error(`An error occurred trying to read interests: ${error}`);
+    }
+
+    return data;
   };
 
   return (
