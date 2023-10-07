@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
-import { getAllCases } from '../../api/supabase/queries/cases';
+import { getNCases } from '../../api/supabase/queries/cases';
 import ListingCard from '../../components/ListingCard';
-import timestampStringToDate from '../../utils/helpers';
 
 // styled components
 const PageContainer = styled.div`
   display: grid;
   place-items: center;
-  padding: 1rem 2rem;
+  padding: 2rem;
 `;
 
 const PageTitle = styled.h1`
@@ -24,7 +24,7 @@ const PageTitle = styled.h1`
 const MainDisplay = styled.main`
   display: grid;
   grid-template-columns: 5fr 10fr;
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
 `;
 
@@ -32,17 +32,25 @@ const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  border-right: 1px solid black;
+  padding-right: 2rem;
 `;
 
 export default function Page() {
-  const [data, setData] = useState<CaseListing[]>([]);
+  const [caseData, setCaseData] = useState<CaseListing[]>([]);
+  const [selectedCard, setSelectedCard] = useState<UUID>();
 
   // react hooks
   useEffect(() => {
-    getAllCases().then(casesData => {
-      setData(casesData);
+    getNCases(20).then(casesData => {
+      setCaseData(casesData);
     });
   }, []);
+
+  // onclicks
+  function onCardClick(id: UUID) {
+    setSelectedCard(id);
+  }
 
   // page structure
   return (
@@ -50,15 +58,12 @@ export default function Page() {
       <PageTitle>Browse Available Cases</PageTitle>
       <MainDisplay>
         <CardColumn>
-          {data.map(d => (
+          {caseData.map(c => (
             <ListingCard
-              key={d.id}
-              title="Case title."
-              deadline={timestampStringToDate(d.time_to_complete)}
-              languages={d.languages}
-              rolesNeeded={['Attorney'].concat(
-                d.needs_interpreter ? ['Interpreter'] : [],
-              )}
+              key={c.id}
+              caseData={c}
+              isSelected={c.id === selectedCard}
+              onClick={() => onCardClick(c.id)}
             />
           ))}
         </CardColumn>
