@@ -1,17 +1,19 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import supabase from '../../api/supabase/createClient';
 
 export default function Settings() {
+    const { push } = useRouter();
     const signOut = async () => {
         const { error } = await supabase.auth.signOut()
+        if (error) {
+            throw new Error(`An error occurred trying to sign out: ${error}`);
+          }
+        push("/login");
     } 
-    const resetPassword = async () => {
-        const e = 'hello@example.com' // pull email from profiles
-        const url = 'http://example.com/account/update-password'
-        await supabase.auth.resetPasswordForEmail(e, {
-            redirectTo: url,
-        })
+    const resetPassword = () => {
+        push("/reset-password");
     }
 
     return (
