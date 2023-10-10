@@ -1,15 +1,20 @@
 "use client"
 
+// import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import supabase from '../../api/supabase/createClient';
 
 
+
+
 export default function ResetPassword() {
     const [newPassword, setPassword] = useState('');
+    const { push } = useRouter();
     const resetPassword = async () => {
         await supabase.auth.updateUser({ password: newPassword});
+        push("/login");
     }
-    //const redirect = (url, asLink = true) => asLink ? (window.location.href = url) : window.location.replace(url);
     
     return (
         <> 

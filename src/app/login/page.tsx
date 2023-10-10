@@ -1,32 +1,36 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import supabase from '../../api/supabase/createClient';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { push } = useRouter();
   const handleSignUp = async () => {
-    await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
-    // console.log(error);
+
+    if (error) {
+      throw new Error(`An error occurred trying to sign up: ${error}`);
+    }
+    push("/");
   };
 
   const signInWithEmail = async () => {
-    await supabase.auth.signInWithPassword({
-      // const { data, error } =
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    if (error) {
+      throw new Error(`An error occurred trying to sign in: ${error}`);
+    }
+    push("/");
   };
-  /* get rid of signOut 
-    const signOut = async () => {
-        const { error } = await supabase.auth.signOut()
-    } 
-    <button type="button" onClick={signOut}>Sign out</button>
-    */
 
   return (
     <>
