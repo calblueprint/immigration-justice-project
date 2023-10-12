@@ -5,8 +5,14 @@ import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
 import { getNCases } from '../../api/supabase/queries/cases';
 import ListingCard from '../../components/ListingCard/ListingCard';
-import { CardColumn, MainDisplay, PageContainer } from './styles';
-import { H1 } from '../../styles/text';
+import {
+  CardColumn,
+  CaseDetailDisplay,
+  CaseDetails,
+  MainDisplay,
+  PageContainer,
+} from './styles';
+import { H1, H2 } from '../../styles/text';
 
 export default function Page() {
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
@@ -34,6 +40,12 @@ export default function Page() {
             />
           ))}
         </CardColumn>
+        <CaseDetailDisplay>
+          {/* proof of concept -- to turn into component later */}
+          <CaseDetails>
+            <H2>Case details.</H2>
+          </CaseDetails>
+        </CaseDetailDisplay>
       </MainDisplay>
     </PageContainer>
   );
