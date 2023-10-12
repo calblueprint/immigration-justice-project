@@ -1,15 +1,10 @@
 'use client';
 
-// import { useEffect } from 'react';
-// import { getAllCases } from '../../api/supabase/queries/cases';
-
-// import { error } from 'console';
 import 'crypto';
 import React, { useEffect, useState } from 'react';
 import { fetchProfiles } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
-// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import styles from '../page.module.css';
 
 export default function Page() {
@@ -24,6 +19,8 @@ export default function Page() {
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
       const mockProfile = {
+        first_name: 'First',
+        last_name: 'Last',
         user_id: crypto.randomUUID() as UUID,
         roles: ['attorney'],
         languages: ['English', 'Spanish'],
