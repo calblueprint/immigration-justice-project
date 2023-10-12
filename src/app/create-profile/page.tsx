@@ -3,7 +3,7 @@
 import { UUID } from 'crypto';
 import { useState } from 'react';
 import { insertProfile } from '../../api/supabase/queries/profiles';
-import { Profile } from '../../types/schema';
+import { Profile } from '../../types/schemaTypes';
 import styles from '../page.module.css';
 
 export default function Profile() {
@@ -11,20 +11,18 @@ export default function Profile() {
   const [lastName, setLastName] = useState<string>('');
 
   const handleInsert = async () => {
-    if (!firstName || !lastName) return;
+    if (!firstName && !lastName) return;
     const newProfile: Profile = {
       // hardcoded values for now
-      location: 'Berkeley, CA',
       user_id: crypto.randomUUID() as UUID,
       roles: ['blah'],
       languages: ['blah', 'blah'],
-      hours_per_month: 40,
+      accreditations: ['blah'],
+      hours_per_week: 40,
       immigration_law_experience: '5 years',
       bar_number: '12345',
       start_date: new Date().toDateString(),
       interest_ids: [crypto.randomUUID()] as UUID[],
-      availability_description: 'blah blah blah',
-      eoir_registered: false,
       first_name: firstName,
       last_name: lastName,
     };
