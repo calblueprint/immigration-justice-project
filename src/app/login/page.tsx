@@ -20,7 +20,7 @@ export default function Login() {
     push('/');
   };
 
-  const signInWithEmail = async () => {
+  const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -48,7 +48,7 @@ export default function Login() {
       <button type="button" onClick={handleSignUp}>
         Sign up
       </button>
-      <button type="button" onClick={signInWithEmail}>
+      <button type="button" onClick={handleSignIn}>
         Sign in
       </button>
     </>

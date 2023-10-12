@@ -5,7 +5,7 @@ import supabase from '../../api/supabase/createClient';
 
 export default function Settings() {
   const { push } = useRouter();
-  const signOut = async () => {
+  const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error}`);
@@ -18,7 +18,7 @@ export default function Settings() {
 
   return (
     <>
-      <button type="button" onClick={signOut}>
+      <button type="button" onClick={handleSignOut}>
         Sign out
       </button>
       <button type="button" onClick={resetPassword}>
@@ -27,8 +27,3 @@ export default function Settings() {
     </>
   );
 }
-
-/*
-Send email for password reset using .resetPasswordForEmail while providing a redirectTo parameter
-Email link will work as a magic link and log the user in then take them to the url specified in the redirectTo parameter
-Create form to update the password and call the .updateUser method with the new password */

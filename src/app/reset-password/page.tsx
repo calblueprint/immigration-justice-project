@@ -5,10 +5,13 @@ import { useRouter } from 'next/navigation';
 import supabase from '../../api/supabase/createClient';
 
 export default function ResetPassword() {
-  const [newPassword, setPassword] = useState('');
+  const [password, setPassword] = useState('');
   const { push } = useRouter();
   const resetPassword = async () => {
-    await supabase.auth.updateUser({ password: newPassword });
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      throw new Error(`An error occurred trying to sign in: ${error}`);
+    }
     push('/login');
   };
 
@@ -18,7 +21,7 @@ export default function ResetPassword() {
         type="password"
         name="password"
         onChange={e => setPassword(e.target.value)}
-        value={newPassword}
+        value={password}
       />
       <button type="button" onClick={resetPassword}>
         Reset Password
