@@ -1,9 +1,5 @@
 'use client';
 
-// import { useEffect } from 'react';
-// import { getAllCases } from '../../api/supabase/queries/cases';
-
-// import { error } from 'console';
 import 'crypto';
 import React, { useEffect, useState } from 'react';
 import {
@@ -13,7 +9,6 @@ import {
 } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
-// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 import styles from '../page.module.css';
 
 export default function Page() {
