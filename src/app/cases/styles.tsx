@@ -7,13 +7,6 @@ export const PageContainer = styled.div`
   padding: 2rem;
 `;
 
-export const PageTitle = styled.h1`
-  font-size: 2rem;
-  text-align: left;
-  margin: 0;
-  margin-right: auto;
-`;
-
 export const MainDisplay = styled.main`
   display: grid;
   grid-template-columns: 5fr 10fr;
@@ -26,5 +19,8 @@ export const CardColumn = styled.div`
   flex-direction: column;
   gap: 2rem;
   border-right: 1px solid black;
+  padding-top: 0.5rem;
   padding-right: 2rem;
+  overflow-y: scroll;
+  max-height: 80vh;
 `;

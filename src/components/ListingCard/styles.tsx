@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-// styled components
+// the card itself
 export const CardBody = styled.div<{ $selected?: boolean }>`
   display: flex;
   flex-direction: column;
@@ -17,11 +17,6 @@ export const CardBody = styled.div<{ $selected?: boolean }>`
     box-shadow: 0 4px 4px 1px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
-`;
-
-export const CardTitle = styled.h2`
-  font-size: 1.5rem;
-  margin: 0;
 `;
 
 export const TagRow = styled.div`

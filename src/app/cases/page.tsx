@@ -5,7 +5,8 @@ import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
 import { getNCases } from '../../api/supabase/queries/cases';
 import ListingCard from '../../components/ListingCard/ListingCard';
-import { CardColumn, MainDisplay, PageContainer, PageTitle } from './styles';
+import { CardColumn, MainDisplay, PageContainer } from './styles';
+import { H1 } from '../../styles/text';
 
 export default function Page() {
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
@@ -18,15 +19,10 @@ export default function Page() {
     });
   }, []);
 
-  // onclicks
-  function onCardClick(id: UUID) {
-    setSelectedCard(id);
-  }
-
   // page structure
   return (
     <PageContainer>
-      <PageTitle>Browse Available Cases</PageTitle>
+      <H1>Browse Available Cases</H1>
       <MainDisplay>
         <CardColumn>
           {caseData.map(c => (
@@ -34,7 +30,7 @@ export default function Page() {
               key={c.id}
               caseData={c}
               isSelected={c.id === selectedCard}
-              onClick={() => onCardClick(c.id)}
+              onClick={() => setSelectedCard(c.id)}
             />
           ))}
         </CardColumn>

@@ -2,7 +2,9 @@ import React from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
 import timestampStringToDate from '../../utils/helpers';
-import { CardBody, CardTitle, TagRow, CardTag } from './styles';
+import { CardBody, TagRow, CardTag } from './styles';
+import { H2 } from '../../styles/text';
+import COLORS from '../../styles/colors';
 
 export default function ListingCard({
   caseData,
@@ -22,17 +24,13 @@ export default function ListingCard({
   const parseDate = (d: Date): string =>
     `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
-  // temporary solution
-  const attorneyColor = '#85b4d2';
-  const interpreterColor = '#8dd89f';
-
   return (
     <CardBody
       $selected={isSelected}
       onClick={onClick ? () => onClick(caseData.id) : undefined}
     >
       {/* hard-coded for now */}
-      <CardTitle>Case title.</CardTitle>
+      <H2>Case title.</H2>
       <p>
         <strong>Languages: </strong>
         {caseData.languages.join(', ')}
@@ -45,7 +43,11 @@ export default function ListingCard({
         {rolesNeeded.map(r => (
           <CardTag
             key={r}
-            color={r === 'Interpreter' ? interpreterColor : attorneyColor}
+            color={
+              r === 'Interpreter'
+                ? COLORS.interpreterColor
+                : COLORS.attorneyColor
+            }
           >
             {r}
           </CardTag>
