@@ -17,7 +17,7 @@ export default function Login() {
     if (error) {
       throw new Error(`An error occurred trying to sign up: ${error}`);
     }
-    push("/");
+    push('/');
   };
 
   const signInWithEmail = async () => {
@@ -29,7 +29,7 @@ export default function Login() {
     if (error) {
       throw new Error(`An error occurred trying to sign in: ${error}`);
     }
-    push("/");
+    push('/');
   };
 
   return (
