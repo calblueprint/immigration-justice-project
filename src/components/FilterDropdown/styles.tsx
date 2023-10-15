@@ -56,7 +56,8 @@ export const FilterDropdownButton = styled.button<{
 
   transition: 150ms;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: ${({ $changed }) =>
       $changed ? pSBC(-0.1, COLORS.ijpGreen) : pSBC(-0.1, '#FFF')};
     color: ${({ $changed }) => ($changed ? pSBC(-0.1, '#FFFFFF') : 'black')};

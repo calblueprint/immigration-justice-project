@@ -16,9 +16,22 @@ import {
   PageContainer,
 } from './styles';
 
+type FilterType = {
+  remote: string;
+  role: string;
+  distance: string;
+  countries: string; // turn to string[] when we have multi-select
+};
+
 export default function Page() {
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [selectedCard, setSelectedCard] = useState<UUID>();
+  const [caseFilters, setCaseFilters] = useState<FilterType>({
+    remote: 'any',
+    role: 'both',
+    distance: 'any',
+    countries: 'all',
+  });
 
   // react hooks
   useEffect(() => {
@@ -39,7 +52,7 @@ export default function Page() {
             { name: 'remote', displayName: 'Remote Only' },
             { name: 'inperson', displayName: 'In Person Only' },
           ]}
-          // onChange={name => console.log(`Selected ${name}!`)}
+          onChange={name => setCaseFilters({ ...caseFilters, remote: name })}
         />
         <SingleSelectFilter
           defaultValue="Attorney/Interpreter"
@@ -47,6 +60,7 @@ export default function Page() {
             { name: 'both', displayName: 'Attorney/Interpreter' },
             { name: 'interpreter', displayName: 'Interpreter Only' },
           ]}
+          onChange={name => setCaseFilters({ ...caseFilters, role: name })}
         />
         <SingleSelectFilter
           defaultValue="Anywhere"
@@ -59,6 +73,7 @@ export default function Page() {
             { name: 'mile100', displayName: 'Within 100 miles' },
             { name: 'any', displayName: 'Anywhere' },
           ]}
+          onChange={name => setCaseFilters({ ...caseFilters, distance: name })}
         />
         <SingleSelectFilter
           defaultValue="All countries"
@@ -69,18 +84,33 @@ export default function Page() {
               .filter((v, i, arr) => arr.indexOf(v) === i)
               .map(c => ({ name: c, displayName: c })),
           )}
+          onChange={name => setCaseFilters({ ...caseFilters, countries: name })}
         />
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
-          {caseData.map(c => (
-            <ListingCard
-              key={c.id}
-              caseData={c}
-              isSelected={c.id === selectedCard}
-              onClick={() => setSelectedCard(c.id)}
-            />
-          ))}
+          {caseData
+            .filter(c => {
+              if (caseFilters.remote === 'remote') return c.is_remote;
+              if (caseFilters.remote === 'inperson') return !c.is_remote;
+              return true;
+            })
+            .filter(c =>
+              caseFilters.role === 'both' ? true : c.needs_interpreter,
+            )
+            .filter(c =>
+              caseFilters.countries === 'all'
+                ? true
+                : c.country === caseFilters.countries,
+            )
+            .map(c => (
+              <ListingCard
+                key={c.id}
+                caseData={c}
+                isSelected={c.id === selectedCard}
+                onClick={() => setSelectedCard(c.id)}
+              />
+            ))}
         </CardColumn>
         <CaseDetailDisplay>
           {/* proof of concept -- to turn into component later */}

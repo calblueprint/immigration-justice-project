@@ -27,6 +27,6 @@ export const TagRow = styled.div`
 export const CardTag = styled.span<{ color: string }>`
   border-radius: 100px;
   font-size: 0.8rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   background: ${({ color }) => color};
 `;

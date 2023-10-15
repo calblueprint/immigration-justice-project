@@ -1,6 +1,6 @@
 const COLORS = {
   attorneyColor: '#85b4d2',
-  interpreterColor: '#8dd89f',
+  interpreterColor: '#BCE9C1',
   ijpGreen: '#097A62',
 };
 
