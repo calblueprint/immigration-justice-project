@@ -1,7 +1,7 @@
 import React from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
-import timestampStringToDate from '../../utils/helpers';
+import { timestampStringToDate } from '../../utils/helpers';
 import { CardBody, TagRow, CardTag } from './styles';
 import { H2 } from '../../styles/text';
 import COLORS from '../../styles/colors';

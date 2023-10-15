@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
-// styled components
+// containers
 export const PageContainer = styled.div`
   display: grid;
   place-items: center;
   padding: 2rem;
+`;
+
+export const FiltersContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  gap: 1rem;
 `;
 
 export const MainDisplay = styled.main`
