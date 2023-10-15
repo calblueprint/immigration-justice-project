@@ -21,6 +21,7 @@ type FilterType = {
   role: string;
   distance: string;
   countries: string; // turn to string[] when we have multi-select
+  language: string; // turn to string[] when we have multi-select
 };
 
 export default function Page() {
@@ -31,6 +32,7 @@ export default function Page() {
     role: 'both',
     distance: 'any',
     countries: 'all',
+    language: 'all',
   });
 
   // react hooks
@@ -86,6 +88,17 @@ export default function Page() {
           )}
           onChange={name => setCaseFilters({ ...caseFilters, countries: name })}
         />
+        <SingleSelectFilter
+          defaultValue="All languages"
+          // better solution available if we update ts target to es6
+          options={[{ name: 'all', displayName: 'All languages' }].concat(
+            caseData
+              .flatMap(c => c.languages)
+              .filter((v, i, arr) => arr.indexOf(v) === i)
+              .map(c => ({ name: c, displayName: c })),
+          )}
+          onChange={name => setCaseFilters({ ...caseFilters, language: name })}
+        />
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
@@ -102,6 +115,11 @@ export default function Page() {
               caseFilters.countries === 'all'
                 ? true
                 : c.country === caseFilters.countries,
+            )
+            .filter(c =>
+              caseFilters.language === 'all'
+                ? true
+                : c.languages.includes(caseFilters.language),
             )
             .map(c => (
               <ListingCard
