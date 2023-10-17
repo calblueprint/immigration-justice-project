@@ -15,7 +15,7 @@ export default function Login() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to sign up: ${error}`);
+      throw new Error(`An error occurred trying to sign up: ${error.message}`);
     }
     push('/');
   };
@@ -27,7 +27,7 @@ export default function Login() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to sign in: ${error}`);
+      throw new Error(`An error occurred trying to sign in: ${error.message}`);
     }
     push('/');
   };
