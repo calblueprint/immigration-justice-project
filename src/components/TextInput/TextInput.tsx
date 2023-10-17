@@ -5,7 +5,7 @@ export default function TextInput() {
   return (
     <>
       <InputTitleText>Label</InputTitleText>
-      <InputText $error={false} placeholder='Input Suggestion'/>
+      <InputText $error={false} placeholder="Input Suggestion" />
     </>
-  )
+  );
 }

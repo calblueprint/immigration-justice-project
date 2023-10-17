@@ -6,32 +6,36 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const InputText = styled.input<{ $error: boolean }>`
   color: ${COLORS.existingInputColor};
-  font-size: 1rem; // 16px 
+  font-size: 1rem; // 16px
   font-family: ${inter.style};
   font-weight: 400;
-  line-height: 19.20px;
-  word-wrap: break-word; 
+  line-height: 19.2px;
+  word-wrap: break-word;
   padding: 10px 20px 10px 20px;
-  border-radius: 5px; 
-  border: 1px solid ${({$error}) => ($error ? COLORS.errorColor : COLORS.existingInputColor)};
+  border-radius: 5px;
+  border: 1px solid
+    ${({ $error }) => ($error ? COLORS.errorColor : COLORS.existingInputColor)};
   justify-content: flex-start;
-  align-items: flex-start; 
-  gap: 10px; 
-  color: ${({$error}) => ($error ? COLORS.errorColor : COLORS.existingInputColor)};
+  align-items: flex-start;
+  gap: 10px;
+  color: ${({ $error }) =>
+    $error ? COLORS.errorColor : COLORS.existingInputColor};
 
-  &:focus {    
-    outline: none !important; 
-    border: 1px solid ${({$error}) => ($error ? COLORS.errorColor : COLORS.activeGreen)}; 
+  &:focus {
+    outline: none !important;
+    border: 1px solid
+      ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
   }
   &::placeholder {
-    color: ${({$error}) => ($error ? COLORS.errorColor : COLORS.inputSuggestionColor)}; 
+    color: ${({ $error }) =>
+      $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
   }
-`
+`;
 export const InputTitleText = styled.label`
   color: #555555;
   font-size: 1.5rem; // 24px;
-  font-family:  ${inter.style};
+  font-family: ${inter.style};
   font-weight: 500;
-  line-height: 28.80px;
-  word-wrap: break-word
-`
+  line-height: 28.8px;
+  word-wrap: break-word;
+`;

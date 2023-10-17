@@ -4,7 +4,7 @@ const COLORS = {
   inputSuggestionColor: '#B3B3B3', // light grey
   existingInputColor: '#555555', // dark grey
   errorColor: '#D13E40', // red
-  activeGreen: '#097A62'
+  activeGreen: '#097A62',
 };
 
 export default COLORS;
