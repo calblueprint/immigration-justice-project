@@ -1,44 +1,35 @@
 import styled from 'styled-components';
+import { Inter } from 'next/font/google';
+import COLORS from '../../styles/colors';
 
-export const TextInputNotSelected = styled.div`
-  display: flex;
-  flex-direction: column;
-`; 
+const inter = Inter({ subsets: ['latin'] });
 
-export const InputSuggestionText = styled.p`
-  color: #B3B3B3;
-  font-size: 16px;
-  font-family: Inter;
+export const InputText = styled.input<{ $error: boolean }>`
+  color: ${COLORS.existingInputColor};
+  font-size: 1rem; // 16px 
+  font-family:  ${inter.style};
   font-weight: 400;
   line-height: 19.20px;
-  word-wrap: break-word
-`
-export const ExistingInputText = styled.input`
-  color: #565656;
-  font-size: 16px;
-  font-family: Inter;
-  font-weight: 400;
-  line-height: 19.20px;
-  word-wrap: break-word
-`
-/*
-export const ErrorInputText = styled.p`
-  color: #D13E40;
-  font-size: 16px;
-  font-family: Inter;
-  font-weight: 400;
-  line-height: 19.20px;
-  word-wrap: break-word
-`
-*/ 
-export const ErrorInputText = styled.input`
-  ...ExistingInputText, 
-  color: #D13E40;
-`
+  word-wrap: break-word; 
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px; 
+  border: 1px;
+  justify-content: flex-start;
+  align-items: flex-start; 
+  gap: 10px; 
 
-export const InputTitleText = styled.h1`
+  color: ${({$error}) => ($error ? COLORS.errorColor : COLORS.existingInputColor)};
+
+  &:focus {
+    border-color: ${COLORS.activeGreen};
+  }
+  &::placeholder {
+    color: ${COLORS.inputSuggestionColor};
+  }
+`
+export const InputTitleText = styled.label`
   color: #555555;
-  font-size: 24px;
+  font-size: 1.5rem; // 24px;
   font-family: Inter;
   font-weight: 500;
   line-height: 28.80px;

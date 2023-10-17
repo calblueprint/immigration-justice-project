@@ -1,3 +1,11 @@
-// TextInput components 
+import React from 'react';
+import { InputTitleText, InputText } from './styles';
 
-// https://styled-components.com/docs/basics
+export default function TextInput() {
+  return(
+    <>
+      <InputTitleText>Label</InputTitleText>
+      <InputText $error={false}> </InputText>
+    </>
+  )
+}
