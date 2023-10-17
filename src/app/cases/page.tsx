@@ -1,58 +1,52 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getAllCases } from '../../api/supabase/queries/cases';
+import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schemaTypes';
+import { getNCases } from '../../api/supabase/queries/cases';
+import ListingCard from '../../components/ListingCard/ListingCard';
+import {
+  CardColumn,
+  CaseDetailDisplay,
+  CaseDetails,
+  MainDisplay,
+  PageContainer,
+} from './styles';
+import { H1, H2 } from '../../styles/text';
 
 export default function Page() {
-  const [data, setData] = useState<CaseListing[]>([]);
+  const [caseData, setCaseData] = useState<CaseListing[]>([]);
+  const [selectedCard, setSelectedCard] = useState<UUID>();
 
+  // react hooks
   useEffect(() => {
-    getAllCases().then(casesData => {
-      setData(casesData);
+    getNCases(20).then(casesData => {
+      setCaseData(casesData);
     });
   }, []);
 
+  // page structure
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>summary</th>
-            <th>languages</th>
-            <th>country</th>
-            <th>legalServerId</th>
-            <th>clientInitials</th>
-            <th>timeToComplete</th>
-            <th>isRemote</th>
-            <th>clientLocation</th>
-            <th>program</th>
-            <th>upcomingHearingDate</th>
-            <th>needsInterpreter</th>
-            <th>interestIds</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(d => (
-            <tr key={d.id}>
-              <td>{d.id}</td>
-              <td>{d.summary}</td>
-              <td>{JSON.stringify(d.languages)}</td>
-              <td>{d.country}</td>
-              <td>{d.legal_server_id}</td>
-              <td>{d.client_initials}</td>
-              <td>{d.time_to_complete}</td>
-              <td>{d.is_remote}</td>
-              <td>{d.client_location}</td>
-              <td>{d.program}</td>
-              <td>{d.upcoming_hearing_date}</td>
-              <td>{JSON.stringify(d.needs_interpreter)}</td>
-              <td>{JSON.stringify(d.interest_ids)}</td>
-            </tr>
+    <PageContainer>
+      <H1>Browse Available Cases</H1>
+      <MainDisplay>
+        <CardColumn>
+          {caseData.map(c => (
+            <ListingCard
+              key={c.id}
+              caseData={c}
+              isSelected={c.id === selectedCard}
+              onClick={() => setSelectedCard(c.id)}
+            />
           ))}
-        </tbody>
-      </table>
-    </div>
+        </CardColumn>
+        <CaseDetailDisplay>
+          {/* proof of concept -- to turn into component later */}
+          <CaseDetails>
+            <H2>Case details.</H2>
+          </CaseDetails>
+        </CaseDetailDisplay>
+      </MainDisplay>
+    </PageContainer>
   );
 }
