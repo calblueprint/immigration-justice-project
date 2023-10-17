@@ -1,10 +1,10 @@
 import React from 'react';
 import { UUID } from 'crypto';
-import { CaseListing } from '../../types/schemaTypes';
-import { timestampStringToDate } from '../../utils/helpers';
+import { CaseListing } from '@/types/schemaTypes';
+import { timestampStringToDate } from '@/utils/helpers';
+import { H2 } from '@/styles/text';
+import COLORS from '@/styles/colors';
 import { CardBody, TagRow, CardTag } from './styles';
-import { H2 } from '../../styles/text';
-import COLORS from '../../styles/colors';
 
 export default function ListingCard({
   caseData,
