@@ -21,10 +21,10 @@ export const InputText = styled.input<{ $error: boolean }>`
 
   &:focus {    
     outline: none !important; 
-    border: 1px solid ${COLORS.activeGreen};
+    border: 1px solid ${({$error}) => ($error ? COLORS.errorColor : COLORS.activeGreen)}; 
   }
   &::placeholder {
-    color: ${COLORS.inputSuggestionColor};
+    color: ${({$error}) => ($error ? COLORS.errorColor : COLORS.inputSuggestionColor)}; 
   }
 `
 export const InputTitleText = styled.label`
