@@ -8,7 +8,7 @@ export default function Settings() {
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      throw new Error(`An error occurred trying to sign out: ${error.message}`)
+      throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
     push('/login');
   };

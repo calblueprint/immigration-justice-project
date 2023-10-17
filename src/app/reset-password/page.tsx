@@ -10,7 +10,9 @@ export default function ResetPassword() {
   const resetPassword = async () => {
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
-      throw new Error(`An error occurred trying to reset password: ${error.message}`)
+      throw new Error(
+        `An error occurred trying to reset password: ${error.message}`,
+      );
     }
     push('/login');
   };
