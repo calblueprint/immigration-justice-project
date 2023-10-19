@@ -1,7 +1,13 @@
 'use client';
 
-import TextInput from '@/components/TextInput/TextInput';
+import React from 'react';
+import { InputTitleText, InputText } from '../../components/TextInput/styles'; 
 
-export default function InputText() {
-  return <TextInput />;
+export default function InputTextTest() {
+  return (
+    <>
+      <InputTitleText>Label</InputTitleText>
+      <InputText $error={false} placeholder="Input Suggestion"/>
+    </>
+  )
 }

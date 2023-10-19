@@ -9,9 +9,9 @@ export const InputText = styled.input<{ $error: boolean }>`
   font-size: 1rem; // 16px
   font-family: ${inter.style};
   font-weight: 400;
-  line-height: 19.2px;
+  line-height: 19.2px; 
   word-wrap: break-word;
-  padding: 10px 20px 10px 20px;
+  padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 1px solid
     ${({ $error }) => ($error ? COLORS.errorColor : COLORS.existingInputColor)};
@@ -23,7 +23,7 @@ export const InputText = styled.input<{ $error: boolean }>`
 
   &:focus {
     outline: none !important;
-    border: 1px solid
+    border: 2px solid
       ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
   }
   &::placeholder {
@@ -32,7 +32,7 @@ export const InputText = styled.input<{ $error: boolean }>`
   }
 `;
 export const InputTitleText = styled.label`
-  color: #555555;
+  color: ${COLORS.existingInputColor};
   font-size: 1.5rem; // 24px;
   font-family: ${inter.style};
   font-weight: 500;
