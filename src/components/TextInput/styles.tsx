@@ -13,14 +13,13 @@ export const InputText = styled.input<{ $error: boolean }>`
   word-wrap: break-word;
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
-  border: 1px solid
+  border: 2px solid
     ${({ $error }) =>
       $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
-  color: ${({ $error }) =>
-    $error ? COLORS.errorColor : COLORS.existingInputColor};
+  color: ${COLORS.existingInputColor};
 
   &:focus {
     outline: none !important;
@@ -28,10 +27,10 @@ export const InputText = styled.input<{ $error: boolean }>`
       ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
   }
   &::placeholder {
-    color: ${({ $error }) =>
-      $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
+    color: ${COLORS.inputSuggestionColor};
   }
 `;
+
 export const InputTitleText = styled.label`
   color: ${COLORS.existingInputColor};
   font-size: 1.5rem; // 24px;
@@ -39,10 +38,18 @@ export const InputTitleText = styled.label`
   font-weight: 500;
   line-height: 28.8px;
   word-wrap: break-word;
+  margin-bottom: 1.2rem;
+`;
+
+export const ErrorText = styled.p`
+  color: ${COLORS.errorColor};
+  margin-top: 0.625rem;
+  font-size: 0.875rem; //14px
+  font-weight: 400;
+  ${inter.style}
 `;
 
 export const InputDiv = styled.div`
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  row-gap: 1.2rem; // 20px;
-`
+`;
