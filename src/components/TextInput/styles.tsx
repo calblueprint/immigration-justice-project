@@ -14,7 +14,8 @@ export const InputText = styled.input<{ $error: boolean }>`
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 1px solid
-    ${({ $error }) => ($error ? COLORS.errorColor : COLORS.inputSuggestionColor)};
+    ${({ $error }) =>
+      $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
@@ -39,3 +40,9 @@ export const InputTitleText = styled.label`
   line-height: 28.8px;
   word-wrap: break-word;
 `;
+
+export const InputDiv = styled.div`
+  display: flex; 
+  flex-direction: column;
+  row-gap: 1.2rem; // 20px;
+`
