@@ -9,7 +9,7 @@ export const InputText = styled.input<{ $error: boolean }>`
   font-size: 1rem; // 16px
   font-family: ${inter.style};
   font-weight: 400;
-  line-height: 19.2px; 
+  line-height: 19.2px;
   word-wrap: break-word;
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
