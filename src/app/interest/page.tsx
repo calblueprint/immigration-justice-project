@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UUID } from 'crypto';
 import { insertInterest } from '../../api/supabase/queries/interest';
-import { Interest } from '../../types/schemaTypes';
+import { Interest } from '../../types/schema';
 import styles from '../page.module.css';
 
 export default function Interest() {
