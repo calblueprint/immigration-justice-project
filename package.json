@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@calblueprint/eslint-config-react": "^0.0.3",
+    "@types/styled-components": "^5.1.29",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.49.0",
