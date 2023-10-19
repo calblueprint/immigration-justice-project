@@ -1,5 +1,5 @@
 import supabase from '../createClient';
-import { Interest } from '../../../types/schemaTypes';
+import { Interest } from '../../../types/schema';
 
 /** Get all interest from supabase interest table. */
 export async function getAllInterests() {
