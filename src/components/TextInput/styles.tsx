@@ -17,22 +17,28 @@ export const InputText = styled(P)<{ $error: boolean }>`
   outline: none;
 
   &::placeholder {
-    color: ${COLORS.placeholderText};
+    color: ${COLORS.inputSuggestionColor};
   }
 
   &:not(:placeholder-shown) {
-    border-color: ${COLORS.greyDarker};
+    border-color: ${COLORS.existingInputColor}
   }
 
   &:focus {
+    outline: none !important;
     border: 2px solid
-      ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
+      ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeBlue)};
   }
 `;
 
-export const InputTitleText = styled(H4)`
-  color: ${COLORS.greyDark};
-  margin-bottom: 0.625rem; //10px
+export const InputTitleText = styled.label`
+  color: ${COLORS.existingInputColor};
+  font-size: 1rem; // 16px;
+  ${inter.style}
+  font-weight: 500;
+  line-height: 28.8px;
+  word-wrap: break-word;
+  margin-bottom: 1.2rem;
 `;
 
 export const ErrorText = styled.p`
