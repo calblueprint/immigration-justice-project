@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import TextInput from '../../components/TextInput/TextInput';
+import TextInput from '../../components/TextInput';
 
 export default function InputTextTest() {
   return (
