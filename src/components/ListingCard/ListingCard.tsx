@@ -1,6 +1,6 @@
 import React from 'react';
 import { UUID } from 'crypto';
-import { CaseListing } from '../../types/schemaTypes';
+import { CaseListing } from '../../types/schema';
 import timestampStringToDate from '../../utils/helpers';
 import { CardBody, TagRow, CardTag } from './styles';
 import { H2 } from '../../styles/text';
@@ -36,8 +36,8 @@ export default function ListingCard({
         {caseData.languages.join(', ')}
       </p>
       <p>
-        <strong>Case Deadline: </strong>
-        {parseDate(timestampStringToDate(caseData.time_to_complete))}
+        <strong>Upcoming Date: </strong>
+        {parseDate(timestampStringToDate(caseData.upcoming_date))}
       </p>
       <TagRow>
         {rolesNeeded.map(r => (
