@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UUID } from 'crypto';
 import { insertInterest } from '../../api/supabase/queries/interest';
-import { Interest } from '../../types/schemaTypes';
+import { Interest } from '../../types/schema';
 import styles from '../page.module.css';
 
 export default function Interest() {
@@ -15,11 +15,12 @@ export default function Interest() {
         // hardcoded values for now
         id: crypto.randomUUID() as UUID,
         listing_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
-        listing_type: 'IJP6 Test',
+        listing_type: 100,
         user_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
         form_response: {
-          interestType: ['IJP-6-test'],
+          interestType: 'IJP-6-test',
           interestReason: reason,
+          start_date: 'Jan 1 2020 8:00:00 PM UTC-7',
         },
       };
       await insertInterest(newInterest);
