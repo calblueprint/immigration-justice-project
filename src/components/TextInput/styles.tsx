@@ -21,20 +21,24 @@ export const InputText = styled.input<{ $error: boolean }>`
   gap: 10px;
   color: ${COLORS.existingInputColor};
 
+  &::placeholder {
+    color: ${COLORS.inputSuggestionColor};
+  }
+
+  &:not(:placeholder-shown) {
+    border-color: ${COLORS.existingInputColor}
+  }
+
   &:focus {
     outline: none !important;
     border: 2px solid
-      ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
-  }
-
-  &::placeholder {
-    color: ${COLORS.inputSuggestionColor};
+      ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeBlue)};
   }
 `;
 
 export const InputTitleText = styled.label`
   color: ${COLORS.existingInputColor};
-  font-size: 1.5rem; // 24px;
+  font-size: 1rem; // 16px;
   ${inter.style}
   font-weight: 500;
   line-height: 28.8px;
