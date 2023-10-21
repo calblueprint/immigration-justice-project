@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 import supabase from '../createClient';
-import { Profile } from '../../../types/schemaTypes';
+import { Profile } from '../../../types/schema';
 
 export async function fetchProfiles() {
   const { data, error } = await supabase.from('profiles').select('*');
