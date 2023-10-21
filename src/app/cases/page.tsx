@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schemaTypes';
 import { getNCases } from '@/api/supabase/queries/cases';
-import ListingCard from '@/components/ListingCard/ListingCard';
+import ListingCard from '@/components/ListingCard';
 import { H1, H2 } from '@/styles/text';
-import SingleSelectFilter from '@/components/FilterDropdown/SingleSelectFilter';
+import FilterDropdown from '@/components/FilterDropdown';
 import {
   CardColumn,
   CaseDetailDisplay,
@@ -47,7 +47,7 @@ export default function Page() {
     <PageContainer>
       <H1>Browse Available Cases</H1>
       <FiltersContainer>
-        <SingleSelectFilter
+        <FilterDropdown
           defaultValue="Remote/In Person"
           options={[
             { name: 'any', displayName: 'Remote/In Person' },
@@ -56,7 +56,7 @@ export default function Page() {
           ]}
           onChange={name => setCaseFilters({ ...caseFilters, remote: name })}
         />
-        <SingleSelectFilter
+        <FilterDropdown
           defaultValue="Attorney/Interpreter"
           options={[
             { name: 'both', displayName: 'Attorney/Interpreter' },
@@ -64,7 +64,7 @@ export default function Page() {
           ]}
           onChange={name => setCaseFilters({ ...caseFilters, role: name })}
         />
-        <SingleSelectFilter
+        <FilterDropdown
           defaultValue="Anywhere"
           // requires knowing user location
           options={[
@@ -77,7 +77,7 @@ export default function Page() {
           ]}
           onChange={name => setCaseFilters({ ...caseFilters, distance: name })}
         />
-        <SingleSelectFilter
+        <FilterDropdown
           defaultValue="All countries"
           // better solution available if we update ts target to es6
           options={[{ name: 'all', displayName: 'All countries' }].concat(
@@ -88,7 +88,7 @@ export default function Page() {
           )}
           onChange={name => setCaseFilters({ ...caseFilters, countries: name })}
         />
-        <SingleSelectFilter
+        <FilterDropdown
           defaultValue="All languages"
           // better solution available if we update ts target to es6
           options={[{ name: 'all', displayName: 'All languages' }].concat(

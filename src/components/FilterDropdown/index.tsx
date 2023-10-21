@@ -14,17 +14,21 @@ export type DropdownOption = {
   displayName: string;
 };
 
-export default function SingleSelectFilter({
+export default function FilterDropdown({
   defaultValue,
   options,
+  multi = false,
   onChange,
 }: {
   defaultValue: string;
   options: DropdownOption[];
+  multi?: boolean;
   onChange?: (name: string) => void;
 }) {
   const [menuHidden, setMenuHidden] = useState(true);
-  const [currentValue, setCurrentValue] = useState(defaultValue);
+  const [currentValue, setCurrentValue] = useState(
+    multi ? [defaultValue] : defaultValue,
+  );
 
   // const maxWidth =
   //   144 + 0.176 * Math.max(...options.map(o => o.displayName.length)) ** 2;
@@ -50,7 +54,11 @@ export default function SingleSelectFilter({
             <FilterDropdownOption
               key={o.name}
               onClick={() => handleOptionClick(o)}
-              $selected={o.displayName === currentValue}
+              $selected={
+                multi
+                  ? currentValue.includes(o.displayName)
+                  : o.displayName === currentValue
+              }
             >
               {o.displayName}
             </FilterDropdownOption>
