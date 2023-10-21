@@ -26,6 +26,7 @@ export const InputText = styled.input<{ $error: boolean }>`
     border: 2px solid
       ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
   }
+
   &::placeholder {
     color: ${COLORS.inputSuggestionColor};
   }
