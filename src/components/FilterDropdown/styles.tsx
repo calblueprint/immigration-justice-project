@@ -22,10 +22,10 @@ export const FilterDropdownMenuBox = styled.div`
   width: max-content;
   background: white;
   box-shadow: 0 2px 0.25em 0.1em rgba(0, 0, 0, 0.25);
-  padding: 0.4rem 0;
+  padding: 0.25rem 0.5rem;
   z-index: 100;
 
-  border-radius: 6px;
+  border-radius: 2px;
 `;
 
 // button
@@ -33,7 +33,7 @@ export const FilterDropdownButton = styled.button<{
   $changed: boolean;
 }>`
   outline: none;
-  border: 1px solid ${COLORS.ijpGreen};
+  border: 1px solid ${COLORS.ijpBlue};
   border-radius: 100px;
 
   padding: 0.5rem 1rem;
@@ -45,7 +45,7 @@ export const FilterDropdownButton = styled.button<{
   font-size: 0.9rem;
   ${inter.style}
 
-  background-color: ${({ $changed }) => ($changed ? COLORS.ijpGreen : 'white')};
+  background-color: ${({ $changed }) => ($changed ? COLORS.ijpBlue : 'white')};
   background-image: ${({ $changed }) =>
     `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='%23${
       $changed ? 'fff' : '000'
@@ -59,17 +59,18 @@ export const FilterDropdownButton = styled.button<{
   &:hover,
   &:focus {
     background-color: ${({ $changed }) =>
-      $changed ? pSBC(-0.1, COLORS.ijpGreen) : pSBC(-0.1, '#FFF')};
+      $changed ? pSBC(-0.1, COLORS.ijpBlue) : pSBC(-0.1, '#FFF')};
     color: ${({ $changed }) => ($changed ? pSBC(-0.1, '#FFFFFF') : 'black')};
   }
 `;
 
 // menu option
 export const FilterDropdownOption = styled.p<{ $selected: boolean }>`
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   background: ${({ $selected }) => ($selected ? '#EEE' : 'white')};
-  color: ${COLORS.ijpGreen};
+  color: ${COLORS.dark};
   cursor: default;
+  border-radius: 0.25rem;
 
   &:hover {
     background: #eee;
