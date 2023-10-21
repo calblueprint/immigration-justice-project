@@ -20,19 +20,19 @@ type FilterType = {
   remote: string;
   role: string;
   distance: string;
-  countries: string; // turn to string[] when we have multi-select
-  language: string; // turn to string[] when we have multi-select
+  countries: string[];
+  languages: string[];
 };
 
 export default function Page() {
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [selectedCard, setSelectedCard] = useState<UUID>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
-    remote: 'any',
-    role: 'both',
-    distance: 'any',
-    countries: 'all',
-    language: 'all',
+    remote: 'Remote/In Person',
+    role: 'Attorney/Interpreter',
+    distance: 'Anywhere',
+    countries: ['All countries'],
+    languages: ['All languages'],
   });
 
   // react hooks
@@ -49,55 +49,55 @@ export default function Page() {
       <FiltersContainer>
         <FilterDropdown
           defaultValue="Remote/In Person"
-          options={[
-            { name: 'any', displayName: 'Remote/In Person' },
-            { name: 'remote', displayName: 'Remote Only' },
-            { name: 'inperson', displayName: 'In Person Only' },
-          ]}
-          onChange={name => setCaseFilters({ ...caseFilters, remote: name })}
+          options={['Remote/In Person', 'Remote Only', 'In Person Only']}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, remote: v as string })
+          }
         />
         <FilterDropdown
           defaultValue="Attorney/Interpreter"
-          options={[
-            { name: 'both', displayName: 'Attorney/Interpreter' },
-            { name: 'interpreter', displayName: 'Interpreter Only' },
-          ]}
-          onChange={name => setCaseFilters({ ...caseFilters, role: name })}
+          options={['Attorney/Interpreter', 'Interpreter Only']}
+          onChange={v => setCaseFilters({ ...caseFilters, role: v as string })}
         />
         <FilterDropdown
           defaultValue="Anywhere"
           // requires knowing user location
           options={[
-            { name: 'mile5', displayName: 'Within 5 miles' },
-            { name: 'mile10', displayName: 'Within 10 miles' },
-            { name: 'mile20', displayName: 'Within 20 miles' },
-            { name: 'mile50', displayName: 'Within 50 miles' },
-            { name: 'mile100', displayName: 'Within 100 miles' },
-            { name: 'any', displayName: 'Anywhere' },
+            'Within 5 miles',
+            'Within 10 miles',
+            'Within 20 miles',
+            'Within 100 miles',
+            'Anywhere',
           ]}
-          onChange={name => setCaseFilters({ ...caseFilters, distance: name })}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, distance: v as string })
+          }
         />
         <FilterDropdown
           defaultValue="All countries"
+          multi
           // better solution available if we update ts target to es6
-          options={[{ name: 'all', displayName: 'All countries' }].concat(
+          options={['All countries'].concat(
             caseData
               .map(c => c.country)
-              .filter((v, i, arr) => arr.indexOf(v) === i)
-              .map(c => ({ name: c, displayName: c })),
+              .filter((v, i, arr) => arr.indexOf(v) === i),
           )}
-          onChange={name => setCaseFilters({ ...caseFilters, countries: name })}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, countries: v as string[] })
+          }
         />
         <FilterDropdown
           defaultValue="All languages"
+          multi
           // better solution available if we update ts target to es6
-          options={[{ name: 'all', displayName: 'All languages' }].concat(
+          options={['All languages'].concat(
             caseData
               .flatMap(c => c.languages)
-              .filter((v, i, arr) => arr.indexOf(v) === i)
-              .map(c => ({ name: c, displayName: c })),
+              .filter((v, i, arr) => arr.indexOf(v) === i),
           )}
-          onChange={name => setCaseFilters({ ...caseFilters, language: name })}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, languages: v as string[] })
+          }
         />
       </FiltersContainer>
       <MainDisplay>
@@ -112,14 +112,14 @@ export default function Page() {
               caseFilters.role === 'both' ? true : c.needs_interpreter,
             )
             .filter(c =>
-              caseFilters.countries === 'all'
+              caseFilters.countries[0] === 'All countries'
                 ? true
-                : c.country === caseFilters.countries,
+                : caseFilters.countries.includes(c.country),
             )
             .filter(c =>
-              caseFilters.language === 'all'
+              caseFilters.languages[0] === 'All languages'
                 ? true
-                : c.languages.includes(caseFilters.language),
+                : caseFilters.languages.find(l => c.languages.includes(l)),
             )
             .map(c => (
               <ListingCard

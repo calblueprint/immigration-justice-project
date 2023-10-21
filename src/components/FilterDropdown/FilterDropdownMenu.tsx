@@ -12,7 +12,13 @@ export default function FilterDropdownMenu({
 
   // mount closing action
   useEffect(() => {
-    document.addEventListener('click', closeMenu, { once: true });
+    function globalClickEvent(e: Event) {
+      if (box.current && box.current.contains(e.target as Node)) return;
+      closeMenu();
+      document.removeEventListener('click', globalClickEvent);
+    }
+
+    document.addEventListener('click', globalClickEvent);
   }, [closeMenu]);
 
   return <FilterDropdownMenuBox ref={box}>{children}</FilterDropdownMenuBox>;

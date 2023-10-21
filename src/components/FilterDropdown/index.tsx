@@ -8,12 +8,6 @@ import {
 } from './styles';
 import FilterDropdownMenu from './FilterDropdownMenu';
 
-// custom type
-export type DropdownOption = {
-  name: string;
-  displayName: string;
-};
-
 export default function FilterDropdown({
   defaultValue,
   options,
@@ -21,46 +15,80 @@ export default function FilterDropdown({
   onChange,
 }: {
   defaultValue: string;
-  options: DropdownOption[];
+  options: string[];
   multi?: boolean;
-  onChange?: (name: string) => void;
+  onChange?: (name: string | string[]) => void;
 }) {
-  const [menuHidden, setMenuHidden] = useState(true);
+  const [menuShown, setMenuShown] = useState(false);
   const [currentValue, setCurrentValue] = useState(
     multi ? [defaultValue] : defaultValue,
   );
 
-  // const maxWidth =
-  //   144 + 0.176 * Math.max(...options.map(o => o.displayName.length)) ** 2;
-
   // handle select option
-  function handleOptionClick(option: DropdownOption) {
-    setMenuHidden(true);
-    onChange?.(option.name);
-    setCurrentValue(option.displayName);
+  function handleOptionClick(val: string) {
+    if (typeof currentValue === 'object') {
+      if (val === defaultValue) {
+        setCurrentValue([defaultValue]);
+        onChange?.([defaultValue]);
+        return;
+      }
+
+      const newList = currentValue.includes(val)
+        ? currentValue.filter(v => v !== val)
+        : [...currentValue, val];
+
+      // reset to default
+      if (newList.length === 0) {
+        setCurrentValue([defaultValue]);
+        onChange?.([defaultValue]);
+        return;
+      }
+
+      // cut out default
+      if (newList.length > 1) {
+        const defaultValIndex = newList.findIndex(v => v === defaultValue);
+        if (defaultValIndex !== -1) newList.splice(defaultValIndex, 1);
+      }
+
+      setCurrentValue(newList);
+      onChange?.(newList);
+    } else {
+      setCurrentValue(val);
+      onChange?.(val);
+    }
+  }
+
+  // format button display
+  function buttonDisplay() {
+    if (typeof currentValue === 'object') {
+      const len = currentValue.length;
+      if (len > 1) return `${currentValue[0]} +${len - 1} more`;
+      return currentValue[0];
+    }
+    return currentValue;
   }
 
   return (
     <FilterDropdownContainer>
       <FilterDropdownButton
-        $changed={defaultValue !== currentValue}
-        onClick={() => setTimeout(() => menuHidden && setMenuHidden(false), 0)}
+        $changed={
+          multi
+            ? currentValue.length > 0 && currentValue[0] !== defaultValue
+            : defaultValue !== currentValue
+        }
+        onClick={() => setTimeout(() => setMenuShown(true), 0)}
       >
-        {currentValue}
+        {buttonDisplay()}
       </FilterDropdownButton>
-      {!menuHidden && (
-        <FilterDropdownMenu closeMenu={() => setMenuHidden(true)}>
+      {menuShown && (
+        <FilterDropdownMenu closeMenu={() => setMenuShown(false)}>
           {options.map(o => (
             <FilterDropdownOption
-              key={o.name}
+              key={o}
               onClick={() => handleOptionClick(o)}
-              $selected={
-                multi
-                  ? currentValue.includes(o.displayName)
-                  : o.displayName === currentValue
-              }
+              $selected={multi ? currentValue.includes(o) : o === currentValue}
             >
-              {o.displayName}
+              {o}
             </FilterDropdownOption>
           ))}
         </FilterDropdownMenu>
