@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '../../types/schema';
 import { getNCases } from '../../api/supabase/queries/cases';
-import ListingCard from '../../components/ListingCard';
+import ListingCard from '../../components/ListingCard/ListingCard';
 import {
   CardColumn,
   CaseDetailDisplay,
