@@ -20,47 +20,6 @@ export function timestampStringToDate(ts: string) {
   return new Date(ms);
 }
 
-// check luminosity
-// ONLY COMPATIBLE WITH RGB and HEX
-// source: https://awik.io/determine-color-bright-dark-using-javascript/
-export function isDark(color: string, threshold = 200): boolean {
-  // Variables for red, green, blue values
-  let r: number;
-  let g: number;
-  let b: number;
-
-  // Check the format of the color, HEX or RGB?
-  if (color.match(/^rgb/)) {
-    // If RGB --> store the red, green, blue values in separate variables
-    const c = color.match(
-      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/,
-    );
-
-    if (c === null) {
-      return false;
-    }
-
-    r = parseInt(c[1], 10);
-    g = parseInt(c[2], 10);
-    b = parseInt(c[3], 10);
-  } else if (color[0] === '#' && color.length === 6) {
-    // If hex --> Convert it to RGB: http://gist.github.com/983661
-    const c = +`0x${color.slice(1).replace(/./g, '$&$&')}`;
-
-    r = c >> 16;
-    g = (c >> 8) & 255;
-    b = c & 255;
-  } else {
-    return false;
-  }
-
-  // HSP equation from http://alienryderflex.com/hsp.html
-  const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
-  // Using the HSP value, determine whether the color is light or dark
-  return hsp <= threshold;
-}
-
 // shade, blend, or convert color value
 // ONLY COMPATIBLE WITH RGB AND HEX
 // for usage, see link below vvvv
