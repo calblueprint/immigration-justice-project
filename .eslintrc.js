@@ -14,7 +14,7 @@ module.exports = {
     "import/prefer-default-export": [ "off" ],
     "no-console": [
       "warn",
-      { "allow": ["error", "clear", "info"] }
+      { "allow": ["error", "clear", "info", "warn"] }
     ]
   },
   settings: {
