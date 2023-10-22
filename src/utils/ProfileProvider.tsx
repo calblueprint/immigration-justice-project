@@ -50,3 +50,36 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     </ProfileContext.Provider>
   );
 }
+
+/**
+ * EXAMPLE USAGE:
+ *
+ * app/test/layout.tsx:
+ *
+ * ```
+ * 'use client';
+ *
+ * import { ReactNode } from 'react';
+ * import ProfileProvider from '@/utils/ProfileProvider';
+ *
+ * export default function TestLayout({ children }: { children: ReactNode }) {
+ *   return <ProfileProvider>{children}</ProfileProvider>;
+ * }
+ * ```
+ *
+ * app/test/page.tsx:
+ *
+ * ```
+ * 'use client';
+ *
+ * import { useContext } from 'react';
+ * import { ProfileContext } from '@/utils/ProfileProvider';
+ *
+ * export default function Page() {
+ *   const profile = useContext(ProfileContext);
+ *
+ *   return <h1>{(profile && profile.profileData) ? profile.profileData.first_name : 'NULL'}</h1>;
+ * }
+ * ```
+ *
+ */
