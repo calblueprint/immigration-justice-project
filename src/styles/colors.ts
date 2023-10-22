@@ -1,9 +1,12 @@
 const COLORS = {
   attorneyColor: '#85b4d2',
-  interpreterColor: '#BCE9C1',
-  ijpGreen: '#097A62',
-  ijpBlue: '#0069A9',
+  abaBlue: '#0069A9',
   dark: '#292929',
+  interpreterColor: '#8dd89f',
+  inputSuggestionColor: '#B3B3B3', // light grey
+  existingInputColor: '#555555', // dark grey
+  errorColor: '#D13E40', // red
+  activeGreen: '#097A62',
 };
 
 export default COLORS;

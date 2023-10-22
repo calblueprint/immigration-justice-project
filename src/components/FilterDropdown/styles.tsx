@@ -33,7 +33,7 @@ export const FilterDropdownButton = styled.button<{
   $changed: boolean;
 }>`
   outline: none;
-  border: 1px solid ${COLORS.ijpBlue};
+  border: 1px solid ${COLORS.abaBlue};
   border-radius: 100px;
 
   padding: 0.5rem 1rem;
@@ -45,7 +45,7 @@ export const FilterDropdownButton = styled.button<{
   font-size: 0.9rem;
   ${inter.style}
 
-  background-color: ${({ $changed }) => ($changed ? COLORS.ijpBlue : 'white')};
+  background-color: ${({ $changed }) => ($changed ? COLORS.abaBlue : 'white')};
   background-image: ${({ $changed }) =>
     `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='%23${
       $changed ? 'fff' : '000'
@@ -59,7 +59,7 @@ export const FilterDropdownButton = styled.button<{
   &:hover,
   &:focus {
     background-color: ${({ $changed }) =>
-      $changed ? pSBC(-0.1, COLORS.ijpBlue) : pSBC(-0.1, '#FFF')};
+      $changed ? pSBC(-0.1, COLORS.abaBlue) : pSBC(-0.1, '#FFF')};
     color: ${({ $changed }) => ($changed ? pSBC(-0.1, '#FFFFFF') : 'black')};
   }
 `;
