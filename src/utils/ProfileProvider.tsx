@@ -1,14 +1,17 @@
 'use client';
 
 import supabase from '@/api/supabase/createClient';
-import { fetchProfileById } from '@/api/supabase/queries/profiles';
+import {
+  fetchProfileById,
+  updateProfile as updateSupabaseProfile,
+} from '@/api/supabase/queries/profiles';
 import { Profile } from '@/types/schema';
 import { UUID } from 'crypto';
 import { createContext, useState, useEffect, useMemo, ReactNode } from 'react';
 
 interface ProfileContextType {
   profileData: Profile | null;
-  updateProfile: (newProfileData: Profile) => void;
+  updateProfile: (newProfileData: Partial<Profile>) => void;
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
@@ -36,13 +39,23 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     })();
   }, []);
 
-  const providerValue = useMemo(
-    () => ({
+  const providerValue = useMemo(() => {
+    const updateProfile = async (updatedInfo: Partial<Profile>) => {
+      if (!profileData || !profileData.user_id)
+        throw new Error(
+          `Expected profileData to be valid, but got ${profileData}`,
+        );
+
+      const newProfileData = { ...profileData, ...updatedInfo };
+      setProfileData(newProfileData);
+      await updateSupabaseProfile(profileData.user_id, newProfileData);
+    };
+
+    return {
       profileData,
-      updateProfile: setProfileData,
-    }),
-    [profileData],
-  );
+      updateProfile,
+    };
+  }, [profileData]);
 
   return (
     <ProfileContext.Provider value={providerValue}>
@@ -55,8 +68,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
  * EXAMPLE USAGE:
  *
  * app/test/layout.tsx:
- *
- * ```
+ */
+
+/**
  * 'use client';
  *
  * import { ReactNode } from 'react';
@@ -65,21 +79,27 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
  * export default function TestLayout({ children }: { children: ReactNode }) {
  *   return <ProfileProvider>{children}</ProfileProvider>;
  * }
- * ```
- *
+ */
+
+/**
  * app/test/page.tsx:
+ */
+
+/** 'use client';
  *
- * ```
- * 'use client';
- *
- * import { useContext } from 'react';
+ * import { useContext, useState } from 'react';
  * import { ProfileContext } from '@/utils/ProfileProvider';
  *
  * export default function Page() {
  *   const profile = useContext(ProfileContext);
+ *   const [name, setName] = useState("");
  *
- *   return <h1>{(profile && profile.profileData) ? profile.profileData.first_name : 'NULL'}</h1>;
+ *   return (
+ *     <div>
+ *       <h1>{(profile && profile.profileData) ? profile.profileData.first_name : 'NULL'}</h1>
+ *       <input type="text" onChange={e => setName(e.target.value)} />
+ *       <button type="button" onClick={() => profile?.updateProfile({ first_name: name })}>Change Name</button>
+ *     </div>
+ *   );
  * }
- * ```
- *
  */
