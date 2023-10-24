@@ -14,7 +14,7 @@ import {
   RadioInput,
 } from './styles';
 
-const radioOptions = ['Attorney', 'Interpreter', 'Both Interpreter & Attorney'];
+const radioOptions = ['Attorney', 'Interpreter', 'Both Attorney & Interpreter'];
 
 export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [reason, setReason] = useState<string>('');

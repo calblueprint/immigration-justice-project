@@ -15,7 +15,6 @@ export const CaseInterestContainer = styled.div`
   position: sticky;
   top: 4rem;
   width: 95%;
-  height: 85vh;
   border-radius: 10px;
   margin: 0 auto;
   padding: 2rem;
@@ -24,19 +23,19 @@ export const CaseInterestContainer = styled.div`
   flex-direction: column;
   gap: 1.4rem;
   display: block;
+  overflow: scroll;
 `;
 
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 50%;
+  min-height: 50%;
   gap: 0.5rem;
+  margin-bottom: 1rem;
   padding: 0.2rem;
 `;
 
 export const Line = styled.hr`
   color: 'black';
-  background-color: 'black';
-  border-color: 'black';
 `;
