@@ -24,7 +24,7 @@ export const InputText = styled.input<{ $error: boolean }>`
   }
 
   &:not(:placeholder-shown) {
-    border-color: ${COLORS.existingInputColor}
+    border-color: ${COLORS.existingInputColor};
   }
 
   &:focus {
