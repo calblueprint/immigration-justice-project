@@ -2,11 +2,7 @@
 
 import 'crypto';
 import React, { useEffect, useState } from 'react';
-import {
-  fetchProfiles,
-  insertProfile,
-  updateProfile,
-} from '../../api/supabase/queries/profiles';
+import { fetchProfiles } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
 import styles from '../page.module.css';
@@ -19,6 +15,7 @@ export default function Page() {
       const allProfiles = await fetchProfiles();
       setProfiles(allProfiles);
 
+      /** 
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
       const mockProfile: Profile = {
@@ -42,6 +39,7 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
+      */
     })();
   }, []);
 
