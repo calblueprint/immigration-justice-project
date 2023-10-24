@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { Inter } from 'next/font/google';
+import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '../../styles/colors';
 
-const inter = Inter({ subsets: ['latin'] });
+const openSans = OpenSans({ subsets: ['latin'] });
 
 export const InputText = styled.input<{ $error: boolean }>`
   color: ${COLORS.existingInputColor};
   font-size: 1rem; // 16px
-  ${inter.style}
+  ${openSans.style}
   font-weight: 400;
   line-height: 19.2px;
   word-wrap: break-word;
@@ -39,9 +39,9 @@ export const InputText = styled.input<{ $error: boolean }>`
 export const InputTitleText = styled.label`
   color: ${COLORS.existingInputColor};
   font-size: 1rem; // 16px;
-  ${inter.style}
-  font-weight: 500;
-  line-height: 28.8px;
+  ${openSans.style}
+  font-weight: 600;
+  line-height: normal;
   word-wrap: break-word;
   margin-bottom: 0.625rem; //10px
 `;
@@ -51,7 +51,7 @@ export const ErrorText = styled.p`
   margin-top: 0.625rem;
   font-size: 0.875rem; //14px
   font-weight: 400;
-  ${inter.style}
+  ${openSans.style}
 `;
 
 export const InputDiv = styled.div`

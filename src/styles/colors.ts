@@ -5,6 +5,8 @@ const COLORS = {
   existingInputColor: '#565656', // dark grey
   errorColor: '#D13E40', // red
   activeBlue: '#0069A9',
+  midDarkGrey: '#818181',
+  titleBlack: '#292929',
 };
 
 export default COLORS;
