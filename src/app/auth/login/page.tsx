@@ -10,7 +10,7 @@ import supabase from '../../../api/supabase/createClient';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
   const handleSignUp = async () => {
     const { error } = await supabase.auth.signUp({
@@ -45,7 +45,7 @@ export default function Login() {
             label="Email"
             placeholder="example@email.com"
             erroring={false}
-            errorText={errorMessage} // "Email Error" 
+            errorText="Email Error"  // {errorMessage} 
             type="email"
             name="email"
             value={email}
