@@ -76,7 +76,7 @@ export default function FilterDropdown({
             ? currentValue.length > 0 && currentValue[0] !== defaultValue
             : defaultValue !== currentValue
         }
-        onClick={() => setTimeout(() => setMenuShown(true), 0)}
+        onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
       >
         {buttonDisplay()}
       </FilterDropdownButton>

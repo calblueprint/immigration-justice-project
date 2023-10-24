@@ -22,10 +22,10 @@ export const FilterDropdownMenuBox = styled.div`
   width: max-content;
   background: white;
   box-shadow: 0 2px 0.25em 0.1em rgba(0, 0, 0, 0.25);
-  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.5rem;
   z-index: 100;
-
-  border-radius: 2px;
 `;
 
 // button
@@ -67,12 +67,26 @@ export const FilterDropdownButton = styled.button<{
 // menu option
 export const FilterDropdownOption = styled.p<{ $selected: boolean }>`
   padding: 0.5rem;
-  background: ${({ $selected }) => ($selected ? '#EEE' : 'white')};
   color: ${COLORS.dark};
   cursor: default;
   border-radius: 0.25rem;
+  position: relative;
 
-  &:hover {
+  &::before {
+    content: '';
     background: #eee;
+    width: 100%;
+    height: calc(100% - 0.2rem);
+    border-radius: 0.25rem;
+    top: 0;
+    left: 0;
+    transform: translateY(0.1rem);
+    position: absolute;
+    z-index: -1;
+    opacity: ${({ $selected }) => ($selected ? '1' : '0')};
+  }
+
+  &:hover::before {
+    opacity: 1;
   }
 `;
