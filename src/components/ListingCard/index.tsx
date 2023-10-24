@@ -31,8 +31,8 @@ export default function ListingCard({
         {caseData.languages.join(', ')}
       </p>
       <p>
-        <strong>Upcoming Date: </strong>
-        {parseDate(timestampStringToDate(caseData.upcoming_date))}
+        <strong>Case Deadline: </strong>
+        {/* {parseDate(timestampStringToDate(caseData.time_to_complete))} */}
       </p>
       <TagRow>
         {caseData.needs_interpreter && (
