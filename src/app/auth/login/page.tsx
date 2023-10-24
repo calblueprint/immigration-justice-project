@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { FormDiv } from './styles';
+import TextInput from '../../../components/TextInput/TextInput';
 import supabase from '../../../api/supabase/createClient';
 
 export default function Login() {
@@ -33,17 +35,26 @@ export default function Login() {
   };
 
   return (
-    <>
-      <input
+    <FormDiv>
+      <TextInput
+        label="Email"
+        placeholder="example@email.com"
+        erroring={false}
+        errorText="Email Error"
+        type="email"
         name="email"
-        onChange={e => setEmail(e.target.value)}
         value={email}
+        setValue={v => setEmail(v)}
       />
-      <input
+      <TextInput
+        label="Password"
+        placeholder="Input Suggestion"
+        erroring={false}
+        errorText="Password Error"
         type="password"
         name="password"
-        onChange={e => setPassword(e.target.value)}
         value={password}
+        setValue={v => setPassword(v)}
       />
       <button type="button" onClick={handleSignUp}>
         Sign up
@@ -51,6 +62,21 @@ export default function Login() {
       <button type="button" onClick={handleSignIn}>
         Sign in
       </button>
-    </>
+    </FormDiv>
   );
 }
+
+/*
+<input
+    type="email"
+    name="email"
+    onChange={e => setEmail(e.target.value)}
+    value={email}
+  /> 
+<input
+        type="password"
+        name="password"
+        onChange={e => setPassword(e.target.value)}
+        value={password}
+      />
+  */

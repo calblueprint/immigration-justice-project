@@ -14,7 +14,7 @@ export default function ResetPassword() {
         `An error occurred trying to reset password: ${error.message}`,
       );
     }
-    push('/login');
+    push('/auth/login');
   };
 
   return (
