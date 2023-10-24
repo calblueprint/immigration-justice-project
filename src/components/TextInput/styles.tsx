@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
-import { H4, P } from '@/styles/text';
-import COLORS from '@/styles/colors';
+import COLORS from '../../styles/colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
-export const InputText = styled(P)<{ $error: boolean }>`
-  // pass in as='input' when using as a tag, since this is supposed to be an input
-  color: ${COLORS.greyDarker};
+export const InputText = styled.input<{ $error: boolean }>`
+  color: ${COLORS.existingInputColor};
+  font-size: 1rem; // 16px
+  ${openSans.style}
+  font-weight: 400;
+  line-height: 19.2px;
+  word-wrap: break-word;
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 2px solid
@@ -34,9 +37,9 @@ export const InputText = styled(P)<{ $error: boolean }>`
 export const InputTitleText = styled.label`
   color: ${COLORS.existingInputColor};
   font-size: 1rem; // 16px;
-  ${inter.style}
-  font-weight: 500;
-  line-height: 28.8px;
+  ${openSans.style}
+  font-weight: 600;
+  line-height: normal;
   word-wrap: break-word;
   margin-bottom: 0.625rem; //10px
 `;

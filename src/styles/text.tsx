@@ -4,20 +4,18 @@ import COLORS from './colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
+const openSans = OpenSans({ subsets: ['latin'] });
+
 export const H1 = styled.h1<{ $color?: string }>`
   ${openSans.style}
   display: block;
+  font-family: Open Sans;
   font-size: 3rem;
+  font-style: normal;
   font-weight: 700;
-  color: ${props => props.$color || COLORS.greyDarker};
-  margin: 0;
-`;
-
-export const H2 = styled.h2<{ $color?: string }>`
+  line-height: normal;
   ${openSans.style}
-  font-size: 2.25rem;
-  font-weight: 600;
-  color: ${props => props.$color || COLORS.greyDarker};
+  color: ${COLORS.titleBlack};
   margin: 0;
 `;
 
