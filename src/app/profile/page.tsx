@@ -24,8 +24,9 @@ export default function Page() {
         user_id: crypto.randomUUID() as UUID,
         roles: ['attorney'],
         languages: ['English', 'Spanish'],
-        hours_per_month: 40,
-        immigration_law_experience: '5 years',
+        accreditations: ['Bar Association'],
+        hours_per_week: 40,
+        immigration_law_experience: 'advanced',
         bar_number: '12345',
         start_date: new Date().toDateString(),
         interest_ids: [crypto.randomUUID()] as UUID[],
@@ -39,8 +40,6 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
-
-      console.log('test');
     })();
   }, []);
 

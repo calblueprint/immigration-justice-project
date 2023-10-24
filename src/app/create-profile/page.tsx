@@ -11,7 +11,7 @@ export default function Profile() {
   const [lastName, setLastName] = useState<string>('');
 
   const handleInsert = async () => {
-    if (!firstName && !lastName) return;
+    if (!firstName || !lastName) return;
     const newProfile: Profile = {
       // hardcoded values for now
       user_id: crypto.randomUUID() as UUID,
