@@ -32,6 +32,7 @@ export default function ListingCard({
       </p>
       <p>
         <strong>Case Deadline: </strong>
+        {/* PLEASE UNCOMMENT THE LINE BELOW AFTER NEW SCHEMA CHANGES */}
         {/* {parseDate(timestampStringToDate(caseData.time_to_complete))} */}
       </p>
       <TagRow>

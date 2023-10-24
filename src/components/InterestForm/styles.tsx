@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  width: 65%;
+  width: 60%;
   float: right;
   margin-top: 1rem;
   gap: 0.5rem;
-  height: 50%;
 `;
 
 export const FormTextArea = styled.textarea`
@@ -18,6 +17,10 @@ export const FormTextArea = styled.textarea`
   border-radius: 5px;
   border: 1px solid var(--mid-grey, #ccc);
   padding: 0.5rem;
+  &:focus {
+    border-color: ${COLORS.blueMid};
+    outline: none;
+  }
 `;
 
 export const FormInput = styled.input`
@@ -25,13 +28,19 @@ export const FormInput = styled.input`
   border: 1px solid var(--mid-grey, #ccc);
   padding: 0.5rem;
   margin-bottom: 0.6rem;
+  &:focus {
+    border-color: ${COLORS.blueMid};
+    outline: none;
+  }
 `;
 
 export const RadioGroup = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 0.6rem;
-  gap: 4rem;
+  column-gap: 4rem;
+  row-gap: 0.4rem;
+  flex-wrap: wrap;
 `;
 
 export const RadioLabel = styled.label`
@@ -40,27 +49,17 @@ export const RadioLabel = styled.label`
 `;
 
 export const RadioInput = styled.input`
-  display: flex;
+  display: grid;
+  place-items: center;
   margin-right: 0.5rem;
   appearance: none;
   width: 1rem;
   height: 1rem;
   border: 1px solid ${COLORS.blueMid};
   border-radius: 50%;
-  position: relative; /* Added to establish a positioning context */
-  &:after {
-    content: '';
-    display: block;
-    border-radius: 50%;
-    width: 0.73rem;
-    height: 0.73rem;
-    margin-left: 0.08rem;
-    margin-top: 0.08rem;
-    position: absolute; /* Position absolutely within the radio input */
-  }
+  position: relative;
+
   &:checked {
-    &:after {
-      background-color: ${COLORS.blueMid};
-    }
+    box-shadow: 0 0 0 0.1rem white inset, 0 0 0 0.5rem ${COLORS.blueMid} inset;
   }
 `;
