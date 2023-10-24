@@ -42,8 +42,6 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
-
-      console.log('test');
     })();
   }, []);
 
