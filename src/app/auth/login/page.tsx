@@ -45,7 +45,7 @@ export default function Login() {
             label="Email"
             placeholder="example@email.com"
             erroring={false}
-            errorText="Email Error"  // {errorMessage} 
+            errorText="Email Error" // {errorMessage}
             type="email"
             name="email"
             value={email}

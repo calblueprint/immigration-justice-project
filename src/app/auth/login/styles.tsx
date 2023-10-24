@@ -3,7 +3,7 @@ import COLORS from '@/styles/colors';
 
 export const FormDiv = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   gap: 2.5rem; // 40 px
   padding: 3.25rem; //52px = 13/4
   border-radius: 10px;
@@ -12,7 +12,7 @@ export const FormDiv = styled.div`
 
 export const QuestionsDiv = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   gap: 1.2rem; // 20 px
 `;
 
@@ -24,6 +24,6 @@ export const ForgotPassword = styled.p`
 
 export const SixteenDiv = styled.div`
   display: flex;
-  flex-direction:column;
-  gap: 1rem; 
+  flex-direction: column;
+  gap: 1rem;
 `;
