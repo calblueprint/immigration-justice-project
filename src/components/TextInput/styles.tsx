@@ -38,7 +38,7 @@ export const InputTitleText = styled.label`
   font-weight: 500;
   line-height: 28.8px;
   word-wrap: break-word;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.625rem; //10px
 `;
 
 export const ErrorText = styled.p`

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { InputTitleText, InputText, InputDiv, ErrorText } from './styles';
 
 type TextInputProps = {
@@ -9,31 +9,25 @@ type TextInputProps = {
   type: string;
   name: string;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
-};
+  setValue: (newValue: string) => void;
+  // onChange: (text: string) => void;
+ }
 
 export default function TextInput({
   label,
   placeholder,
   erroring,
   errorText = '',
-  type,
+  type, 
   name,
-  value,
-  setValue,
+  value, 
+  setValue
 }: TextInputProps) {
+  // const [value, setValue] = useState('');
   return (
     <InputDiv>
-      <InputTitleText as="label">{label}</InputTitleText>
-      <InputText
-        as="input"
-        $error={erroring}
-        placeholder={placeholder}
-        name={name}
-        type={type}
-        value={value}
-        onChange={e => setValue(e.target.value)}
-      />
+      <InputTitleText>{label}</InputTitleText>
+      <InputText $error={erroring} placeholder={placeholder} name={name} type={type} value={value} onChange={(e) => setValue(e.target.value)} />
       {erroring && <ErrorText>{errorText}</ErrorText>}
     </InputDiv>
   );
