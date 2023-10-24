@@ -5,7 +5,7 @@ import { H3 } from '@/styles/text';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

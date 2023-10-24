@@ -29,6 +29,7 @@ export const CardColumn = styled.div`
   border-right: 1px solid black;
   padding-top: 3px;
   padding-right: 2rem;
+  /* overflow: scroll; */
 `;
 
 // case detail
