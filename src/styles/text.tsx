@@ -34,9 +34,6 @@ export const H4Centered = styled(H4)`
   text-align: center;
 `;
 
-type ColorValueHex = `#${string}`;
-// https://medium.com/@steve.alves2/how-to-type-hex-colors-in-typescript-3c3b9a32baa7
-
 export const coloredA = styled.a`
-  color: inherit; 
-`; 
+  color: inherit;
+`;
