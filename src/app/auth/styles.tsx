@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
+
+const openSans = OpenSans({ subsets: ['latin'] });
 
 export const FormDiv = styled.div`
   display: flex;
@@ -10,16 +13,19 @@ export const FormDiv = styled.div`
   border: 2px solid ${COLORS.activeBlue};
 `;
 
+export const ForgotPassword = styled.p`
+  color: ${COLORS.midDarkGrey};
+  ${openSans.style}
+  font-size: 0.875rem; // 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
 export const QuestionsDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.2rem; // 20 px
-`;
-
-export const ForgotPassword = styled.p`
-  font-size: 14px;
-  margin-top: 0.8125rem; //13px
-  color: ${COLORS.midDarkGrey};
 `;
 
 export const SixteenDiv = styled.div`
