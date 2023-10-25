@@ -153,7 +153,7 @@ pSBC.pSBCr = (color: string) => {
   }
   return x;
 };
-  // helper functions
+// helper functions
 // helper functions
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
