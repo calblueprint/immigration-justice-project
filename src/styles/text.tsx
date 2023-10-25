@@ -9,7 +9,6 @@ const openSans = OpenSans({ subsets: ['latin'] });
 export const H1 = styled.h1<{ $color?: string }>`
   ${openSans.style}
   display: block;
-  font-family: Open Sans;
   font-size: 3rem;
   font-style: normal;
   font-weight: 700;
@@ -35,15 +34,22 @@ export const H4 = styled.h4<{ $color?: string }>`
   margin: 0;
 `;
 
-export const P = styled.p<{ $color?: string }>`
+export const H4 = styled.h4`
+  color: ${COLORS.existingInputColor};
   ${openSans.style}
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: ${props => props.$color || COLORS.greyDarker};
-  margin: 0;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
-export const AColored = styled.a<{ $color?: string }>`
-  ${openSans.style}
-  color: ${props => props.$color};
+export const H4Centered = styled(H4)`
+  text-align: center;
 `;
+
+type ColorValueHex = `#${string}`;
+// https://medium.com/@steve.alves2/how-to-type-hex-colors-in-typescript-3c3b9a32baa7
+
+export const coloredA = styled.a`
+  color: inherit; 
+`; 

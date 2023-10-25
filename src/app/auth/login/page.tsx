@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1 } from '@/styles/text';
-import { FormDiv, QuestionsDiv, ForgotPassword, SixteenDiv } from './styles';
+import { H1, H4Centered, H4 } from '@/styles/text';
+import { ForgotPassword, FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
 import supabase from '../../../api/supabase/createClient';
 
 export default function Login() {
@@ -12,6 +12,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
+  // commenting out Sign Up to use in the next PR -> create a separate sign in page 
+  /*
   const handleSignUp = async () => {
     const { error } = await supabase.auth.signUp({
       email,
@@ -23,6 +25,7 @@ export default function Login() {
     }
     push('/');
   };
+  */ 
 
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -62,14 +65,14 @@ export default function Login() {
             setValue={setPassword}
           />
         </QuestionsDiv>
-        <ForgotPassword>Forgot your password?</ForgotPassword>
+        <ForgotPassword><a href="/reset-password">Forgot your password?</a></ForgotPassword>
       </SixteenDiv>
-      <button type="button" onClick={handleSignUp}>
-        Sign up
-      </button>
-      <button type="button" onClick={handleSignIn}>
-        Sign in
-      </button>
+      <SixteenDiv>
+        <button type="button" onClick={handleSignIn}>
+          Sign in
+        </button>
+        <H4Centered>Don’t have an account yet? <a href="/">Sign up</a></H4Centered>
+      </SixteenDiv>
     </FormDiv>
   );
 }
