@@ -12,8 +12,9 @@ export const Button = styled.button<{ $secondary?: boolean }>`
   border-radius: 5px;
   border: 2px solid ${COLORS.blueMid};
   &:hover {
-    background: ${props => (props.$secondary ? '#f2f2f2' : '#004773')};
-    border-color: '#004773';
+    background: ${props =>
+      props.$secondary ? '#f2f2f2' : COLORS.ijpBlueClicked};
+    border-color: ${COLORS.ijpBlueClicked};
   }
 `;
 
@@ -22,7 +23,8 @@ export const ErrorButton = styled(Button)<{ $secondary?: boolean }>`
   background: ${props => (props.$secondary ? 'white' : COLORS.redMid)};
   border: 2px solid ${COLORS.redMid};
   &:hover {
-    background: ${props => (props.$secondary ? '#f2f2f2' : '#a83133')};
-    border-color: '#a83133';
+    background: ${props =>
+      props.$secondary ? '#f2f2f2' : COLORS.errorColorClicked};
+    border-color: ${COLORS.errorColorClicked};
   }
 `;

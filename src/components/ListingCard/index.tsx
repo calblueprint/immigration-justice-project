@@ -1,9 +1,9 @@
 import React from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import { timestampStringToDate } from '@/utils/helpers';
 import { H2 } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import { timestampStringToDate, parseDate } from '../../utils/helpers';
 import { CardBody, TagRow, CardTag } from './styles';
 
 export default function ListingCard({
@@ -15,9 +15,10 @@ export default function ListingCard({
   isSelected?: boolean;
   onClick?: (id: UUID) => void;
 }) {
-  // helper functions
-  const parseDate = (d: Date): string =>
-    `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+  // setup
+  const rolesNeeded = ['Attorney'].concat(
+    caseData.needs_interpreter ? ['Interpreter'] : [],
+  );
 
   return (
     <CardBody
@@ -32,8 +33,7 @@ export default function ListingCard({
       </p>
       <p>
         <strong>Case Deadline: </strong>
-        {/* PLEASE UNCOMMENT THE LINE BELOW AFTER NEW SCHEMA CHANGES */}
-        {/* {parseDate(timestampStringToDate(caseData.time_to_complete))} */}
+        {parseDate(timestampStringToDate(caseData.upcoming_date))}
       </p>
       <TagRow>
         {caseData.needs_interpreter && (
