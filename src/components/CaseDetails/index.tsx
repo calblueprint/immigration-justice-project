@@ -6,6 +6,7 @@ import {
   InfoContainer,
   Line,
 } from './styles';
+import { timestampStringToDate, parseDate } from '../../utils/helpers';
 import { H1 } from '../../styles/text';
 import { CaseListing } from '../../types/schema';
 import InterestForm from '../InterestForm';
@@ -21,8 +22,8 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
             {caseData.languages}
           </p>
           <p>
-            <strong>Next Court/Filing Date:</strong>
-            {caseData.upcoming_date}
+            <strong>Next Court/Filing Date: </strong>
+            {parseDate(timestampStringToDate(caseData.upcoming_date))}
           </p>
 
           <p>{caseData.summary}</p>

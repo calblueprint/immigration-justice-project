@@ -16,6 +16,7 @@ export const FormTextArea = styled.textarea`
   resize: none;
   border-radius: 5px;
   border: 1px solid var(--mid-grey, #ccc);
+  margin-bottom: 0.6rem;
   padding: 0.5rem;
   &:focus {
     border-color: ${COLORS.blueMid};
@@ -38,7 +39,7 @@ export const RadioGroup = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 0.6rem;
-  column-gap: 4rem;
+  column-gap: 3rem;
   row-gap: 0.4rem;
   flex-wrap: wrap;
 `;
@@ -51,7 +52,7 @@ export const RadioLabel = styled.label`
 export const RadioInput = styled.input`
   display: grid;
   place-items: center;
-  margin-right: 0.5rem;
+  margin-right: 0.4rem;
   appearance: none;
   width: 1rem;
   height: 1rem;
