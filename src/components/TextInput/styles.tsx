@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
-import COLORS from '../../styles/colors';
+import COLORS from '@/styles/colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
 export const InputText = styled.input<{ $error: boolean }>`
+  // is possible to inherit text styles from H4? 
+  ${openSans.style}
   color: ${COLORS.existingInputColor};
   font-size: 1rem; // 16px
-  ${openSans.style}
-  font-weight: 400;
-  line-height: 19.2px;
+  font-weight: 600;
   word-wrap: break-word;
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
@@ -18,7 +18,7 @@ export const InputText = styled.input<{ $error: boolean }>`
       $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
   justify-content: flex-start;
   align-items: flex-start;
-  color: ${COLORS.existingInputColor};
+  outline: none; 
 
   &::placeholder {
     color: ${COLORS.inputSuggestionColor};
@@ -29,7 +29,6 @@ export const InputText = styled.input<{ $error: boolean }>`
   }
 
   &:focus {
-    outline: none !important;
     border: 2px solid
       ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeBlue)};
   }
@@ -40,7 +39,6 @@ export const InputTitleText = styled.label`
   font-size: 1rem; // 16px;
   ${openSans.style}
   font-weight: 600;
-  line-height: normal;
   word-wrap: break-word;
   margin-bottom: 0.625rem; //10px
 `;

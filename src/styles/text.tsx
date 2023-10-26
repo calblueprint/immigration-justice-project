@@ -26,7 +26,7 @@ export const H4 = styled.h4`
   ${openSans.style}
   font-size: 1rem;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: normal;
 `;
 
@@ -34,6 +34,13 @@ export const H4Centered = styled(H4)`
   text-align: center;
 `;
 
-export const coloredA = styled.a`
-  color: inherit;
+export const P = styled.p`
+  ${openSans.style}
+  font-size: 0.875rem;
+  font-weight: 400;
+`
+
+export const AColored = styled.a<{ $color?: string }>`
+  ${openSans.style}
+  color: ${props => props.$color}; 
 `;
