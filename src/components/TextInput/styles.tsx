@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
-// import { H4 } from '@/styles/text';
 import COLORS from '../../styles/colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
@@ -18,7 +17,7 @@ export const InputText = styled.input<{ $error: boolean }>`
     ${({ $error }) => ($error ? COLORS.redMid : COLORS.placeholderText)};
   justify-content: flex-start;
   align-items: flex-start;
-  outline: none;
+  color: ${COLORS.existingInputColor};
 
   &::placeholder {
     color: ${COLORS.inputSuggestionColor};

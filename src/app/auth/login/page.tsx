@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
 import { H1, H4Centered } from '@/styles/text';
+import supabase from '@/api/supabase/createClient';
 import { ForgotPassword, FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
-import supabase from '../../../api/supabase/createClient';
 
 export default function Login() {
   const [email, setEmail] = useState('');
