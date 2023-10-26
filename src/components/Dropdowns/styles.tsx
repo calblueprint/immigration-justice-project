@@ -7,17 +7,17 @@ import { pSBC } from '@/utils/helpers';
 const inter = Inter({ subsets: ['latin'] });
 
 // containers
-export const FilterDropdownContainer = styled.div`
+export const DropdownContainer = styled.div`
   position: relative;
 `;
 
-export const FilterDropdownMenuBox = styled.div`
+export const DropdownMenu = styled.div<{ $show: boolean }>`
   position: absolute;
   top: 100%;
   left: 0;
   transform: translateY(2px);
 
-  display: 'flex';
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
   flex-direction: column;
   width: max-content;
   background: white;
@@ -29,7 +29,7 @@ export const FilterDropdownMenuBox = styled.div`
 `;
 
 // button
-export const FilterDropdownButton = styled.button<{
+export const DropdownButton = styled.button<{
   $changed: boolean;
 }>`
   outline: none;
@@ -65,7 +65,7 @@ export const FilterDropdownButton = styled.button<{
 `;
 
 // menu option
-export const FilterDropdownOption = styled.p<{ $selected: boolean }>`
+export const DropdownItem = styled.p<{ $selected: boolean }>`
   padding: 0.5rem;
   color: ${COLORS.greyDarker};
   cursor: default;

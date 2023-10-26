@@ -6,8 +6,8 @@ import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import CaseDetailDisplay from '@/components/CaseDetails';
-import { H1 } from '@/styles/text';
+import { H1, H2 } from '@/styles/text';
+import ButtonDropdown from '@/components/Dropdowns/ButtonDropdown';
 import {
   CardColumn,
   MainDisplay,
@@ -47,19 +47,19 @@ export default function Page() {
     <PageContainer>
       <H1>Browse Available Cases</H1>
       <FiltersContainer>
-        <FilterDropdown
+        <ButtonDropdown
           defaultValue="Remote/In Person"
           options={['Remote/In Person', 'Remote Only', 'In Person Only']}
           onChange={v =>
             setCaseFilters({ ...caseFilters, remote: v as string })
           }
         />
-        <FilterDropdown
+        <ButtonDropdown
           defaultValue="Attorney/Interpreter"
           options={['Attorney/Interpreter', 'Interpreter Only']}
           onChange={v => setCaseFilters({ ...caseFilters, role: v as string })}
         />
-        <FilterDropdown
+        <ButtonDropdown
           defaultValue="Anywhere"
           // requires knowing user location
           options={[
@@ -73,7 +73,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, distance: v as string })
           }
         />
-        <FilterDropdown
+        <ButtonDropdown
           defaultValue="All countries"
           multi
           options={[
@@ -88,6 +88,19 @@ export default function Page() {
           ]}
           onChange={v =>
             setCaseFilters({ ...caseFilters, countries: v as string[] })
+          }
+        />
+        <ButtonDropdown
+          defaultValue="All languages"
+          multi
+          // better solution available if we update ts target to es6
+          options={['All languages'].concat(
+            caseData
+              .flatMap(c => c.languages)
+              .filter((v, i, arr) => arr.indexOf(v) === i),
+          )}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, languages: v as string[] })
           }
         />
       </FiltersContainer>
