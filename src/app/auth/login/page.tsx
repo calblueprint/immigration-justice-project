@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H4Centered } from '@/styles/text';
+import { H1, H4Centered, P, AColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
-import { ForgotPassword, FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
+import COLORS from '@/styles/colors';
+import { FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -46,7 +47,7 @@ export default function Login() {
         <QuestionsDiv>
           <TextInput
             label="Email"
-            placeholder="example@email.com"
+            placeholder="email@example.com"
             erroring={false}
             errorText="Email Error" // {errorMessage}
             type="email"
@@ -56,7 +57,7 @@ export default function Login() {
           />
           <TextInput
             label="Password"
-            placeholder="Input Suggestion"
+            placeholder="Password"
             erroring={false}
             errorText="Password Error"
             type="password"
@@ -65,16 +66,16 @@ export default function Login() {
             setValue={setPassword}
           />
         </QuestionsDiv>
-        <ForgotPassword>
-          <a href="/reset-password">Forgot your password?</a>
-        </ForgotPassword>
+        <P>
+          <AColored $color={COLORS.midDarkGrey} href="/reset-password">Forgot your password?</AColored>
+        </P>
       </SixteenDiv>
       <SixteenDiv>
         <button type="button" onClick={handleSignIn}>
           Sign in
         </button>
         <H4Centered>
-          Don’t have an account yet? <a href="/">Sign up</a>
+          Don’t have an account yet? <AColored $color={COLORS.existingInputColor} href="/">Sign up</AColored>
         </H4Centered>
       </SixteenDiv>
     </FormDiv>
