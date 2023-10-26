@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
-// styled components
+// containers
 export const PageContainer = styled.div`
   display: grid;
   place-items: center;
   padding: 2rem;
+`;
+
+export const FiltersContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  gap: 1rem;
 `;
 
 export const MainDisplay = styled.main`
@@ -20,7 +27,7 @@ export const CardColumn = styled.div`
   flex-direction: column;
   gap: 2rem;
   border-right: 1px solid black;
-  padding-top: 0.5rem;
+  padding-top: 3px;
   padding-right: 2rem;
 `;
 

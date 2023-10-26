@@ -2,11 +2,7 @@
 
 import 'crypto';
 import React, { useEffect, useState } from 'react';
-import {
-  fetchProfiles,
-  insertProfile,
-  updateProfile,
-} from '../../api/supabase/queries/profiles';
+import { fetchProfiles } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 
 import styles from '../page.module.css';
@@ -19,6 +15,7 @@ export default function Page() {
       const allProfiles = await fetchProfiles();
       setProfiles(allProfiles);
 
+      /** 
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
       const mockProfile: Profile = {
@@ -42,6 +39,7 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
+      */
     })();
   }, []);
 
@@ -62,11 +60,12 @@ export default function Page() {
             <p>Languages: {profile.languages.join(', ')}</p>
             <p>hoursPerMonth: {profile.hours_per_month}</p>
             <p>
-              immigrationLawExperience: {profile.immigration_law_experience}
+              immigrationLawExperience:{' '}
+              {profile.immigration_law_experience.toString()}
             </p>
-            <p>barNumber: {profile.bar_number}</p>
-            <p>startDate: {profile.start_date}</p>
-            <p>interestIds: {profile.interest_ids}</p>
+            <p>barNumber: {profile.bar_number.toString()}</p>
+            <p>startDate: {profile.start_date.toString()}</p>
+            <p>interestIds: {profile.interest_ids.toString()}</p>
           </li>
         ))}
       </ul>

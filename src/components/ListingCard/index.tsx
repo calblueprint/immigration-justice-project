@@ -1,10 +1,10 @@
 import React from 'react';
 import { UUID } from 'crypto';
-import { CaseListing } from '../../types/schema';
-import timestampStringToDate from '../../utils/helpers';
+import { CaseListing } from '@/types/schema';
+import { timestampStringToDate } from '@/utils/helpers';
+import { H2 } from '@/styles/text';
+import COLORS from '@/styles/colors';
 import { CardBody, TagRow, CardTag } from './styles';
-import { H2 } from '../../styles/text';
-import COLORS from '../../styles/colors';
 
 export default function ListingCard({
   caseData,
@@ -15,11 +15,6 @@ export default function ListingCard({
   isSelected?: boolean;
   onClick?: (id: UUID) => void;
 }) {
-  // setup
-  const rolesNeeded = ['Attorney'].concat(
-    caseData.needs_interpreter ? ['Interpreter'] : [],
-  );
-
   // helper functions
   const parseDate = (d: Date): string =>
     `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
@@ -40,18 +35,9 @@ export default function ListingCard({
         {parseDate(timestampStringToDate(caseData.upcoming_date))}
       </p>
       <TagRow>
-        {rolesNeeded.map(r => (
-          <CardTag
-            key={r}
-            color={
-              r === 'Interpreter'
-                ? COLORS.interpreterColor
-                : COLORS.attorneyColor
-            }
-          >
-            {r}
-          </CardTag>
-        ))}
+        {caseData.needs_interpreter && (
+          <CardTag color={COLORS.interpreterColor}>Interpreter needed</CardTag>
+        )}
       </TagRow>
     </CardBody>
   );
