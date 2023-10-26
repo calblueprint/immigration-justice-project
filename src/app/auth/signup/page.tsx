@@ -13,8 +13,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
-  // commenting out Sign Up to use in the next PR -> create a separate sign in page
-  /*
   const handleSignUp = async () => {
     const { error } = await supabase.auth.signUp({
       email,
@@ -26,23 +24,10 @@ export default function Login() {
     }
     push('/');
   };
-  */
-
-  const handleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      throw new Error(`An error occurred trying to sign in: ${error.message}`);
-    }
-    push('/');
-  };
 
   return (
     <FormDiv>
-      <H1>Log In</H1>
+      <H1>Sign Up</H1>
       <SixteenDiv>
         <QuestionsDiv>
           <TextInput
@@ -66,20 +51,15 @@ export default function Login() {
             setValue={setPassword}
           />
         </QuestionsDiv>
-        <P>
-          <AColored $color={COLORS.midDarkGrey} href="/reset-password">
-            Forgot your password?
-          </AColored>
-        </P>
       </SixteenDiv>
       <SixteenDiv>
-        <button type="button" onClick={handleSignIn}>
-          Sign in
+        <button type="button" onClick={handleSignUp}>
+          Sign Up
         </button>
         <H4Centered>
-          Don’t have an account yet?{' '}
-          <AColored $color={COLORS.existingInputColor} href="/auth/signup">
-            Sign up
+          Have an account already?{' '}
+          <AColored $color={COLORS.existingInputColor} href="/auth/login">
+            Log In
           </AColored>
         </H4Centered>
       </SixteenDiv>
