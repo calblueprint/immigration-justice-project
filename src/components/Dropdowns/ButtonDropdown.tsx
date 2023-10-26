@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
-  FilterDropdownContainer,
-  FilterDropdownButton,
-  FilterDropdownOption,
+  DropdownContainer,
+  DropdownButton,
+  DropdownItem,
+  DropdownMenu,
 } from './styles';
-import FilterDropdownMenu from './FilterDropdownMenu';
 
-export default function FilterDropdown({
+export default function ButtonDropdown({
   defaultValue,
   options,
   multi = false,
@@ -19,6 +19,7 @@ export default function FilterDropdown({
   multi?: boolean;
   onChange?: (name: string | string[]) => void;
 }) {
+  const menu = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
   const [currentValue, setCurrentValue] = useState(
     multi ? [defaultValue] : defaultValue,
@@ -68,9 +69,23 @@ export default function FilterDropdown({
     return currentValue;
   }
 
+  // mount listener for closing dropdown menu
+  useEffect(() => {
+    function globalClickListener(e: Event) {
+      if (menu.current && menu.current.contains(e.target as Node)) return;
+      setMenuShown(false);
+    }
+
+    document.addEventListener('click', globalClickListener);
+
+    return () => {
+      document.removeEventListener('click', globalClickListener);
+    };
+  }, []);
+
   return (
-    <FilterDropdownContainer>
-      <FilterDropdownButton
+    <DropdownContainer>
+      <DropdownButton
         $changed={
           multi
             ? currentValue.length > 0 && currentValue[0] !== defaultValue
@@ -79,20 +94,18 @@ export default function FilterDropdown({
         onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
       >
         {buttonDisplay()}
-      </FilterDropdownButton>
-      {menuShown && (
-        <FilterDropdownMenu closeMenu={() => setMenuShown(false)}>
-          {options.map(o => (
-            <FilterDropdownOption
-              key={o}
-              onClick={() => handleOptionClick(o)}
-              $selected={multi ? currentValue.includes(o) : o === currentValue}
-            >
-              {o}
-            </FilterDropdownOption>
-          ))}
-        </FilterDropdownMenu>
-      )}
-    </FilterDropdownContainer>
+      </DropdownButton>
+      <DropdownMenu $show={menuShown} ref={menu}>
+        {options.map(o => (
+          <DropdownItem
+            key={o}
+            onClick={() => handleOptionClick(o)}
+            $selected={multi ? currentValue.includes(o) : o === currentValue}
+          >
+            {o}
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </DropdownContainer>
   );
 }

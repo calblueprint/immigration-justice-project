@@ -3,15 +3,15 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H2 } from '@/styles/text';
+import { H1, H2 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
+import FilterDropdown from '@/components/FilterDropdown';
 import {
   CardColumn,
   PageContainer,
