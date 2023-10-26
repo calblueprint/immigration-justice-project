@@ -38,9 +38,9 @@ export const P = styled.p`
   ${openSans.style}
   font-size: 0.875rem;
   font-weight: 400;
-`
+`;
 
 export const AColored = styled.a<{ $color?: string }>`
   ${openSans.style}
-  color: ${props => props.$color}; 
+  color: ${props => props.$color};
 `;
