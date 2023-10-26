@@ -18,15 +18,14 @@ export default function Page() {
       /** 
       type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
-      const mockProfile = {
+      const mockProfile: Profile = {
         first_name: 'First',
         last_name: 'Last',
         user_id: crypto.randomUUID() as UUID,
         roles: ['attorney'],
         languages: ['English', 'Spanish'],
-        accreditations: ['Bar Association'],
-        hours_per_week: 40,
-        immigration_law_experience: 'advanced',
+        hours_per_month: 40,
+        immigration_law_experience: '5 years',
         bar_number: '12345',
         start_date: new Date().toDateString(),
         interest_ids: [crypto.randomUUID()] as UUID[],
@@ -40,6 +39,7 @@ export default function Page() {
       await updateProfile(mockProfile.user_id, {
         hours_per_month: -200, // Update the roles field with new data
       });
+      */
     })();
   }, []);
 
@@ -51,10 +51,14 @@ export default function Page() {
         {profiles.map(profile => (
           <li key={profile.user_id}>
             <h2>Profile ID: {profile.user_id}</h2>
+            <p>Location: {profile.location}</p>
+            <p>Availability Description: {profile.availability_description}</p>
+            <p>EOIR Registered: {profile.eoir_registered}</p>
+            <p>First Name: {profile.first_name}</p>
+            <p>Last Name: {profile.last_name}</p>
             <p>Roles: {profile.roles.join(', ')}</p>
             <p>Languages: {profile.languages.join(', ')}</p>
-            <p>Accreditations: {profile.accreditations.join(', ')}</p>
-            <p>hoursPerWeek: {profile.hours_per_week.toString()}</p>
+            <p>hoursPerMonth: {profile.hours_per_month}</p>
             <p>
               immigrationLawExperience:{' '}
               {profile.immigration_law_experience.toString()}
