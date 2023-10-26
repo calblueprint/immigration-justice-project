@@ -86,7 +86,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, countries: v as string[] })
           }
         />
-        <FilterDropdown
+        {/* <FilterDropdown
           defaultValue="All languages"
           multi
           // better solution available if we update ts target to es6
@@ -98,7 +98,7 @@ export default function Page() {
           onChange={v =>
             setCaseFilters({ ...caseFilters, languages: v as string[] })
           }
-        />
+        /> */}
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
@@ -116,11 +116,11 @@ export default function Page() {
                 ? true
                 : caseFilters.countries.includes(c.country),
             )
-            .filter(c =>
-              caseFilters.languages[0] === 'All languages'
-                ? true
-                : caseFilters.languages.find(l => c.languages.includes(l)),
-            )
+            // .filter(c =>
+            //   caseFilters.languages[0] === 'All languages'
+            //     ? true
+            //     : caseFilters.languages.find(l => c.languages.includes(l)),
+            // )
             .map(c => (
               <ListingCard
                 key={c.id}

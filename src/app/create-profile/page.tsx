@@ -12,21 +12,6 @@ export default function Profile() {
 
   const handleInsert = async () => {
     if (!firstName || !lastName) return;
-    // const newProfile: Profile = {
-    //   // hardcoded values for now
-    //   user_id: crypto.randomUUID() as UUID,
-    //   roles: ['blah'],
-    //   languages: ['blah', 'blah'],
-    //   accreditations: ['blah'],
-    //   hours_per_week: 40,
-    //   immigration_law_experience: '5 years',
-    //   bar_number: '12345',
-    //   start_date: new Date().toDateString(),
-    //   interest_ids: [crypto.randomUUID()] as UUID[],
-    //   first_name: firstName,
-    //   last_name: lastName,
-    // };
-    // await insertProfile(newProfile);
     setFirstName('');
     setLastName('');
   };

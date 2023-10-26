@@ -2,6 +2,7 @@ import { UUID } from 'crypto';
 
 // note: relief is a string
 
+// misc types
 export type ImmigrationLawExperience =
   | 'No Experience'
   | 'One Experience'
@@ -21,6 +22,7 @@ export interface Language {
   can_write: boolean;
 }
 
+// sql tables
 export interface CaseListing {
   id: UUID;
   title: string;
