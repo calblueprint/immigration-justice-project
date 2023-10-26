@@ -67,7 +67,9 @@ export default function Login() {
           />
         </QuestionsDiv>
         <P>
-          <AColored $color={COLORS.midDarkGrey} href="/reset-password">Forgot your password?</AColored>
+          <AColored $color={COLORS.midDarkGrey} href="/reset-password">
+            Forgot your password?
+          </AColored>
         </P>
       </SixteenDiv>
       <SixteenDiv>
@@ -75,7 +77,10 @@ export default function Login() {
           Sign in
         </button>
         <H4Centered>
-          Don’t have an account yet? <AColored $color={COLORS.existingInputColor} href="/">Sign up</AColored>
+          Don’t have an account yet?{' '}
+          <AColored $color={COLORS.existingInputColor} href="/">
+            Sign up
+          </AColored>
         </H4Centered>
       </SixteenDiv>
     </FormDiv>

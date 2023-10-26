@@ -5,7 +5,7 @@ import COLORS from '@/styles/colors';
 const openSans = OpenSans({ subsets: ['latin'] });
 
 export const InputText = styled.input<{ $error: boolean }>`
-  // is possible to inherit text styles from H4? 
+  // is possible to inherit text styles from H4?
   ${openSans.style}
   color: ${COLORS.existingInputColor};
   font-size: 1rem; // 16px
@@ -17,7 +17,7 @@ export const InputText = styled.input<{ $error: boolean }>`
     ${({ $error }) => ($error ? COLORS.redMid : COLORS.placeholderText)};
   justify-content: flex-start;
   align-items: flex-start;
-  outline: none; 
+  outline: none;
 
   &::placeholder {
     color: ${COLORS.inputSuggestionColor};
