@@ -9,7 +9,7 @@ export const FormDiv = styled.div`
   flex-direction: column;
   gap: 2.5rem; // 40 px
   padding: 3.25rem; //52px = 13/4
-  border-radius: 10px;
+  border-radius: 0.625rem;
   border: 2px solid ${COLORS.activeBlue};
 `;
 
@@ -17,9 +17,7 @@ export const ForgotPassword = styled.p`
   color: ${COLORS.midDarkGrey};
   ${openSans.style}
   font-size: 0.875rem; // 14px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
 `;
 
 export const QuestionsDiv = styled.div`
