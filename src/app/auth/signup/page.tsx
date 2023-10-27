@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H4Centered, P, AColored } from '@/styles/text';
+import { H1, H4Centered, AColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
