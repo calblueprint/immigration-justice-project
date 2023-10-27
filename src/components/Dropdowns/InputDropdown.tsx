@@ -34,9 +34,10 @@ export default function InputDropdown({
   // decide add/remove options
   function handleOptionClick(option: string) {
     if (typeof currentValue === 'object') {
-      if (currentValue.includes(option)) return;
+      const newList = currentValue.includes(option)
+        ? currentValue.filter(v => v !== option)
+        : [...currentValue, option];
 
-      const newList = [...currentValue, option];
       setCurrentValue(newList);
       onChange?.(newList);
     } else {
@@ -68,12 +69,12 @@ export default function InputDropdown({
         id={id}
         $error={false}
         placeholder={placeholder}
-        onFocus={() => setTimeout(() => setMenuShown(!menuShown), 0)}
+        onFocus={() => setTimeout(() => setMenuShown(true), 0)}
         onChange={e => setInputValue(e.target.value.toLowerCase())}
       />
       <DropdownMenu $show={menuShown}>
         {options
-          .filter(o => o.toLowerCase().startsWith(inputValue))
+          .filter(o => o.toLowerCase().includes(inputValue))
           .map(o => (
             <DropdownItem
               key={o}
@@ -100,7 +101,6 @@ export default function InputDropdown({
 import React from 'react';
 import styled from 'styled-components';
 import InputDropdown from '@/components/Dropdowns/InputDropdown';
-import TextInput from '@/components/TextInput';
 
 // styling
 const Container = styled.div`
@@ -124,17 +124,33 @@ export default function page() {
   return (
     <Container>
       <CenterBox>
-        <TextInput
-          errorText=""
-          erroring={false}
-          label="TestInput"
-          placeholder="Test"
+        <InputDropdown
+          id="single-dropdown"
+          label="Favorite Fruit"
+          options={[
+            'Apple',
+            'Banana',
+            'Citrus',
+            'Apricot',
+            'Peach',
+            'Cherry',
+            'Pineapple',
+          ]}
+          placeholder="Favorite Fruit"
         />
         <InputDropdown
-          id="test-dropdown"
-          label="Testing Dropdown"
-          options={['Apple', 'Banana', 'Citrus', 'Apricot']}
-          placeholder="Placeholder"
+          id="multi-dropdown"
+          label="Writing Utensils"
+          multi
+          options={[
+            'Crayon',
+            'Pencil',
+            'Pen',
+            'Mechanical Pencil',
+            'Stylus',
+            'Paintbrush',
+          ]}
+          placeholder="Writing utensils"
         />
       </CenterBox>
     </Container>
