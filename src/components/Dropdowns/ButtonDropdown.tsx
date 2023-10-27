@@ -19,7 +19,7 @@ export default function ButtonDropdown({
   multi?: boolean;
   onChange?: (name: string | string[]) => void;
 }) {
-  const menu = useRef<HTMLDivElement>(null);
+  const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
   const [currentValue, setCurrentValue] = useState(
     multi ? [defaultValue] : defaultValue,
@@ -72,7 +72,8 @@ export default function ButtonDropdown({
   // mount listener for closing dropdown menu
   useEffect(() => {
     function globalClickListener(e: Event) {
-      if (menu.current && menu.current.contains(e.target as Node)) return;
+      if (container.current && container.current.contains(e.target as Node))
+        return;
       setMenuShown(false);
     }
 
@@ -84,7 +85,7 @@ export default function ButtonDropdown({
   }, []);
 
   return (
-    <DropdownContainer>
+    <DropdownContainer ref={container}>
       <DropdownButton
         $changed={
           multi
@@ -95,7 +96,7 @@ export default function ButtonDropdown({
       >
         {buttonDisplay()}
       </DropdownButton>
-      <DropdownMenu $show={menuShown} ref={menu}>
+      <DropdownMenu $show={menuShown}>
         {options.map(o => (
           <DropdownItem
             key={o}
