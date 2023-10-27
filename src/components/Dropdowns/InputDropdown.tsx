@@ -26,6 +26,7 @@ export default function InputDropdown({
 }) {
   const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [currentValue, setCurrentValue] = useState<string | string[]>(
     multi ? [] : '',
   );
@@ -68,18 +69,76 @@ export default function InputDropdown({
         $error={false}
         placeholder={placeholder}
         onFocus={() => setTimeout(() => setMenuShown(!menuShown), 0)}
+        onChange={e => setInputValue(e.target.value.toLowerCase())}
       />
       <DropdownMenu $show={menuShown}>
-        {options.map(o => (
-          <DropdownItem
-            key={o}
-            onClick={() => handleOptionClick(o)}
-            $selected={multi ? currentValue.includes(o) : currentValue === o}
-          >
-            {o}
-          </DropdownItem>
-        ))}
+        {options
+          .filter(o => o.toLowerCase().startsWith(inputValue))
+          .map(o => (
+            <DropdownItem
+              key={o}
+              onClick={() => handleOptionClick(o)}
+              $selected={multi ? currentValue.includes(o) : currentValue === o}
+            >
+              {o}
+            </DropdownItem>
+          ))}
       </DropdownMenu>
     </DropdownContainer>
   );
 }
+
+/**
+ * EXAMPLE USAGE:
+ * app/test-page/page.tsx
+ * 
+ * NOTE: TextInput is imported because Next.js does not want to render
+ *       the styles for some reason.
+
+'use client';
+
+import React from 'react';
+import styled from 'styled-components';
+import InputDropdown from '@/components/Dropdowns/InputDropdown';
+import TextInput from '@/components/TextInput';
+
+// styling
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+`;
+
+const CenterBox = styled.div`
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  display: grid;
+  place-items: center;
+  border-radius: 0.25rem;
+  padding: 5rem;
+  gap: 2rem;
+`;
+
+export default function page() {
+  return (
+    <Container>
+      <CenterBox>
+        <TextInput
+          errorText=""
+          erroring={false}
+          label="TestInput"
+          placeholder="Test"
+        />
+        <InputDropdown
+          id="test-dropdown"
+          label="Testing Dropdown"
+          options={['Apple', 'Banana', 'Citrus', 'Apricot']}
+          placeholder="Placeholder"
+        />
+      </CenterBox>
+    </Container>
+  );
+}
+
+ */
