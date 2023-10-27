@@ -25,9 +25,17 @@ import {
 type FilterType = {
   remote: string;
   role: string;
-  distance: string;
-  countries: string[];
+  agency: string;
   languages: string[];
+  countries: string[];
+};
+
+const defaultFilterValues = {
+  remote: 'Remote/In Person',
+  role: 'Roles needed',
+  agency: 'Adjudicating agency',
+  languages: 'Languages',
+  countries: 'Country of origin',
 };
 
 export default function Page() {
@@ -37,10 +45,10 @@ export default function Page() {
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
     remote: 'Remote/In Person',
-    role: 'Attorney/Interpreter',
-    distance: 'Anywhere',
-    countries: ['All countries'],
-    languages: ['All languages'],
+    role: 'Roles needed',
+    agency: 'Adjudicating agency',
+    languages: ['Languages'],
+    countries: ['Country of origin'],
   });
 
   // load cases on render
@@ -140,17 +148,22 @@ export default function Page() {
         <CardColumn>
           {caseData
             .filter(c => {
-              if (caseFilters.remote === 'remote') return c.is_remote;
-              if (caseFilters.remote === 'inperson') return !c.is_remote;
+              if (caseFilters.remote === 'Remote') return c.is_remote;
+              if (caseFilters.remote === 'In Person') return !c.is_remote;
               return true;
             })
             .filter(c =>
               caseFilters.role === 'both' ? true : c.needs_interpreter,
             )
             .filter(c =>
-              caseFilters.countries[0] === 'All countries'
+              caseFilters.countries[0] === defaultFilterValues.countries
                 ? true
-                : c.country && caseFilters.countries.includes(c.country),
+                : caseFilters.countries.includes(c.country),
+            )
+            .filter(c =>
+              caseFilters.languages[0] === defaultFilterValues.languages
+                ? true
+                : caseFilters.languages.find(l => c.languages.includes(l)),
             )
             .map(c => (
               <ListingCard
