@@ -66,15 +66,26 @@ export const DropdownButton = styled.button<{
 
 // menu option
 export const DropdownItem = styled.p<{ $selected: boolean }>`
-  padding: 0.5rem;
   color: ${COLORS.greyDarker};
+  position: relative;
   cursor: default;
   border-radius: 0.25rem;
-  position: relative;
+  padding: 0.5rem 2rem;
+  /* padding-left: 2rem;
+  padding-right: 2rem; */
+  font-size: 0.9375rem;
+
+  background-image: ${({ $selected }) =>
+    $selected
+      ? `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' fill='%230069A9' stroke='%230069A9' /%3E %3Cpath d='M6.17794 10.8117L3.80728 8.32401L3 9.16517L6.17794 12.5L13 5.34116L12.1984 4.5L6.17794 10.8117Z' fill='white' /%3E %3C/svg%3E")`
+      : `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' stroke='%230069A9' /%3E%3C/svg%3E")`};
+  background-repeat: no-repeat;
+  background-size: 1rem 1rem;
+  background-position: left 0.5rem center;
 
   &::before {
     content: '';
-    background: #eee;
+    background: ${COLORS.greyLight};
     width: 100%;
     height: calc(100% - 0.2rem);
     border-radius: 0.25rem;

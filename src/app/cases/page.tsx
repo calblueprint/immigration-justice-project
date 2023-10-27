@@ -18,9 +18,17 @@ import {
 type FilterType = {
   remote: string;
   role: string;
-  distance: string;
-  countries: string[];
+  agency: string;
   languages: string[];
+  countries: string[];
+};
+
+const defaultFilterValues = {
+  remote: 'Remote/In Person',
+  role: 'Roles needed',
+  agency: 'Adjudicating agency',
+  languages: 'Languages',
+  countries: 'Country of origin',
 };
 
 export default function Page() {
@@ -29,10 +37,10 @@ export default function Page() {
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
     remote: 'Remote/In Person',
-    role: 'Attorney/Interpreter',
-    distance: 'Anywhere',
-    countries: ['All countries'],
-    languages: ['All languages'],
+    role: 'Roles needed',
+    agency: 'Adjudicating agency',
+    languages: ['Languages'],
+    countries: ['Country of origin'],
   });
 
   // load cases on render
@@ -48,53 +56,22 @@ export default function Page() {
       <H1>Browse Available Cases</H1>
       <FiltersContainer>
         <ButtonDropdown
-          defaultValue="Remote/In Person"
-          options={['Remote/In Person', 'Remote Only', 'In Person Only']}
+          defaultValue={defaultFilterValues.remote}
+          options={[defaultFilterValues.remote, 'Remote', 'In Person']}
           onChange={v =>
             setCaseFilters({ ...caseFilters, remote: v as string })
           }
         />
         <ButtonDropdown
-          defaultValue="Attorney/Interpreter"
-          options={['Attorney/Interpreter', 'Interpreter Only']}
+          defaultValue={defaultFilterValues.role}
+          options={[defaultFilterValues.role, 'Interpreter only']}
           onChange={v => setCaseFilters({ ...caseFilters, role: v as string })}
         />
         <ButtonDropdown
-          defaultValue="Anywhere"
-          // requires knowing user location
-          options={[
-            'Within 5 miles',
-            'Within 10 miles',
-            'Within 20 miles',
-            'Within 100 miles',
-            'Anywhere',
-          ]}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, distance: v as string })
-          }
-        />
-        <ButtonDropdown
-          defaultValue="All countries"
-          multi
-          options={[
-            'All countries',
-            ...Array.from(
-              new Set(
-                caseData
-                  .filter(c => c.country)
-                  .map(c => (c.country ? c.country : '')),
-              ),
-            ),
-          ]}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, countries: v as string[] })
-          }
-        />
-        <ButtonDropdown
-          defaultValue="All languages"
+          defaultValue={defaultFilterValues.languages}
           multi
           // better solution available if we update ts target to es6
-          options={['All languages'].concat(
+          options={[defaultFilterValues.languages].concat(
             caseData
               .flatMap(c => c.languages)
               .filter((v, i, arr) => arr.indexOf(v) === i),
@@ -103,22 +80,47 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, languages: v as string[] })
           }
         />
+        <ButtonDropdown
+          defaultValue={defaultFilterValues.agency}
+          options={[defaultFilterValues.agency, 'Court', 'USCIS']}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, agency: v as string })
+          }
+        />
+        <ButtonDropdown
+          defaultValue={defaultFilterValues.countries}
+          multi
+          // better solution available if we update ts target to es6
+          options={[defaultFilterValues.countries].concat(
+            caseData
+              .map(c => c.country)
+              .filter((v, i, arr) => arr.indexOf(v) === i),
+          )}
+          onChange={v =>
+            setCaseFilters({ ...caseFilters, countries: v as string[] })
+          }
+        />
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
           {caseData
             .filter(c => {
-              if (caseFilters.remote === 'remote') return c.is_remote;
-              if (caseFilters.remote === 'inperson') return !c.is_remote;
+              if (caseFilters.remote === 'Remote') return c.is_remote;
+              if (caseFilters.remote === 'In Person') return !c.is_remote;
               return true;
             })
             .filter(c =>
               caseFilters.role === 'both' ? true : c.needs_interpreter,
             )
             .filter(c =>
-              caseFilters.countries[0] === 'All countries'
+              caseFilters.countries[0] === defaultFilterValues.countries
                 ? true
-                : c.country && caseFilters.countries.includes(c.country),
+                : caseFilters.countries.includes(c.country),
+            )
+            .filter(c =>
+              caseFilters.languages[0] === defaultFilterValues.languages
+                ? true
+                : caseFilters.languages.find(l => c.languages.includes(l)),
             )
             .map(c => (
               <ListingCard
