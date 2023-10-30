@@ -35,7 +35,7 @@ export default function Page() {
     languages: ['All languages'],
   });
 
-  // react hooks
+  // load cases on render
   useEffect(() => {
     getNCases(20).then(casesData => {
       setCaseData(casesData);
@@ -90,19 +90,6 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, countries: v as string[] })
           }
         />
-        {/* <FilterDropdown
-          defaultValue="All languages"
-          multi
-          // better solution available if we update ts target to es6
-          options={['All languages'].concat(
-            caseData
-              .flatMap(c => c.languages)
-              .filter((v, i, arr) => arr.indexOf(v) === i),
-          )}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, languages: v as string[] })
-          }
-        /> */}
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
@@ -120,11 +107,6 @@ export default function Page() {
                 ? true
                 : c.country && caseFilters.countries.includes(c.country),
             )
-            // .filter(c =>
-            //   caseFilters.languages[0] === 'All languages'
-            //     ? true
-            //     : caseFilters.languages.find(l => c.languages.includes(l)),
-            // )
             .map(c => (
               <ListingCard
                 key={c.id}
