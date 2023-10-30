@@ -13,6 +13,15 @@ export async function fetchProfiles() {
   }
 }
 
+export async function fetchProfileById(userId: UUID) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select()
+    .eq('user_id', userId);
+  if (error) throw error;
+  return data[0];
+}
+
 export async function insertProfile(profileData: Profile) {
   const { error } = await supabase.from('profiles').insert(profileData);
   if (error) {
