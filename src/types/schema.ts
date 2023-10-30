@@ -28,31 +28,31 @@ export interface Language {
 // sql tables
 export interface CaseListing {
   id: UUID;
-  title: string;
-  summary: string;
-  country: string;
-  client_location: string;
+  title?: string;
+  summary?: string;
+  country?: string;
+  client_location?: string;
   legal_server_id: number;
-  hours_per_month: number;
-  num_months: number;
-  is_remote: boolean;
-  in_court: boolean;
-  needs_attorney: boolean;
-  needs_interpreter: boolean;
-  upcoming_date: Timestamp;
+  hours_per_month?: number;
+  num_months?: number;
+  is_remote?: boolean;
+  in_court?: boolean;
+  needs_attorney?: boolean;
+  needs_interpreter?: boolean;
+  upcoming_date?: Timestamp;
 }
 
 export interface Profile {
   user_id: UUID;
   first_name: string;
   last_name: string;
-  preferred_first_name: string;
+  preferred_first_name?: string;
   location: string;
   hours_per_month: number;
   immigration_law_experience: ImmigrationLawExperience;
-  bar_number: string;
+  bar_number?: string;
   start_date: Timestamp;
-  availability_description: string;
+  availability_description?: string;
   eoir_registered: boolean;
 }
 
