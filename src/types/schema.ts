@@ -1,28 +1,46 @@
 import { UUID } from 'crypto';
 
-// note: relief is a string
-
 // table field types
-export type ImmigrationLawExperience =
+export type ImmigrationLawExperienceEnum =
   | 'No Experience'
   | 'One Experience'
   | 'Multiple Experiences';
 
-export type Role =
+export type RoleEnum =
   | 'Attorney'
   | 'Interpreter'
   | 'Research Fellow'
   | 'Translator';
 
-export type ListingType = 'Case' | 'Limited Assistance' | 'Translation Request';
+export type ListingTypeEnum =
+  | 'Case'
+  | 'Limited Assistance'
+  | 'Translation Request';
 
-export interface Language {
+// join table rows
+export interface UserLanguage {
+  user_id: UUID;
   iso_code: string;
   can_read: boolean;
   can_write: boolean;
 }
 
-// sql tables
+export interface UserRole {
+  user_id: UUID;
+  role: RoleEnum;
+}
+
+export interface CaseLanguage {
+  listing_id: UUID;
+  iso_code: string;
+}
+
+export interface CaseRelief {
+  listing_id: UUID;
+  relief_code: string;
+}
+
+// sql table rows
 export interface CaseListing {
   id: UUID;
   title?: string;
@@ -37,6 +55,7 @@ export interface CaseListing {
   needs_attorney?: boolean;
   needs_interpreter?: boolean;
   upcoming_date?: string;
+  experience_needed: ImmigrationLawExperienceEnum;
 }
 
 export interface Profile {
@@ -46,7 +65,7 @@ export interface Profile {
   preferred_first_name?: string;
   location: string;
   hours_per_month: number;
-  immigration_law_experience: ImmigrationLawExperience;
+  immigration_law_experience: ImmigrationLawExperienceEnum;
   bar_number?: string;
   start_date: string;
   availability_description?: string;
@@ -56,12 +75,18 @@ export interface Profile {
 export interface Interest {
   listing_id: UUID;
   user_id: UUID;
-  listing_type: ListingType;
+  listing_type: ListingTypeEnum;
   form_response: {
-    rolesInterested: Role[];
+    rolesInterested: RoleEnum[];
     interestReason: string;
     start_date: string;
   };
+}
+
+// supabase: auth -> users table row
+export interface AuthUser {
+  id: UUID;
+  email: string;
 }
 
 // irrelevant until mvp
