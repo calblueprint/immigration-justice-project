@@ -1,12 +1,12 @@
+import { Profile } from '@/types/schema';
 import { UUID } from 'crypto';
 import supabase from '../createClient';
-import { Profile } from '../../../types/schema';
 
 export async function fetchProfiles() {
   const { data, error } = await supabase.from('profiles').select('*');
 
   if (error) {
-    throw new Error(`An error occured when trying to read profiles: ${error}`);
+    throw new Error(`Error reading profiles: ${error.message}`);
   } else {
     // console.log('Profiles Data:', data);
     return data;

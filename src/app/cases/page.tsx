@@ -76,12 +76,16 @@ export default function Page() {
         <FilterDropdown
           defaultValue="All countries"
           multi
-          // better solution available if we update ts target to es6
-          options={['All countries'].concat(
-            caseData
-              .map(c => c.country)
-              .filter((v, i, arr) => arr.indexOf(v) === i),
-          )}
+          options={[
+            'All countries',
+            ...Array.from(
+              new Set(
+                caseData
+                  .filter(c => c.country)
+                  .map(c => (c.country ? c.country : '')),
+              ),
+            ),
+          ]}
           onChange={v =>
             setCaseFilters({ ...caseFilters, countries: v as string[] })
           }
@@ -114,7 +118,7 @@ export default function Page() {
             .filter(c =>
               caseFilters.countries[0] === 'All countries'
                 ? true
-                : caseFilters.countries.includes(c.country),
+                : c.country && caseFilters.countries.includes(c.country),
             )
             // .filter(c =>
             //   caseFilters.languages[0] === 'All languages'

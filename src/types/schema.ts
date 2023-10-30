@@ -3,9 +3,6 @@ import { UUID } from 'crypto';
 // note: relief is a string
 
 // table field types
-export type Timestamp =
-  `${string}-${string}-${string} ${string}:${string}:${string}+${string}`;
-
 export type ImmigrationLawExperience =
   | 'No Experience'
   | 'One Experience'
@@ -39,7 +36,7 @@ export interface CaseListing {
   in_court?: boolean;
   needs_attorney?: boolean;
   needs_interpreter?: boolean;
-  upcoming_date?: Timestamp;
+  upcoming_date?: string;
 }
 
 export interface Profile {
@@ -51,7 +48,7 @@ export interface Profile {
   hours_per_month: number;
   immigration_law_experience: ImmigrationLawExperience;
   bar_number?: string;
-  start_date: Timestamp;
+  start_date: string;
   availability_description?: string;
   eoir_registered: boolean;
 }
@@ -63,7 +60,7 @@ export interface Interest {
   form_response: {
     rolesInterested: Role[];
     interestReason: string;
-    start_date: Timestamp;
+    start_date: string;
   };
 }
 

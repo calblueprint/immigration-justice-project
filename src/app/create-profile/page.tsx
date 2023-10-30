@@ -12,6 +12,21 @@ export default function Profile() {
 
   const handleInsert = async () => {
     if (!firstName || !lastName) return;
+    const newProfile: Profile = {
+      // hardcoded values for now
+      location: 'Berkeley, CA',
+      user_id: crypto.randomUUID() as UUID,
+      hours_per_month: 40,
+      immigration_law_experience: 'Multiple Experiences',
+      bar_number: '12345',
+      start_date: new Date().toDateString(),
+      preferred_first_name: firstName,
+      availability_description: 'blah blah blah',
+      eoir_registered: false,
+      first_name: firstName,
+      last_name: lastName,
+    };
+    await insertProfile(newProfile);
     setFirstName('');
     setLastName('');
   };

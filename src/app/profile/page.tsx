@@ -61,7 +61,9 @@ export default function Page() {
               immigrationLawExperience:{' '}
               {profile.immigration_law_experience.toString()}
             </p>
-            <p>barNumber: {profile.bar_number.toString()}</p>
+            {profile.bar_number && (
+              <p>barNumber: {profile.bar_number.toString()}</p>
+            )}
             <p>startDate: {profile.start_date.toString()}</p>
           </li>
         ))}
