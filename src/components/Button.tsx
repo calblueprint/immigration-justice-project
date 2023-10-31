@@ -8,7 +8,7 @@ export const Button = styled.button<{ $secondary?: boolean }>`
 
   appearance: none;
   align-self: flex-end;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   border-radius: 5px;
   border: 2px solid ${COLORS.blueMid};
   &:hover {

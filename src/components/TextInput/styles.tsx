@@ -11,7 +11,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 2px solid
-    ${({ $error }) => ($error ? COLORS.redMid : COLORS.placeholderText)};
+    ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyDark)};
   justify-content: flex-start;
   align-items: flex-start;
   outline: none;
