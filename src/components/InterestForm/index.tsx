@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UUID } from 'crypto';
 import { insertInterest } from '../../api/supabase/queries/interest';
 import { Interest, CaseListing } from '../../types/schema';
@@ -12,6 +12,8 @@ import {
   RadioGroup,
   RadioLabel,
   RadioInput,
+  FormFooter,
+  FormWarning,
 } from './styles';
 
 const radioOptions = ['Attorney', 'Interpreter', 'Both Attorney & Interpreter'];
@@ -20,6 +22,13 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [reason, setReason] = useState<string>('');
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
+
+  useEffect(() => {
+    // Reset form fields when caseData changes
+    setReason('');
+    setStartDate('');
+    setRolesInterested('');
+  }, [caseData]);
 
   const handleInsert = async () => {
     if (reason !== '') {
@@ -35,18 +44,16 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           start_date: startDate,
         },
       };
+
       await insertInterest(newInterest);
       setReason('');
-    } else {
-      // console.log('cannot create an empty interest');
     }
   };
 
   return (
     <FormContainer>
-      {/* <input type="text" /> */}
       <strong>Submit Interest</strong>
-      <div>What role(s) are you applying for?</div>
+      <p>What role(s) are you applying for?</p>
       <RadioGroup>
         {radioOptions.map(option => (
           <RadioLabel key={option}>
@@ -56,7 +63,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
               name="radioOptions"
               value={option}
               checked={rolesInterested === option}
-              onClick={() => setRolesInterested(option)}
+              onChange={event => setRolesInterested(event.target.value)}
             />
             {option}
           </RadioLabel>
@@ -66,7 +73,9 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
       <p>What is the earliest date you are willing to contact the client?</p>
       <FormInput
         id="startDate"
-        placeholder="mm/dd/yyyy"
+        required
+        placeholder="MM/DD/YYYY"
+        value={startDate}
         onChange={event => setStartDate(event.target.value)}
       />
 
@@ -77,7 +86,14 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
         value={reason}
         onChange={event => setReason(event.target.value)}
       />
-      <Button onClick={handleInsert}>Submit Interest</Button>
+      <FormFooter>
+        <FormWarning>
+          Your interest form is not saved!
+          <br />
+          Please submit before leaving this page.
+        </FormWarning>
+        <Button onClick={handleInsert}>Submit Interest</Button>
+      </FormFooter>
     </FormContainer>
   );
 }

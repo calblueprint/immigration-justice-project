@@ -1,7 +1,10 @@
 import styled from 'styled-components';
+import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '../../styles/colors';
 
-export const FormContainer = styled.form`
+const openSans = OpenSans({ subsets: ['latin'] });
+
+export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -12,10 +15,13 @@ export const FormContainer = styled.form`
 `;
 
 export const FormTextArea = styled.textarea`
+  ${openSans.style}
   height: 16vh;
   resize: none;
+  font-size: 1rem; // 16px;
+  font-weight: 400;
   border-radius: 5px;
-  border: 1px solid var(--mid-grey, #ccc);
+  border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
   padding: 0.5rem;
   &:focus {
@@ -25,8 +31,11 @@ export const FormTextArea = styled.textarea`
 `;
 
 export const FormInput = styled.input`
+  ${openSans.style}
+  font-size: 1rem;
+  font-weight: 400;
   border-radius: 5px;
-  border: 1px solid var(--mid-grey, #ccc);
+  border: 2px solid ${COLORS.greyLight};
   padding: 0.5rem;
   margin-bottom: 0.6rem;
   &:focus {
@@ -46,7 +55,7 @@ export const RadioGroup = styled.div`
 
 export const RadioLabel = styled.label`
   display: flex;
-  font-size: 14px;
+  font-size: 0.875rem; //14px
 `;
 
 export const RadioInput = styled.input`
@@ -56,11 +65,33 @@ export const RadioInput = styled.input`
   appearance: none;
   width: 1rem;
   height: 1rem;
-  border: 1px solid ${COLORS.blueMid};
+  border: 2px solid ${COLORS.greyMid};
   border-radius: 50%;
   position: relative;
 
   &:checked {
     box-shadow: 0 0 0 0.1rem white inset, 0 0 0 0.5rem ${COLORS.blueMid} inset;
+    border-color: ${COLORS.blueMid};
   }
+  &:hover {
+    border-color: ${COLORS.blueMid};
+  }
+`;
+
+export const FormFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
+`;
+
+export const FormWarning = styled.p`
+  padding-bottom: 0.375rem; // 6px
+  color: ${COLORS.greyMid};
+  font-size: 0.75rem; // 12px
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 50%;
+  height: 100%;
 `;

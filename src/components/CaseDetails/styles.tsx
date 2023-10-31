@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { H1 } from '@/styles/text';
 import COLORS from '../../styles/colors';
 
 // case detail
@@ -7,7 +8,7 @@ export const CaseDisplay = styled.aside`
   width: 100%;
 `;
 
-export const CaseTitle = styled.h1`
+export const CaseTitle = styled(H1)`
   margin: 0.4rem 4rem;
 `;
 
