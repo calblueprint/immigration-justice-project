@@ -115,7 +115,7 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
     transform: translateY(0.1rem);
     position: absolute;
     z-index: -1;
-    opacity: ${({ $selected }) => ($selected ? '1' : '0')};
+    opacity: 0;
   }
 
   &:hover::before {
