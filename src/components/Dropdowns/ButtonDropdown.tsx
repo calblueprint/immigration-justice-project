@@ -17,43 +17,34 @@ export default function ButtonDropdown({
   defaultValue: string;
   options: string[];
   multi?: boolean;
-  onChange?: (name: string | string[]) => void;
+  onChange?: (name: string | Set<string>) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
-  const [currentValue, setCurrentValue] = useState(
-    multi ? [defaultValue] : defaultValue,
+  const [currentValue, setCurrentValue] = useState<Set<string> | string>(
+    multi ? new Set() : '',
   );
 
   // handle select option
   function handleOptionClick(val: string) {
+    // multi-select
     if (typeof currentValue === 'object') {
-      if (val === defaultValue) {
-        setCurrentValue([defaultValue]);
-        onChange?.([defaultValue]);
-        return;
-      }
+      const copy = new Set(currentValue);
 
-      const newList = currentValue.includes(val)
-        ? currentValue.filter(v => v !== val)
-        : [...currentValue, val];
+      if (copy.has(val)) copy.delete(val);
+      else copy.add(val);
 
-      // reset to default
-      if (newList.length === 0) {
-        setCurrentValue([defaultValue]);
-        onChange?.([defaultValue]);
-        return;
-      }
+      setCurrentValue(copy);
+      onChange?.(copy);
 
-      // cut out default
-      if (newList.length > 1) {
-        const defaultValIndex = newList.findIndex(v => v === defaultValue);
-        if (defaultValIndex !== -1) newList.splice(defaultValIndex, 1);
-      }
-
-      setCurrentValue(newList);
-      onChange?.(newList);
+      // single-select
     } else {
+      if (currentValue === val) {
+        setCurrentValue('');
+        onChange?.('');
+        return;
+      }
+
       setCurrentValue(val);
       onChange?.(val);
     }
@@ -62,10 +53,14 @@ export default function ButtonDropdown({
   // format button display
   function buttonDisplay() {
     if (typeof currentValue === 'object') {
-      const len = currentValue.length;
-      if (len > 1) return `${currentValue[0]} +${len - 1} more`;
-      return currentValue[0];
+      const len: number = currentValue.size;
+      if (len === 0) return defaultValue;
+      const firstVal: string = currentValue.values().next().value;
+      if (len > 1) return `${firstVal} +${len - 1} more`;
+      return firstVal;
     }
+
+    if (!currentValue) return defaultValue;
     return currentValue;
   }
 
@@ -88,9 +83,9 @@ export default function ButtonDropdown({
     <DropdownContainer ref={container}>
       <DropdownButton
         $changed={
-          multi
-            ? currentValue.length > 0 && currentValue[0] !== defaultValue
-            : defaultValue !== currentValue
+          typeof currentValue === 'object'
+            ? currentValue.size > 0
+            : currentValue === ''
         }
         onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
       >
@@ -101,7 +96,11 @@ export default function ButtonDropdown({
           <DropdownItem
             key={o}
             onClick={() => handleOptionClick(o)}
-            $selected={multi ? currentValue.includes(o) : o === currentValue}
+            $selected={
+              typeof currentValue === 'object'
+                ? currentValue.has(o)
+                : o === currentValue
+            }
           >
             {o}
           </DropdownItem>
