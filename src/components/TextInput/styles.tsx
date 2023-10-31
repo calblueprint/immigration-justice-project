@@ -14,8 +14,7 @@ export const InputText = styled.input<{ $error: boolean }>`
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 2px solid
-    ${({ $error }) =>
-      $error ? COLORS.primaryError : COLORS.placeholderText};
+    ${({ $error }) => ($error ? COLORS.primaryError : COLORS.placeholderText)};
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;

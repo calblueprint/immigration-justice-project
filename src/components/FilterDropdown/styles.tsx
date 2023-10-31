@@ -45,7 +45,8 @@ export const FilterDropdownButton = styled.button<{
   font-size: 0.9rem;
   ${inter.style}
 
-  background-color: ${({ $changed }) => ($changed ? COLORS.primaryBlue : 'white')};
+  background-color: ${({ $changed }) =>
+    $changed ? COLORS.primaryBlue : 'white'};
   background-image: ${({ $changed }) =>
     `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='%23${
       $changed ? 'fff' : '000'
