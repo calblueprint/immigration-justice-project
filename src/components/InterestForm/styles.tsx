@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
-import COLORS from '../../styles/colors';
+import COLORS from '@/styles/colors';
+import { H3 } from '@/styles/text';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
@@ -11,12 +12,16 @@ export const FormContainer = styled.div`
   width: 60%;
   float: right;
   margin-top: 1rem;
-  gap: 0.5rem;
+  gap: 0.6rem;
+`;
+
+export const FormTitle = styled(H3)`
+  margin-bottom: 0.2rem;
 `;
 
 export const FormTextArea = styled.textarea`
   ${openSans.style}
-  height: 16vh;
+  min-height: 10rem;
   resize: none;
   font-size: 1rem; // 16px;
   font-weight: 400;
