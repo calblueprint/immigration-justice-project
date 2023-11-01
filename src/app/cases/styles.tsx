@@ -16,7 +16,7 @@ export const FiltersContainer = styled.div`
 
 export const MainDisplay = styled.main`
   display: grid;
-  grid-template-columns: 5fr 10fr;
+  grid-template-columns: 4fr 10fr;
   margin-top: 2rem;
   width: 100%;
 `;
