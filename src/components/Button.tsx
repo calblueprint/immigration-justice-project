@@ -1,28 +1,46 @@
 import styled from 'styled-components';
-import COLORS from '../styles/colors';
 
-export const Button = styled.button<{ $secondary?: boolean }>`
-  /* Adapt the colors based on the secondary prop */
-  color: ${props => (props.$secondary ? 'black' : 'white')};
-  background: ${props => (props.$secondary ? 'white' : COLORS.blueMid)};
+/* 
+  FOR PRIMARY BUTTON USAGE:
 
+    Props: 
+      primaryColor (Required) - This color will determine the default background color of the button
+      secondaryColor (Required) - This color will determine the border color and background color on hover
+   
+    Example:
+      <Button primaryColor={COLORS.primaryBlue} secondaryColor={COLORS.primaryBlueClicked} onClick={...}>
+        [Button text here]
+      </Button>
+
+  FOR SECONDARY BUTTON USAGE:
+
+    Props:
+      primaryColor (Omit) - IMPORTANT: DO NOT PASS IN A primaryColor PROP!!! The background color will be white by default
+      secondaryColor (Required) - This color will determine the border color and background color on hover
+
+    Example: 
+      <Button secondaryColor={COLORS.primaryBlue} onClick={...}>
+        [Button text here]
+      </Button>
+ */
+// I think a jinkang PR, not on this branch, removes the error
+// that the line below disables (this is a temp fix for now)
+// eslint-disable-next-line import/prefer-default-export
+export const Button = styled.button<{
+  primaryColor?: string;
+  secondaryColor: string;
+}>`
   appearance: none;
+  color: ${props => (props.primaryColor ? 'white' : 'black')};
+  background: ${props => (props.primaryColor ? props.primaryColor : 'white')};
   align-self: flex-end;
   padding: 0.625rem 1.25rem;
   border-radius: 5px;
-  border: 2px solid ${COLORS.blueMid};
+  border: 2px solid
+    ${props => (props.primaryColor ? props.primaryColor : props.secondaryColor)};
   &:hover {
-    background: ${props => (props.$secondary ? '#f2f2f2' : COLORS.blueMid)};
-    border-color: ${COLORS.blueMid};
-  }
-`;
-
-export const ErrorButton = styled(Button)<{ $secondary?: boolean }>`
-  /* Adapt the colors based on the secondary prop for error buttons */
-  background: ${props => (props.$secondary ? 'white' : COLORS.redMid)};
-  border: 2px solid ${COLORS.redMid};
-  &:hover {
-    background: ${props => (props.$secondary ? '#f2f2f2' : COLORS.redDark)};
-    border-color: ${COLORS.redDark};
+    background: ${props => props.secondaryColor};
+    color: white;
+    border-color: ${props => props.secondaryColor};
   }
 `;

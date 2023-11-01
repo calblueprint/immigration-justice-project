@@ -1,9 +1,9 @@
 import React from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
+import { timestampStringToDate, parseDate } from '@/utils/helpers';
 import { H2 } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { timestampStringToDate, parseDate } from '../../utils/helpers';
 import { CardBody, TagRow, CardTag } from './styles';
 
 export default function ListingCard({

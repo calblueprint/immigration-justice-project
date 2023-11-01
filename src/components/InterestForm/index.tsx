@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { UUID } from 'crypto';
-import { insertInterest } from '../../api/supabase/queries/interest';
-import { Interest, CaseListing } from '../../types/schema';
+import { insertInterest } from '@/api/supabase/queries/interest';
+import { Interest, CaseListing } from '@/types/schema';
+import { H4 } from '@/styles/text';
+import COLORS from '@/styles/colors';
 import { Button } from '../Button';
 import {
   FormContainer,
@@ -14,9 +16,14 @@ import {
   RadioInput,
   FormFooter,
   FormWarning,
+  FormTitle,
 } from './styles';
 
-const radioOptions = ['Attorney', 'Interpreter', 'Both Attorney & Interpreter'];
+const radioOptions = [
+  'Attorney',
+  'Interpreter',
+  'Either Attorney or Interpreter',
+];
 
 export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [reason, setReason] = useState<string>('');
@@ -31,7 +38,8 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   }, [caseData]);
 
   const handleInsert = async () => {
-    if (reason !== '') {
+    // will improve this in the next sprint
+    if (reason !== '' && startDate !== '' && rolesInterested !== '') {
       const newInterest: Interest = {
         // hardcoded values for now
         id: crypto.randomUUID() as UUID,
@@ -47,13 +55,15 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
 
       await insertInterest(newInterest);
       setReason('');
+      setStartDate('');
+      setRolesInterested('');
     }
   };
 
   return (
     <FormContainer>
-      <strong>Submit Interest</strong>
-      <p>What role(s) are you applying for?</p>
+      <FormTitle>Submit Interest</FormTitle>
+      <H4>What role(s) are you applying for?</H4>
       <RadioGroup>
         {radioOptions.map(option => (
           <RadioLabel key={option}>
@@ -70,7 +80,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
         ))}
       </RadioGroup>
 
-      <p>What is the earliest date you are willing to contact the client?</p>
+      <H4>What is the earliest date you can contact the client?</H4>
       <FormInput
         id="startDate"
         required
@@ -79,7 +89,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
         onChange={event => setStartDate(event.target.value)}
       />
 
-      <p>Why are you interested in this case?</p>
+      <H4>Why are you interested in this case?</H4>
       <FormTextArea
         id="reason"
         required
@@ -92,7 +102,13 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           <br />
           Please submit before leaving this page.
         </FormWarning>
-        <Button onClick={handleInsert}>Submit Interest</Button>
+        <Button
+          primaryColor={COLORS.primaryBlue}
+          secondaryColor={COLORS.secondaryBlue}
+          onClick={handleInsert}
+        >
+          Submit Interest
+        </Button>
       </FormFooter>
     </FormContainer>
   );
