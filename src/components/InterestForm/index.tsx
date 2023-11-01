@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { UUID } from 'crypto';
 import { insertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing } from '@/types/schema';
@@ -103,8 +103,8 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           Please submit before leaving this page.
         </FormWarning>
         <Button
-          primaryColor={COLORS.primaryBlue}
-          secondaryColor={COLORS.secondaryBlue}
+          primaryColor={COLORS.blueMid}
+          secondaryColor={COLORS.blueDark}
           onClick={handleInsert}
         >
           Submit Interest

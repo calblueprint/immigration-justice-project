@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { UUID } from 'crypto';
-import ListingCard from '@/components/ListingCard';
+import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
-import { CaseListing } from '../../types/schema';
-import { getNCases } from '../../api/supabase/queries/cases';
-import CaseDetailDisplay from '../../components/CaseDetails';
+import { getNCases } from '@/api/supabase/queries/cases';
+import ListingCard from '@/components/ListingCard';
+import CaseDetailDisplay from '@/components/CaseDetails';
+import { H1 } from '@/styles/text';
 import {
   CardColumn,
   MainDisplay,
   PageContainer,
   FiltersContainer,
 } from './styles';
-import { H1 } from '../../styles/text';
 
 type FilterType = {
   remote: string;
