@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react';
+import { timestampStringToDate, parseDate } from '@/utils/helpers';
+import { H1 } from '@/styles/text';
+import { CaseListing } from '@/types/schema';
+import InterestForm from '../InterestForm';
 import {
   CaseInterestContainer,
   CaseDisplay,
   InfoContainer,
   Line,
 } from './styles';
-import { timestampStringToDate, parseDate } from '../../utils/helpers';
-import { H1 } from '../../styles/text';
-import { CaseListing } from '../../types/schema';
-import InterestForm from '../InterestForm';
 
 export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
   return (

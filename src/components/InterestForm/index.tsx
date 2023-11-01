@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { UUID } from 'crypto';
 import { insertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing } from '@/types/schema';
