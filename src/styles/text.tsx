@@ -13,10 +13,10 @@ export const H1 = styled.h1`
   font-weight: 700;
   color: ${COLORS.greyDarker};
   margin: 0;
-  margin-right: auto;
 `;
 
 export const H2 = styled.h2`
+  ${openSans.style}
   font-size: 2.25rem;
   font-weight: 600;
   color: ${COLORS.greyDarker};
@@ -24,6 +24,7 @@ export const H2 = styled.h2`
 `;
 
 export const H3 = styled.h3`
+  ${openSans.style}
   font-size: 1.5rem;
   font-weight: 600;
   color: ${COLORS.greyDarker};
@@ -31,13 +32,17 @@ export const H3 = styled.h3`
 `;
 
 export const H4 = styled.h4`
+  ${openSans.style}
   font-size: 1rem;
   font-weight: 600;
   color: ${COLORS.greyDarker};
+  margin: 0;
 `;
 
-export const p = styled.p`
+export const P = styled.p`
+  ${openSans.style}
   font-size: 0.875rem;
   font-weight: 400;
   color: ${COLORS.greyDarker};
+  margin: 0;
 `;
