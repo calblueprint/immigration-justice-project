@@ -15,14 +15,14 @@ export type ListingTypeEnum =
   | 'Translation Request';
 
 // join table rows
-export interface UserLanguage {
+export interface ProfileLanguage {
   user_id: UUID;
   iso_code: string;
   can_read: boolean;
   can_write: boolean;
 }
 
-export interface UserRole {
+export interface ProfileRole {
   user_id: UUID;
   role: RoleEnum;
 }
