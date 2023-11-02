@@ -4,44 +4,44 @@ import COLORS from './colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
-export const H1 = styled.h1`
+export const H1 = styled.h1<{ $color?: string }>`
   ${openSans.style}
   display: block;
   font-size: 3rem;
   font-weight: 700;
-  color: ${COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
 
-export const H2 = styled.h2`
+export const H2 = styled.h2<{ $color?: string }>`
   ${openSans.style}
   font-size: 2.25rem;
   font-weight: 600;
-  color: ${COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
 
-export const H3 = styled.h3`
+export const H3 = styled.h3<{ $color?: string }>`
   ${openSans.style}
   font-size: 1.5rem;
   font-weight: 600;
-  color: ${COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
 
-export const H4 = styled.h4`
+export const H4 = styled.h4<{ $color?: string }>`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 600;
-  color: ${COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
 
-export const P = styled.p`
+export const P = styled.p<{ $color?: string }>`
   ${openSans.style}
   font-size: 0.875rem;
   font-weight: 400;
-  color: ${COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
 

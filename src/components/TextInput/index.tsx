@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { InputTitleText, InputText, InputDiv, ErrorText } from './styles';
 
 type TextInputProps = {
@@ -9,7 +9,7 @@ type TextInputProps = {
   type: string;
   name: string;
   value: string;
-  setValue: (newValue: string) => void;
+  setValue: Dispatch<SetStateAction<string>>;
 };
 
 export default function TextInput({
@@ -24,9 +24,9 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <InputDiv>
-      <InputTitleText as='label' >{label}</InputTitleText>
+      <InputTitleText as="label">{label}</InputTitleText>
       <InputText
-        as='input'
+        as="input"
         $error={erroring}
         placeholder={placeholder}
         name={name}
