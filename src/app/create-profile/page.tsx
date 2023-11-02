@@ -2,9 +2,16 @@
 
 import { UUID } from 'crypto';
 import { useState } from 'react';
+import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { H1 } from '@/styles/text';
+import TextInput from '@/components/TextInput';
+import { Open_Sans } from 'next/font/google';
 import { insertProfile } from '../../api/supabase/queries/profiles';
-import { Profile } from '../../types/schemaTypes';
+import { Profile } from '../../types/schema';
 import styles from '../page.module.css';
+
+const openSans = Open_Sans({ subsets: ['latin'] });
 
 export default function Profile() {
   const [firstName, setFirstName] = useState<string>('');
@@ -31,38 +38,81 @@ export default function Profile() {
     setLastName('');
   };
 
+  const InfoForm = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2.5 rem; // 40 px
+    padding: 3.25 rem; // 52 px = 13/4
+    border-radius: 0.625 rem;
+    border: 2px solid ${COLORS.abaBlue};
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+    margin: 0 auto;
+  `;
+
+  const Header1 = styled.h1`
+    display: block;
+    font-size: 2rem;
+    font-size: 3 rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    ${openSans.style}
+    color: ${COLORS.dark};
+    margin: 0 auto;
+    justify-content: center;
+    max-width: 500px;
+  `;
+
+  const SecondDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 400px;
+  `;
+
+  const ThirdDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 400px;
+  `;
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>Create Profile Form</div>
-      <form>
-        <div>
-          <label htmlFor="firstName">
-            First Name:
-            <input
-              type="text"
-              name="firstName"
-              required
-              value={firstName}
-              onChange={event => setFirstName(event.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="lastName">
-            Last Name:
-            <input
-              type="text"
-              name="lastName"
-              required
-              value={lastName}
-              onChange={event => setLastName(event.target.value)}
-            />
-          </label>
-        </div>
+    <InfoForm>
+      <Header1>Basic Information</Header1>
+      <SecondDiv>
+        <ThirdDiv>
+          <TextInput
+            label="First Name"
+            placeholder="Rahi"
+            erroring={false}
+            type="firstName"
+            name="firstName"
+            setValue={setFirstName}
+            value="firstName"
+            errorText="error"
+          />
+          <TextInput
+            label="Last Name"
+            placeholder="Hazra"
+            erroring={false}
+            type="lastName"
+            name="lastName"
+            setValue={setLastName}
+            value="lastName"
+            errorText="error"
+          />
+        </ThirdDiv>
+      </SecondDiv>
+      <SecondDiv>
         <button type="button" onClick={handleInsert}>
           Submit
         </button>
-      </form>
-    </main>
+      </SecondDiv>
+    </InfoForm>
   );
 }
