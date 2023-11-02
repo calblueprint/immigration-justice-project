@@ -55,7 +55,6 @@ export interface CaseListing {
   hours_per_month?: number;
   num_months?: number;
   is_remote?: boolean;
-  in_court?: boolean;
   needs_attorney?: boolean;
   needs_interpreter?: boolean;
   upcoming_date?: string;
