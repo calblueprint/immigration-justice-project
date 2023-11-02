@@ -5,7 +5,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { H1 } from '@/styles/text';
-import TextInput from '@/components/TextInput';
+import TextInput from '@/components/TextInput/index';
 import { Open_Sans } from 'next/font/google';
 import { insertProfile } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
@@ -93,8 +93,8 @@ export default function Profile() {
             type="firstName"
             name="firstName"
             setValue={setFirstName}
-            value="firstName"
-            errorText="error"
+            value={firstName}
+            errorText="first name error"
           />
           <TextInput
             label="Last Name"
@@ -103,8 +103,8 @@ export default function Profile() {
             type="lastName"
             name="lastName"
             setValue={setLastName}
-            value="lastName"
-            errorText="error"
+            value={lastName}
+            errorText="last name error"
           />
         </ThirdDiv>
       </SecondDiv>
