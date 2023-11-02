@@ -36,7 +36,7 @@ export default function ListingCard({
       </p>
       <TagRow>
         {caseData.needs_interpreter && (
-          <CardTag color={COLORS.interpreterColor}>Interpreter needed</CardTag>
+          <CardTag color={COLORS.blueLight}>Interpreter needed</CardTag>
         )}
       </TagRow>
     </CardBody>

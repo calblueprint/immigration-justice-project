@@ -24,8 +24,9 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <InputDiv>
-      <InputTitleText>{label}</InputTitleText>
+      <InputTitleText as='label' >{label}</InputTitleText>
       <InputText
+        as='input'
         $error={erroring}
         placeholder={placeholder}
         name={name}

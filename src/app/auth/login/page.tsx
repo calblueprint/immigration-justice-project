@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H4Centered, P, AColored } from '@/styles/text';
+import { H1, P, AColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
-import { FormDiv, QuestionsDiv, SixteenDiv } from '../styles';
+import { OuterDiv, FormDiv, H4Centered, QuestionsDiv, SpacerDiv } from '@/app/auth/styles';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -41,48 +41,50 @@ export default function Login() {
   };
 
   return (
-    <FormDiv>
-      <H1>Log In</H1>
-      <SixteenDiv>
-        <QuestionsDiv>
-          <TextInput
-            label="Email"
-            placeholder="email@example.com"
-            erroring={false}
-            errorText="Email Error" // {errorMessage}
-            type="email"
-            name="email"
-            value={email}
-            setValue={setEmail}
-          />
-          <TextInput
-            label="Password"
-            placeholder="Password"
-            erroring={false}
-            errorText="Password Error"
-            type="password"
-            name="password"
-            value={password}
-            setValue={setPassword}
-          />
-        </QuestionsDiv>
-        <P>
-          <AColored $color={COLORS.midDarkGrey} href="/reset-password">
-            Forgot your password?
-          </AColored>
-        </P>
-      </SixteenDiv>
-      <SixteenDiv>
-        <button type="button" onClick={handleSignIn}>
-          Sign in
-        </button>
-        <H4Centered>
-          Don’t have an account yet?{' '}
-          <AColored $color={COLORS.existingInputColor} href="/">
-            Sign up
-          </AColored>
-        </H4Centered>
-      </SixteenDiv>
-    </FormDiv>
+    <OuterDiv>
+      <FormDiv>
+        <H1>Log In</H1>
+        <SpacerDiv>
+          <QuestionsDiv>
+            <TextInput
+              label="Email"
+              placeholder="email@example.com"
+              erroring={false}
+              errorText="Email Error" // {errorMessage}
+              type="email"
+              name="email"
+              value={email}
+              setValue={setEmail}
+            /> 
+            <TextInput
+              label="Password"
+              placeholder="Password"
+              erroring={false}
+              errorText="Password Error"
+              type="password"
+              name="password"
+              value={password}
+              setValue={setPassword}
+            />
+          </QuestionsDiv>
+          <P>
+            <AColored $color={COLORS.greyMid} href="/reset-password">
+              Forgot your password?
+            </AColored>
+          </P>
+        </SpacerDiv>
+        <SpacerDiv>
+          <button type="button" onClick={handleSignIn}>
+            Sign in
+          </button>
+          <H4Centered>
+            Don’t have an account yet?{' '}
+            <AColored $color={COLORS.greyDark} href="/">
+              Sign up
+            </AColored>
+          </H4Centered>
+        </SpacerDiv>
+      </FormDiv>
+    </OuterDiv>
   );
-}
+}  
