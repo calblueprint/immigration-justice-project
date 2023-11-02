@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 
-interface BigButtonProps {
-  color?: string;
-  onChange?: () => void;
-}
-
-const BigButton = styled.button<BigButtonProps>`
+const BigButton = styled.button<{ $color?: string }>`
   background-color: ${props => props.color || 'blue'};
-  color: white;
-  padding: 10px 20px;
+  $color: white;
+  padding: 0.625rem 1.25rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   cursor: pointer;
   width: 100%;
 `;
