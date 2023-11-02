@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
 
 const BigButton = styled.button<{ $color?: string }>`
-  background-color: ${props => props.color || 'blue'};
-  $color: white;
-  padding: 0.625rem 1.25rem;
+  background-color: ${props => props.color || COLORS.blueMid};
+  color: ${props => props.$color};
+  padding: 0.94rem 11.5rem;
   border: none;
-  border-radius: 0.313rem;
+  border-radius: 5px;
   cursor: pointer;
   width: 100%;
 `;

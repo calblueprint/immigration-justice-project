@@ -10,7 +10,7 @@ export default function Settings() {
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
-    push('/login');
+    push('/auth/login');
   };
   const resetPassword = () => {
     push('/reset-password');
