@@ -33,7 +33,8 @@ export const InputText = styled.input<{ $error: boolean }>`
   }
 `;
 
-export const InputTitleText = styled(H4)`
+export const InputLabel = styled(H4)`
+  color: ${COLORS.greyDark};
   margin-bottom: 0.625rem; //10px
 `;
 

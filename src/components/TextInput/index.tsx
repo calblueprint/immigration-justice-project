@@ -1,5 +1,5 @@
-import React from 'react';
-import { InputTitleText, InputText, InputDiv, ErrorText } from './styles';
+import React, { Dispatch, SetStateAction } from 'react';
+import { InputLabel, InputText, InputDiv, ErrorText } from './styles';
 
 type TextInputProps = {
   label: string;
@@ -24,7 +24,7 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <InputDiv>
-      <InputTitleText>{label}</InputTitleText>
+      <InputLabel as="label">{label}</InputLabel>
       <InputText
         $error={erroring}
         placeholder={placeholder}
