@@ -6,7 +6,7 @@ import { insertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing } from '@/types/schema';
 import { H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { Button } from '../Button';
+import Button from '../Button';
 import {
   FormContainer,
   FormTextArea,

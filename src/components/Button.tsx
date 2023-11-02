@@ -23,10 +23,7 @@ import styled from 'styled-components';
         [Button text here]
       </Button>
  */
-// I think a jinkang PR, not on this branch, removes the error
-// that the line below disables (this is a temp fix for now)
-// eslint-disable-next-line import/prefer-default-export
-export const Button = styled.button<{
+const Button = styled.button<{
   primaryColor?: string;
   secondaryColor: string;
 }>`
@@ -44,3 +41,5 @@ export const Button = styled.button<{
     border-color: ${props => props.secondaryColor};
   }
 `;
+
+export default Button;
