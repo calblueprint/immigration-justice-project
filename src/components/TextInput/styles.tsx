@@ -5,7 +5,7 @@ import COLORS from '../../styles/colors';
 const inter = Inter({ subsets: ['latin'] });
 
 export const InputText = styled.input<{ $error: boolean }>`
-  color: ${COLORS.existingInputColor};
+  color: ${COLORS.greyDarker};
   font-size: 1rem; // 16px
   ${inter.style}
   font-weight: 400;
@@ -14,26 +14,25 @@ export const InputText = styled.input<{ $error: boolean }>`
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 2px solid
-    ${({ $error }) =>
-      $error ? COLORS.errorColor : COLORS.inputSuggestionColor};
+    ${({ $error }) => ($error ? COLORS.redMid : COLORS.placeholderText)};
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
-  color: ${COLORS.existingInputColor};
+  color: ${COLORS.greyDarker};
 
   &:focus {
     outline: none !important;
     border: 2px solid
-      ${({ $error }) => ($error ? COLORS.errorColor : COLORS.activeGreen)};
+      ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
   }
 
   &::placeholder {
-    color: ${COLORS.inputSuggestionColor};
+    color: ${COLORS.placeholderText};
   }
 `;
 
 export const InputTitleText = styled.label`
-  color: ${COLORS.existingInputColor};
+  color: ${COLORS.greyDarker};
   font-size: 1.5rem; // 24px;
   ${inter.style}
   font-weight: 500;
@@ -43,7 +42,7 @@ export const InputTitleText = styled.label`
 `;
 
 export const ErrorText = styled.p`
-  color: ${COLORS.errorColor};
+  color: ${COLORS.redMid};
   margin-top: 0.625rem;
   font-size: 0.875rem; //14px
   font-weight: 400;
