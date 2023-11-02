@@ -11,7 +11,7 @@ export const H1 = styled.h1`
   display: block;
   font-size: 3rem;
   font-weight: 700;
-  color: ${COLORS.dark};
+  color: ${COLORS.greyDarker};
   margin: 0;
   margin-right: auto;
 `;
@@ -19,25 +19,25 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
   font-size: 2.25rem;
   font-weight: 600;
-  color: ${COLORS.dark};
+  color: ${COLORS.greyDarker};
   margin: 0;
 `;
 
 export const H3 = styled.h3`
   font-size: 1.5rem;
   font-weight: 600;
-  color: ${COLORS.dark};
+  color: ${COLORS.greyDarker};
   margin: 0;
 `;
 
 export const H4 = styled.h4`
   font-size: 1rem;
   font-weight: 600;
-  color: ${COLORS.dark};
+  color: ${COLORS.greyDarker};
 `;
 
 export const p = styled.p`
   font-size: 0.875rem;
   font-weight: 400;
-  color: ${COLORS.dark};
+  color: ${COLORS.greyDarker};
 `;
