@@ -34,8 +34,10 @@ export default function Login() {
 
   return (
     <>
+      <label htmlFor="email">Test label</label>
       <input
         name="email"
+        id="email"
         onChange={e => setEmail(e.target.value)}
         value={email}
       />
