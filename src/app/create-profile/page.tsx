@@ -3,7 +3,7 @@
 import { UUID } from 'crypto';
 import { useState } from 'react';
 import { insertProfile } from '../../api/supabase/queries/profiles';
-import { Profile } from '../../types/schemaTypes';
+import { Profile } from '../../types/schema';
 import styles from '../page.module.css';
 
 export default function Profile() {
