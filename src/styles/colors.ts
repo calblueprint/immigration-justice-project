@@ -1,21 +1,22 @@
 const COLORS = {
   // Blues
-  primaryBlue: '#0069A9', // tearful-blue
-  secondaryBlue: '#035D85', // grieving
-  tertiaryBlue: '#003453', // drowning
-  lightPrimaryBlue: '#CCE1EE',
-  lighterPrimaryBlue: '#E8F6FF',
+  blueMid: '#0069A9', // tearful-blue
+  blueDark: '#035D85', // grieving
+  blueDarker: '#003453', // drowning
+  blueLight: '#CCE1EE',
+  blueLighter: '#E8F6FF',
   // Greys
-  lightGrey: '#F2F2F2',
-  midGey: '#CCC',
-  midDarkGrey: '#818181',
-  darkGrey: '#565656',
-  dark: '#292929',
+  greyLighter: '#F2F2F2', // lightGrey
+  greyLight: '#CCC',
+  greyMid: '#818181',
+  greyDark: '#565656',
+  greyDarker: '#292929',
   placeholderText: '#B3B3B3',
   // Error Red
-  primaryError: '#D13E40',
-  secondaryError: '#F3B1B2',
-  tertiaryError: '#FFE9E9',
+  redMid: '#D13E40', // Mid = Primary!
+  redDark: '#B53839',
+  redLight: '#F3B1B2',
+  redLighter: '#FFE9E9',
 };
 
 export default COLORS;
