@@ -33,12 +33,7 @@ export const InputText = styled.input<{ $error: boolean }>`
   }
 `;
 
-export const InputTitleText = styled.label`
-  color: ${COLORS.existingInputColor};
-  font-size: 1rem; // 16px;
-  ${openSans.style}
-  font-weight: 600;
-  word-wrap: break-word;
+export const InputTitleText = styled(H4)`
   margin-bottom: 0.625rem; //10px
 `;
 
