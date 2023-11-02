@@ -1,10 +1,7 @@
 import { UUID } from 'crypto';
 
 // table field types
-export type ImmigrationLawExperienceEnum =
-  | 'No Experience'
-  | 'One Experience'
-  | 'Multiple Experiences';
+export type ImmigrationLawExperienceEnum = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export type RoleEnum =
   | 'Attorney'
@@ -62,7 +59,6 @@ export interface Profile {
   user_id: UUID;
   first_name: string;
   last_name: string;
-  preferred_first_name?: string;
   location: string;
   hours_per_month: number;
   immigration_law_experience: ImmigrationLawExperienceEnum;
@@ -81,12 +77,6 @@ export interface Interest {
     interestReason: string;
     start_date: string;
   };
-}
-
-// supabase: auth -> users table row
-export interface AuthUser {
-  id: UUID;
-  email: string;
 }
 
 // irrelevant until mvp
