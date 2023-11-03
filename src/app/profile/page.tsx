@@ -1,11 +1,8 @@
 'use client';
 
-// import 'crypto';
-// import React, { useEffect, useState } from 'react';
-// import { fetchProfiles } from '../../api/supabase/queries/profiles';
-// import { Profile } from '../../types/schema';
-
-// import styles from '../page.module.css';
+import React, { useEffect, useState } from 'react';
+import { fetchProfiles } from '../../api/supabase/queries/profiles';
+import { Profile } from '../../types/schema';
 
 export default function Page() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -44,7 +41,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className={styles.profilePage}>
+    <div>
       <h1>Profiles</h1>
 
       <ul>

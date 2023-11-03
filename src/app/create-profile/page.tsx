@@ -1,10 +1,9 @@
 'use client';
 
-// import { UUID } from 'crypto';
+import { UUID } from 'crypto';
 import { useState } from 'react';
-// import { insertProfile } from '../../api/supabase/queries/profiles';
-import { Profile } from '../../types/schema';
-import styles from '../page.module.css';
+import { insertProfile } from '@/api/supabase/queries/profiles';
+import { Profile } from '@/types/schema';
 
 export default function Profile() {
   const [firstName, setFirstName] = useState<string>('');
@@ -31,8 +30,8 @@ export default function Profile() {
   };
 
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>Create Profile Form</div>
+    <main>
+      <div>Create Profile Form</div>
       <form>
         <div>
           <label htmlFor="firstName">
