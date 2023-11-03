@@ -1,9 +1,10 @@
 import COLORS from '@/styles/colors';
+import { H4 } from '@/styles/text';
 import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div`
   position: absolute;
-  top: 2rem;
+  top: 2.5rem;
   left: 0;
   display: grid;
   place-items: center;
@@ -27,27 +28,43 @@ export const ProgressBarBody = styled.div`
     width: 100%;
     height: 0.3125rem;
     transform: translateY(-0.1563rem);
-    background: ${COLORS.abaBlue};
+    background: ${COLORS.blueMid};
     z-index: -10;
   }
 `;
 
-export const ProgressCircle = styled.div<{ $checked?: boolean; text: string }>`
+const ProgressCircleDiv = styled.div<{ $checked?: boolean }>`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
   background: white;
-  border: 0.3125rem solid ${COLORS.abaBlue};
+  border: 0.3125rem solid ${COLORS.blueMid};
   box-shadow: ${({ $checked }) =>
     $checked
-      ? `0 0 0 0.25rem white inset, 0 0 0 100rem ${COLORS.abaBlue} inset`
+      ? `0 0 0 0.25rem white inset, 0 0 0 100rem ${COLORS.blueMid} inset`
       : 'none'};
+  position: relative;
 
-  &::after {
-    content: '${({ text }) => text}';
+  & > ${H4} {
     position: absolute;
-    top: 100%;
-    color: #818181;
+    width: max-content;
+    left: 50%;
+    transform: translate(-50%, 2.25rem);
+    color: ${COLORS.greyMid};
     text-align: center;
   }
 `;
+
+export function ProgressCircle({
+  checked = false,
+  text,
+}: {
+  checked?: boolean;
+  text: string;
+}) {
+  return (
+    <ProgressCircleDiv $checked={checked}>
+      <H4>{text}</H4>
+    </ProgressCircleDiv>
+  );
+}

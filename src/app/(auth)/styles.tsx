@@ -7,14 +7,14 @@ export const OuterDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.5rem; // 40 px
-  padding: 3.25rem; //52px = 13/4
+  padding: 3.125rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
   width: 580px;

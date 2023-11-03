@@ -4,13 +4,19 @@ import {
   ProgressCircle,
 } from './styles';
 
-export default function ProgressBar() {
+export default function ProgressBar({
+  steps,
+  progress,
+}: {
+  steps: Set<string>;
+  progress: number;
+}) {
   return (
     <ProgressBarContainer>
       <ProgressBarBody>
-        <ProgressCircle text="Test" $checked />
-        <ProgressCircle text="Test" />
-        <ProgressCircle text="Test" />
+        {Array.from(steps).map((s, i) => (
+          <ProgressCircle key={s} text={s} checked={i < progress} />
+        ))}
       </ProgressBarBody>
     </ProgressBarContainer>
   );
