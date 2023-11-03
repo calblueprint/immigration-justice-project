@@ -9,7 +9,7 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  width: 60%;
+  width: 61%;
   float: right;
   margin-top: 1rem;
   gap: 0.6rem;
