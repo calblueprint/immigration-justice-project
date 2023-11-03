@@ -15,11 +15,6 @@ export default function ListingCard({
   isSelected?: boolean;
   onClick?: (id: UUID) => void;
 }) {
-  // setup
-  const rolesNeeded = ['Attorney'].concat(
-    caseData.needs_interpreter ? ['Interpreter'] : [],
-  );
-
   return (
     <CardBody
       $selected={isSelected}
