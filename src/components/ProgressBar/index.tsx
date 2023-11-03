@@ -5,11 +5,9 @@ import {
 } from './styles';
 
 export default function ProgressBar({
-  show = true,
   steps,
   progress,
 }: {
-  show?: boolean;
   steps: Set<string>;
   progress: number;
 }) {
