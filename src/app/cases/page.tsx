@@ -7,7 +7,7 @@ import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import { H1, H2 } from '@/styles/text';
-import ButtonDropdown from '@/components/Dropdowns/ButtonDropdown';
+import FilterDropdown from '@/components/FilterDropdown';
 import {
   CardColumn,
   MainDisplay,
@@ -55,7 +55,7 @@ export default function Page() {
     <PageContainer>
       <H1>Browse Available Cases</H1>
       <FiltersContainer>
-        <ButtonDropdown
+        <FilterDropdown
           defaultValue={defaultFilterValues.remote}
           multi
           options={['Remote', 'In Person']}
@@ -63,7 +63,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, remote: v as Set<string> })
           }
         />
-        <ButtonDropdown
+        <FilterDropdown
           defaultValue={defaultFilterValues.role}
           multi
           options={['Interpreter', 'Attorney']}
@@ -71,7 +71,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, role: v as Set<string> })
           }
         />
-        <ButtonDropdown
+        <FilterDropdown
           defaultValue={defaultFilterValues.languages}
           multi
           // better solution available if we update ts target to es6
@@ -82,7 +82,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, languages: v as Set<string> })
           }
         />
-        <ButtonDropdown
+        <FilterDropdown
           defaultValue={defaultFilterValues.agency}
           multi
           options={['Court', 'USCIS']}
@@ -90,7 +90,7 @@ export default function Page() {
             setCaseFilters({ ...caseFilters, agency: v as Set<string> })
           }
         />
-        <ButtonDropdown
+        <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
           // better solution available if we update ts target to es6

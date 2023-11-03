@@ -1,14 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import {
-  DropdownContainer,
-  DropdownButton,
-  DropdownItem,
-  DropdownMenu,
-} from './styles';
+import { DropdownContainer, DropdownButton } from './styles';
+import DropdownMenu from '../DropdownMenu';
 
-export default function ButtonDropdown({
+export default function FilterDropdown({
   defaultValue,
   options,
   multi = false,
@@ -91,9 +87,9 @@ export default function ButtonDropdown({
       >
         {buttonDisplay()}
       </DropdownButton>
-      <DropdownMenu $show={menuShown}>
+      <DropdownMenu show={menuShown}>
         {options.map(o => (
-          <DropdownItem
+          <DropdownMenu.Item
             key={o}
             onClick={() => handleOptionClick(o)}
             $selected={
@@ -103,7 +99,7 @@ export default function ButtonDropdown({
             }
           >
             {o}
-          </DropdownItem>
+          </DropdownMenu.Item>
         ))}
       </DropdownMenu>
     </DropdownContainer>
