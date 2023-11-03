@@ -1,13 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import {
-  DropdownContainer,
-  DropdownInput,
-  DropdownInputLabel,
-  DropdownItem,
-  DropdownMenu,
-} from './styles';
+import { DropdownContainer, DropdownInput, DropdownInputLabel } from './styles';
+import DropdownMenu from '../DropdownMenu';
 
 export default function InputDropdown({
   id,
@@ -63,8 +58,11 @@ export default function InputDropdown({
 
   return (
     <DropdownContainer ref={container}>
-      <DropdownInputLabel htmlFor={id}>{label}</DropdownInputLabel>
+      <DropdownInputLabel as="label" htmlFor={id}>
+        {label}
+      </DropdownInputLabel>
       <DropdownInput
+        as="input"
         type="text"
         id={id}
         $error={false}
@@ -72,17 +70,17 @@ export default function InputDropdown({
         onFocus={() => setTimeout(() => setMenuShown(true), 0)}
         onChange={e => setInputValue(e.target.value.toLowerCase())}
       />
-      <DropdownMenu $show={menuShown}>
+      <DropdownMenu show={menuShown}>
         {options
           .filter(o => o.toLowerCase().includes(inputValue))
           .map(o => (
-            <DropdownItem
+            <DropdownMenu.Item
               key={o}
               onClick={() => handleOptionClick(o)}
               $selected={multi ? currentValue.includes(o) : currentValue === o}
             >
               {o}
-            </DropdownItem>
+            </DropdownMenu.Item>
           ))}
       </DropdownMenu>
     </DropdownContainer>

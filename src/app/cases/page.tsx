@@ -6,7 +6,7 @@ import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H1, H2 } from '@/styles/text';
+import { H2 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
@@ -97,48 +97,49 @@ export default function Page() {
         <H2>Browse Available Cases</H2>
         <FiltersContainer>
           <FilterDropdown
-            defaultValue="Remote/In Person"
-            options={['Remote/In Person', 'Remote Only', 'In Person Only']}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, remote: v as string })
-            }
-          />
-          <FilterDropdown
-            defaultValue="Attorney/Interpreter"
-            options={['Attorney/Interpreter', 'Interpreter Only']}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, role: v as string })
-            }
-          />
-          <FilterDropdown
-            defaultValue="Anywhere"
-            // requires knowing user location
-            options={[
-              'Within 5 miles',
-              'Within 10 miles',
-              'Within 20 miles',
-              'Within 100 miles',
-              'Anywhere',
-            ]}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, distance: v as string })
-            }
-          />
-          <FilterDropdown
-            defaultValue="All countries"
+            defaultValue={defaultFilterValues.remote}
             multi
-            options={[
-              'All countries',
-              ...Array.from(
-                new Set(
-                  caseData
-                    .filter(c => c.country)
-                    .map(c => (c.country ? c.country : '')),
-                ),
-              ),
-            ]}
+            options={['Remote', 'In Person']}
             onChange={v =>
-              setCaseFilters({ ...caseFilters, countries: v as string[] })
+              setCaseFilters({ ...caseFilters, remote: v as Set<string> })
+            }
+          />
+          <FilterDropdown
+            defaultValue={defaultFilterValues.role}
+            multi
+            options={['Interpreter', 'Attorney']}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, role: v as Set<string> })
+            }
+          />
+          <FilterDropdown
+            defaultValue={defaultFilterValues.languages}
+            multi
+            // better solution available if we update ts target to es6
+            options={caseData
+              .flatMap(c => c.languages)
+              .filter((v, i, arr) => arr.indexOf(v) === i)}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, languages: v as Set<string> })
+            }
+          />
+          <FilterDropdown
+            defaultValue={defaultFilterValues.agency}
+            multi
+            options={['Court', 'USCIS']}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, agency: v as Set<string> })
+            }
+          />
+          <FilterDropdown
+            defaultValue={defaultFilterValues.countries}
+            multi
+            // better solution available if we update ts target to es6
+            options={caseData
+              .map(c => c.country)
+              .filter((v, i, arr) => arr.indexOf(v) === i)}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, countries: v as Set<string> })
             }
           />
           <AuthButtons>{AuthButtonView}</AuthButtons>
