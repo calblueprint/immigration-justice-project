@@ -7,7 +7,7 @@ export type AdjudicatingAgencyEnum =
   | '9TH_CIRCUIT'
   | 'BIA'
   | 'IMMIGRATION_COURT'
-  | 'IMMIGRATION_ENFORCEMENT'
+  | 'ICE'
   | 'USCIS';
 
 export type RoleEnum =
