@@ -10,6 +10,8 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
   display: ${({ $show }) => ($show ? 'flex' : 'none')};
   flex-direction: column;
   width: max-content;
+  max-height: 12.5rem;
+  overflow-y: auto;
   background: white;
   box-shadow: 0 2px 0.25em 0.1em rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -21,6 +23,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
     &::after {
       content: 'No matches found!';
       padding: 0.5rem;
+      font-size: 0.875rem;
     }
   }
 `;
@@ -34,6 +37,7 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
   padding: 0.5rem 2rem;
   font-size: 0.9375rem;
   user-select: none;
+  outline: none;
 
   background-image: ${({ $selected }) =>
     $selected
@@ -43,21 +47,25 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
   background-size: 1rem 1rem;
   background-position: left 0.5rem center;
 
+  transition: 150ms;
+
   &::before {
     content: '';
-    background: ${COLORS.greyLighter};
+    background: ${({ $selected }) =>
+      $selected ? COLORS.blueLighter : COLORS.greyLighter};
     width: 100%;
-    height: calc(100% - 0.2rem);
+    height: calc(100% - 0.25rem);
     border-radius: 0.25rem;
     top: 0;
     left: 0;
     transform: translateY(0.1rem);
     position: absolute;
     z-index: -1;
-    opacity: 0;
+    opacity: ${({ $selected }) => ($selected ? 1 : 0)};
   }
 
-  &:hover::before {
+  &:hover::before,
+  &:focus::before {
     opacity: 1;
   }
 `;
