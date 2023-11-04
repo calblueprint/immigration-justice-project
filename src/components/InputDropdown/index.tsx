@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import {
-  DropdownContainer,
+  DropdownErrorText,
   DropdownInput,
   DropdownInputContainer,
   DropdownInputLabel,
@@ -10,10 +10,12 @@ import {
   TagContainer,
 } from './styles';
 import DropdownMenu from '../DropdownMenu';
+import { DropdownContainer } from '../FilterDropdown/styles';
 
 export default function InputDropdown({
   id,
   placeholder,
+  error = '',
   label,
   options,
   multi = false,
@@ -21,6 +23,7 @@ export default function InputDropdown({
 }: {
   id: string;
   placeholder?: string;
+  error?: string;
   label: string;
   options: Set<string>;
   multi?: boolean;
@@ -103,8 +106,13 @@ export default function InputDropdown({
       </DropdownInputLabel>
       <DropdownInputContainer
         as="div"
-        $error={false}
+        $error={error !== ''}
         $focused={menuShown}
+        $empty={
+          typeof currentValue === 'object'
+            ? currentValue.size === 0
+            : !currentValue
+        }
         onMouseDown={e => {
           e.preventDefault();
           if (dropdownInputRef.current) dropdownInputRef.current.focus();
@@ -160,6 +168,7 @@ export default function InputDropdown({
             </DropdownMenu.Item>
           ))}
       </DropdownMenu>
+      {error && <DropdownErrorText>{error}</DropdownErrorText>}
     </DropdownContainer>
   );
 }

@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 import { P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { InputTitleText, InputText } from '../TextInput/styles';
-
-export const DropdownContainer = styled.div`
-  position: relative;
-`;
+import { InputTitleText, InputText, ErrorText } from '../TextInput/styles';
 
 export const DropdownInputLabel = styled(InputTitleText)`
   display: block;
@@ -46,6 +42,7 @@ export const DropdownInput = styled(P)<{
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-all;
   position: relative;
   ${({ $hidden }) => $hidden && `height: 0`};
 
@@ -70,18 +67,24 @@ export const TagContainer = styled.div`
   }
 `;
 
-export const DropdownInputContainer = styled(InputText)<{ $focused: boolean }>`
+export const DropdownInputContainer = styled(InputText)<{
+  $focused: boolean;
+  $empty: boolean;
+  $error?: boolean;
+}>`
   position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
+  max-width: 100%;
   cursor: text;
   min-height: 2.9375rem;
   padding-right: 2.25rem;
   ${({ $focused }) => $focused && `row-gap: 0.5rem`};
-  border-color: ${({ $focused }) =>
-    $focused ? COLORS.blueMid : COLORS.placeholderText} !important;
+  border-color: ${({ $focused, $empty }) =>
+    $focused || !$empty ? COLORS.blueMid : COLORS.placeholderText} !important;
+  ${({ $error }) => $error && `border-color: ${COLORS.redMid} !important;`}
 
   &::after {
     content: '';
@@ -99,3 +102,5 @@ export const DropdownInputContainer = styled(InputText)<{ $focused: boolean }>`
     transition: 200ms ease-in-out;
   }
 `;
+
+export const DropdownErrorText = styled(ErrorText)``;
