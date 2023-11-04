@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
@@ -11,15 +11,17 @@ export default function FilterDropdown({
   onChange,
 }: {
   defaultValue: string;
-  options: Set<string>;
+  options: string[];
   multi?: boolean;
-  onChange?: (name: string | Set<string>) => void;
+  onChange?: (name: string | string[]) => void;
 }) {
   const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
   const [currentValue, setCurrentValue] = useState<Set<string> | string>(
     multi ? new Set() : '',
   );
+
+  const optionsArray = useMemo(() => Array.from(new Set(options)), [options]);
 
   // handle select option
   function handleOptionClick(val: string) {
@@ -31,7 +33,7 @@ export default function FilterDropdown({
       else copy.add(val);
 
       setCurrentValue(copy);
-      onChange?.(copy);
+      onChange?.(Array.from(copy));
 
       // single-select
     } else {
@@ -88,7 +90,7 @@ export default function FilterDropdown({
         {buttonDisplay()}
       </DropdownButton>
       <DropdownMenu show={menuShown}>
-        {Array.from(options).map(o => (
+        {optionsArray.map(o => (
           <DropdownMenu.Item
             key={o}
             onClick={() => handleOptionClick(o)}

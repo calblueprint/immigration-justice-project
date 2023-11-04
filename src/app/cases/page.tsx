@@ -58,41 +58,35 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.remote}
           multi
-          options={new Set(['Remote', 'In Person'])}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, remote: v as Set<string> })
-          }
+          options={['Remote', 'In Person']}
+          onChange={v => setCaseFilters({ ...caseFilters, remote: new Set(v) })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.role}
           multi
-          options={new Set(['Interpreter', 'Attorney'])}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, role: v as Set<string> })
-          }
+          options={['Interpreter', 'Attorney']}
+          onChange={v => setCaseFilters({ ...caseFilters, role: new Set(v) })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.languages}
           multi
-          options={new Set(caseData.flatMap(c => c.languages))}
+          options={caseData.flatMap(c => c.languages)}
           onChange={v =>
-            setCaseFilters({ ...caseFilters, languages: v as Set<string> })
+            setCaseFilters({ ...caseFilters, languages: new Set(v) })
           }
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.agency}
           multi
-          options={new Set(['Court', 'USCIS'])}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, agency: v as Set<string> })
-          }
+          options={['Court', 'USCIS']}
+          onChange={v => setCaseFilters({ ...caseFilters, agency: new Set(v) })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
-          options={new Set(caseData.map(c => c.country))}
+          options={caseData.map(c => c.country)}
           onChange={v =>
-            setCaseFilters({ ...caseFilters, countries: v as Set<string> })
+            setCaseFilters({ ...caseFilters, countries: new Set(v) })
           }
         />
       </FiltersContainer>

@@ -25,9 +25,9 @@ export default function InputDropdown({
   placeholder?: string;
   error?: string;
   label: string;
-  options: Set<string>;
+  options: string[];
   multi?: boolean;
-  onChange?: (v: string | Set<string>) => void;
+  onChange?: (v: string | string[]) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLParagraphElement>(null);
@@ -40,7 +40,10 @@ export default function InputDropdown({
   );
 
   const optionsArray = useMemo(
-    () => Array.from(options).filter(o => o.toLowerCase().includes(inputValue)),
+    () =>
+      Array.from(new Set(options)).filter(o =>
+        o.toLowerCase().includes(inputValue),
+      ),
     [options, inputValue],
   );
 
@@ -55,7 +58,7 @@ export default function InputDropdown({
       const copy = new Set(currentValue);
       copy.delete(option);
       setCurrentValue(copy);
-      onChange?.(copy);
+      onChange?.(Array.from(copy));
     } else {
       setCurrentValue('');
       onChange?.('');
@@ -71,7 +74,7 @@ export default function InputDropdown({
       else copy.add(option);
 
       setCurrentValue(copy);
-      onChange?.(copy);
+      onChange?.(Array.from(copy));
     } else if (currentValue === option) {
       setCurrentValue('');
       onChange?.('');
@@ -88,7 +91,7 @@ export default function InputDropdown({
 
       const idx = Math.min(
         Math.max(e.key === 'ArrowDown' ? focusIndex + 1 : focusIndex - 1, 0),
-        options.size - 1,
+        optionsArray.length - 1,
       );
 
       const opt = optionsArray[focusIndex];
@@ -263,8 +266,7 @@ export default function Page() {
           label="Fruits"
           placeholder="Apple"
           multi
-          options={
-            new Set([
+          options={[
               'Apple',
               'Banana',
               'Cherry',
@@ -295,8 +297,7 @@ export default function Page() {
           id="test-dropdown2"
           label="Writing Utensil"
           placeholder="Pen"
-          options={
-            new Set([
+          options={[
               'Pen',
               'Pencil',
               'Mechanical Pencil',
