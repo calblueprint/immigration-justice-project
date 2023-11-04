@@ -31,7 +31,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 `;
 
 // menu option
-export const DropdownItem = styled.p<{ $selected: boolean }>`
+export const DropdownItem = styled.p<{ $selected: boolean; $focus?: boolean }>`
   color: ${COLORS.greyDarker};
   position: relative;
   cursor: default;
@@ -63,7 +63,7 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
     transform: translateY(0.1rem);
     position: absolute;
     z-index: -1;
-    opacity: ${({ $selected }) => ($selected ? 1 : 0)};
+    opacity: ${({ $selected, $focus }) => ($selected || $focus ? 1 : 0)};
   }
 
   &:hover::before,
