@@ -11,7 +11,7 @@ export default function FilterDropdown({
   onChange,
 }: {
   defaultValue: string;
-  options: string[];
+  options: Set<string>;
   multi?: boolean;
   onChange?: (name: string | Set<string>) => void;
 }) {
@@ -88,7 +88,7 @@ export default function FilterDropdown({
         {buttonDisplay()}
       </DropdownButton>
       <DropdownMenu show={menuShown}>
-        {options.map(o => (
+        {Array.from(options).map(o => (
           <DropdownMenu.Item
             key={o}
             onClick={() => handleOptionClick(o)}

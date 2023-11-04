@@ -58,7 +58,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.remote}
           multi
-          options={['Remote', 'In Person']}
+          options={new Set(['Remote', 'In Person'])}
           onChange={v =>
             setCaseFilters({ ...caseFilters, remote: v as Set<string> })
           }
@@ -66,7 +66,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.role}
           multi
-          options={['Interpreter', 'Attorney']}
+          options={new Set(['Interpreter', 'Attorney'])}
           onChange={v =>
             setCaseFilters({ ...caseFilters, role: v as Set<string> })
           }
@@ -74,10 +74,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.languages}
           multi
-          // better solution available if we update ts target to es6
-          options={caseData
-            .flatMap(c => c.languages)
-            .filter((v, i, arr) => arr.indexOf(v) === i)}
+          options={new Set(caseData.flatMap(c => c.languages))}
           onChange={v =>
             setCaseFilters({ ...caseFilters, languages: v as Set<string> })
           }
@@ -85,7 +82,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.agency}
           multi
-          options={['Court', 'USCIS']}
+          options={new Set(['Court', 'USCIS'])}
           onChange={v =>
             setCaseFilters({ ...caseFilters, agency: v as Set<string> })
           }
@@ -93,10 +90,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
-          // better solution available if we update ts target to es6
-          options={caseData
-            .map(c => c.country)
-            .filter((v, i, arr) => arr.indexOf(v) === i)}
+          options={new Set(caseData.map(c => c.country))}
           onChange={v =>
             setCaseFilters({ ...caseFilters, countries: v as Set<string> })
           }
@@ -120,12 +114,11 @@ export default function Page() {
                 return true;
               return false;
             })
-            // await schema change
-            // .filter(c =>
-            //   caseFilters.countries.size > 0
-            //     ? c.countries.find(co => caseFilters.countries.has(co))
-            //     : true,
-            // )
+            .filter(c =>
+              caseFilters.countries.size > 0
+                ? caseFilters.countries.has(c.country)
+                : true,
+            )
             .filter(c =>
               caseFilters.languages.size > 0
                 ? c.languages.find(l => caseFilters.languages.has(l))
@@ -143,7 +136,11 @@ export default function Page() {
               />
             ))}
         </CardColumn>
-        {caseInfo && <CaseDetailDisplay caseData={caseInfo} />}
+        <CaseDetailDisplay>
+          <CaseDetails>
+            <H2>Case details.</H2>
+          </CaseDetails>
+        </CaseDetailDisplay>
       </MainDisplay>
     </PageContainer>
   );
