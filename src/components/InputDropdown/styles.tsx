@@ -42,16 +42,20 @@ export const DropdownInput = styled(P)<{
 }>`
   display: inline-block;
   outline: none;
-  min-width: max-content;
   flex-grow: 1;
+  max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  position: relative;
   ${({ $hidden }) => $hidden && `height: 0`};
 
-  &:empty::after {
-    content: ${({ $placeholder }) => $placeholder || ''};
+  &::after {
+    position: absolute;
+    transform: translateY(-50%);
+    content: '${({ $placeholder }) => $placeholder || ''}';
     color: ${COLORS.placeholderText};
     font-size: 0.875rem;
+    opacity: ${({ $hidden }) => ($hidden ? 1 : 0)};
   }
 `;
 
@@ -66,27 +70,32 @@ export const TagContainer = styled.div`
   }
 `;
 
-export const DropdownInputContainer = styled(InputText)`
+export const DropdownInputContainer = styled(InputText)<{ $focused: boolean }>`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
   cursor: text;
   min-height: 2.9375rem;
-  row-gap: 0.5rem;
+  padding-right: 2.25rem;
+  ${({ $focused }) => $focused && `row-gap: 0.5rem`};
+  border-color: ${({ $focused }) =>
+    $focused ? COLORS.blueMid : COLORS.placeholderText} !important;
 
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Cpath d='M7.29377 13.2062C7.6844 13.5968 8.31877 13.5968 8.7094 13.2062L14.7094 7.20615C15.1 6.81553 15.1 6.18115 14.7094 5.79053C14.3188 5.3999 13.6844 5.3999 13.2938 5.79053L8.00002 11.0843L2.70627 5.79365C2.31565 5.40303 1.68127 5.40303 1.29065 5.79365C0.900024 6.18428 0.900024 6.81865 1.29065 7.20928L7.29065 13.2093L7.29377 13.2062Z' fill='%23292929' /%3E %3C/svg%3E");
-  background-repeat: no-repeat;
-  background-size: 1rem;
-  background-position: right 0.75rem center;
-
-  & > ${DropdownInputTag} {
-    &:first-child {
-      margin-left: 1.25rem;
-    }
-
-    &:nth-last-child(2) {
-      margin-right: 0;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%)
+      ${({ $focused }) => $focused && `rotate(180deg)`};
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Cpath d='M7.29377 13.2062C7.6844 13.5968 8.31877 13.5968 8.7094 13.2062L14.7094 7.20615C15.1 6.81553 15.1 6.18115 14.7094 5.79053C14.3188 5.3999 13.6844 5.3999 13.2938 5.79053L8.00002 11.0843L2.70627 5.79365C2.31565 5.40303 1.68127 5.40303 1.29065 5.79365C0.900024 6.18428 0.900024 6.81865 1.29065 7.20928L7.29065 13.2093L7.29377 13.2062Z' fill='%23292929' /%3E %3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-position: center;
+    transition: 200ms ease-in-out;
   }
 `;

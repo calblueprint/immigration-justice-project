@@ -104,6 +104,7 @@ export default function InputDropdown({
       <DropdownInputContainer
         as="div"
         $error={false}
+        $focused={menuShown}
         onMouseDown={e => {
           e.preventDefault();
           if (dropdownInputRef.current) dropdownInputRef.current.focus();
@@ -130,7 +131,7 @@ export default function InputDropdown({
         <DropdownInput
           id={id}
           ref={dropdownInputRef}
-          $placeholder={placeholder}
+          $placeholder={currentValue ? '' : placeholder}
           $hidden={!menuShown}
           onFocus={() => setTimeout(() => setMenuShown(true), 0)}
           onInput={() =>

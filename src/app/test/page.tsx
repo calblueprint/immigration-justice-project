@@ -42,6 +42,8 @@ export default function Page() {
         <InputDropdown
           id="test-dropdown"
           label="Test"
+          placeholder="Test"
+          multi
           options={
             new Set([
               'Apple',
@@ -69,7 +71,6 @@ export default function Page() {
               'Zucchini',
             ])
           }
-          multi
         />
         <TextInput
           errorText=""
