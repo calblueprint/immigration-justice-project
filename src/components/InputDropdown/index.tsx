@@ -233,62 +233,82 @@ export default function InputDropdown({
 
 'use client';
 
-import React from 'react';
+import InputDropdown from '@/components/InputDropdown';
 import styled from 'styled-components';
-import InputDropdown from '@/components/Dropdowns/InputDropdown';
 
-// styling
-const Container = styled.div`
+const ContainerDiv = styled.div`
+  display: grid;
+  place-items: center;
   width: 100%;
-  height: 100vh;
-  display: grid;
-  place-items: center;
+  min-height: 100vh;
 `;
 
-const CenterBox = styled.div`
-  margin-bottom: 1rem;
-  border: 1px solid black;
-  display: grid;
-  place-items: center;
-  border-radius: 0.25rem;
-  padding: 5rem;
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
+  padding: 2.5rem;
+  box-shadow: 0 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  width: 33.75rem;
 `;
 
-export default function page() {
+export default function Page() {
   return (
-    <Container>
-      <CenterBox>
+    <ContainerDiv>
+      <Box>
         <InputDropdown
-          id="single-dropdown"
-          label="Favorite Fruit"
-          options={[
-            'Apple',
-            'Banana',
-            'Citrus',
-            'Apricot',
-            'Peach',
-            'Cherry',
-            'Pineapple',
-          ]}
-          placeholder="Favorite Fruit"
-        />
-        <InputDropdown
-          id="multi-dropdown"
-          label="Writing Utensils"
+          id="test-dropdown"
+          label="Fruits"
+          placeholder="Apple"
           multi
-          options={[
-            'Crayon',
-            'Pencil',
-            'Pen',
-            'Mechanical Pencil',
-            'Stylus',
-            'Paintbrush',
-          ]}
-          placeholder="Writing utensils"
+          options={
+            new Set([
+              'Apple',
+              'Banana',
+              'Cherry',
+              'Date',
+              'Elderberry',
+              'Fig',
+              'Grape',
+              'Honeydew',
+              'Imbe',
+              'Jackfruit',
+              'Kiwi',
+              'Lime',
+              'Mango',
+              'Nectarine',
+              'Orange',
+              'Pineapple',
+              'Quince',
+              'Raspberry',
+              'Strawberry',
+              'Tomato',
+              'Vanilla Bean',
+              'Watermelon',
+              'Zucchini',
+            ])
+          }
         />
-      </CenterBox>
-    </Container>
+        <InputDropdown
+          id="test-dropdown2"
+          label="Writing Utensil"
+          placeholder="Pen"
+          options={
+            new Set([
+              'Pen',
+              'Pencil',
+              'Mechanical Pencil',
+              'Chalk',
+              'Etch A Sketch',
+              'Quill',
+              'Mouse',
+            ])
+          }
+        />
+      </Box>
+    </ContainerDiv>
   );
 }
 
