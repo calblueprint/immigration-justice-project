@@ -32,17 +32,17 @@ export default function Page() {
         <TextInput
           errorText=""
           erroring={false}
-          label="Example Input"
-          name="Example Input"
-          placeholder=""
+          label="Name"
+          name="name"
+          placeholder="Jane Doe"
           type=""
           value={throwaway}
           setValue={setThrowaway}
         />
         <InputDropdown
           id="test-dropdown"
-          label="Test"
-          placeholder="Test"
+          label="Fruits"
+          placeholder="Apple"
           multi
           options={
             new Set([
@@ -61,7 +61,7 @@ export default function Page() {
               'Mango',
               'Nectarine',
               'Orange',
-              'Papaya',
+              'Pineapple',
               'Quince',
               'Raspberry',
               'Strawberry',
@@ -72,11 +72,27 @@ export default function Page() {
             ])
           }
         />
+        <InputDropdown
+          id="test-dropdown2"
+          label="Writing Utensil"
+          placeholder="Pen"
+          options={
+            new Set([
+              'Pen',
+              'Pencil',
+              'Mechanical Pencil',
+              'Chalk',
+              'Etch A Sketch',
+              'Quill',
+              'Mouse',
+            ])
+          }
+        />
         <TextInput
           errorText=""
           erroring={false}
-          label="Example Input"
-          name="Example Input"
+          label="Notes"
+          name="notes"
           placeholder=""
           type=""
           value={throwaway}

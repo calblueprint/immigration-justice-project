@@ -28,6 +28,21 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
       color: ${COLORS.greyMid};
     }
   }
+
+  animation: 80ms fade-in cubic-bezier(0, 0, 0.35, 1);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      z-index: -1000;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      z-index: 999;
+      transform: translateY(0);
+    }
+  }
 `;
 
 // menu option

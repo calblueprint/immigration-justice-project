@@ -110,6 +110,8 @@ export default function InputDropdown({
         const currentArr = Array.from(currentValue);
         currentArr.splice(currentArr.length - 1, 1);
         setCurrentValue(new Set(currentArr));
+      } else {
+        setCurrentValue('');
       }
     }
   }
@@ -159,27 +161,33 @@ export default function InputDropdown({
         }}
       >
         <TagContainer>
-          {typeof currentValue === 'object' ? (
-            Array.from(currentValue).map(v => (
-              <DropdownInputTag
-                key={v}
-                onMouseDown={e => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onClick={() => handleRemoveOption(v)}
-              >
-                {v}
-              </DropdownInputTag>
-            ))
-          ) : (
-            <p>{currentValue}</p>
-          )}
+          {typeof currentValue === 'object'
+            ? Array.from(currentValue).map(v => (
+                <DropdownInputTag
+                  key={v}
+                  onMouseDown={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onClick={() => handleRemoveOption(v)}
+                >
+                  {v}
+                </DropdownInputTag>
+              ))
+            : currentValue && <p>{currentValue}</p>}
         </TagContainer>
         <DropdownInput
           id={id}
           ref={inputRef}
-          $placeholder={currentValue ? '' : placeholder}
+          $placeholder={
+            (
+              typeof currentValue === 'object'
+                ? currentValue.size > 0
+                : currentValue
+            )
+              ? ''
+              : placeholder
+          }
           $hidden={!menuShown}
           onFocus={() => setTimeout(() => setMenuShown(true), 0)}
           onInput={() => {
@@ -197,7 +205,10 @@ export default function InputDropdown({
             key={o}
             ref={el => itemsRef.current.set(o, el)}
             onMouseDown={e => e.preventDefault()}
-            onClick={() => handleOptionSelect(o)}
+            onClick={() => {
+              handleOptionSelect(o);
+              setFocusIndex(i);
+            }}
             onKeyUp={e => e.key === 'Enter' && handleOptionSelect(o)}
             $selected={
               typeof currentValue === 'object'
