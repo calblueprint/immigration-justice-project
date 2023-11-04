@@ -1,7 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { DropdownContainer, DropdownInput, DropdownInputLabel } from './styles';
+import {
+  DropdownContainer,
+  DropdownInput,
+  DropdownInputContainer,
+  DropdownInputLabel,
+  DropdownInputTag,
+  TagContainer,
+} from './styles';
 import DropdownMenu from '../DropdownMenu';
 
 export default function InputDropdown({
@@ -17,25 +24,47 @@ export default function InputDropdown({
   label: string;
   options: Set<string>;
   multi?: boolean;
-  onChange?: (v: string | string[]) => void;
+  onChange?: (v: string | Set<string>) => void;
 }) {
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
-  const dropdownInputRef = useRef<HTMLInputElement>(null);
+  const dropdownInputRef = useRef<HTMLParagraphElement>(null);
   const [menuShown, setMenuShown] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [currentValue, setCurrentValue] = useState<string | string[]>(
-    multi ? [] : '',
+  const [currentValue, setCurrentValue] = useState<string | Set<string>>(
+    multi ? new Set() : '',
   );
+
+  // handle when a tag gets clicked
+  function handleRemoveOption(option: string) {
+    if (dropdownContainerRef.current) dropdownContainerRef.current.blur();
+    if (dropdownInputRef.current) dropdownInputRef.current.blur();
+
+    if (typeof currentValue === 'object') {
+      if (!currentValue.has(option)) return;
+
+      const copy = new Set(currentValue);
+      copy.delete(option);
+      setCurrentValue(copy);
+      onChange?.(copy);
+    } else {
+      setCurrentValue('');
+      onChange?.('');
+    }
+  }
 
   // decide add/remove options
   function handleOptionSelect(option: string) {
     if (typeof currentValue === 'object') {
-      const newList = currentValue.includes(option)
-        ? currentValue.filter(v => v !== option)
-        : [...currentValue, option];
+      const copy = new Set(currentValue);
 
-      setCurrentValue(newList);
-      onChange?.(newList);
+      if (currentValue.has(option)) copy.delete(option);
+      else copy.add(option);
+
+      setCurrentValue(copy);
+      onChange?.(copy);
+    } else if (currentValue === option) {
+      setCurrentValue('');
+      onChange?.('');
     } else {
       setCurrentValue(option);
       onChange?.(option);
@@ -60,33 +89,71 @@ export default function InputDropdown({
     };
   }, []);
 
+  // helper to hide menu and clear text
+  function hideMenu() {
+    setMenuShown(false);
+    if (dropdownInputRef.current) dropdownInputRef.current.innerText = '';
+    setInputValue('');
+  }
+
   return (
-    <DropdownContainer ref={dropdownContainerRef}>
+    <DropdownContainer ref={dropdownContainerRef} onBlur={() => hideMenu()}>
       <DropdownInputLabel as="label" htmlFor={id}>
         {label}
       </DropdownInputLabel>
-      <DropdownInput
-        as="input"
-        type="text"
-        ref={dropdownInputRef}
-        id={id}
+      <DropdownInputContainer
+        as="div"
         $error={false}
-        placeholder={placeholder}
-        onFocus={() => setTimeout(() => setMenuShown(true), 0)}
-        // onBlur={() => setMenuShown(false)}
-        onChange={e => setInputValue(e.target.value.toLowerCase())}
-      />
+        onMouseDown={e => {
+          e.preventDefault();
+          if (dropdownInputRef.current) dropdownInputRef.current.focus();
+        }}
+      >
+        <TagContainer>
+          {typeof currentValue === 'object' ? (
+            Array.from(currentValue).map(v => (
+              <DropdownInputTag
+                key={v}
+                onMouseDown={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onClick={() => handleRemoveOption(v)}
+              >
+                {v}
+              </DropdownInputTag>
+            ))
+          ) : (
+            <p>{currentValue}</p>
+          )}
+        </TagContainer>
+        <DropdownInput
+          id={id}
+          ref={dropdownInputRef}
+          $placeholder={placeholder}
+          $hidden={!menuShown}
+          onFocus={() => setTimeout(() => setMenuShown(true), 0)}
+          onInput={() =>
+            dropdownInputRef.current &&
+            setInputValue(dropdownInputRef.current.innerText.toLowerCase())
+          }
+          contentEditable
+        />
+      </DropdownInputContainer>
       <DropdownMenu show={menuShown}>
         {Array.from(options)
-          .filter(o => o.toLowerCase().match(inputValue))
+          .filter(o => o.toLowerCase().includes(inputValue))
           .map(o => (
             <DropdownMenu.Item
               key={o}
               onMouseDown={e => e.preventDefault()}
               onClick={() => handleOptionSelect(o)}
               onKeyUp={e => e.key === 'Enter' && handleOptionSelect(o)}
-              tabIndex={0}
-              $selected={multi ? currentValue.includes(o) : currentValue === o}
+              $selected={
+                typeof currentValue === 'object'
+                  ? currentValue.has(o)
+                  : currentValue === o
+              }
             >
               {o}
             </DropdownMenu.Item>

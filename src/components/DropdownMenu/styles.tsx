@@ -10,6 +10,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
   display: ${({ $show }) => ($show ? 'flex' : 'none')};
   flex-direction: column;
   width: max-content;
+  min-width: 100%;
   max-height: 12.5rem;
   overflow-y: auto;
   background: white;
@@ -24,6 +25,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
       content: 'No matches found!';
       padding: 0.5rem;
       font-size: 0.875rem;
+      color: ${COLORS.greyMid};
     }
   }
 `;
