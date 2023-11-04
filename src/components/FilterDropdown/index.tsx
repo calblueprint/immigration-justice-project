@@ -1,71 +1,50 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
 import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
+// for map: keys are the actual values stored, values are the displayed value
+interface CommonProps {
+  options: Set<string> | Map<string, string>;
+  placeholder: string;
+  fullText?: string;
+}
+
+interface MultiSelectProps extends CommonProps {
+  multi: true;
+  value: Set<string>;
+  onChange: (value: Set<string>) => void;
+}
+
+interface SingleSelectProps extends CommonProps {
+  multi?: false;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
+
 export default function FilterDropdown({
-  defaultValue,
   options,
-  multi = false,
+  multi,
+  placeholder,
+  fullText = '',
+  value,
   onChange,
-}: {
-  defaultValue: string;
-  options: string[];
-  multi?: boolean;
-  onChange?: (name: string | Set<string>) => void;
-}) {
+}: FilterDropdownProps) {
   const container = useRef<HTMLDivElement>(null);
-  const [menuShown, setMenuShown] = useState(false);
-  const [currentValue, setCurrentValue] = useState<Set<string> | string>(
-    multi ? new Set() : '',
-  );
-
-  // handle select option
-  function handleOptionClick(val: string) {
-    // multi-select
-    if (typeof currentValue === 'object') {
-      const copy = new Set(currentValue);
-
-      if (copy.has(val)) copy.delete(val);
-      else copy.add(val);
-
-      setCurrentValue(copy);
-      onChange?.(copy);
-
-      // single-select
-    } else {
-      if (currentValue === val) {
-        setCurrentValue('');
-        onChange?.('');
-        return;
-      }
-
-      setCurrentValue(val);
-      onChange?.(val);
-    }
-  }
-
-  // format button display
-  function buttonDisplay() {
-    if (typeof currentValue === 'object') {
-      const len: number = currentValue.size;
-      if (len === 0) return defaultValue;
-      const firstVal: string = currentValue.values().next().value;
-      if (len > 1) return `${firstVal} +${len - 1} more`;
-      return firstVal;
-    }
-
-    if (!currentValue) return defaultValue;
-    return currentValue;
-  }
+  const itemsRef = useRef<Map<string, HTMLParagraphElement | null>>(new Map());
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [focusIndex, setFocusIndex] = useState(-1);
+  const optionsArray = useMemo(() => Array.from(options.keys()), [options]);
 
   // mount listener for closing dropdown menu
   useEffect(() => {
     function globalClickListener(e: Event) {
       if (container.current && container.current.contains(e.target as Node))
         return;
-      setMenuShown(false);
+      setMenuVisible(false);
     }
 
     document.addEventListener('click', globalClickListener);
@@ -75,30 +54,95 @@ export default function FilterDropdown({
     };
   }, []);
 
+  // handle select option
+  const handleSelectOption = (val: string) => {
+    // multi-select
+    if (multi) {
+      const copy = new Set(value);
+
+      if (copy.has(val)) copy.delete(val);
+      else copy.add(val);
+
+      onChange(copy);
+
+      // single-select
+    } else if (value === val) {
+      onChange('');
+    } else {
+      onChange(val);
+    }
+  };
+
+  // keyboard navigation
+  const handleKeyDown = (e: KeyboardEvent) => {
+    // options navigation
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+
+      const opt = optionsArray[focusIndex];
+      itemsRef.current.get(opt)?.scrollIntoView({ block: 'center' });
+
+      const idx = Math.min(
+        Math.max(e.key === 'ArrowDown' ? focusIndex + 1 : focusIndex - 1, 0),
+        optionsArray.length - 1,
+      );
+      setFocusIndex(idx);
+
+      // select option
+    } else if (e.key === 'Enter' && menuVisible && focusIndex !== -1) {
+      e.preventDefault();
+
+      if (focusIndex < 0 || focusIndex >= optionsArray.length) return;
+      const opt = optionsArray[focusIndex];
+      handleSelectOption(opt);
+
+      // close dropdown
+    } else if (e.key === 'Escape') {
+      setMenuVisible(false);
+      setFocusIndex(-1);
+    }
+  };
+
+  // format button display
+  const buttonDisplay = () => {
+    if (multi) {
+      const len = value.size;
+      if (len === 0) return placeholder;
+
+      const [first] = value;
+      const firstVal = options instanceof Map ? options.get(first) : first;
+
+      if (fullText && len === options.size) return fullText;
+
+      return len > 1 ? `${firstVal} +${len - 1} more` : firstVal;
+    }
+
+    return value || placeholder;
+  };
+
   return (
-    <DropdownContainer ref={container}>
+    <DropdownContainer ref={container} onBlur={() => setMenuVisible(false)}>
       <DropdownButton
-        $changed={
-          typeof currentValue === 'object'
-            ? currentValue.size > 0
-            : currentValue === ''
-        }
-        onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
+        $changed={multi ? value.size > 0 : value === ''}
+        onClick={() => setTimeout(() => setMenuVisible(!menuVisible), 0)}
+        onKeyDown={e => handleKeyDown(e)}
       >
         {buttonDisplay()}
       </DropdownButton>
-      <DropdownMenu show={menuShown}>
-        {options.map(o => (
+      <DropdownMenu show={menuVisible}>
+        {Array.from(options.entries()).map(([k, v], i) => (
           <DropdownMenu.Item
-            key={o}
-            onClick={() => handleOptionClick(o)}
-            $selected={
-              typeof currentValue === 'object'
-                ? currentValue.has(o)
-                : o === currentValue
-            }
+            key={k}
+            ref={el => itemsRef.current.set(k, el)}
+            onClick={() => handleSelectOption(k)}
+            onMouseDown={e => e.preventDefault()}
+            onMouseOver={() => setFocusIndex(i)}
+            $selected={multi ? value.has(k) : value === k}
+            $forceFocus={focusIndex === i}
+            $multi={multi}
+            $disableMouseFocus
           >
-            {o}
+            {v}
           </DropdownMenu.Item>
         ))}
       </DropdownMenu>

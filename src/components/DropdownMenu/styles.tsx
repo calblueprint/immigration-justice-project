@@ -5,11 +5,12 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
   position: absolute;
   top: 100%;
   left: 0;
-  transform: translateY(2px);
+  transform: translateY(0.125rem);
 
   display: ${({ $show }) => ($show ? 'flex' : 'none')};
   flex-direction: column;
   width: max-content;
+  min-width: 100%;
   max-height: 12.5rem;
   overflow-y: auto;
   background: white;
@@ -21,20 +22,43 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 
   &:empty {
     &::after {
-      content: 'No matches found!';
+      content: 'No matches found';
       padding: 0.5rem;
+      text-align: center;
       font-size: 0.875rem;
+      color: ${COLORS.greyMid};
+    }
+  }
+
+  animation: 80ms fade-in cubic-bezier(0, 0, 0.35, 1);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      z-index: -1000;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      z-index: 999;
+      transform: translateY(0);
     }
   }
 `;
 
 // menu option
-export const DropdownItem = styled.p<{ $selected: boolean }>`
+export const DropdownItem = styled.p<{
+  $selected: boolean;
+  $multi?: boolean;
+  $forceFocus?: boolean;
+  $disableMouseFocus?: boolean;
+}>`
   color: ${COLORS.greyDarker};
   position: relative;
   cursor: default;
   border-radius: 0.25rem;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem;
+  padding-left: ${({ $multi }) => ($multi ? '2rem' : '1rem')};
   font-size: 0.9375rem;
   user-select: none;
   outline: none;
@@ -43,6 +67,7 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
     $selected
       ? `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' fill='%230069A9' stroke='%230069A9' /%3E %3Cpath d='M6.17794 10.8117L3.80728 8.32401L3 9.16517L6.17794 12.5L13 5.34116L12.1984 4.5L6.17794 10.8117Z' fill='white' /%3E %3C/svg%3E")`
       : `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' stroke='%230069A9' /%3E%3C/svg%3E")`};
+  ${({ $multi }) => !$multi && `background-image: none;`}
   background-repeat: no-repeat;
   background-size: 1rem 1rem;
   background-position: left 0.5rem center;
@@ -61,10 +86,18 @@ export const DropdownItem = styled.p<{ $selected: boolean }>`
     transform: translateY(0.1rem);
     position: absolute;
     z-index: -1;
-    opacity: ${({ $selected }) => ($selected ? 1 : 0)};
+    opacity: ${({ $selected, $forceFocus }) =>
+      $selected || $forceFocus ? 1 : 0};
   }
 
-  &:hover::before,
+  ${({ $disableMouseFocus }) =>
+    !$disableMouseFocus &&
+    `
+    &:hover::before {
+      opacity: 1;
+    }
+  `}
+
   &:focus::before {
     opacity: 1;
   }

@@ -6,12 +6,13 @@ import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H2 } from '@/styles/text';
+import { H2, AColored } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
 import FilterDropdown from '@/components/FilterDropdown';
+import { parseAgency } from '@/utils/helpers';
 import {
   CardColumn,
   PageContainer,
@@ -91,87 +92,92 @@ export default function Page() {
     );
   }, [profile]);
 
+  const resetFilters = () => {
+    setCaseFilters({
+      remote: new Set(),
+      role: new Set(),
+      agency: new Set(),
+      languages: new Set(),
+      countries: new Set(),
+    });
+  };
+
   return (
     <PageContainer>
       <Header>
         <H2>Browse Available Cases</H2>
         <FiltersContainer>
           <FilterDropdown
-            defaultValue={defaultFilterValues.remote}
+            placeholder={defaultFilterValues.remote}
             multi
-            options={['Remote', 'In Person']}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, remote: v as Set<string> })
-            }
+            options={new Set(['Remote', 'In Person'])}
+            value={caseFilters.remote}
+            fullText="All Remote/In Person"
+            onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
           />
           <FilterDropdown
-            defaultValue={defaultFilterValues.role}
+            placeholder={defaultFilterValues.role}
             multi
-            options={['Interpreter', 'Attorney']}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, role: v as Set<string> })
+            options={new Set(['Interpreter', 'Attorney'])}
+            value={caseFilters.role}
+            fullText="All Interpreter/Attorney"
+            onChange={v => setCaseFilters({ ...caseFilters, role: v })}
+          />
+          {/* languages dropdown to implement later */}
+          <FilterDropdown
+            placeholder={defaultFilterValues.agency}
+            multi
+            options={
+              new Map(
+                caseData.map(c => [
+                  c.adjudicating_agency,
+                  parseAgency(c.adjudicating_agency),
+                ]),
+              )
             }
+            value={caseFilters.agency}
+            onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
           />
           <FilterDropdown
-            defaultValue={defaultFilterValues.languages}
+            placeholder={defaultFilterValues.countries}
             multi
-            // better solution available if we update ts target to es6
-            options={caseData
-              .flatMap(c => c.languages)
-              .filter((v, i, arr) => arr.indexOf(v) === i)}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, languages: v as Set<string> })
+            options={
+              new Set(
+                caseData.filter(c => c.country).map(c => c.country),
+              ) as Set<string>
             }
+            value={caseFilters.countries}
+            onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
           />
-          <FilterDropdown
-            defaultValue={defaultFilterValues.agency}
-            multi
-            options={['Court', 'USCIS']}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, agency: v as Set<string> })
-            }
-          />
-          <FilterDropdown
-            defaultValue={defaultFilterValues.countries}
-            multi
-            // better solution available if we update ts target to es6
-            options={caseData
-              .map(c => c.country)
-              .filter((v, i, arr) => arr.indexOf(v) === i)}
-            onChange={v =>
-              setCaseFilters({ ...caseFilters, countries: v as Set<string> })
-            }
-          />
+          <AColored onClick={() => resetFilters()} $color={COLORS.greyMid}>
+            Reset Filters
+          </AColored>
           <AuthButtons>{AuthButtonView}</AuthButtons>
         </FiltersContainer>
       </Header>
       <Body>
         <CardColumn>
           {caseData
-            .filter(c => {
-              if (caseFilters.remote.size === 0) return true;
-              if (caseFilters.remote.has('Remote') && c.is_remote) return true;
-              if (caseFilters.remote.has('In Person') && !c.is_remote)
-                return true;
-              return false;
-            })
-            .filter(c => {
-              if (caseFilters.role.size === 0) return true;
-              if (caseFilters.role.has('Interpreter') && c.needs_interpreter)
-                return true;
-              if (caseFilters.role.has('Attorney') && c.needs_attorney)
-                return true;
-              return false;
-            })
-            // await schema change
-            // .filter(c =>
-            //   caseFilters.countries.size > 0
-            //     ? c.countries.find(co => caseFilters.countries.has(co))
-            //     : true,
-            // )
+            .filter(
+              c =>
+                caseFilters.remote.size === 0 ||
+                (caseFilters.remote.has('Remote') && c.is_remote) ||
+                (caseFilters.remote.has('In Person') && !c.is_remote),
+            )
+            .filter(
+              c =>
+                caseFilters.role.size === 0 ||
+                (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
+                (caseFilters.role.has('Attorney') && c.needs_attorney),
+            )
+            .filter(
+              c =>
+                caseFilters.agency.size === 0 ||
+                caseFilters.agency.has(c.adjudicating_agency),
+            )
             .filter(c =>
-              caseFilters.languages.size > 0
-                ? c.languages.find(l => caseFilters.languages.has(l))
+              caseFilters.countries.size > 0
+                ? c.country && caseFilters.countries.has(c.country)
                 : true,
             )
             .map(c => (
