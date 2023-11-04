@@ -13,13 +13,14 @@ export default function InputDropdown({
   onChange,
 }: {
   id: string;
-  placeholder: string;
+  placeholder?: string;
   label: string;
-  options: string[];
+  options: Set<string>;
   multi?: boolean;
   onChange?: (v: string | string[]) => void;
 }) {
-  const container = useRef<HTMLDivElement>(null);
+  const dropdownContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownInputRef = useRef<HTMLInputElement>(null);
   const [menuShown, setMenuShown] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [currentValue, setCurrentValue] = useState<string | string[]>(
@@ -27,7 +28,7 @@ export default function InputDropdown({
   );
 
   // decide add/remove options
-  function handleOptionClick(option: string) {
+  function handleOptionSelect(option: string) {
     if (typeof currentValue === 'object') {
       const newList = currentValue.includes(option)
         ? currentValue.filter(v => v !== option)
@@ -43,8 +44,11 @@ export default function InputDropdown({
 
   // detect clicking outside of menu box
   useEffect(() => {
-    function globalClickEvent(e: Event) {
-      if (container.current && container.current.contains(e.target as Node))
+    function globalClickEvent(this: Document, e: MouseEvent) {
+      if (
+        dropdownContainerRef.current &&
+        dropdownContainerRef.current.contains(e.target as Node)
+      )
         return;
       setMenuShown(false);
     }
@@ -57,26 +61,31 @@ export default function InputDropdown({
   }, []);
 
   return (
-    <DropdownContainer ref={container}>
+    <DropdownContainer ref={dropdownContainerRef}>
       <DropdownInputLabel as="label" htmlFor={id}>
         {label}
       </DropdownInputLabel>
       <DropdownInput
         as="input"
         type="text"
+        ref={dropdownInputRef}
         id={id}
         $error={false}
         placeholder={placeholder}
         onFocus={() => setTimeout(() => setMenuShown(true), 0)}
+        // onBlur={() => setMenuShown(false)}
         onChange={e => setInputValue(e.target.value.toLowerCase())}
       />
       <DropdownMenu show={menuShown}>
-        {options
-          .filter(o => o.toLowerCase().includes(inputValue))
+        {Array.from(options)
+          .filter(o => o.toLowerCase().match(inputValue))
           .map(o => (
             <DropdownMenu.Item
               key={o}
-              onClick={() => handleOptionClick(o)}
+              onMouseDown={e => e.preventDefault()}
+              onClick={() => handleOptionSelect(o)}
+              onKeyUp={e => e.key === 'Enter' && handleOptionSelect(o)}
+              tabIndex={0}
               $selected={multi ? currentValue.includes(o) : currentValue === o}
             >
               {o}
@@ -91,8 +100,6 @@ export default function InputDropdown({
  * EXAMPLE USAGE:
  * app/test-page/page.tsx
  * 
- * NOTE: TextInput is imported because Next.js does not want to render
- *       the styles for some reason.
 
 'use client';
 
