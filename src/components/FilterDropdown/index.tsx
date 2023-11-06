@@ -4,62 +4,67 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
-export default function FilterDropdown({
-  defaultValue,
-  options,
-  multi = false,
-  onChange,
-}: {
-  defaultValue: string;
+interface CommonProps {
   options: string[];
-  multi?: boolean;
-  onChange?: (name: string | string[]) => void;
-}) {
+  defaultValue: string;
+}
+
+interface MultiSelectProps extends CommonProps {
+  multi: true;
+  value: Set<string>;
+  onChange: (value: Set<string>) => void;
+}
+
+interface SingleSelectProps extends CommonProps {
+  multi?: false;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
+
+export default function FilterDropdown({
+  options,
+  multi,
+  defaultValue,
+  value,
+  onChange,
+}: FilterDropdownProps) {
   const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
-  const [currentValue, setCurrentValue] = useState<Set<string> | string>(
-    multi ? new Set() : '',
-  );
-
   const optionsArray = useMemo(() => Array.from(new Set(options)), [options]);
 
   // handle select option
   function handleOptionClick(val: string) {
     // multi-select
-    if (typeof currentValue === 'object') {
-      const copy = new Set(currentValue);
+    if (multi) {
+      const copy = new Set(value);
 
       if (copy.has(val)) copy.delete(val);
       else copy.add(val);
 
-      setCurrentValue(copy);
-      onChange?.(Array.from(copy));
+      onChange(copy);
 
       // single-select
+    } else if (value === val) {
+      onChange('');
     } else {
-      if (currentValue === val) {
-        setCurrentValue('');
-        onChange?.('');
-        return;
-      }
-
-      setCurrentValue(val);
-      onChange?.(val);
+      onChange(val);
     }
   }
 
   // format button display
   function buttonDisplay() {
-    if (typeof currentValue === 'object') {
-      const len: number = currentValue.size;
+    if (multi) {
+      const len: number = value.size;
       if (len === 0) return defaultValue;
-      const firstVal: string = currentValue.values().next().value;
+      const [firstVal] = value;
       if (len > 1) return `${firstVal} +${len - 1} more`;
       return firstVal;
     }
 
-    if (!currentValue) return defaultValue;
-    return currentValue;
+    if (!value) return defaultValue;
+    return value;
   }
 
   // mount listener for closing dropdown menu
@@ -80,11 +85,7 @@ export default function FilterDropdown({
   return (
     <DropdownContainer ref={container}>
       <DropdownButton
-        $changed={
-          typeof currentValue === 'object'
-            ? currentValue.size > 0
-            : currentValue === ''
-        }
+        $changed={multi ? value.size > 0 : value === ''}
         onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
       >
         {buttonDisplay()}
@@ -94,11 +95,7 @@ export default function FilterDropdown({
           <DropdownMenu.Item
             key={o}
             onClick={() => handleOptionClick(o)}
-            $selected={
-              typeof currentValue === 'object'
-                ? currentValue.has(o)
-                : o === currentValue
-            }
+            $selected={multi ? value.has(o) : o === value}
           >
             {o}
           </DropdownMenu.Item>

@@ -59,35 +59,36 @@ export default function Page() {
           defaultValue={defaultFilterValues.remote}
           multi
           options={['Remote', 'In Person']}
-          onChange={v => setCaseFilters({ ...caseFilters, remote: new Set(v) })}
+          value={caseFilters.remote}
+          onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.role}
           multi
           options={['Interpreter', 'Attorney']}
-          onChange={v => setCaseFilters({ ...caseFilters, role: new Set(v) })}
+          value={caseFilters.role}
+          onChange={v => setCaseFilters({ ...caseFilters, role: v })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.languages}
           multi
           options={caseData.flatMap(c => c.languages)}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, languages: new Set(v) })
-          }
+          value={caseFilters.languages}
+          onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.agency}
           multi
           options={['Court', 'USCIS']}
-          onChange={v => setCaseFilters({ ...caseFilters, agency: new Set(v) })}
+          value={caseFilters.agency}
+          onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
         />
         <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
           options={caseData.map(c => c.country)}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, countries: new Set(v) })
-          }
+          value={caseFilters.countries}
+          onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
         />
       </FiltersContainer>
       <MainDisplay>

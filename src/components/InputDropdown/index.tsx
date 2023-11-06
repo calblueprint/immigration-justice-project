@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  KeyboardEvent,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import {
   DropdownErrorText,
   DropdownInput,
@@ -12,32 +20,42 @@ import {
 import DropdownMenu from '../DropdownMenu';
 import { DropdownContainer } from '../FilterDropdown/styles';
 
+interface CommonProps {
+  placeholder?: string;
+  error?: string;
+  label: string;
+  options: Set<string>;
+}
+
+interface MultiSelectProps extends CommonProps {
+  multi: true;
+  value: Set<string>;
+  setValue: Dispatch<SetStateAction<Set<string>>>;
+}
+
+interface SingleSelectProps extends CommonProps {
+  multi?: false;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+}
+
+type InputDropdownProps = MultiSelectProps | SingleSelectProps;
+
 export default function InputDropdown({
-  id,
   placeholder,
   error = '',
   label,
   options,
-  multi = false,
-  onChange,
-}: {
-  id: string;
-  placeholder?: string;
-  error?: string;
-  label: string;
-  options: string[];
-  multi?: boolean;
-  onChange?: (v: string | string[]) => void;
-}) {
+  multi,
+  value,
+  setValue,
+}: InputDropdownProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLParagraphElement>(null);
   const itemsRef = useRef<Map<string, HTMLParagraphElement | null>>(new Map());
   const [focusIndex, setFocusIndex] = useState(-1);
-  const [menuShown, setMenuShown] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [currentValue, setCurrentValue] = useState<string | Set<string>>(
-    multi ? new Set() : '',
-  );
 
   const optionsArray = useMemo(
     () =>
@@ -52,69 +70,68 @@ export default function InputDropdown({
     if (containerRef.current) containerRef.current.blur();
     if (inputRef.current) inputRef.current.blur();
 
-    if (typeof currentValue === 'object') {
-      if (!currentValue.has(option)) return;
+    if (multi) {
+      if (!value.has(option)) return;
 
-      const copy = new Set(currentValue);
+      const copy = new Set(value);
       copy.delete(option);
-      setCurrentValue(copy);
-      onChange?.(Array.from(copy));
+      setValue(copy);
     } else {
-      setCurrentValue('');
-      onChange?.('');
+      setValue('');
     }
   }
 
   // decide add/remove options
-  function handleOptionSelect(option: string) {
-    if (typeof currentValue === 'object') {
-      const copy = new Set(currentValue);
+  function handleSelectOption(option: string) {
+    if (multi) {
+      const copy = new Set(value);
 
-      if (currentValue.has(option)) copy.delete(option);
+      if (value.has(option)) copy.delete(option);
       else copy.add(option);
 
-      setCurrentValue(copy);
-      onChange?.(Array.from(copy));
-    } else if (currentValue === option) {
-      setCurrentValue('');
-      onChange?.('');
+      setValue(copy);
+    } else if (value === option) {
+      setValue('');
     } else {
-      setCurrentValue(option);
-      onChange?.(option);
+      setValue(option);
     }
   }
 
   // handle keyboard navigation
-  function handleInputKey(e: KeyboardEvent) {
+  function handleKeyDown(e: KeyboardEvent) {
+    // navigate dropdown options
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
+
+      const opt = optionsArray[focusIndex];
+      itemsRef.current.get(opt)?.scrollIntoView({ block: 'center' });
 
       const idx = Math.min(
         Math.max(e.key === 'ArrowDown' ? focusIndex + 1 : focusIndex - 1, 0),
         optionsArray.length - 1,
       );
-
-      const opt = optionsArray[focusIndex];
-      itemsRef.current.get(opt)?.scrollIntoView({ block: 'center' });
-
       setFocusIndex(idx);
+
+      // select/unselect dropdown option
     } else if (e.key === 'Enter') {
       e.preventDefault();
 
       if (focusIndex < 0 || focusIndex >= optionsArray.length) return;
       const opt = optionsArray[focusIndex];
-      handleOptionSelect(opt);
+      handleSelectOption(opt);
+
+      // remove last selected option
     } else if (e.key === 'Backspace') {
       if (inputValue !== '') return;
 
-      if (typeof currentValue === 'object') {
-        if (currentValue.size === 0) return;
+      if (multi) {
+        if (value.size === 0) return;
 
-        const currentArr = Array.from(currentValue);
+        const currentArr = Array.from(value);
         currentArr.splice(currentArr.length - 1, 1);
-        setCurrentValue(new Set(currentArr));
+        setValue(new Set(currentArr));
       } else {
-        setCurrentValue('');
+        setValue('');
       }
     }
   }
@@ -127,7 +144,7 @@ export default function InputDropdown({
         containerRef.current.contains(e.target as Node)
       )
         return;
-      setMenuShown(false);
+      setMenuVisible(false);
     }
 
     document.addEventListener('click', globalClickEvent);
@@ -139,33 +156,32 @@ export default function InputDropdown({
 
   // helper to hide menu and clear text
   function hideMenu() {
-    setMenuShown(false);
+    setMenuVisible(false);
     if (inputRef.current) inputRef.current.innerText = '';
     setInputValue('');
   }
 
   return (
     <DropdownContainer ref={containerRef} onBlur={() => hideMenu()}>
-      <DropdownInputLabel as="label" htmlFor={id}>
+      <DropdownInputLabel
+        as="label"
+        onClick={() => inputRef.current && inputRef.current.focus()}
+      >
         {label}
       </DropdownInputLabel>
       <DropdownInputContainer
         as="div"
         $error={error !== ''}
-        $focused={menuShown}
-        $empty={
-          typeof currentValue === 'object'
-            ? currentValue.size === 0
-            : !currentValue
-        }
+        $focused={menuVisible}
+        $empty={multi ? value.size === 0 : !value}
         onMouseDown={e => {
           e.preventDefault();
           if (inputRef.current) inputRef.current.focus();
         }}
       >
         <TagContainer>
-          {typeof currentValue === 'object'
-            ? Array.from(currentValue).map(v => (
+          {multi
+            ? Array.from(value).map(v => (
                 <DropdownInputTag
                   key={v}
                   onMouseDown={e => {
@@ -177,47 +193,35 @@ export default function InputDropdown({
                   {v}
                 </DropdownInputTag>
               ))
-            : currentValue && <p>{currentValue}</p>}
+            : value && <p>{value}</p>}
         </TagContainer>
         <DropdownInput
-          id={id}
           ref={inputRef}
-          $placeholder={
-            (
-              typeof currentValue === 'object'
-                ? currentValue.size > 0
-                : currentValue
-            )
-              ? ''
-              : placeholder
-          }
-          $hidden={!menuShown}
-          onFocus={() => setTimeout(() => setMenuShown(true), 0)}
+          $placeholder={(multi ? value.size > 0 : value) ? '' : placeholder}
+          $hidden={!menuVisible}
+          onFocus={() => setTimeout(() => setMenuVisible(true), 0)}
           onInput={() => {
             if (inputRef.current)
               setInputValue(inputRef.current.innerText.toLowerCase());
             setFocusIndex(-1);
           }}
-          onKeyDown={e => handleInputKey(e)}
+          onKeyDown={e => handleKeyDown(e)}
           contentEditable
         />
       </DropdownInputContainer>
-      <DropdownMenu show={menuShown}>
+      <DropdownMenu show={menuVisible}>
         {optionsArray.map((o, i) => (
           <DropdownMenu.Item
             key={o}
             ref={el => itemsRef.current.set(o, el)}
             onMouseDown={e => e.preventDefault()}
             onClick={() => {
-              handleOptionSelect(o);
+              handleSelectOption(o);
               setFocusIndex(i);
             }}
-            onKeyUp={e => e.key === 'Enter' && handleOptionSelect(o)}
-            $selected={
-              typeof currentValue === 'object'
-                ? currentValue.has(o)
-                : currentValue === o
-            }
+            onMouseMove={() => setFocusIndex(-1)}
+            onKeyUp={e => e.key === 'Enter' && handleSelectOption(o)}
+            $selected={multi ? value.has(o) : value === o}
             $focus={focusIndex === i}
           >
             {o}
@@ -233,9 +237,9 @@ export default function InputDropdown({
  * EXAMPLE USAGE:
  * app/test-page/page.tsx
  * 
-
 'use client';
 
+import { useState } from 'react';
 import InputDropdown from '@/components/InputDropdown';
 import styled from 'styled-components';
 
@@ -258,15 +262,20 @@ const Box = styled.div`
 `;
 
 export default function Page() {
+  const [fruits, setFruits] = useState(new Set<string>());
+  const [writingUtensil, setWritingUtensil] = useState('');
+
   return (
     <ContainerDiv>
       <Box>
         <InputDropdown
-          id="test-dropdown"
           label="Fruits"
           placeholder="Apple"
           multi
-          options={[
+          value={fruits}
+          setValue={setFruits}
+          options={
+            new Set([
               'Apple',
               'Banana',
               'Cherry',
@@ -294,10 +303,12 @@ export default function Page() {
           }
         />
         <InputDropdown
-          id="test-dropdown2"
           label="Writing Utensil"
           placeholder="Pen"
-          options={[
+          value={writingUtensil}
+          setValue={setWritingUtensil}
+          options={
+            new Set([
               'Pen',
               'Pencil',
               'Mechanical Pencil',
