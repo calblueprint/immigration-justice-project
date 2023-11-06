@@ -83,6 +83,8 @@ export default function InputDropdown({
 
   // decide add/remove options
   function handleSelectOption(option: string) {
+    if (inputRef.current) inputRef.current.innerText = '';
+
     if (multi) {
       const copy = new Set(value);
 
@@ -209,7 +211,7 @@ export default function InputDropdown({
           contentEditable
         />
       </DropdownInputContainer>
-      <DropdownMenu show={menuVisible}>
+      <DropdownMenu show={menuVisible} onMouseLeave={() => setFocusIndex(-1)}>
         {optionsArray.map((o, i) => (
           <DropdownMenu.Item
             key={o}
@@ -219,10 +221,13 @@ export default function InputDropdown({
               handleSelectOption(o);
               setFocusIndex(i);
             }}
-            onMouseMove={() => setFocusIndex(-1)}
+            onMouseMove={() => {
+              setFocusIndex(i);
+            }}
             onKeyUp={e => e.key === 'Enter' && handleSelectOption(o)}
             $selected={multi ? value.has(o) : value === o}
-            $focus={focusIndex === i}
+            $forceFocus={focusIndex === i}
+            $disableMouseFocus
           >
             {o}
           </DropdownMenu.Item>
@@ -237,6 +242,7 @@ export default function InputDropdown({
  * EXAMPLE USAGE:
  * app/test-page/page.tsx
  * 
+
 'use client';
 
 import { useState } from 'react';

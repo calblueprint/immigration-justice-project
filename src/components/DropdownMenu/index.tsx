@@ -6,8 +6,16 @@ interface DropdownMenuProps extends React.ComponentPropsWithoutRef<'div'> {
   children: ReactNode;
 }
 
-export default function DropdownMenu({ show, children }: DropdownMenuProps) {
-  return <MenuContainer $show={show}>{children}</MenuContainer>;
+export default function DropdownMenu({
+  show,
+  children,
+  ...otherProps
+}: DropdownMenuProps) {
+  return (
+    <MenuContainer $show={show} {...otherProps}>
+      {children}
+    </MenuContainer>
+  );
 }
 
 DropdownMenu.Item = DropdownItem;

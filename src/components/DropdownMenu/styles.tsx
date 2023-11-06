@@ -46,7 +46,11 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 `;
 
 // menu option
-export const DropdownItem = styled.p<{ $selected: boolean; $focus?: boolean }>`
+export const DropdownItem = styled.p<{
+  $selected: boolean;
+  $forceFocus?: boolean;
+  $disableMouseFocus?: boolean;
+}>`
   color: ${COLORS.greyDarker};
   position: relative;
   cursor: default;
@@ -78,10 +82,18 @@ export const DropdownItem = styled.p<{ $selected: boolean; $focus?: boolean }>`
     transform: translateY(0.1rem);
     position: absolute;
     z-index: -1;
-    opacity: ${({ $selected, $focus }) => ($selected || $focus ? 1 : 0)};
+    opacity: ${({ $selected, $forceFocus }) =>
+      $selected || $forceFocus ? 1 : 0};
   }
 
-  &:hover::before,
+  ${({ $disableMouseFocus }) =>
+    !$disableMouseFocus &&
+    `
+    &:hover::before {
+      opacity: 1;
+    }
+  `}
+
   &:focus::before {
     opacity: 1;
   }
