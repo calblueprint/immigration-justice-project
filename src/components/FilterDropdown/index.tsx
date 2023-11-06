@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
 import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
@@ -31,11 +31,28 @@ export default function FilterDropdown({
   onChange,
 }: FilterDropdownProps) {
   const container = useRef<HTMLDivElement>(null);
-  const [menuShown, setMenuShown] = useState(false);
+  const itemsRef = useRef<Map<string, HTMLParagraphElement | null>>(new Map());
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [focusIndex, setFocusIndex] = useState(-1);
   const optionsArray = useMemo(() => Array.from(options), [options]);
 
+  // mount listener for closing dropdown menu
+  useEffect(() => {
+    function globalClickListener(e: Event) {
+      if (container.current && container.current.contains(e.target as Node))
+        return;
+      setMenuVisible(false);
+    }
+
+    document.addEventListener('click', globalClickListener);
+
+    return () => {
+      document.removeEventListener('click', globalClickListener);
+    };
+  }, []);
+
   // handle select option
-  function handleOptionClick(val: string) {
+  function handleSelectOption(val: string) {
     // multi-select
     if (multi) {
       const copy = new Set(value);
@@ -53,6 +70,31 @@ export default function FilterDropdown({
     }
   }
 
+  // keyboard navigation
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+
+      const opt = optionsArray[focusIndex];
+      itemsRef.current.get(opt)?.scrollIntoView({ block: 'center' });
+
+      const idx = Math.min(
+        Math.max(e.key === 'ArrowDown' ? focusIndex + 1 : focusIndex - 1, 0),
+        optionsArray.length - 1,
+      );
+      setFocusIndex(idx);
+    } else if (e.key === 'Enter' && menuVisible && focusIndex !== -1) {
+      e.preventDefault();
+
+      if (focusIndex < 0 || focusIndex >= optionsArray.length) return;
+      const opt = optionsArray[focusIndex];
+      handleSelectOption(opt);
+    } else if (e.key === 'Escape') {
+      setMenuVisible(false);
+      setFocusIndex(-1);
+    }
+  }
+
   // format button display
   function buttonDisplay() {
     if (multi) {
@@ -67,35 +109,26 @@ export default function FilterDropdown({
     return value;
   }
 
-  // mount listener for closing dropdown menu
-  useEffect(() => {
-    function globalClickListener(e: Event) {
-      if (container.current && container.current.contains(e.target as Node))
-        return;
-      setMenuShown(false);
-    }
-
-    document.addEventListener('click', globalClickListener);
-
-    return () => {
-      document.removeEventListener('click', globalClickListener);
-    };
-  }, []);
-
   return (
-    <DropdownContainer ref={container}>
+    <DropdownContainer ref={container} onBlur={() => setMenuVisible(false)}>
       <DropdownButton
         $changed={multi ? value.size > 0 : value === ''}
-        onClick={() => setTimeout(() => setMenuShown(!menuShown), 0)}
+        onClick={() => setTimeout(() => setMenuVisible(!menuVisible), 0)}
+        onKeyDown={e => handleKeyDown(e)}
       >
         {buttonDisplay()}
       </DropdownButton>
-      <DropdownMenu show={menuShown}>
-        {optionsArray.map(o => (
+      <DropdownMenu show={menuVisible}>
+        {optionsArray.map((o, i) => (
           <DropdownMenu.Item
             key={o}
-            onClick={() => handleOptionClick(o)}
-            $selected={multi ? value.has(o) : o === value}
+            ref={el => itemsRef.current.set(o, el)}
+            onClick={() => handleSelectOption(o)}
+            onMouseDown={e => e.preventDefault()}
+            onMouseOver={() => setFocusIndex(i)}
+            $selected={multi ? value.has(o) : value === o}
+            $forceFocus={focusIndex === i}
+            $disableMouseFocus
           >
             {o}
           </DropdownMenu.Item>

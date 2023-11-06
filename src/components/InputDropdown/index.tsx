@@ -57,6 +57,7 @@ export default function InputDropdown({
   const [menuVisible, setMenuVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
+  // store array format for focus indexing
   const optionsArray = useMemo(
     () =>
       Array.from(new Set(options)).filter(o =>
@@ -64,6 +65,24 @@ export default function InputDropdown({
       ),
     [options, inputValue],
   );
+
+  // detect clicking outside of menu box
+  useEffect(() => {
+    function globalClickEvent(this: Document, e: MouseEvent) {
+      if (
+        containerRef.current &&
+        containerRef.current.contains(e.target as Node)
+      )
+        return;
+      setMenuVisible(false);
+    }
+
+    document.addEventListener('click', globalClickEvent);
+
+    return () => {
+      document.removeEventListener('click', globalClickEvent);
+    };
+  }, []);
 
   // handle when a tag gets clicked
   function handleRemoveOption(option: string) {
@@ -137,24 +156,6 @@ export default function InputDropdown({
       }
     }
   }
-
-  // detect clicking outside of menu box
-  useEffect(() => {
-    function globalClickEvent(this: Document, e: MouseEvent) {
-      if (
-        containerRef.current &&
-        containerRef.current.contains(e.target as Node)
-      )
-        return;
-      setMenuVisible(false);
-    }
-
-    document.addEventListener('click', globalClickEvent);
-
-    return () => {
-      document.removeEventListener('click', globalClickEvent);
-    };
-  }, []);
 
   // helper to hide menu and clear text
   function hideMenu() {
