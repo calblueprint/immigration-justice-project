@@ -5,7 +5,7 @@ import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
 interface CommonProps {
-  options: string[];
+  options: Set<string>;
   defaultValue: string;
 }
 
@@ -32,7 +32,7 @@ export default function FilterDropdown({
 }: FilterDropdownProps) {
   const container = useRef<HTMLDivElement>(null);
   const [menuShown, setMenuShown] = useState(false);
-  const optionsArray = useMemo(() => Array.from(new Set(options)), [options]);
+  const optionsArray = useMemo(() => Array.from(options), [options]);
 
   // handle select option
   function handleOptionClick(val: string) {
