@@ -21,7 +21,6 @@ export default function ForgotPassword() {
           label="Email"
           placeholder="email@example.com"
           type="email"
-          name="email"
           value={email}
           setValue={setEmail}
         />

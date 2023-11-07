@@ -37,7 +37,7 @@ export default function Login() {
             placeholder="email@example.com"
             errorText="Email Error" // {errorMessage}
             type="email"
-            name="email"
+            id="email"
             value={email}
             setValue={setEmail}
           />
@@ -46,7 +46,7 @@ export default function Login() {
             placeholder="Password"
             errorText="Password Error"
             type="password"
-            name="password"
+            id="password"
             value={password}
             setValue={setPassword}
           />

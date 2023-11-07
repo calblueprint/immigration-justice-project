@@ -6,7 +6,7 @@ type TextInputProps = {
   placeholder: string;
   errorText?: string;
   type?: string;
-  name: string;
+  id?: string;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
 };
@@ -14,9 +14,9 @@ type TextInputProps = {
 export default function TextInput({
   label,
   placeholder,
-  errorText = "",
-  type="text",
-  name,
+  errorText = '',
+  type = 'text',
+  id, // try to incorporate id? using <label for={id}>
   value,
   setValue,
 }: TextInputProps) {
@@ -25,9 +25,9 @@ export default function TextInput({
       <InputLabel as="label">{label}</InputLabel>
       <InputText
         as="input"
-        $error={errorText !== ""}
+        $error={errorText !== ''}
         placeholder={placeholder}
-        name={name}
+        id={id}
         type={type}
         value={value}
         onChange={e => setValue(e.target.value)}
