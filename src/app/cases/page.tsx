@@ -3,16 +3,17 @@
 import { useEffect, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import { H1, H2 } from '@/styles/text';
+import { H1 } from '@/styles/text';
+import CaseDetails from '@/components/CaseDetails';
 import FilterDropdown from '@/components/FilterDropdown';
 import {
   CardColumn,
   MainDisplay,
   PageContainer,
   FiltersContainer,
+  CaseDetailDisplay,
 } from './styles';
 
 type FilterType = {
@@ -131,11 +132,11 @@ export default function Page() {
               />
             ))}
         </CardColumn>
-        <CaseDetailDisplay>
-          <CaseDetails>
-            <H2>Case details.</H2>
-          </CaseDetails>
-        </CaseDetailDisplay>
+        {caseInfo && (
+          <CaseDetailDisplay>
+            <CaseDetails caseData={caseInfo} />
+          </CaseDetailDisplay>
+        )}
       </MainDisplay>
     </PageContainer>
   );
