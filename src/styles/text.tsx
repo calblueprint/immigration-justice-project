@@ -4,6 +4,8 @@ import COLORS from './colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
+// 1 rem = 16 px
+
 export const H1 = styled.h1<{ $color?: string }>`
   ${openSans.style}
   display: block;

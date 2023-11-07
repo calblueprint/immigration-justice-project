@@ -3,17 +3,16 @@
 import { useEffect, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
+import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import { H1, H2 } from '@/styles/text';
-import FilterDropdown from '@/components/FilterDropdown';
+import CaseDetailDisplay from '@/components/CaseDetails';
+import { H1 } from '@/styles/text';
 import {
   CardColumn,
-  CaseDetailDisplay,
-  CaseDetails,
-  FiltersContainer,
   MainDisplay,
   PageContainer,
+  FiltersContainer,
 } from './styles';
 
 type FilterType = {
@@ -27,6 +26,7 @@ type FilterType = {
 export default function Page() {
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [selectedCard, setSelectedCard] = useState<UUID>();
+  const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
     remote: 'Remote/In Person',
     role: 'Attorney/Interpreter',
@@ -39,10 +39,10 @@ export default function Page() {
   useEffect(() => {
     getNCases(20).then(casesData => {
       setCaseData(casesData);
+      setCaseInfo(casesData[0]);
     });
   }, []);
 
-  // page structure
   return (
     <PageContainer>
       <H1>Browse Available Cases</H1>
@@ -126,16 +126,14 @@ export default function Page() {
                 key={c.id}
                 caseData={c}
                 isSelected={c.id === selectedCard}
-                onClick={() => setSelectedCard(c.id)}
+                onClick={() => {
+                  setSelectedCard(c.id);
+                  setCaseInfo(c);
+                }}
               />
             ))}
         </CardColumn>
-        <CaseDetailDisplay>
-          {/* proof of concept -- to turn into component later */}
-          <CaseDetails>
-            <H2>Case details.</H2>
-          </CaseDetails>
-        </CaseDetailDisplay>
+        {caseInfo && <CaseDetailDisplay caseData={caseInfo} />}
       </MainDisplay>
     </PageContainer>
   );

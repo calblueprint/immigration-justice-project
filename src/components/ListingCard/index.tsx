@@ -1,7 +1,7 @@
 import React from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import { timestampStringToDate } from '@/utils/helpers';
+import { timestampStringToDate, parseDate } from '@/utils/helpers';
 import { H2 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { CardBody, TagRow, CardTag } from './styles';
@@ -15,10 +15,6 @@ export default function ListingCard({
   isSelected?: boolean;
   onClick?: (id: UUID) => void;
 }) {
-  // helper functions
-  const parseDate = (d: Date): string =>
-    `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-
   return (
     <CardBody
       $selected={isSelected}
@@ -31,7 +27,7 @@ export default function ListingCard({
         {caseData.languages.join(', ')}
       </p>
       <p>
-        <strong>Upcoming Date: </strong>
+        <strong>Case Deadline: </strong>
         {parseDate(timestampStringToDate(caseData.upcoming_date))}
       </p>
       <TagRow>
