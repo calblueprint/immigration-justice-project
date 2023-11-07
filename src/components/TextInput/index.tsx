@@ -9,7 +9,7 @@ type TextInputProps = {
   type: string;
   name: string;
   value: string;
-  setValue: (newValue: string) => void;
+  setValue: Dispatch<SetStateAction<string>>;
 };
 
 export default function TextInput({
@@ -26,6 +26,7 @@ export default function TextInput({
     <InputDiv>
       <InputLabel as="label">{label}</InputLabel>
       <InputText
+        as="input"
         $error={erroring}
         placeholder={placeholder}
         name={name}
