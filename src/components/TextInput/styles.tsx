@@ -9,7 +9,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   // is possible to inherit text styles from H4?
   ${openSans.style}
   color: ${COLORS.greyDarker};
-  
+
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 5px;
   border: 2px solid
