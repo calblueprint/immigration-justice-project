@@ -4,9 +4,8 @@ import { InputLabel, InputText, InputDiv, ErrorText } from './styles';
 type TextInputProps = {
   label: string;
   placeholder: string;
-  erroring: boolean;
-  errorText: string;
-  type: string;
+  errorText?: string;
+  type?: string;
   name: string;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
@@ -15,9 +14,8 @@ type TextInputProps = {
 export default function TextInput({
   label,
   placeholder,
-  erroring,
-  errorText = '',
-  type,
+  errorText = "",
+  type="text",
   name,
   value,
   setValue,
@@ -27,14 +25,14 @@ export default function TextInput({
       <InputLabel as="label">{label}</InputLabel>
       <InputText
         as="input"
-        $error={erroring}
+        $error={errorText !== ""}
         placeholder={placeholder}
         name={name}
         type={type}
         value={value}
         onChange={e => setValue(e.target.value)}
       />
-      {erroring && <ErrorText>{errorText}</ErrorText>}
+      {errorText && <ErrorText>{errorText}</ErrorText>}
     </InputDiv>
   );
 }

@@ -14,7 +14,7 @@ const BigButton = styled.button<{ disabled?: boolean }>`
 
   padding: 0.94rem 0;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   width: 100%;
   &:hover {

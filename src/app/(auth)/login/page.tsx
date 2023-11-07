@@ -35,7 +35,6 @@ export default function Login() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            erroring={false}
             errorText="Email Error" // {errorMessage}
             type="email"
             name="email"
@@ -45,7 +44,6 @@ export default function Login() {
           <TextInput
             label="Password"
             placeholder="Password"
-            erroring={false}
             errorText="Password Error"
             type="password"
             name="password"
