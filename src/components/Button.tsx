@@ -32,7 +32,7 @@ const Button = styled.button<{
   background: ${props => (props.primaryColor ? props.primaryColor : 'white')};
   align-self: flex-end;
   padding: 0.625rem 1.25rem;
-  border-radius: 5px;
+  border-radius: 0.313rem; // 5px
   border: 2px solid
     ${props => (props.primaryColor ? props.primaryColor : props.secondaryColor)};
   &:hover {

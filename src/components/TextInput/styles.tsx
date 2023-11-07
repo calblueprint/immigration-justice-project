@@ -9,7 +9,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   // pass in as='input' when using as a tag, since this is supposed to be an input
   color: ${COLORS.greyDarker};
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
-  border-radius: 5px;
+  border-radius: 0.313rem; // 5px
   border: 2px solid
     ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyDark)};
   justify-content: flex-start;

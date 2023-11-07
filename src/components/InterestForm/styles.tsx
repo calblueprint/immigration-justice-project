@@ -25,7 +25,7 @@ export const FormTextArea = styled.textarea`
   resize: none;
   font-size: 1rem; // 16px;
   font-weight: 400;
-  border-radius: 5px;
+  border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
   padding: 0.5rem;
@@ -39,7 +39,7 @@ export const FormInput = styled.input`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 400;
-  border-radius: 5px;
+  border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
   padding: 0.5rem;
   margin-bottom: 0.6rem;
