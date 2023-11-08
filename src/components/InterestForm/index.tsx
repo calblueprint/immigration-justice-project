@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UUID } from 'crypto';
 import { insertInterest } from '@/api/supabase/queries/interest';
-import { Interest, CaseListing } from '@/types/schema';
+import { Interest, CaseListing, RoleEnum } from '@/types/schema';
 import { H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import Button from '../Button';
@@ -42,12 +41,14 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     if (reason !== '' && startDate !== '' && rolesInterested !== '') {
       const newInterest: Interest = {
         // hardcoded values for now
-        id: crypto.randomUUID() as UUID,
         listing_id: caseData.id,
-        listing_type: 1,
+        listing_type: 'CASE',
         user_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
         form_response: {
-          interestType: rolesInterested,
+          rolesInterested:
+            rolesInterested === radioOptions[2]
+              ? ['ATTORNEY', 'INTERPRETER']
+              : [rolesInterested.toUpperCase() as RoleEnum],
           interestReason: reason,
           start_date: startDate,
         },
