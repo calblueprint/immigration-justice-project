@@ -3,13 +3,6 @@ import { UUID } from 'crypto';
 // table field types
 export type ImmigrationLawExperienceEnum = 'LOW' | 'MEDIUM' | 'HIGH';
 
-export type AdjudicatingAgencyEnum =
-  | '9TH_CIRCUIT'
-  | 'BIA'
-  | 'IMMIGRATION_COURT'
-  | 'ICE'
-  | 'USCIS';
-
 export type RoleEnum =
   | 'ATTORNEY'
   | 'INTERPRETER'
@@ -59,7 +52,7 @@ export interface CaseListing {
   needs_interpreter?: boolean;
   upcoming_date?: string;
   experience_needed: ImmigrationLawExperienceEnum;
-  adjudicating_agency: AdjudicatingAgencyEnum;
+  adjudicating_agency: string;
 }
 
 export interface Profile {
@@ -82,7 +75,7 @@ export interface Interest {
   form_response: {
     rolesInterested: RoleEnum[];
     interestReason: string;
-    start_date: string;
+    start_date: Date;
   };
 }
 
