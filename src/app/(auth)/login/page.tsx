@@ -12,7 +12,7 @@ import {
   H4Centered,
   QuestionsDiv,
   SpacerDiv,
-} from '@/app/auth/styles';
+} from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 
 export default function Login() {
@@ -86,7 +86,7 @@ export default function Login() {
           </BigButton>
           <H4Centered>
             Don’t have an account yet?{' '}
-            <AColored $color={COLORS.greyDark} href="/">
+            <AColored $color={COLORS.greyDark} href="/signup">
               Sign up
             </AColored>
           </H4Centered>

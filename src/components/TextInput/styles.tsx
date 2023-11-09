@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
-import { H4, P } from '@/styles/text';
+import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
 export const InputText = styled(P)<{ $error: boolean }>`
-  // pass in as='input' when using as a tag, since this is supposed to be an input
+  // is possible to inherit text styles from H4?
+  ${openSans.style}
   color: ${COLORS.greyDarker};
+
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   border-radius: 0.313rem; // 5px
   border: 2px solid
@@ -30,7 +32,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   }
 `;
 
-export const InputTitleText = styled(H4)`
+export const InputLabel = styled(H4)`
   color: ${COLORS.greyDark};
   margin-bottom: 0.625rem; //10px
 `;
