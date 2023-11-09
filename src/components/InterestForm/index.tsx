@@ -50,7 +50,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
               ? ['ATTORNEY', 'INTERPRETER']
               : [rolesInterested.toUpperCase() as RoleEnum],
           interestReason: reason,
-          start_date: startDate,
+          start_date: new Date(startDate),
         },
       };
 
