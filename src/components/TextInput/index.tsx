@@ -22,7 +22,9 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <InputDiv>
-      <InputLabel as="label">{label}</InputLabel>
+      <InputLabel as="label" htmlFor={id}>
+        {label}
+      </InputLabel>
       <InputText
         as="input"
         $error={errorText !== ''}

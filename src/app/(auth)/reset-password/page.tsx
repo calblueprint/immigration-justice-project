@@ -19,7 +19,7 @@ export default function ResetPassword() {
         `An error occurred trying to reset password: ${error.message}`,
       );
     }
-    push('/login');
+    push('/confirm-reset-password');
   };
 
   return (
@@ -31,7 +31,7 @@ export default function ResetPassword() {
             label="New Password"
             placeholder="Password"
             type="password"
-            id="newpass1"
+            id="newpass"
             value={newPassword}
             setValue={setNewPassword}
           />
@@ -39,7 +39,7 @@ export default function ResetPassword() {
             label="Confirm New Password"
             placeholder="Password"
             type="password"
-            id="newpass2"
+            id="confirmnewpass"
             value={newPassword2}
             setValue={setNewPassword2}
           />
