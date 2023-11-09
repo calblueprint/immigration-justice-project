@@ -54,20 +54,18 @@ export default function SignUp() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            erroring={false}
             errorText="Email Error" // {errorMessage}
             type="email"
-            name="email"
+            id="email"
             value={email}
             setValue={setEmail}
           />
           <TextInput
             label="Password"
             placeholder="Password"
-            erroring={false}
             errorText="Password Error"
             type="password"
-            name="password"
+            id="password"
             value={password}
             setValue={setPassword}
           />
