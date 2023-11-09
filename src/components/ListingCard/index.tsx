@@ -22,14 +22,12 @@ export default function ListingCard({
     >
       {/* hard-coded for now */}
       <H2>Case title.</H2>
-      <p>
-        <strong>Languages: </strong>
-        {caseData.languages.join(', ')}
-      </p>
-      <p>
-        <strong>Case Deadline: </strong>
-        {parseDate(timestampStringToDate(caseData.upcoming_date))}
-      </p>
+      {caseData.upcoming_date && (
+        <p>
+          <strong>Case Deadline: </strong>
+          {parseDate(timestampStringToDate(caseData.upcoming_date))}
+        </p>
+      )}
       <TagRow>
         {caseData.needs_interpreter && (
           <CardTag color={COLORS.blueLight}>Interpreter needed</CardTag>
