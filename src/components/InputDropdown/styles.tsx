@@ -71,17 +71,24 @@ export const DropdownInputContainer = styled(InputText)<{
   $focused: boolean;
   $empty: boolean;
   $error?: boolean;
+  $disabled?: boolean;
 }>`
   position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  ${({ $focused }) => $focused && `row-gap: 0.5rem`};
+
   width: 100%;
   max-width: 100%;
-  cursor: text;
   min-height: 2.9375rem;
   padding-right: 2.25rem;
-  ${({ $focused }) => $focused && `row-gap: 0.5rem`};
+
+  cursor: ${({ $disabled }) => ($disabled ? 'default' : 'text')};
+
+  background-color: ${({ $disabled }) =>
+    $disabled ? COLORS.greyLighter : 'none'};
+
   border-color: ${({ $focused, $empty }) =>
     $focused || !$empty ? COLORS.blueMid : COLORS.placeholderText} !important;
   ${({ $error }) => $error && `border-color: ${COLORS.redMid} !important;`}
@@ -91,14 +98,18 @@ export const DropdownInputContainer = styled(InputText)<{
     position: absolute;
     top: 50%;
     right: 0.75rem;
+
     width: 1rem;
     height: 1rem;
+
     transform: translateY(-50%)
       ${({ $focused }) => $focused && `rotate(180deg)`};
+
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Cpath d='M7.29377 13.2062C7.6844 13.5968 8.31877 13.5968 8.7094 13.2062L14.7094 7.20615C15.1 6.81553 15.1 6.18115 14.7094 5.79053C14.3188 5.3999 13.6844 5.3999 13.2938 5.79053L8.00002 11.0843L2.70627 5.79365C2.31565 5.40303 1.68127 5.40303 1.29065 5.79365C0.900024 6.18428 0.900024 6.81865 1.29065 7.20928L7.29065 13.2093L7.29377 13.2062Z' fill='%23292929' /%3E %3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 1rem;
     background-position: center;
+
     transition: 200ms ease-in-out;
   }
 `;

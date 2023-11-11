@@ -22,8 +22,9 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 
   &:empty {
     &::after {
-      content: 'No values found!';
+      content: 'No matches found!';
       padding: 0.5rem;
+      text-align: center;
       font-size: 0.875rem;
       color: ${COLORS.greyMid};
     }

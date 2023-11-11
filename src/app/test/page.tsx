@@ -25,6 +25,7 @@ const Box = styled.div`
 export default function Page() {
   const [fruits, setFruits] = useState(new Set<string>());
   const [writingUtensil, setWritingUtensil] = useState('');
+  const [greenGlassDoor, setGreenGlassDoor] = useState('');
 
   return (
     <ContainerDiv>
@@ -80,6 +81,14 @@ export default function Page() {
               'Mouse',
             ])
           }
+        />
+        <InputDropdown
+          label="GGD"
+          disabled
+          placeholder="Word"
+          value={greenGlassDoor}
+          setValue={setGreenGlassDoor}
+          options={new Set(['Map', 'Car', 'Gas', 'Cloud', 'Water'])}
         />
       </Box>
     </ContainerDiv>

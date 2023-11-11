@@ -23,6 +23,7 @@ import { DropdownContainer } from '../FilterDropdown/styles';
 interface CommonProps {
   placeholder?: string;
   error?: string;
+  disabled?: boolean;
   label: string;
   options: Set<string>;
 }
@@ -44,6 +45,7 @@ type InputDropdownProps = MultiSelectProps | SingleSelectProps;
 export default function InputDropdown({
   placeholder,
   error = '',
+  disabled = false,
   label,
   options,
   multi,
@@ -179,6 +181,7 @@ export default function InputDropdown({
         $error={error !== ''}
         $focused={menuVisible}
         $empty={multi ? value.size === 0 : !value}
+        $disabled={disabled}
         onMouseDown={e => {
           e.preventDefault();
           if (inputRef.current) inputRef.current.focus();
@@ -211,9 +214,12 @@ export default function InputDropdown({
             setFocusIndex(-1);
           }}
           onKeyDown={e => handleKeyDown(e)}
-          contentEditable
+          contentEditable={!disabled}
         />
-        <DropdownMenu show={menuVisible} onMouseLeave={() => setFocusIndex(-1)}>
+        <DropdownMenu
+          show={disabled ? false : menuVisible}
+          onMouseLeave={() => setFocusIndex(-1)}
+        >
           {optionsArray.map((o, i) => (
             <DropdownMenu.Item
               key={o}
@@ -273,6 +279,7 @@ const Box = styled.div`
 export default function Page() {
   const [fruits, setFruits] = useState(new Set<string>());
   const [writingUtensil, setWritingUtensil] = useState('');
+  const [greenGlassDoor, setGreenGlassDoor] = useState('');
 
   return (
     <ContainerDiv>
@@ -316,6 +323,7 @@ export default function Page() {
           placeholder="Pen"
           value={writingUtensil}
           setValue={setWritingUtensil}
+          error="Wrong utensil!"
           options={
             new Set([
               'Pen',
@@ -327,6 +335,14 @@ export default function Page() {
               'Mouse',
             ])
           }
+        />
+        <InputDropdown
+          label="GGD"
+          disabled
+          placeholder="Word"
+          value={greenGlassDoor}
+          setValue={setGreenGlassDoor}
+          options={new Set(['Map', 'Car', 'Gas', 'Cloud', 'Water'])}
         />
       </Box>
     </ContainerDiv>
