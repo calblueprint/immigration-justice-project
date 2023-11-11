@@ -102,7 +102,7 @@ export default function InputDropdown({
 
   // decide add/remove options
   function handleSelectOption(option: string) {
-    if (inputRef.current) inputRef.current.innerText = '';
+    if (inputRef.current) inputRef.current.innerHTML = '';
 
     if (multi) {
       const copy = new Set(value);
@@ -143,7 +143,9 @@ export default function InputDropdown({
 
       // remove last selected option
     } else if (e.key === 'Backspace') {
-      if (inputValue !== '') return;
+      if (inputRef.current && inputRef.current.innerText === '')
+        setInputValue('');
+      if (inputValue) return;
 
       if (multi) {
         if (value.size === 0) return;
@@ -211,29 +213,29 @@ export default function InputDropdown({
           onKeyDown={e => handleKeyDown(e)}
           contentEditable
         />
+        <DropdownMenu show={menuVisible} onMouseLeave={() => setFocusIndex(-1)}>
+          {optionsArray.map((o, i) => (
+            <DropdownMenu.Item
+              key={o}
+              ref={el => itemsRef.current.set(o, el)}
+              onMouseDown={e => e.preventDefault()}
+              onClick={() => {
+                handleSelectOption(o);
+                setFocusIndex(i);
+              }}
+              onMouseMove={() => {
+                setFocusIndex(i);
+              }}
+              onKeyUp={e => e.key === 'Enter' && handleSelectOption(o)}
+              $selected={multi ? value.has(o) : value === o}
+              $forceFocus={focusIndex === i}
+              $disableMouseFocus
+            >
+              {o}
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu>
       </DropdownInputContainer>
-      <DropdownMenu show={menuVisible} onMouseLeave={() => setFocusIndex(-1)}>
-        {optionsArray.map((o, i) => (
-          <DropdownMenu.Item
-            key={o}
-            ref={el => itemsRef.current.set(o, el)}
-            onMouseDown={e => e.preventDefault()}
-            onClick={() => {
-              handleSelectOption(o);
-              setFocusIndex(i);
-            }}
-            onMouseMove={() => {
-              setFocusIndex(i);
-            }}
-            onKeyUp={e => e.key === 'Enter' && handleSelectOption(o)}
-            $selected={multi ? value.has(o) : value === o}
-            $forceFocus={focusIndex === i}
-            $disableMouseFocus
-          >
-            {o}
-          </DropdownMenu.Item>
-        ))}
-      </DropdownMenu>
       {error && <DropdownErrorText>{error}</DropdownErrorText>}
     </DropdownContainer>
   );

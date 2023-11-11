@@ -70,13 +70,13 @@ export default function Page() {
           value={caseFilters.role}
           onChange={v => setCaseFilters({ ...caseFilters, role: v })}
         />
-        <FilterDropdown
+        {/* <FilterDropdown
           defaultValue={defaultFilterValues.languages}
           multi
           options={new Set(caseData.flatMap(c => c.languages))}
           value={caseFilters.languages}
           onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
-        />
+        /> */}
         <FilterDropdown
           defaultValue={defaultFilterValues.agency}
           multi
@@ -87,7 +87,7 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
-          options={new Set(caseData.map(c => c.country))}
+          options={new Set(caseData.filter(c => c.country).map(c => c.country))}
           value={caseFilters.countries}
           onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
         />
