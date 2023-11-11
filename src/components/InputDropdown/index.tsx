@@ -235,6 +235,7 @@ export default function InputDropdown({
               onKeyUp={e => e.key === 'Enter' && handleSelectOption(o)}
               $selected={multi ? value.has(o) : value === o}
               $forceFocus={focusIndex === i}
+              $multi={multi}
               $disableMouseFocus
             >
               {o}

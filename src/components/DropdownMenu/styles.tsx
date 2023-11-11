@@ -49,6 +49,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 // menu option
 export const DropdownItem = styled.p<{
   $selected: boolean;
+  $multi?: boolean;
   $forceFocus?: boolean;
   $disableMouseFocus?: boolean;
 }>`
@@ -56,7 +57,8 @@ export const DropdownItem = styled.p<{
   position: relative;
   cursor: default;
   border-radius: 0.25rem;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem;
+  padding-left: ${({ $multi }) => ($multi ? '2rem' : '1rem')};
   font-size: 0.9375rem;
   user-select: none;
   outline: none;
@@ -65,6 +67,7 @@ export const DropdownItem = styled.p<{
     $selected
       ? `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' fill='%230069A9' stroke='%230069A9' /%3E %3Cpath d='M6.17794 10.8117L3.80728 8.32401L3 9.16517L6.17794 12.5L13 5.34116L12.1984 4.5L6.17794 10.8117Z' fill='white' /%3E %3C/svg%3E")`
       : `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' stroke='%230069A9' /%3E%3C/svg%3E")`};
+  ${({ $multi }) => !$multi && `background-image: none;`}
   background-repeat: no-repeat;
   background-size: 1rem 1rem;
   background-position: left 0.5rem center;
