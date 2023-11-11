@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { InputTitleText, InputText, ErrorText } from '../TextInput/styles';
+import { InputLabel, InputText, ErrorText } from '../TextInput/styles';
 
-export const DropdownInputLabel = styled(InputTitleText)`
+export const DropdownInputLabel = styled(InputLabel)`
   display: block;
   font-size: 1rem;
   margin-bottom: 0.625rem;

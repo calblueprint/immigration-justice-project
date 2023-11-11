@@ -128,6 +128,7 @@ export default function FilterDropdown({
             onMouseOver={() => setFocusIndex(i)}
             $selected={multi ? value.has(o) : value === o}
             $forceFocus={focusIndex === i}
+            $multi={multi}
             $disableMouseFocus
           >
             {o}

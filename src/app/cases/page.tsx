@@ -87,7 +87,11 @@ export default function Page() {
         <FilterDropdown
           defaultValue={defaultFilterValues.countries}
           multi
-          options={new Set(caseData.filter(c => c.country).map(c => c.country))}
+          options={
+            new Set(
+              caseData.filter(c => c.country).map(c => c.country),
+            ) as Set<string>
+          }
           value={caseFilters.countries}
           onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
         />
@@ -112,12 +116,7 @@ export default function Page() {
             })
             .filter(c =>
               caseFilters.countries.size > 0
-                ? caseFilters.countries.has(c.country)
-                : true,
-            )
-            .filter(c =>
-              caseFilters.languages.size > 0
-                ? c.languages.find(l => caseFilters.languages.has(l))
+                ? c.country && caseFilters.countries.has(c.country)
                 : true,
             )
             .map(c => (
