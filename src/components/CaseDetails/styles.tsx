@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { H1 } from '@/styles/text';
-import COLORS from '../../styles/colors';
+import COLORS from '@/styles/colors';
 
 // case detail
 export const CaseDisplay = styled.aside`
@@ -24,7 +24,7 @@ export const CaseInterestContainer = styled.div`
   flex-direction: column;
   gap: 1.4rem;
   display: block;
-  overflow: scroll;
+  overflow-y: auto;
 `;
 
 export const InfoContainer = styled.div`

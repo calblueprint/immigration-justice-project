@@ -1,10 +1,9 @@
 'use client';
 
-// import { UUID } from 'crypto';
+import { UUID } from 'crypto';
 import { useState } from 'react';
-// import { insertProfile } from '../../api/supabase/queries/profiles';
-import { Profile } from '../../types/schema';
-import styles from '../page.module.css';
+import { insertProfile } from '@/api/supabase/queries/profiles';
+import { Profile } from '@/types/schema';
 
 export default function Profile() {
   const [firstName, setFirstName] = useState<string>('');
@@ -12,28 +11,27 @@ export default function Profile() {
 
   const handleInsert = async () => {
     if (!firstName || !lastName) return;
-    // const newProfile: Profile = {
-    //   // hardcoded values for now
-    //   user_id: crypto.randomUUID() as UUID,
-    //   roles: ['blah'],
-    //   languages: ['blah', 'blah'],
-    //   accreditations: ['blah'],
-    //   hours_per_week: 40,
-    //   immigration_law_experience: '5 years',
-    //   bar_number: '12345',
-    //   start_date: new Date().toDateString(),
-    //   interest_ids: [crypto.randomUUID()] as UUID[],
-    //   first_name: firstName,
-    //   last_name: lastName,
-    // };
-    // await insertProfile(newProfile);
+    const newProfile: Profile = {
+      // hardcoded values for now
+      location: 'Berkeley, CA',
+      user_id: crypto.randomUUID() as UUID,
+      hours_per_month: 40,
+      immigration_law_experience: 'HIGH',
+      bar_number: '12345',
+      start_date: new Date().toDateString(),
+      availability_description: 'blah blah blah',
+      eoir_registered: false,
+      first_name: firstName,
+      last_name: lastName,
+    };
+    await insertProfile(newProfile);
     setFirstName('');
     setLastName('');
   };
 
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>Create Profile Form</div>
+    <main>
+      <div>Create Profile Form</div>
       <form>
         <div>
           <label htmlFor="firstName">

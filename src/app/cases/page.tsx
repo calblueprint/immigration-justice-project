@@ -35,7 +35,7 @@ export default function Page() {
     languages: ['All languages'],
   });
 
-  // react hooks
+  // load cases on render
   useEffect(() => {
     getNCases(20).then(casesData => {
       setCaseData(casesData);
@@ -76,27 +76,18 @@ export default function Page() {
         <FilterDropdown
           defaultValue="All countries"
           multi
-          // better solution available if we update ts target to es6
-          options={['All countries'].concat(
-            caseData
-              .map(c => c.country)
-              .filter((v, i, arr) => arr.indexOf(v) === i),
-          )}
+          options={[
+            'All countries',
+            ...Array.from(
+              new Set(
+                caseData
+                  .filter(c => c.country)
+                  .map(c => (c.country ? c.country : '')),
+              ),
+            ),
+          ]}
           onChange={v =>
             setCaseFilters({ ...caseFilters, countries: v as string[] })
-          }
-        />
-        <FilterDropdown
-          defaultValue="All languages"
-          multi
-          // better solution available if we update ts target to es6
-          options={['All languages'].concat(
-            caseData
-              .flatMap(c => c.languages)
-              .filter((v, i, arr) => arr.indexOf(v) === i),
-          )}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, languages: v as string[] })
           }
         />
       </FiltersContainer>
@@ -114,12 +105,7 @@ export default function Page() {
             .filter(c =>
               caseFilters.countries[0] === 'All countries'
                 ? true
-                : caseFilters.countries.includes(c.country),
-            )
-            .filter(c =>
-              caseFilters.languages[0] === 'All languages'
-                ? true
-                : caseFilters.languages.find(l => c.languages.includes(l)),
+                : c.country && caseFilters.countries.includes(c.country),
             )
             .map(c => (
               <ListingCard
