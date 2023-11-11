@@ -56,7 +56,8 @@ export default function Page() {
             <p>hoursPerMonth: {profile.hours_per_month}</p>
             <p>
               immigrationLawExperience:{' '}
-              {profile.immigration_law_experience.toString()}
+              {profile.immigration_law_experience &&
+                profile.immigration_law_experience.toString()}
             </p>
             {profile.bar_number && (
               <p>barNumber: {profile.bar_number.toString()}</p>
