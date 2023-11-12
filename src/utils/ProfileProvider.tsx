@@ -122,7 +122,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       ]);
     };
 
-    return {
+    const val: ProfileContextType = {
       profileData,
       languages: profileLangs,
       roles: profileRoles,
@@ -130,6 +130,8 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       setLanguages,
       setRoles,
     };
+
+    return val;
   }, [profileData, profileLangs, profileRoles]);
 
   return (
