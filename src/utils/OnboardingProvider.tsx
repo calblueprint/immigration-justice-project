@@ -18,8 +18,8 @@ interface OnboardingContextType {
   profile: Profile;
   progress: number;
   flow: RoleEnum | null;
-  flushData: () => void;
-  updateProfile: (updateInfo: Partial<Profile>) => void;
+  flushData: () => Promise<void>;
+  updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setFlow: Dispatch<SetStateAction<RoleEnum | null>>;
 }
@@ -75,17 +75,23 @@ export default function OnboardingProvider({
      */
     const flushData = async () => {
       // validate profile
-      if (
-        profile.first_name === blankProfile.first_name ||
-        profile.last_name === blankProfile.last_name ||
-        profile.hours_per_month === blankProfile.hours_per_month ||
-        profile.location === blankProfile.location ||
-        profile.start_date === blankProfile.start_date ||
-        profile.user_id === blankProfile.user_id
-      )
-        throw new Error(
-          `Profile may be missing some fields! Expected first_name, last_name, hours_per_month, location, start_date, and user_id to be non-empty, but got: ${profile}`,
-        );
+      if (profile.first_name === blankProfile.first_name)
+        throw new Error('Profile is missing first name!');
+
+      if (profile.last_name === blankProfile.last_name)
+        throw new Error('Profile is missing last name!');
+
+      if (profile.hours_per_month === blankProfile.hours_per_month)
+        throw new Error('Profile is missing hours per month!');
+
+      if (profile.location === blankProfile.location)
+        throw new Error('Profile is missing location!');
+
+      if (profile.start_date === blankProfile.start_date)
+        throw new Error('Profile is missing start date!');
+
+      if (profile.user_id === blankProfile.user_id)
+        throw new Error('Profile is missing user id!');
 
       // upsert
       await upsertProfile(profile);
@@ -110,3 +116,111 @@ export default function OnboardingProvider({
     </OnboardingContext.Provider>
   );
 }
+
+/**
+ * EXAMPLE USAGE:
+ */
+
+/**
+ * app/test/layout.tsx
+
+'use client';
+
+import { ReactNode } from 'react';
+import OnboardingProvider from '@/utils/OnboardingProvider';
+
+export default function TestLayout({ children }: { children: ReactNode }) {
+  return <OnboardingProvider>{children}</OnboardingProvider>;
+}
+
+*/
+
+/**
+ * app/test/page.tsx
+
+'use client';
+
+import { useContext, useState } from 'react';
+import { OnboardingContext } from '@/utils/OnboardingProvider';
+
+export default function Page() {
+  const onboarding = useContext(OnboardingContext);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [hoursPerMonth, setHoursPerMonth] = useState(0);
+  const [location, setLocation] = useState('');
+  const [startDate, setStartDate] = useState('');
+
+  return (
+    <div>
+      <p>Progress: {onboarding && onboarding.progress}</p>
+      <button
+        type="button"
+        onClick={() =>
+          onboarding && onboarding.setProgress(onboarding.progress + 1)
+        }
+      >
+        +
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          onboarding && onboarding.setProgress(onboarding.progress - 1)
+        }
+      >
+        -
+      </button>
+      <p>Flow: {onboarding && onboarding.flow}</p>
+      <button
+        type="button"
+        onClick={() =>
+          onboarding &&
+          onboarding.setFlow(
+            onboarding.flow === 'INTERPRETER' ? 'ATTORNEY' : 'INTERPRETER',
+          )
+        }
+      >
+        Toggle Flow
+      </button>
+      <h4>Profile:</h4>
+      <p>User ID: {onboarding && onboarding.profile.user_id}</p>
+      <hr />
+      <p>First name: {onboarding && onboarding.profile.first_name}</p>
+      <input type="text" onChange={e => setFirstName(e.target.value)} />
+      <p>Last name: {onboarding && onboarding.profile.last_name}</p>
+      <input type="text" onChange={e => setLastName(e.target.value)} />
+      <p>Hours per month: {onboarding && onboarding.profile.hours_per_month}</p>
+      <input
+        type="number"
+        onChange={e => setHoursPerMonth(parseInt(e.target.value, 10))}
+      />
+      <p>Location: {onboarding && onboarding.profile.location}</p>
+      <input type="text" onChange={e => setLocation(e.target.value)} />
+      <p>Start date: {onboarding && onboarding.profile.start_date}</p>
+      <input type="date" onChange={e => setStartDate(e.target.value)} />
+      <br />
+      <button
+        type="button"
+        onClick={async () => {
+          if (!onboarding) return;
+
+          await onboarding.updateProfile({
+            first_name: firstName,
+            last_name: lastName,
+            hours_per_month: hoursPerMonth,
+            location,
+            start_date: startDate,
+          });
+
+          setTimeout(() => {
+            onboarding.flushData();
+          }, 0);
+        }}
+      >
+        Update
+      </button>
+    </div>
+  );
+}
+
+*/
