@@ -5,7 +5,7 @@ import { H1, H4 } from '@/styles/text';
 import { OuterDiv, FormDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 
-export default function ForgotPassword() {
+export default function ConfirmResetPassword() {
   const { push } = useRouter();
 
   return (
