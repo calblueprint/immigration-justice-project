@@ -1,8 +1,19 @@
 'use client';
 
 import supabase from '@/api/supabase/createClient';
-import { upsertProfile } from '@/api/supabase/queries/profiles';
-import { Profile, RoleEnum } from '@/types/schema';
+import {
+  deleteLanguages,
+  deleteRoles,
+  upsertLanguages,
+  upsertProfile,
+  upsertRoles,
+} from '@/api/supabase/queries/profiles';
+import {
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  RoleEnum,
+} from '@/types/schema';
 import { UUID } from 'crypto';
 import {
   createContext,
@@ -16,12 +27,16 @@ import {
 
 interface OnboardingContextType {
   profile: Profile;
+  languages: ProfileLanguage[];
+  roles: ProfileRole[];
   progress: number;
   flow: RoleEnum | null;
   flushData: () => Promise<void>;
   updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setFlow: Dispatch<SetStateAction<RoleEnum | null>>;
+  setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
+  setRoles: (roles: ProfileRole[]) => Promise<void>;
 }
 
 export const OnboardingContext = createContext<
@@ -45,6 +60,8 @@ export default function OnboardingProvider({
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<RoleEnum | null>(null);
   const [profile, setProfile] = useState<Profile>(blankProfile);
+  const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
+  const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -97,18 +114,66 @@ export default function OnboardingProvider({
       await upsertProfile(profile);
     };
 
+    /**
+     * Takes in a list of ProfileLanguage
+     * and replaces languages with it entirely,
+     * simultaneously updating the database.
+     * Requires RLS delete, update, insert on profiles-languages.
+     */
+    const setLanguages = async (newLangs: ProfileLanguage[]) => {
+      if (profile.user_id === blankProfile.user_id)
+        throw new Error(
+          `Expected user_id to be valid but got: ${profile.user_id}`,
+        );
+
+      const toDelete = newLangs.filter(
+        l1 => !languages.find(l2 => l1.iso_code === l2.iso_code),
+      );
+
+      await Promise.all([
+        deleteLanguages(profile.user_id, toDelete),
+        upsertLanguages(languages).then(data => setProfileLangs(data)),
+      ]);
+    };
+
+    /**
+     * Takes in a list of ProfileRole
+     * and replaces roles with it entirely,
+     * simultaneously updating the database.
+     * Requires RLS delete, update, insert on profiles-roles.
+     */
+    const setRoles = async (newRoles: ProfileRole[]) => {
+      if (profile.user_id === blankProfile.user_id)
+        throw new Error(
+          `Expected user_id to be valid but got: ${profile.user_id}`,
+        );
+
+      const toDelete = newRoles.filter(
+        r1 => !roles.find(r2 => r1.role === r2.role),
+      );
+
+      await Promise.all([
+        deleteRoles(profile.user_id, toDelete),
+        upsertRoles(roles).then(data => setProfileRoles(data)),
+      ]);
+    };
+
     const val: OnboardingContextType = {
       progress,
       profile,
+      languages,
+      roles,
       flow,
       setFlow,
       setProgress,
       updateProfile,
       flushData,
+      setLanguages,
+      setRoles,
     };
 
     return val;
-  }, [progress, profile, flow]);
+  }, [progress, profile, flow, languages, roles]);
 
   return (
     <OnboardingContext.Provider value={providerValue}>
