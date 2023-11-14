@@ -19,6 +19,12 @@ export default function ResetPassword() {
         `An error occurred trying to reset password: ${error.message}`,
       );
     }
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) {
+      throw new Error(
+        `An error occurred trying to sign out: ${signOutError.message}`,
+      );
+    }
     push('/confirm-reset-password');
   };
 
