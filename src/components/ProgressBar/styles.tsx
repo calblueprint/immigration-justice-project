@@ -32,14 +32,14 @@ export const ProgressBarBody = styled.div`
 `;
 
 const ProgressCircleDiv = styled.div<{ $checked?: boolean }>`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.125rem;
+  height: 3.125rem;
   border-radius: 50%;
   background: white;
   border: 0.25rem solid ${COLORS.blueMid};
   box-shadow: ${({ $checked }) =>
     $checked
-      ? `0 0 0 0.25rem white inset, 0 0 0 100rem ${COLORS.blueMid} inset`
+      ? `0 0 0 0.3125rem white inset, 0 0 0 100rem ${COLORS.blueMid} inset`
       : 'none'};
   position: relative;
 
