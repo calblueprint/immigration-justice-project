@@ -2,6 +2,7 @@
 
 import BigButton from '@/components/BigButton';
 import ProgressBar from '@/components/ProgressBar';
+import { P } from '@/styles/text';
 import { ReactNode } from 'react';
 
 export default function layout({ children }: { children: ReactNode }) {
@@ -13,7 +14,9 @@ export default function layout({ children }: { children: ReactNode }) {
         progress={2}
       />
       {children}
-      <BigButton>Continue</BigButton>
+      <BigButton>
+        <P $color="white">Continue</P>
+      </BigButton>
     </>
   );
 }
