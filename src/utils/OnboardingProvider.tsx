@@ -8,12 +8,7 @@ import {
   upsertProfile,
   upsertRoles,
 } from '@/api/supabase/queries/profiles';
-import {
-  Profile,
-  ProfileLanguage,
-  ProfileRole,
-  RoleEnum,
-} from '@/types/schema';
+import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { UUID } from 'crypto';
 import {
   createContext,
@@ -25,16 +20,21 @@ import {
   useEffect,
 } from 'react';
 
+interface FlowData {
+  url: string;
+  name: string;
+}
+
 interface OnboardingContextType {
   profile: Profile;
   languages: ProfileLanguage[];
   roles: ProfileRole[];
   progress: number;
-  flow: RoleEnum | null;
+  flow: FlowData[];
   flushData: () => Promise<void>;
   updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
-  setFlow: Dispatch<SetStateAction<RoleEnum | null>>;
+  setFlow: Dispatch<SetStateAction<FlowData[]>>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
   setRoles: (roles: ProfileRole[]) => Promise<void>;
 }
@@ -58,7 +58,7 @@ export default function OnboardingProvider({
   children: ReactNode;
 }) {
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<RoleEnum | null>(null);
+  const [flow, setFlow] = useState<FlowData[]>([]);
   const [profile, setProfile] = useState<Profile>(blankProfile);
   const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
