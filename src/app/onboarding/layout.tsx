@@ -4,7 +4,7 @@ import BigButton from '@/components/BigButton';
 import ProgressBar from '@/components/ProgressBar';
 import { P } from '@/styles/text';
 import { ReactNode } from 'react';
-import { FormDiv, OuterDiv } from '../(auth)/styles';
+import { FormDiv, OuterDiv } from './styles';
 
 export default function layout({ children }: { children: ReactNode }) {
   // track progress with onboarding context
