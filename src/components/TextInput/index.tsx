@@ -16,7 +16,7 @@ export default function TextInput({
   placeholder,
   errorText = '',
   type = 'text',
-  id, // try to incorporate id? using <label for={id}>
+  id,
   value,
   setValue,
 }: TextInputProps) {
