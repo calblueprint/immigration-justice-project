@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
 
 // containers
 export const PageContainer = styled.div`
@@ -26,13 +27,18 @@ export const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  border-right: 1px solid black;
+  border-right: 1px solid ${COLORS.greyLight};
   padding-top: 3px;
-  padding-right: 2rem;
+  padding-right: 3rem;
+  overflow-y: scroll;
 `;
 
 // case detail
 export const CaseDetailDisplay = styled.aside`
   position: relative;
   width: 100%;
+`;
+
+export const Header = styled.div`
+  position: fixed;
 `;
