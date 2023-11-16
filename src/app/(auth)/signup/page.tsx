@@ -79,7 +79,7 @@ export default function SignUp() {
           </SpacerDiv>
         </>
       )}
-      {emailSentCount && (
+      {emailSentCount >= 1 && (
         <SpacerDiv>
           <H2>An email verification link has been sent.</H2>
           <H4 $color={COLORS.greyDark}>
