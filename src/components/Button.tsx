@@ -4,8 +4,8 @@ import styled from 'styled-components';
   FOR PRIMARY BUTTON USAGE:
 
     Props: 
-      $primarycolor (Required) - This color will determine the default background color of the button
-      $secondarycolor (Required) - This color will determine the border color and background color on hover
+      $primaryColor (Required) - This color will determine the default background color of the button
+      $secondaryColor (Required) - This color will determine the border color and background color on hover
    
     Example:
       <Button $primarycolor={COLORS.blueMid} $secondarycolor={COLORS.blueDark} onClick={...}>
@@ -15,8 +15,8 @@ import styled from 'styled-components';
   FOR SECONDARY BUTTON USAGE:
 
     Props:
-      $primarycolor (Omit) - IMPORTANT: DO NOT PASS IN A $primarycolor PROP!!! The background color will be white by default
-      $secondarycolor (Required) - This color will determine the border color and background color on hover
+      $primaryColor (Omit) - IMPORTANT: DO NOT PASS IN A primaryColor PROP!!! The background color will be white by default
+      $secondaryColor (Required) - This color will determine the border color and background color on hover
 
     Example: 
       <Button $secondarycolor={COLORS.blueMid} onClick={...}>

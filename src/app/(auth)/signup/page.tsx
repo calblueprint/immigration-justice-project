@@ -1,19 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import styled from 'styled-components';
 // import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H2, H4, AColored } from '@/styles/text';
+import { H1, H2, H4, AColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { SpacerDiv, H4Centered } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
 
+const HorizontalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 1.25rem;
+`;
+
 export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailSent, setEmailSent] = useState(false);
+  const [emailSentCount, setEmailSentCount] = useState(0);
   // const { push } = useRouter();
   const handleSignUp = async () => {
     const { error } = await supabase.auth.signUp({
@@ -24,24 +32,25 @@ export default function SignUp() {
     if (error) {
       throw new Error(`An error occurred trying to sign up: ${error.message}`);
     }
-    setEmailSent(true);
+    setEmailSentCount(1);
     // push('/verify-email');
   };
   const handleResendEmail = async () => {
     const { error } = await supabase.auth.resend({
       type: 'signup',
-      email, // 'email@example.com',
+      email,
     });
     if (error) {
       throw new Error(
         `An error occurred trying to resend email: ${error.message}`,
       );
     }
+    setEmailSentCount(emailSentCount + 1);
   };
 
   return (
     <>
-      {!emailSent && (
+      {!emailSentCount && (
         <>
           <H1>Sign Up</H1>
           <TextInput
@@ -77,20 +86,25 @@ export default function SignUp() {
           </SpacerDiv>
         </>
       )}
-      {emailSent && (
+      {emailSentCount && (
         <SpacerDiv>
           <H2>An email verification link has been sent.</H2>
           <H4 $color={COLORS.greyDark}>
             This link will direct you to the next step. If you didn’t receive an
             email, please click Resend Email.{' '}
           </H4>
-          <Button
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-            onClick={() => handleResendEmail()}
-          >
-            <H4 $color="white">Resend Email</H4>
-          </Button>
+          <HorizontalDiv>
+            <Button
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
+              onClick={() => handleResendEmail()}
+            >
+              <H4 $color="white">Resend Email</H4>
+            </Button>
+            {emailSentCount >= 2 && (
+              <P $color={COLORS.greyMid}>Email has been resent!</P>
+            )}
+          </HorizontalDiv>
         </SpacerDiv>
       )}
     </>
