@@ -3,7 +3,7 @@ const COLORS = {
   blueMid: '#0069A9', // tearful-blue
   blueDark: '#035D85', // grieving
   blueDarker: '#003453', // drowning
-  blueLight: '#D9F1FF', 
+  blueLight: '#D9F1FF',
   blueLighter: '#E8F6FF',
   // Greys
   greyLighter: '#F2F2F2', // lightGrey

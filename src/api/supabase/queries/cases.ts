@@ -20,13 +20,21 @@ export async function getCaseById(id: UUID) {
 }
 
 export async function getCaseLanguages(id: UUID) {
-  const {data, error} = await supabase.from('cases-languages').select('iso_code').eq('listing_id', id);
-  if (error) throw new Error(`Error fetching case languages ${id}: ${error.message}`);
+  const { data, error } = await supabase
+    .from('cases-languages')
+    .select('iso_code')
+    .eq('listing_id', id);
+  if (error)
+    throw new Error(`Error fetching case languages ${id}: ${error.message}`);
   return data;
 }
 
 export async function getCaseReliefs(id: UUID) {
-  const {data, error} = await supabase.from('cases-reliefs').select('relief_code').eq('listing_id', id);
-  if (error) throw new Error(`Error fetching case releifs ${id}: ${error.message}`);
+  const { data, error } = await supabase
+    .from('cases-reliefs')
+    .select('relief_code')
+    .eq('listing_id', id);
+  if (error)
+    throw new Error(`Error fetching case releifs ${id}: ${error.message}`);
   return data;
 }
