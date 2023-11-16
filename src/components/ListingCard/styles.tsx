@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { Open_Sans as OpenSans } from 'next/font/google';
-import { H4 } from '@/styles/text';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
@@ -11,6 +10,7 @@ export const CardBody = styled.div<{ $selected?: boolean }>`
   flex-direction: column;
   border: 2px solid ${COLORS.greyLight};
   padding: 1rem;
+  margin-bottom: 1.563rem; // 25px
   border-radius: 0.313rem; // 5px
   transition: 150ms;
   cursor: pointer;

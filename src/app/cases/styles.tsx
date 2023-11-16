@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 
-// containers
-export const PageContainer = styled.div`
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-`;
-
 export const FiltersContainer = styled.div`
   display: flex;
   width: 100%;
@@ -15,30 +8,37 @@ export const FiltersContainer = styled.div`
   gap: 1rem;
 `;
 
-export const MainDisplay = styled.main`
+export const PageContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.2fr 1fr;
+  /* margin: 2rem; */
+  padding: 1rem 2rem 0rem 2rem;
+  overflow: hidden;
+`;
+
+export const CardColumn = styled.div`
+  overflow-y: scroll;
+  flex-direction: column;
+  column-gap: 2rem;
+  justify-content: space-between;
+  border-right: 1px solid ${COLORS.greyLight};
+  margin-top: 1.5rem;
+  padding-right: 3rem;
+  padding: 0.5rem 3rem 0rem 0rem;
+`;
+
+export const CaseDetailsContainer = styled.div`
+  overflow-y: scroll;
+  padding: 0.5rem 1.25rem 0rem 0rem;
+  column-gap: 2rem;
+  margin-top: 1.5rem;
+`;
+
+export const Body = styled.div`
   display: grid;
   grid-template-columns: 4.5fr 10fr;
-  margin-top: 2rem;
-  width: 100%;
-`;
-
-// cards
-export const CardColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  border-right: 1px solid ${COLORS.greyLight};
-  padding-top: 3px;
-  padding-right: 3rem;
-  overflow-y: scroll;
-`;
-
-// case detail
-export const CaseDetailDisplay = styled.aside`
-  position: relative;
-  width: 100%;
-`;
-
-export const Header = styled.div`
-  position: fixed;
+  overflow: hidden;
 `;

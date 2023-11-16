@@ -80,8 +80,6 @@ export default function ListingCard({
       : ''
   }`;
 
-  const cardTags = generateCardTags();
-
   return (
     <CardBody
       $selected={isSelected}
