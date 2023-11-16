@@ -43,7 +43,7 @@ export default function ForgotPassword() {
           </BigButton>
         </FormDiv>
       )}
-      {emailSentCount && (
+      {emailSentCount > 0 && (
         <FormDiv>
           <SpacerDiv>
             <H2>A password reset link has been sent to your email.</H2>
