@@ -36,3 +36,10 @@ export const H4Centered = styled(H4)`
   color: ${COLORS.greyDark};
   text-align: center;
 `;
+
+export const HorizontalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 1.25rem;
+`;

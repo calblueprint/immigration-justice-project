@@ -1,22 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 // import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, AColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
-import { SpacerDiv, H4Centered } from '@/app/(auth)/styles';
+import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
-
-const HorizontalDiv = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  gap: 1.25rem;
-`;
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
