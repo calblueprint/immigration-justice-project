@@ -7,7 +7,7 @@ import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H1 } from '@/styles/text';
+import { H2 } from '@/styles/text';
 import {
   CardColumn,
   PageContainer,
@@ -47,7 +47,7 @@ export default function Page() {
   return (
     <PageContainer>
       <div>
-        <H1>Browse Available Cases</H1>
+        <H2>Browse Available Cases</H2>
         <FiltersContainer>
           <FilterDropdown
             defaultValue="Remote/In Person"
