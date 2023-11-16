@@ -3,19 +3,17 @@ import { H4 } from '@/styles/text';
 import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
-  position: absolute;
-  top: 2.5rem;
-  left: 0;
   display: ${({ $show }) => ($show ? 'grid' : 'none')};
   place-items: center;
   width: 100%;
+  padding-bottom: 1.8125rem;
 `;
 
 export const ProgressBarBody = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12.5rem;
+  gap: 10rem;
 
   &::before {
     content: '';
@@ -34,14 +32,14 @@ export const ProgressBarBody = styled.div`
 `;
 
 const ProgressCircleDiv = styled.div<{ $checked?: boolean }>`
-  width: 3.125rem;
-  height: 3.125rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   background: white;
-  border: 0.3125rem solid ${COLORS.blueMid};
+  border: 0.25rem solid ${COLORS.blueMid};
   box-shadow: ${({ $checked }) =>
     $checked
-      ? `0 0 0 0.3125rem white inset, 0 0 0 100rem ${COLORS.blueMid} inset`
+      ? `0 0 0 0.25rem white inset, 0 0 0 100rem ${COLORS.blueMid} inset`
       : 'none'};
   position: relative;
 
@@ -49,7 +47,7 @@ const ProgressCircleDiv = styled.div<{ $checked?: boolean }>`
     position: absolute;
     width: max-content;
     left: 50%;
-    transform: translate(-50%, 225%);
+    transform: translate(-50%, 175%);
     color: ${COLORS.greyMid};
     text-align: center;
   }

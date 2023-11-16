@@ -3,10 +3,19 @@ import COLORS from '@/styles/colors';
 
 export const OuterDiv = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
+  padding-top: 2.5rem;
+  padding-bottom: 6rem;
+`;
+
+export const FormContainer = styled.div`
+  display: grid;
+  place-items: center;
+  flex-grow: 2;
 `;
 
 export const FormDiv = styled.div`
