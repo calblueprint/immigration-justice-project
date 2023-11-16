@@ -59,7 +59,7 @@ export default function ForgotPassword() {
               >
                 <H4 $color="white">Resend Email</H4>
               </Button>
-              {emailSentCount >= 2 && (
+              {emailSentCount > 1 && (
                 <P $color={COLORS.greyMid}>Email has been resent!</P>
               )}
             </HorizontalDiv>
