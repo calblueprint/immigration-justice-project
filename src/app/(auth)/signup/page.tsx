@@ -79,7 +79,7 @@ export default function SignUp() {
           </SpacerDiv>
         </>
       )}
-      {emailSentCount >= 1 && (
+      {emailSentCount > 0 && (
         <SpacerDiv>
           <H2>An email verification link has been sent.</H2>
           <H4 $color={COLORS.greyDark}>
@@ -94,7 +94,7 @@ export default function SignUp() {
             >
               <H4 $color="white">Resend Email</H4>
             </Button>
-            {emailSentCount >= 2 && (
+            {emailSentCount > 1 && (
               <P $color={COLORS.greyMid}>Email has been resent!</P>
             )}
           </HorizontalDiv>
