@@ -1,6 +1,17 @@
-import React from 'react';
+'use client';
 
-// temporary placeholder
+import React from 'react';
+import styled from 'styled-components';
+
+const Spacer = styled.div`
+  height: 15rem;
+`;
+
+// testing page
 export default function Onboarding() {
-  return <div />;
+  return (
+    <div>
+      <Spacer />
+    </div>
+  );
 }

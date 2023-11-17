@@ -31,9 +31,11 @@ interface OnboardingContextType {
   roles: ProfileRole[];
   progress: number;
   flow: FlowData[];
+  canContinue: boolean;
   flushData: () => Promise<void>;
   updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
+  setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
   setRoles: (roles: ProfileRole[]) => Promise<void>;
@@ -58,10 +60,15 @@ export default function OnboardingProvider({
   children: ReactNode;
 }) {
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([]);
+  const [flow, setFlow] = useState<FlowData[]>([
+    { name: 'T0', url: 'test0' },
+    { name: 'T1', url: 'test1' },
+    { name: 'T2', url: 'test2' },
+  ]);
   const [profile, setProfile] = useState<Profile>(blankProfile);
   const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
+  const [canContinue, setCanContinue] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -164,16 +171,18 @@ export default function OnboardingProvider({
       languages,
       roles,
       flow,
+      canContinue,
       setFlow,
       setProgress,
       updateProfile,
       flushData,
       setLanguages,
       setRoles,
+      setCanContinue,
     };
 
     return val;
-  }, [progress, profile, flow, languages, roles]);
+  }, [progress, profile, flow, languages, roles, canContinue]);
 
   return (
     <OnboardingContext.Provider value={providerValue}>
