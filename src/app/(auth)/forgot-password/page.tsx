@@ -5,12 +5,7 @@ import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
-import {
-  OuterDiv,
-  SpacerDiv,
-  HorizontalDiv,
-  FormDiv,
-} from '@/app/(auth)/styles';
+import { SpacerDiv, HorizontalDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
 
@@ -45,24 +40,24 @@ export default function ForgotPassword() {
       )}
       {emailSentCount > 0 && (
         <SpacerDiv>
-            <H2>A password reset link has been sent to your email.</H2>
-            <H4 $color={COLORS.greyDark}>
-              This link will direct you to the next step. If you didn’t receive
-              an email, please click Resend Email.{' '}
-            </H4>
-            <HorizontalDiv>
-              <Button
-                primaryColor={COLORS.blueMid}
-                secondaryColor={COLORS.blueDark}
-                onClick={() => sendPasswordResetLink()}
-              >
-                <H4 $color="white">Resend Email</H4>
-              </Button>
-              {emailSentCount > 1 && (
-                <P $color={COLORS.greyMid}>Email has been resent!</P>
-              )}
-            </HorizontalDiv>
-          </SpacerDiv>
+          <H2>A password reset link has been sent to your email.</H2>
+          <H4 $color={COLORS.greyDark}>
+            This link will direct you to the next step. If you didn’t receive an
+            email, please click Resend Email.{' '}
+          </H4>
+          <HorizontalDiv>
+            <Button
+              primaryColor={COLORS.blueMid}
+              secondaryColor={COLORS.blueDark}
+              onClick={() => sendPasswordResetLink()}
+            >
+              <H4 $color="white">Resend Email</H4>
+            </Button>
+            {emailSentCount > 1 && (
+              <P $color={COLORS.greyMid}>Email has been resent!</P>
+            )}
+          </HorizontalDiv>
+        </SpacerDiv>
       )}
     </>
   );
