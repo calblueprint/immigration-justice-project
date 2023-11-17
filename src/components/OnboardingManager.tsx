@@ -110,3 +110,24 @@ export default function OnboardingManager({
     </div>
   );
 }
+
+/**
+ * EXAMPLE USAGE
+ * - Make sure there are pages in the onboarding folder
+ * - Set their corresponding flows (somehow) to onboarding context
+ * - Navigate to /onboarding
+ */
+
+/**
+ * IMPORTANT: Make 3 of such pages:
+ * 
+ * app/onboarding/<PAGE_NAME>/page.tsx
+ * 
+
+import React from 'react';
+
+export default function page() {
+  return <>EXAMPLE TEXT</>;
+}
+
+*/

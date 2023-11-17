@@ -32,7 +32,7 @@ interface OnboardingContextType {
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
-  flushData: () => Promise<void>;
+  flushProfileData: () => Promise<void>;
   updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
@@ -60,12 +60,8 @@ export default function OnboardingProvider({
   children: ReactNode;
 }) {
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([
-    { name: 'T0', url: 'test0' },
-    { name: 'T1', url: 'test1' },
-    { name: 'T2', url: 'test2' },
-  ]);
-  const [profile, setProfile] = useState<Profile>(blankProfile);
+  const [flow, setFlow] = useState<FlowData[]>([]);
+  const [profile, setProfile] = useState<Profile>({ ...blankProfile });
   const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
@@ -97,7 +93,7 @@ export default function OnboardingProvider({
      * Flushes stored data with Supabase.
      * Requires RLS insert and update policy on the profiles table.
      */
-    const flushData = async () => {
+    const flushProfileData = async () => {
       // validate profile
       if (profile.first_name === blankProfile.first_name)
         throw new Error('Profile is missing first name!');
@@ -175,7 +171,7 @@ export default function OnboardingProvider({
       setFlow,
       setProgress,
       updateProfile,
-      flushData,
+      flushProfileData,
       setLanguages,
       setRoles,
       setCanContinue,
@@ -224,6 +220,29 @@ export default function Page() {
   const [hoursPerMonth, setHoursPerMonth] = useState(0);
   const [location, setLocation] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [error, setError] = useState<string>('');
+
+  const updateProfile = async () => {
+    if (!onboarding) {
+      setError('No onboarding context detected');
+      return;
+    }
+    setError('');
+
+    await onboarding.updateProfile({
+      first_name: firstName,
+      last_name: lastName,
+      hours_per_month: hoursPerMonth,
+      location,
+      start_date: startDate,
+    });
+
+    setTimeout(() => {
+      onboarding.flushProfileData().catch((err: Error) => {
+        setError(err.message);
+      });
+    }, 0);
+  };
 
   return (
     <div>
@@ -244,21 +263,12 @@ export default function Page() {
       >
         -
       </button>
-      <p>Flow: {onboarding && onboarding.flow}</p>
-      <button
-        type="button"
-        onClick={() =>
-          onboarding &&
-          onboarding.setFlow(
-            onboarding.flow === 'INTERPRETER' ? 'ATTORNEY' : 'INTERPRETER',
-          )
-        }
-      >
-        Toggle Flow
-      </button>
       <h4>Profile:</h4>
       <p>User ID: {onboarding && onboarding.profile.user_id}</p>
+
       <hr />
+      {error && <p>Error: {error}</p>}
+
       <p>First name: {onboarding && onboarding.profile.first_name}</p>
       <input type="text" onChange={e => setFirstName(e.target.value)} />
       <p>Last name: {onboarding && onboarding.profile.last_name}</p>
@@ -273,24 +283,7 @@ export default function Page() {
       <p>Start date: {onboarding && onboarding.profile.start_date}</p>
       <input type="date" onChange={e => setStartDate(e.target.value)} />
       <br />
-      <button
-        type="button"
-        onClick={async () => {
-          if (!onboarding) return;
-
-          await onboarding.updateProfile({
-            first_name: firstName,
-            last_name: lastName,
-            hours_per_month: hoursPerMonth,
-            location,
-            start_date: startDate,
-          });
-
-          setTimeout(() => {
-            onboarding.flushData();
-          }, 0);
-        }}
-      >
+      <button type="button" onClick={updateProfile}>
         Update
       </button>
     </div>
