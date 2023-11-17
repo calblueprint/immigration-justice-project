@@ -9,7 +9,7 @@ import {
 import { P } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode, useContext, useEffect, useMemo } from 'react';
 import ProgressBar from './ProgressBar';
 import BigButton from './BigButton';
 
@@ -21,12 +21,16 @@ export default function OnboardingManager({
   const onboarding = useContext(OnboardingContext);
   const router = useRouter();
   const pathname = usePathname();
+  const pageProgress = useMemo(() => {
+    if (!onboarding) return 0;
+    const find = onboarding.flow.findIndex(
+      f => `/onboarding/${f.url}` === pathname,
+    );
+    return find !== -1 ? find : 0;
+  }, [pathname, onboarding]);
 
   useEffect(() => {
-    if (!onboarding) {
-      console.info('No onboarding');
-      return;
-    }
+    if (!onboarding) return;
 
     // out of bounds redirect
     if (
@@ -37,26 +41,47 @@ export default function OnboardingManager({
       return;
     }
 
+    // url not in flow
+    if (pageProgress === -1) {
+      router.replace(`/onboarding/${onboarding.flow[0].url}`);
+      onboarding.setProgress(0);
+      return;
+    }
+
+    // page visited before
+    if (pageProgress <= onboarding.progress) {
+      return;
+    }
+
     // course correct
     const correctURL = `/onboarding/${
       onboarding.flow[onboarding.progress].url
     }`;
 
     if (pathname !== correctURL) {
-      console.info('Replacing URL...');
       router.replace(correctURL);
     }
-  }, [onboarding, pathname, router]);
+  }, [onboarding, pathname, router, pageProgress]);
 
-  const moveProgress = (amount: number) => {
+  const advanceProgress = () => {
     if (!onboarding) return;
-    const newProgress = onboarding.progress + amount;
-    onboarding.setProgress(newProgress);
+    const newProgress = pageProgress + 1;
+
+    if (newProgress > onboarding.progress) onboarding.setProgress(newProgress);
+
+    if (newProgress >= onboarding.flow.length) router.push('/cases');
+    else router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
   };
 
   return (
     <div>
-      <BackLink href="" onClick={() => moveProgress(-1)}>
+      <BackLink
+        href={
+          onboarding && pageProgress > 0
+            ? `/onboarding/${onboarding.flow[pageProgress - 1].url}`
+            : '/cases'
+        }
+      >
         <P>Back</P>
       </BackLink>
       <OuterDiv>
@@ -64,18 +89,17 @@ export default function OnboardingManager({
           steps={
             new Set(onboarding ? onboarding.flow.slice(1).map(f => f.name) : [])
           }
-          progress={onboarding ? onboarding.progress : 0}
+          progress={pageProgress}
         />
         <FormContainer>
           <FormDiv>
             {children}
             <BigButton
               disabled={onboarding && onboarding.canContinue}
-              onClick={() => moveProgress(1)}
+              onClick={() => advanceProgress()}
             >
               <P $color="white">
-                {onboarding &&
-                onboarding.progress === onboarding.flow.length - 1
+                {onboarding && pageProgress === onboarding.flow.length - 1
                   ? 'Continue to Available Cases'
                   : 'Continue'}
               </P>
