@@ -26,9 +26,9 @@ export default function ForgotPassword() {
   };
 
   return (
-    <OuterDiv>
+    <>
       {!emailSentCount && (
-        <FormDiv>
+        <>
           <H1>Forgot Password</H1>
           <TextInput
             label="Email"
@@ -41,11 +41,10 @@ export default function ForgotPassword() {
           <BigButton type="button" onClick={() => sendPasswordResetLink()}>
             <H4 $color="white">Send link to email</H4>
           </BigButton>
-        </FormDiv>
+        </>
       )}
       {emailSentCount > 0 && (
-        <FormDiv>
-          <SpacerDiv>
+        <SpacerDiv>
             <H2>A password reset link has been sent to your email.</H2>
             <H4 $color={COLORS.greyDark}>
               This link will direct you to the next step. If you didn’t receive
@@ -64,8 +63,7 @@ export default function ForgotPassword() {
               )}
             </HorizontalDiv>
           </SpacerDiv>
-        </FormDiv>
       )}
-    </OuterDiv>
+    </>
   );
 }

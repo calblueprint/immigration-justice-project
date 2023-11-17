@@ -35,7 +35,7 @@ export default function Login() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText="Email Error" // {errorMessage}
+            errorText="" // "Email Error"
             type="email"
             id="email"
             value={email}
@@ -44,7 +44,7 @@ export default function Login() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText="Password Error"
+            errorText="" // "Password Error"
             type="password"
             id="password"
             value={password}
@@ -52,7 +52,7 @@ export default function Login() {
           />
         </QuestionsDiv>
         <P>
-          <AColored $color={COLORS.greyMid} href="/reset-password">
+          <AColored $color={COLORS.greyMid} href="/forgot-password">
             Forgot your password?
           </AColored>
         </P>
