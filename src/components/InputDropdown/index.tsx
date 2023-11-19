@@ -2,7 +2,6 @@
 
 import {
   useState,
-  useEffect,
   useRef,
   useMemo,
   KeyboardEvent,
@@ -67,24 +66,6 @@ export default function InputDropdown({
       ),
     [options, inputValue],
   );
-
-  // detect clicking outside of menu box
-  useEffect(() => {
-    function globalClickEvent(this: Document, e: MouseEvent) {
-      if (
-        containerRef.current &&
-        containerRef.current.contains(e.target as Node)
-      )
-        return;
-      setMenuVisible(false);
-    }
-
-    document.addEventListener('click', globalClickEvent);
-
-    return () => {
-      document.removeEventListener('click', globalClickEvent);
-    };
-  }, []);
 
   // handle when a tag gets clicked
   function handleRemoveOption(option: string) {
@@ -177,8 +158,8 @@ export default function InputDropdown({
   // helper to hide menu and clear text
   function hideMenu() {
     setMenuVisible(false);
-    if (inputRef.current) inputRef.current.innerText = '';
     setInputValue('');
+    if (inputRef.current) inputRef.current.innerText = '';
   }
 
   return (
@@ -217,7 +198,7 @@ export default function InputDropdown({
         <DropdownInput
           ref={inputRef}
           $placeholder={(multi ? value.size > 0 : value) ? '' : placeholder}
-          onFocus={() => setTimeout(() => setMenuVisible(true), 0)}
+          onFocus={() => setMenuVisible(true)}
           onInput={() => {
             if (inputRef.current)
               setInputValue(inputRef.current.innerText.toLowerCase());

@@ -45,10 +45,7 @@ export const DropdownInput = styled(P)<{
   outline: none;
   flex-grow: 1;
   max-width: 100%;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
   word-break: break-all;
-  position: relative;
 
   &::after {
     content: '${({ $placeholder }) => $placeholder || ''}';
@@ -75,7 +72,6 @@ export const DropdownInputContainer = styled(InputText)<{
   padding-bottom: 0.3125rem;
 
   width: 100%;
-  max-width: 100%;
   min-height: 2.9375rem;
   padding-right: 2.25rem;
 
