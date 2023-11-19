@@ -4,9 +4,10 @@ import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
 import { DropdownContainer, DropdownButton } from './styles';
 import DropdownMenu from '../DropdownMenu';
 
+// for map: keys are the actual values stored, values are the displayed value
 interface CommonProps {
-  options: Set<string>;
-  defaultValue: string;
+  options: Set<string> | Map<string, string>;
+  placeholder: string;
 }
 
 interface MultiSelectProps extends CommonProps {
@@ -26,7 +27,7 @@ type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
 export default function FilterDropdown({
   options,
   multi,
-  defaultValue,
+  placeholder,
   value,
   onChange,
 }: FilterDropdownProps) {
@@ -34,7 +35,7 @@ export default function FilterDropdown({
   const itemsRef = useRef<Map<string, HTMLParagraphElement | null>>(new Map());
   const [menuVisible, setMenuVisible] = useState(false);
   const [focusIndex, setFocusIndex] = useState(-1);
-  const optionsArray = useMemo(() => Array.from(options), [options]);
+  const optionsArray = useMemo(() => Array.from(options.keys()), [options]);
 
   // mount listener for closing dropdown menu
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function FilterDropdown({
   }, []);
 
   // handle select option
-  function handleSelectOption(val: string) {
+  const handleSelectOption = (val: string) => {
     // multi-select
     if (multi) {
       const copy = new Set(value);
@@ -68,10 +69,11 @@ export default function FilterDropdown({
     } else {
       onChange(val);
     }
-  }
+  };
 
   // keyboard navigation
-  function handleKeyDown(e: KeyboardEvent) {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    // options navigation
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
 
@@ -83,31 +85,35 @@ export default function FilterDropdown({
         optionsArray.length - 1,
       );
       setFocusIndex(idx);
+
+      // select option
     } else if (e.key === 'Enter' && menuVisible && focusIndex !== -1) {
       e.preventDefault();
 
       if (focusIndex < 0 || focusIndex >= optionsArray.length) return;
       const opt = optionsArray[focusIndex];
       handleSelectOption(opt);
+
+      // close dropdown
     } else if (e.key === 'Escape') {
       setMenuVisible(false);
       setFocusIndex(-1);
     }
-  }
+  };
 
   // format button display
-  function buttonDisplay() {
+  const buttonDisplay = () => {
     if (multi) {
-      const len: number = value.size;
-      if (len === 0) return defaultValue;
-      const [firstVal] = value;
-      if (len > 1) return `${firstVal} +${len - 1} more`;
-      return firstVal;
+      const len = value.size;
+      if (len === 0) return placeholder;
+
+      const [first] = value;
+      const firstVal = options instanceof Map ? options.get(first) : first;
+      return len > 1 ? `${firstVal} +${len - 1} more` : firstVal;
     }
 
-    if (!value) return defaultValue;
-    return value;
-  }
+    return value || placeholder;
+  };
 
   return (
     <DropdownContainer ref={container} onBlur={() => setMenuVisible(false)}>
@@ -119,19 +125,19 @@ export default function FilterDropdown({
         {buttonDisplay()}
       </DropdownButton>
       <DropdownMenu show={menuVisible}>
-        {optionsArray.map((o, i) => (
+        {Array.from(options.entries()).map(([k, v], i) => (
           <DropdownMenu.Item
-            key={o}
-            ref={el => itemsRef.current.set(o, el)}
-            onClick={() => handleSelectOption(o)}
+            key={k}
+            ref={el => itemsRef.current.set(k, el)}
+            onClick={() => handleSelectOption(k)}
             onMouseDown={e => e.preventDefault()}
             onMouseOver={() => setFocusIndex(i)}
-            $selected={multi ? value.has(o) : value === o}
+            $selected={multi ? value.has(k) : value === k}
             $forceFocus={focusIndex === i}
             $multi={multi}
             $disableMouseFocus
           >
-            {o}
+            {v}
           </DropdownMenu.Item>
         ))}
       </DropdownMenu>

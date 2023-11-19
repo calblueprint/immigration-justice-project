@@ -5,9 +5,11 @@ import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import { H1 } from '@/styles/text';
+import { AColored, H1 } from '@/styles/text';
 import CaseDetails from '@/components/CaseDetails';
 import FilterDropdown from '@/components/FilterDropdown';
+import { parseAgency } from '@/utils/helpers';
+import COLORS from '@/styles/colors';
 import {
   CardColumn,
   MainDisplay,
@@ -52,40 +54,51 @@ export default function Page() {
     });
   }, []);
 
+  const resetFilters = () => {
+    setCaseFilters({
+      remote: new Set(),
+      role: new Set(),
+      agency: new Set(),
+      languages: new Set(),
+      countries: new Set(),
+    });
+  };
+
   return (
     <PageContainer>
       <H1>Browse Available Cases</H1>
       <FiltersContainer>
         <FilterDropdown
-          defaultValue={defaultFilterValues.remote}
+          placeholder={defaultFilterValues.remote}
           multi
           options={new Set(['Remote', 'In Person'])}
           value={caseFilters.remote}
           onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
         />
         <FilterDropdown
-          defaultValue={defaultFilterValues.role}
+          placeholder={defaultFilterValues.role}
           multi
           options={new Set(['Interpreter', 'Attorney'])}
           value={caseFilters.role}
           onChange={v => setCaseFilters({ ...caseFilters, role: v })}
         />
-        {/* <FilterDropdown
-          defaultValue={defaultFilterValues.languages}
-          multi
-          options={new Set(caseData.flatMap(c => c.languages))}
-          value={caseFilters.languages}
-          onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
-        /> */}
+        {/* languages dropdown to implement later */}
         <FilterDropdown
-          defaultValue={defaultFilterValues.agency}
+          placeholder={defaultFilterValues.agency}
           multi
-          options={new Set(['Court', 'USCIS'])}
+          options={
+            new Map(
+              caseData.map(c => [
+                c.adjudicating_agency,
+                parseAgency(c.adjudicating_agency),
+              ]),
+            )
+          }
           value={caseFilters.agency}
           onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
         />
         <FilterDropdown
-          defaultValue={defaultFilterValues.countries}
+          placeholder={defaultFilterValues.countries}
           multi
           options={
             new Set(
@@ -95,25 +108,30 @@ export default function Page() {
           value={caseFilters.countries}
           onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
         />
+        <AColored onClick={() => resetFilters()} $color={COLORS.greyMid}>
+          Reset Filters
+        </AColored>
       </FiltersContainer>
       <MainDisplay>
         <CardColumn>
           {caseData
-            .filter(c => {
-              if (caseFilters.remote.size === 0) return true;
-              if (caseFilters.remote.has('Remote') && c.is_remote) return true;
-              if (caseFilters.remote.has('In Person') && !c.is_remote)
-                return true;
-              return false;
-            })
-            .filter(c => {
-              if (caseFilters.role.size === 0) return true;
-              if (caseFilters.role.has('Interpreter') && c.needs_interpreter)
-                return true;
-              if (caseFilters.role.has('Attorney') && c.needs_attorney)
-                return true;
-              return false;
-            })
+            .filter(
+              c =>
+                caseFilters.remote.size === 0 ||
+                (caseFilters.remote.has('Remote') && c.is_remote) ||
+                (caseFilters.remote.has('In Person') && !c.is_remote),
+            )
+            .filter(
+              c =>
+                caseFilters.role.size === 0 ||
+                (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
+                (caseFilters.role.has('Attorney') && c.needs_attorney),
+            )
+            .filter(
+              c =>
+                caseFilters.agency.size === 0 ||
+                caseFilters.agency.has(c.adjudicating_agency),
+            )
             .filter(c =>
               caseFilters.countries.size > 0
                 ? c.country && caseFilters.countries.has(c.country)

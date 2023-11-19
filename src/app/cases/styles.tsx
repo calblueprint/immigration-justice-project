@@ -9,9 +9,19 @@ export const PageContainer = styled.div`
 
 export const FiltersContainer = styled.div`
   display: flex;
+  align-items: center;
   width: 100%;
   margin-top: 1rem;
   gap: 1rem;
+
+  & > a {
+    cursor: pointer;
+    font-size: 0.875rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export const MainDisplay = styled.main`
