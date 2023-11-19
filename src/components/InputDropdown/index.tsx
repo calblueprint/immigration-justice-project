@@ -15,7 +15,7 @@ import {
   DropdownInputContainer,
   DropdownInputLabel,
   DropdownInputTag,
-  TagContainer,
+  DropdownSingleValue,
 } from './styles';
 import DropdownMenu from '../DropdownMenu';
 import { DropdownContainer } from '../FilterDropdown/styles';
@@ -126,6 +126,8 @@ export default function InputDropdown({
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
 
+      if (!menuVisible) return;
+
       const opt = optionsArray[focusIndex];
       itemsRef.current.get(opt)?.scrollIntoView({ block: 'center' });
 
@@ -138,6 +140,11 @@ export default function InputDropdown({
       // select/unselect dropdown option
     } else if (e.key === 'Enter') {
       e.preventDefault();
+
+      if (!menuVisible) {
+        setMenuVisible(true);
+        return;
+      }
 
       if (focusIndex < 0 || focusIndex >= optionsArray.length) return;
       const opt = optionsArray[focusIndex];
@@ -158,6 +165,12 @@ export default function InputDropdown({
       } else {
         setValue('');
       }
+
+      // hide menu
+    } else if (e.key === 'Escape') {
+      setMenuVisible(false);
+    } else {
+      setMenuVisible(true);
     }
   }
 
@@ -187,26 +200,23 @@ export default function InputDropdown({
           if (inputRef.current) inputRef.current.focus();
         }}
       >
-        <TagContainer>
-          {multi
-            ? Array.from(value).map(v => (
-                <DropdownInputTag
-                  key={v}
-                  onMouseDown={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  onClick={() => handleRemoveOption(v)}
-                >
-                  {v}
-                </DropdownInputTag>
-              ))
-            : value && <p>{value}</p>}
-        </TagContainer>
+        {multi
+          ? Array.from(value).map(v => (
+              <DropdownInputTag
+                key={v}
+                onMouseDown={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onClick={() => handleRemoveOption(v)}
+              >
+                {v}
+              </DropdownInputTag>
+            ))
+          : value && <DropdownSingleValue>{value}</DropdownSingleValue>}
         <DropdownInput
           ref={inputRef}
           $placeholder={(multi ? value.size > 0 : value) ? '' : placeholder}
-          $hidden={!menuVisible}
           onFocus={() => setTimeout(() => setMenuVisible(true), 0)}
           onInput={() => {
             if (inputRef.current)

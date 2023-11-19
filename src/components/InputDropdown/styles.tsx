@@ -9,6 +9,10 @@ export const DropdownInputLabel = styled(InputLabel)`
   margin-bottom: 0.625rem;
 `;
 
+export const DropdownSingleValue = styled(P)`
+  margin-right: 1rem;
+`;
+
 export const DropdownInputTag = styled(P)`
   display: flex;
   width: fit-content;
@@ -16,6 +20,8 @@ export const DropdownInputTag = styled(P)`
   position: relative;
   background: ${COLORS.blueLighter};
   padding: 0.125rem 0.5625rem;
+  margin: 0.3125rem 0;
+  margin-right: 0.5rem;
   cursor: pointer;
 
   &::after {
@@ -34,7 +40,6 @@ export const DropdownInputTag = styled(P)`
 
 export const DropdownInput = styled(P)<{
   $placeholder?: string;
-  $hidden?: boolean;
 }>`
   display: inline-block;
   outline: none;
@@ -44,26 +49,15 @@ export const DropdownInput = styled(P)<{
   word-wrap: break-word;
   word-break: break-all;
   position: relative;
-  ${({ $hidden }) => $hidden && `height: 0`};
 
   &::after {
-    position: absolute;
-    transform: translateY(-50%);
     content: '${({ $placeholder }) => $placeholder || ''}';
     color: ${COLORS.placeholderText};
     font-size: 0.875rem;
-    opacity: ${({ $hidden }) => ($hidden ? 1 : 0)};
   }
-`;
 
-export const TagContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: 0.5rem;
-  gap: 0.5rem;
-
-  &:empty {
-    margin: 0;
+  &:focus::after {
+    opacity: 0;
   }
 `;
 
@@ -77,7 +71,8 @@ export const DropdownInputContainer = styled(InputText)<{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  ${({ $focused }) => $focused && `row-gap: 0.5rem`};
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
 
   width: 100%;
   max-width: 100%;

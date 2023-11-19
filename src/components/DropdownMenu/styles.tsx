@@ -5,7 +5,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
   position: absolute;
   top: 100%;
   left: 0;
-  transform: translateY(2px);
+  transform: translateY(0.125rem);
 
   display: ${({ $show }) => ($show ? 'flex' : 'none')};
   flex-direction: column;
@@ -22,7 +22,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
 
   &:empty {
     &::after {
-      content: 'No matches found!';
+      content: 'No matches found';
       padding: 0.5rem;
       text-align: center;
       font-size: 0.875rem;
