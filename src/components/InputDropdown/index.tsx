@@ -12,9 +12,11 @@ import {
   DropdownErrorText,
   DropdownInput,
   DropdownInputContainer,
+  DropdownInputFrame,
   DropdownInputLabel,
   DropdownInputTag,
   DropdownSingleValue,
+  DropdownTagWrapper,
 } from './styles';
 import DropdownMenu from '../DropdownMenu';
 import { DropdownContainer } from '../FilterDropdown/styles';
@@ -170,7 +172,7 @@ export default function InputDropdown({
       >
         {label}
       </DropdownInputLabel>
-      <DropdownInputContainer
+      <DropdownInputFrame
         as="div"
         $error={error !== ''}
         $focused={menuVisible}
@@ -183,30 +185,33 @@ export default function InputDropdown({
       >
         {multi
           ? Array.from(value).map(v => (
-              <DropdownInputTag
-                key={v}
-                onMouseDown={e => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                onClick={() => handleRemoveOption(v)}
-              >
-                {v}
-              </DropdownInputTag>
+              <DropdownTagWrapper key={v}>
+                <DropdownInputTag
+                  onMouseDown={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onClick={() => handleRemoveOption(v)}
+                >
+                  {v}
+                </DropdownInputTag>
+              </DropdownTagWrapper>
             ))
           : value && <DropdownSingleValue>{value}</DropdownSingleValue>}
-        <DropdownInput
-          ref={inputRef}
-          $placeholder={(multi ? value.size > 0 : value) ? '' : placeholder}
-          onFocus={() => setMenuVisible(true)}
-          onInput={() => {
-            if (inputRef.current)
-              setInputValue(inputRef.current.innerText.toLowerCase());
-            setFocusIndex(-1);
-          }}
-          onKeyDown={e => handleKeyDown(e)}
-          contentEditable={!disabled}
-        />
+        <DropdownInputContainer>
+          <DropdownInput
+            ref={inputRef}
+            $placeholder={(multi ? value.size > 0 : value) ? '' : placeholder}
+            onFocus={() => setMenuVisible(true)}
+            onInput={() => {
+              if (inputRef.current)
+                setInputValue(inputRef.current.innerText.toLowerCase());
+              setFocusIndex(-1);
+            }}
+            onKeyDown={e => handleKeyDown(e)}
+            contentEditable={!disabled}
+          />
+        </DropdownInputContainer>
         <DropdownMenu
           show={disabled ? false : menuVisible}
           onMouseLeave={() => setFocusIndex(-1)}
@@ -233,7 +238,7 @@ export default function InputDropdown({
             </DropdownMenu.Item>
           ))}
         </DropdownMenu>
-      </DropdownInputContainer>
+      </DropdownInputFrame>
       {error && <DropdownErrorText>{error}</DropdownErrorText>}
     </DropdownContainer>
   );

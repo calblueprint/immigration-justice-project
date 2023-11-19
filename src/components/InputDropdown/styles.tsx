@@ -13,6 +13,10 @@ export const DropdownSingleValue = styled(P)`
   margin-right: 1rem;
 `;
 
+export const DropdownTagWrapper = styled.div`
+  display: inline-block;
+`;
+
 export const DropdownInputTag = styled(P)`
   display: flex;
   width: fit-content;
@@ -41,9 +45,7 @@ export const DropdownInputTag = styled(P)`
 export const DropdownInput = styled(P)<{
   $placeholder?: string;
 }>`
-  display: inline-block;
   outline: none;
-  flex-grow: 1;
   max-width: 100%;
   word-break: break-all;
 
@@ -58,7 +60,11 @@ export const DropdownInput = styled(P)<{
   }
 `;
 
-export const DropdownInputContainer = styled(InputText)<{
+export const DropdownInputContainer = styled.div`
+  flex-grow: 1;
+`;
+
+export const DropdownInputFrame = styled(InputText)<{
   $focused: boolean;
   $empty: boolean;
   $error?: boolean;
@@ -68,11 +74,11 @@ export const DropdownInputContainer = styled(InputText)<{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding-top: 0.3125rem;
-  padding-bottom: 0.3125rem;
 
   width: 100%;
   min-height: 2.9375rem;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
   padding-right: 2.25rem;
 
   cursor: ${({ $disabled }) => ($disabled ? 'default' : 'text')};
