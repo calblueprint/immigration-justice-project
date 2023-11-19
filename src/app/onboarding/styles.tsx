@@ -3,7 +3,7 @@ import COLORS from '@/styles/colors';
 import { P } from '@/styles/text';
 import Link from 'next/link';
 
-export const OuterDiv = styled.div`
+export const OuterDiv = styled.div<{ $bottomAdjust?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -11,7 +11,8 @@ export const OuterDiv = styled.div`
   width: 100%;
   min-height: 100vh;
   padding-top: 2.5rem;
-  padding-bottom: 6rem;
+  padding-bottom: ${({ $bottomAdjust }) =>
+    $bottomAdjust ? '7.5rem' : '2.5rem'};
 `;
 
 export const FormContainer = styled.div`

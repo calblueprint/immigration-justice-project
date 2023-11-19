@@ -84,7 +84,7 @@ export default function OnboardingManager({
       >
         <P>Back</P>
       </BackLink>
-      <OuterDiv>
+      <OuterDiv $bottomAdjust={pageProgress > 0}>
         <ProgressBar
           steps={
             new Set(onboarding ? onboarding.flow.slice(1).map(f => f.name) : [])
