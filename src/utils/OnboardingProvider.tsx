@@ -31,7 +31,7 @@ interface OnboardingContextType {
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
-  updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
+  updateProfile: (updateInfo: Partial<Profile>) => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
@@ -73,7 +73,7 @@ export default function OnboardingProvider({
      * Updates stored profile state with the partial data.
      * Does not affect database.
      */
-    const updateProfile = async (updatedInfo: Partial<Profile>) => {
+    const updateProfile = (updatedInfo: Partial<Profile>) => {
       const newProfileData = { ...profile, ...updatedInfo };
       setProfile(newProfileData);
     };
@@ -82,6 +82,7 @@ export default function OnboardingProvider({
       if (!profileCtx) throw new Error('Fatal: No profile context provided!');
       if (profileCtx.userId === undefined)
         throw new Error('Fatal: User is not logged in!');
+
       const uid: UUID = profileCtx.userId;
 
       if (profile.first_name === blankProfile.first_name)
@@ -214,41 +215,31 @@ export default function TestLayout({ children }: { children: ReactNode }) {
 
 /**
  * app/test/page.tsx
-
 'use client';
 
 import { useContext, useState } from 'react';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { RoleEnum } from '@/types/schema';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [hoursPerMonth, setHoursPerMonth] = useState(0);
-  const [location, setLocation] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [error, setError] = useState<string>('');
+  const [notice, setNotice] = useState<string>('');
 
   const updateProfile = async () => {
     if (!onboarding) {
-      setError('No onboarding context detected');
+      setNotice('No onboarding context detected');
       return;
     }
-    setError('');
+    setNotice('');
 
-    await onboarding.updateProfile({
-      first_name: firstName,
-      last_name: lastName,
-      hours_per_month: hoursPerMonth,
-      location,
-      start_date: startDate,
-    });
-
-    setTimeout(() => {
-      onboarding.flushProfileData().catch((err: Error) => {
-        setError(err.message);
+    onboarding
+      .flushData()
+      .then(() => {
+        setNotice('Success!');
+      })
+      .catch(err => {
+        setNotice(err.message);
       });
-    }, 0);
   };
 
   return (
@@ -274,21 +265,81 @@ export default function Page() {
       <p>User ID: {onboarding && onboarding.profile.user_id}</p>
 
       <hr />
-      {error && <p>Error: {error}</p>}
+      {notice && <p>{notice}</p>}
 
       <p>First name: {onboarding && onboarding.profile.first_name}</p>
-      <input type="text" onChange={e => setFirstName(e.target.value)} />
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding && onboarding.updateProfile({ first_name: e.target.value })
+        }
+      />
       <p>Last name: {onboarding && onboarding.profile.last_name}</p>
-      <input type="text" onChange={e => setLastName(e.target.value)} />
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding && onboarding.updateProfile({ last_name: e.target.value })
+        }
+      />
       <p>Hours per month: {onboarding && onboarding.profile.hours_per_month}</p>
       <input
         type="number"
-        onChange={e => setHoursPerMonth(parseInt(e.target.value, 10))}
+        onBlur={e =>
+          onboarding &&
+          onboarding.updateProfile({
+            hours_per_month: parseInt(e.target.value, 10),
+          })
+        }
       />
       <p>Location: {onboarding && onboarding.profile.location}</p>
-      <input type="text" onChange={e => setLocation(e.target.value)} />
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding && onboarding.updateProfile({ location: e.target.value })
+        }
+      />
       <p>Start date: {onboarding && onboarding.profile.start_date}</p>
-      <input type="date" onChange={e => setStartDate(e.target.value)} />
+      <input
+        type="date"
+        onBlur={e =>
+          onboarding && onboarding.updateProfile({ start_date: e.target.value })
+        }
+      />
+      <p>
+        Roles (comma separated):{' '}
+        {onboarding && Array.from(onboarding.roles).join(',')}
+      </p>
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding &&
+          onboarding.setRoles(
+            new Set(e.target.value.split(',')) as Set<RoleEnum>,
+          )
+        }
+      />
+      <p>
+        Can read languages (comma separated):{' '}
+        {onboarding && Array.from(onboarding.canReads).join(',')}
+      </p>
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding &&
+          onboarding.setCanReads(new Set(e.target.value.split(',')))
+        }
+      />
+      <p>
+        Can write languages (comma separated):{' '}
+        {onboarding && Array.from(onboarding.canWrites).join(',')}
+      </p>
+      <input
+        type="text"
+        onBlur={e =>
+          onboarding &&
+          onboarding.setCanWrites(new Set(e.target.value.split(',')))
+        }
+      />
       <br />
       <button type="button" onClick={updateProfile}>
         Update
