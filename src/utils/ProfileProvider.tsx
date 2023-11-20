@@ -10,6 +10,9 @@ import {
   upsertLanguages,
   fetchRolesById,
   fetchLanguagesById,
+  insertProfile,
+  insertLanguages,
+  insertRoles,
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { UUID } from 'crypto';
@@ -19,9 +22,15 @@ interface ProfileContextType {
   profileData: Profile | null;
   languages: ProfileLanguage[];
   roles: ProfileRole[];
-  updateProfile: (newProfileData: Partial<Profile>) => void;
-  setLanguages: (languages: ProfileLanguage[]) => void;
-  setRoles: (roles: ProfileRole[]) => void;
+  userId: UUID | null;
+  updateProfile: (newProfileData: Partial<Profile>) => Promise<void>;
+  setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
+  setRoles: (roles: ProfileRole[]) => Promise<void>;
+  createNewProfile: (
+    profile: Profile,
+    languages: ProfileLanguage[],
+    roles: ProfileRole[],
+  ) => Promise<void>;
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
@@ -29,6 +38,7 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
 );
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
+  const [userId, setUserId] = useState<UUID | null>(null);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
@@ -46,30 +56,49 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       )
         return;
 
-      const userId = sessionData.session.user.id as UUID;
+      const sessionUserId = sessionData.session.user.id as UUID;
+      setUserId(sessionUserId);
 
       await Promise.all([
-        fetchProfileById(userId).then(data => setProfileData(data)),
-        fetchLanguagesById(userId).then(data => setProfileLangs(data)),
-        fetchRolesById(userId).then(data => setProfileRoles(data)),
+        fetchProfileById(sessionUserId).then(data => setProfileData(data)),
+        fetchLanguagesById(sessionUserId).then(data => setProfileLangs(data)),
+        fetchRolesById(sessionUserId).then(data => setProfileRoles(data)),
       ]);
     })();
   }, []);
 
   const providerValue = useMemo(() => {
     /**
+     * Creates a new profile associated with the currently
+     * logged in user. Errors if user is not logged in or
+     * already has a profile. Requires RLS insert access on
+     * profiles, profiles-languages, and profiles-roles tables.
+     */
+    const createNewProfile = async (
+      newProfile: Profile,
+      newLanguages: ProfileLanguage[],
+      newRoles: ProfileRole[],
+    ) => {
+      if (!userId) throw new Error('Fatal: user is not logged in!');
+      if (profileData) throw new Error('Fatal: user already has a profile!');
+
+      await Promise.all([
+        insertProfile(newProfile).then(data => setProfileData(data)),
+        insertLanguages(newLanguages).then(data => setProfileLangs(data)),
+        insertRoles(newRoles).then(data => setProfileRoles(data)),
+      ]);
+    };
+
+    /**
      * Takes partial info to update the current
      * user's profile. Requires RLS update access
      * setup for the profiles table.
      */
     const updateProfile = async (updatedInfo: Partial<Profile>) => {
-      if (!profileData || !profileData.user_id)
-        throw new Error(
-          `Expected profileData to be valid, but got ${profileData}`,
-        );
+      if (!userId) throw new Error('Fatal: user is not logged in');
 
       const newProfileData = { ...profileData, ...updatedInfo };
-      await updateSupabaseProfile(profileData.user_id, newProfileData)
+      await updateSupabaseProfile(userId, newProfileData)
         .then(data => setProfileData(data))
         .catch((err: Error) => {
           throw new Error(`Error updating profile data: ${err.message}`);
@@ -83,10 +112,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      * on the profiles-languages table.
      */
     const setLanguages = async (languages: ProfileLanguage[]) => {
-      if (!profileData || !profileData.user_id)
-        throw new Error(
-          `Expected profileData to be valid, but got ${profileData}`,
-        );
+      if (!userId) throw new Error('Fatal: user is not logged in');
 
       // find removed languages
       const toDelete = profileLangs.filter(
@@ -94,7 +120,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       );
 
       await Promise.all([
-        deleteLanguages(profileData.user_id, toDelete),
+        deleteLanguages(userId, toDelete),
         upsertLanguages(languages).then(data => setProfileLangs(data)),
       ]);
     };
@@ -106,10 +132,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      * setup on the profiles-roles table.
      */
     const setRoles = async (roles: ProfileRole[]) => {
-      if (!profileData || !profileData.user_id)
-        throw new Error(
-          `Expected profileData to be valid, but got ${profileData}`,
-        );
+      if (!userId) throw new Error('Fatal: user is not logged in');
 
       // find removed roles
       const toDelete = profileRoles.filter(
@@ -117,7 +140,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       );
 
       await Promise.all([
-        deleteRoles(profileData.user_id, toDelete),
+        deleteRoles(userId, toDelete),
         upsertRoles(roles).then(data => setProfileRoles(data)),
       ]);
     };
@@ -126,13 +149,15 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       profileData,
       languages: profileLangs,
       roles: profileRoles,
+      userId,
+      createNewProfile,
       updateProfile,
       setLanguages,
       setRoles,
     };
 
     return val;
-  }, [profileData, profileLangs, profileRoles]);
+  }, [profileData, profileLangs, profileRoles, userId]);
 
   return (
     <ProfileContext.Provider value={providerValue}>

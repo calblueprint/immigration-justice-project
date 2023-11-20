@@ -60,7 +60,11 @@ export default function OnboardingProvider({
   children: ReactNode;
 }) {
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([]);
+  const [flow, setFlow] = useState<FlowData[]>([
+    { name: 'Page 0', url: 'test0' },
+    { name: 'Page 1', url: 'test1' },
+    { name: 'Page 2', url: 'test2' },
+  ]);
   const [profile, setProfile] = useState<Profile>({ ...blankProfile });
   const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
