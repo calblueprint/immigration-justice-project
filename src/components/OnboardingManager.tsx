@@ -48,7 +48,7 @@ export default function OnboardingManager({
       return;
     }
 
-    // page visited before
+    // correct page given current progress, ignore
     if (pageProgress <= onboarding.progress) {
       return;
     }
@@ -69,8 +69,13 @@ export default function OnboardingManager({
 
     if (newProgress > onboarding.progress) onboarding.setProgress(newProgress);
 
-    if (newProgress >= onboarding.flow.length) router.push('/cases');
-    else router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
+    if (newProgress >= onboarding.flow.length) {
+      onboarding.flushData().then(() => {
+        router.push('/cases');
+      });
+    } else {
+      router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
+    }
   };
 
   return (

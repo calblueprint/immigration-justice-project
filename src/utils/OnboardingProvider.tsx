@@ -1,15 +1,11 @@
 'use client';
 
-import supabase from '@/api/supabase/createClient';
 import {
-  deleteLanguages,
-  deleteRoles,
-  upsertLanguages,
-  upsertProfile,
-  upsertRoles,
-} from '@/api/supabase/queries/profiles';
-import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
-import { UUID } from 'crypto';
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  RoleEnum,
+} from '@/types/schema';
 import {
   createContext,
   useState,
@@ -17,8 +13,10 @@ import {
   ReactNode,
   SetStateAction,
   Dispatch,
-  useEffect,
+  useContext,
 } from 'react';
+import { UUID } from 'crypto';
+import { ProfileContext } from './ProfileProvider';
 
 interface FlowData {
   url: string;
@@ -27,18 +25,20 @@ interface FlowData {
 
 interface OnboardingContextType {
   profile: Profile;
-  languages: ProfileLanguage[];
-  roles: ProfileRole[];
+  canReads: Set<string>;
+  canWrites: Set<string>;
+  roles: Set<RoleEnum>;
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
-  flushProfileData: () => Promise<void>;
   updateProfile: (updateInfo: Partial<Profile>) => Promise<void>;
+  flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
-  setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
-  setRoles: (roles: ProfileRole[]) => Promise<void>;
+  setCanReads: Dispatch<SetStateAction<Set<string>>>;
+  setCanWrites: Dispatch<SetStateAction<Set<string>>>;
+  setRoles: Dispatch<SetStateAction<Set<RoleEnum>>>;
 }
 
 export const OnboardingContext = createContext<
@@ -59,29 +59,14 @@ export default function OnboardingProvider({
 }: {
   children: ReactNode;
 }) {
+  const profileCtx = useContext(ProfileContext);
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([
-    { name: 'Page 0', url: 'test0' },
-    { name: 'Page 1', url: 'test1' },
-    { name: 'Page 2', url: 'test2' },
-  ]);
+  const [flow, setFlow] = useState<FlowData[]>([]);
   const [profile, setProfile] = useState<Profile>({ ...blankProfile });
-  const [languages, setProfileLangs] = useState<ProfileLanguage[]>([]);
-  const [roles, setProfileRoles] = useState<ProfileRole[]>([]);
+  const [canReads, setCanReads] = useState<Set<string>>(new Set());
+  const [canWrites, setCanWrites] = useState<Set<string>>(new Set());
+  const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
   const [canContinue, setCanContinue] = useState<boolean>(false);
-
-  useEffect(() => {
-    (async () => {
-      const { data: sessionData, error } = await supabase.auth.getSession();
-
-      if (error) throw error;
-
-      const userId = sessionData?.session?.user.id;
-      if (userId) {
-        setProfile({ ...blankProfile, user_id: userId as UUID });
-      }
-    })();
-  }, []);
 
   const providerValue = useMemo(() => {
     /**
@@ -93,96 +78,114 @@ export default function OnboardingProvider({
       setProfile(newProfileData);
     };
 
-    /**
-     * Flushes stored data with Supabase.
-     * Requires RLS insert and update policy on the profiles table.
-     */
-    const flushProfileData = async () => {
-      // validate profile
+    const flushData = async () => {
+      if (!profileCtx) throw new Error('Fatal: No profile context provided!');
+      if (profileCtx.userId === undefined)
+        throw new Error('Fatal: User is not logged in!');
+      const uid: UUID = profileCtx.userId;
+
       if (profile.first_name === blankProfile.first_name)
-        throw new Error('Profile is missing first name!');
+        throw new Error('Error flushing data: profile missing first name!');
 
       if (profile.last_name === blankProfile.last_name)
-        throw new Error('Profile is missing last name!');
+        throw new Error('Error flushing data: profile missing last name!');
 
       if (profile.hours_per_month === blankProfile.hours_per_month)
-        throw new Error('Profile is missing hours per month!');
+        throw new Error(
+          'Error flushing data: profile missing hours per month!',
+        );
 
       if (profile.location === blankProfile.location)
-        throw new Error('Profile is missing location!');
+        throw new Error('Error flushing data: profile missing location!');
 
       if (profile.start_date === blankProfile.start_date)
-        throw new Error('Profile is missing start date!');
+        throw new Error('Error flushing data: profile missing start date!');
 
-      if (profile.user_id === blankProfile.user_id)
-        throw new Error('Profile is missing user id!');
+      if (roles.size === 0)
+        throw new Error('Error flushing data: roles data is empty!');
 
-      // upsert
-      await upsertProfile(profile);
-    };
+      if (roles.has('ATTORNEY')) {
+        if (profile.bar_number === undefined)
+          throw new Error(
+            'Error flushing data: attorney profile missing bar number!',
+          );
 
-    /**
-     * Takes in a list of ProfileLanguage
-     * and replaces languages with it entirely,
-     * simultaneously updating the database.
-     * Requires RLS delete, update, insert on profiles-languages.
-     */
-    const setLanguages = async (newLangs: ProfileLanguage[]) => {
-      if (profile.user_id === blankProfile.user_id)
+        if (profile.eoir_registered === undefined)
+          throw new Error(
+            'Error flushing data: attorney profile missing EOIR registered!',
+          );
+
+        if (profile.immigration_law_experience === undefined)
+          throw new Error(
+            'Error flushing data: attorney profile missing immigration law experience!',
+          );
+      }
+
+      if (canReads.size === 0)
         throw new Error(
-          `Expected user_id to be valid but got: ${profile.user_id}`,
+          'Error flushing data: can read languages data is empty!',
         );
 
-      const toDelete = newLangs.filter(
-        l1 => !languages.find(l2 => l1.iso_code === l2.iso_code),
-      );
-
-      await Promise.all([
-        deleteLanguages(profile.user_id, toDelete),
-        upsertLanguages(languages).then(data => setProfileLangs(data)),
-      ]);
-    };
-
-    /**
-     * Takes in a list of ProfileRole
-     * and replaces roles with it entirely,
-     * simultaneously updating the database.
-     * Requires RLS delete, update, insert on profiles-roles.
-     */
-    const setRoles = async (newRoles: ProfileRole[]) => {
-      if (profile.user_id === blankProfile.user_id)
+      if (canWrites.size === 0)
         throw new Error(
-          `Expected user_id to be valid but got: ${profile.user_id}`,
+          'Error flushing data: can write languages data is empty!',
         );
 
-      const toDelete = newRoles.filter(
-        r1 => !roles.find(r2 => r1.role === r2.role),
-      );
+      // format data
+      const profileToInsert: Profile = {
+        ...profile,
+        user_id: uid,
+      };
 
-      await Promise.all([
-        deleteRoles(profile.user_id, toDelete),
-        upsertRoles(roles).then(data => setProfileRoles(data)),
-      ]);
+      const userLangs = new Set(
+        Array.from(canReads).concat(Array.from(canWrites)),
+      );
+      const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
+        user_id: uid,
+        can_read: canReads.has(l),
+        can_write: canWrites.has(l),
+        iso_code: l,
+      }));
+
+      const rolesToInsert: ProfileRole[] = Array.from(roles).map(r => ({
+        user_id: uid,
+        role: r,
+      }));
+
+      await profileCtx.createNewProfile(
+        profileToInsert,
+        langsToInsert,
+        rolesToInsert,
+      );
     };
 
-    const val: OnboardingContextType = {
+    return {
       progress,
       profile,
-      languages,
+      canReads,
+      canWrites,
       roles,
       flow,
       canContinue,
+      flushData,
       setFlow,
       setProgress,
       updateProfile,
-      flushProfileData,
-      setLanguages,
+      setCanReads,
+      setCanWrites,
       setRoles,
       setCanContinue,
     };
-
-    return val;
-  }, [progress, profile, flow, languages, roles, canContinue]);
+  }, [
+    progress,
+    profile,
+    flow,
+    canReads,
+    canWrites,
+    roles,
+    canContinue,
+    profileCtx,
+  ]);
 
   return (
     <OnboardingContext.Provider value={providerValue}>

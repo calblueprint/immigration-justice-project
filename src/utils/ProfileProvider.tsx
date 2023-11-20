@@ -22,7 +22,7 @@ interface ProfileContextType {
   profileData: Profile | null;
   languages: ProfileLanguage[];
   roles: ProfileRole[];
-  userId: UUID | null;
+  userId: UUID | undefined;
   updateProfile: (newProfileData: Partial<Profile>) => Promise<void>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
   setRoles: (roles: ProfileRole[]) => Promise<void>;
@@ -38,7 +38,7 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
 );
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
-  const [userId, setUserId] = useState<UUID | null>(null);
+  const [userId, setUserId] = useState<UUID | undefined>(undefined);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
@@ -145,7 +145,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       ]);
     };
 
-    const val: ProfileContextType = {
+    return {
       profileData,
       languages: profileLangs,
       roles: profileRoles,
@@ -155,8 +155,6 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       setLanguages,
       setRoles,
     };
-
-    return val;
   }, [profileData, profileLangs, profileRoles, userId]);
 
   return (
