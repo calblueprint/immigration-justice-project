@@ -39,8 +39,8 @@ export default function Page() {
   // load cases on render
   useEffect(() => {
     getNCases(20).then(casesData => {
-      setCaseData(casesData);
-      setCaseInfo(casesData[0]);
+      setCaseData(casesData as CaseListing[]);
+      setCaseInfo(casesData[0] as CaseListing);
     });
   }, []);
 

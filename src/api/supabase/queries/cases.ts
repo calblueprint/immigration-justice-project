@@ -1,40 +1,21 @@
 import { UUID } from 'crypto';
+import { CaseListing } from '@/types/schema';
 import supabase from '../createClient';
 
-export async function getAllCases() {
-  const { data, error } = await supabase.from('cases').select();
+export async function getAllCases(): Promise<CaseListing[]>  {
+  const { data, error } = await supabase.rpc('getCasesData');
   if (error) throw new Error(`Error fetching all cases: ${error.message}`);
   return data;
 }
 
-export async function getNCases(n: number) {
-  const { data, error } = await supabase.from('cases').select().limit(n);
+export async function getNCases(n: number): Promise<CaseListing[]> {
+  const { data, error } = await supabase.rpc('getCasesData').limit(n);
   if (error) throw new Error(`Error fetching ${n} cases: ${error.message}`);
   return data;
 }
 
-export async function getCaseById(id: UUID) {
+export async function getCaseById(id: UUID){
   const { data, error } = await supabase.from('cases').select().eq('id', id);
   if (error) throw new Error(`Error fetching case ${id}: ${error.message}`);
-  return data;
-}
-
-export async function getCaseLanguages(id: UUID) {
-  const { data, error } = await supabase
-    .from('cases-languages')
-    .select('iso_code')
-    .eq('listing_id', id);
-  if (error)
-    throw new Error(`Error fetching case languages ${id}: ${error.message}`);
-  return data;
-}
-
-export async function getCaseReliefs(id: UUID) {
-  const { data, error } = await supabase
-    .from('cases-reliefs')
-    .select('relief_code')
-    .eq('listing_id', id);
-  if (error)
-    throw new Error(`Error fetching case releifs ${id}: ${error.message}`);
   return data;
 }
