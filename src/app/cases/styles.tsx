@@ -14,7 +14,6 @@ export const PageContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.2fr 1fr;
-  /* margin: 2rem; */
   padding: 1rem 2rem 0rem 2rem;
   overflow: hidden;
 `;
@@ -26,7 +25,6 @@ export const CardColumn = styled.div`
   justify-content: space-between;
   border-right: 1px solid ${COLORS.greyLight};
   margin-top: 1.5rem;
-  padding-right: 3rem;
   padding: 0.5rem 3rem 0rem 0rem;
 `;
 
