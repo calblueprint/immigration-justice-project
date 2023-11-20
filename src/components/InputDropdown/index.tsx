@@ -7,6 +7,7 @@ import {
   KeyboardEvent,
   Dispatch,
   SetStateAction,
+  ClipboardEvent,
 } from 'react';
 import {
   DropdownErrorText,
@@ -70,7 +71,7 @@ export default function InputDropdown({
   );
 
   // handle when a tag gets clicked
-  function handleRemoveOption(option: string) {
+  const handleRemoveOption = (option: string) => {
     if (containerRef.current) containerRef.current.blur();
     if (inputRef.current) inputRef.current.blur();
 
@@ -83,10 +84,10 @@ export default function InputDropdown({
     } else {
       setValue('');
     }
-  }
+  };
 
   // decide add/remove options
-  function handleSelectOption(option: string) {
+  const handleSelectOption = (option: string) => {
     if (inputRef.current) inputRef.current.innerHTML = '';
 
     if (multi) {
@@ -101,10 +102,10 @@ export default function InputDropdown({
     } else {
       setValue(option);
     }
-  }
+  };
 
   // handle keyboard navigation
-  function handleKeyDown(e: KeyboardEvent) {
+  const handleKeyDown = (e: KeyboardEvent) => {
     // navigate dropdown options
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
@@ -155,14 +156,33 @@ export default function InputDropdown({
     } else {
       setMenuVisible(true);
     }
-  }
+  };
+
+  // handle user pasting non-text elements into input
+  const handlePaste = (e: ClipboardEvent) => {
+    e.preventDefault();
+    if (!inputRef.current) return;
+
+    const pastedText = e.clipboardData.getData('text/plain');
+    const newText = inputRef.current.innerText + pastedText.trim();
+    inputRef.current.innerText = newText;
+    setInputValue(newText);
+
+    // move cursor to end
+    const range = document.createRange();
+    range.selectNodeContents(inputRef.current);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  };
 
   // helper to hide menu and clear text
-  function hideMenu() {
+  const hideMenu = () => {
     setMenuVisible(false);
     setInputValue('');
     if (inputRef.current) inputRef.current.innerText = '';
-  }
+  };
 
   return (
     <DropdownContainer ref={containerRef} onBlur={() => hideMenu()}>
@@ -209,6 +229,7 @@ export default function InputDropdown({
               setFocusIndex(-1);
             }}
             onKeyDown={e => handleKeyDown(e)}
+            onPaste={e => handlePaste(e)}
             contentEditable={!disabled}
           />
         </DropdownInputContainer>
