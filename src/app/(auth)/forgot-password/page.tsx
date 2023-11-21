@@ -46,8 +46,8 @@ export default function ForgotPassword() {
           </H4>
           <HorizontalDiv>
             <Button
-              primaryColor={COLORS.blueMid}
-              secondaryColor={COLORS.blueDark}
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
               onClick={sendPasswordResetLink}
             >
               <H4 $color="white">Resend Email</H4>
