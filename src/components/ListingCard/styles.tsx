@@ -41,8 +41,6 @@ export const CardTag = styled.span<{ color: string }>`
 
 export const IconTextGroup = styled.div`
   display: flex;
-  /* justify-content: center; */
-  /* justify-content: space-around; */
   gap: 0.5rem;
   align-items: center;
 `;

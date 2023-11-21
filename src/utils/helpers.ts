@@ -156,3 +156,12 @@ pSBC.pSBCr = (color: string) => {
 // helper functions
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+
+// parse adjudicating agency to normal words
+export const parseAgency = (agency: string): string =>
+  agency.length <= 5
+    ? agency.toUpperCase()
+    : agency
+        .split('_')
+        .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
+        .join(' ');

@@ -10,7 +10,7 @@ export const FiltersContainer = styled.div`
 
 export const PageContainer = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.2fr 1fr;
@@ -19,7 +19,7 @@ export const PageContainer = styled.div`
 `;
 
 export const CardColumn = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   flex-direction: column;
   column-gap: 2rem;
   justify-content: space-between;

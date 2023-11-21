@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import { timestampStringToDate, parseDate } from '@/utils/helpers';
+import { timestampStringToDate, parseDate, parseAgency } from '@/utils/helpers';
 import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import Icon from '../../../assets/icons/Icon';
@@ -42,27 +42,9 @@ export default function ListingCard({
     return tags;
   };
 
-  function formatAdjudicatingAgency(text: string) {
-    // Split the text into words
-    const words = text.split('_');
-
-    if (words.length === 1) {
-      return text;
-    }
-    // Capitalize the first letter of each word
-    const formattedWords = words.map(
-      word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-    );
-
-    // Join the words back together
-    const formattedText = formattedWords.join(' ');
-
-    return formattedText;
-  }
-
   const remoteInfo = `${caseData.is_remote ? 'Remote' : 'In Person'}${
     caseData.adjudicating_agency
-      ? `, ${formatAdjudicatingAgency(caseData.adjudicating_agency)}`
+      ? `, ${parseAgency(caseData.adjudicating_agency)}`
       : ''
   }`;
 
