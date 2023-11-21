@@ -9,6 +9,9 @@ const BigButton = styled.button<{ $color?: string }>`
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  &:hover {
+    background: ${COLORS.blueDark};
+  }
 `;
 
 export default BigButton;
