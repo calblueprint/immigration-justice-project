@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 
 const BigButton = styled.button<{ $color?: string }>`
-  background-color: ${props => props.color || COLORS.blueMid};
+  background: ${props => props.color || COLORS.blueMid};
   color: ${props => props.$color};
   padding: 0.94rem 0;
   border: none;
@@ -11,6 +11,9 @@ const BigButton = styled.button<{ $color?: string }>`
   width: 100%;
   &:hover {
     background: ${COLORS.blueDark};
+  }
+  &:active {
+    background: ${COLORS.blueDarker};
   }
 `;
 
