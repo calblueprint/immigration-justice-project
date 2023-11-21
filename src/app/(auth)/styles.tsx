@@ -9,6 +9,7 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  background-color: ${COLORS.background};
 `;
 
 export const FormDiv = styled.div`
