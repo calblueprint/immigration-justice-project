@@ -6,13 +6,14 @@ import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import CaseDetailDisplay from '@/components/CaseDetails';
-import { H1 } from '@/styles/text';
+import CaseDetails from '@/components/CaseDetails';
+import { H2 } from '@/styles/text';
 import {
   CardColumn,
-  MainDisplay,
   PageContainer,
   FiltersContainer,
+  Body,
+  CaseDetailsContainer,
 } from './styles';
 
 type FilterType = {
@@ -38,60 +39,64 @@ export default function Page() {
   // load cases on render
   useEffect(() => {
     getNCases(20).then(casesData => {
-      setCaseData(casesData);
-      setCaseInfo(casesData[0]);
+      setCaseData(casesData as CaseListing[]);
+      setCaseInfo(casesData[0] as CaseListing);
     });
   }, []);
 
   return (
     <PageContainer>
-      <H1>Browse Available Cases</H1>
-      <FiltersContainer>
-        <FilterDropdown
-          defaultValue="Remote/In Person"
-          options={['Remote/In Person', 'Remote Only', 'In Person Only']}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, remote: v as string })
-          }
-        />
-        <FilterDropdown
-          defaultValue="Attorney/Interpreter"
-          options={['Attorney/Interpreter', 'Interpreter Only']}
-          onChange={v => setCaseFilters({ ...caseFilters, role: v as string })}
-        />
-        <FilterDropdown
-          defaultValue="Anywhere"
-          // requires knowing user location
-          options={[
-            'Within 5 miles',
-            'Within 10 miles',
-            'Within 20 miles',
-            'Within 100 miles',
-            'Anywhere',
-          ]}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, distance: v as string })
-          }
-        />
-        <FilterDropdown
-          defaultValue="All countries"
-          multi
-          options={[
-            'All countries',
-            ...Array.from(
-              new Set(
-                caseData
-                  .filter(c => c.country)
-                  .map(c => (c.country ? c.country : '')),
+      <div>
+        <H2>Browse Available Cases</H2>
+        <FiltersContainer>
+          <FilterDropdown
+            defaultValue="Remote/In Person"
+            options={['Remote/In Person', 'Remote Only', 'In Person Only']}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, remote: v as string })
+            }
+          />
+          <FilterDropdown
+            defaultValue="Attorney/Interpreter"
+            options={['Attorney/Interpreter', 'Interpreter Only']}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, role: v as string })
+            }
+          />
+          <FilterDropdown
+            defaultValue="Anywhere"
+            // requires knowing user location
+            options={[
+              'Within 5 miles',
+              'Within 10 miles',
+              'Within 20 miles',
+              'Within 100 miles',
+              'Anywhere',
+            ]}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, distance: v as string })
+            }
+          />
+          <FilterDropdown
+            defaultValue="All countries"
+            multi
+            options={[
+              'All countries',
+              ...Array.from(
+                new Set(
+                  caseData
+                    .filter(c => c.country)
+                    .map(c => (c.country ? c.country : '')),
+                ),
               ),
-            ),
-          ]}
-          onChange={v =>
-            setCaseFilters({ ...caseFilters, countries: v as string[] })
-          }
-        />
-      </FiltersContainer>
-      <MainDisplay>
+            ]}
+            onChange={v =>
+              setCaseFilters({ ...caseFilters, countries: v as string[] })
+            }
+          />
+        </FiltersContainer>
+      </div>
+      <Body>
         <CardColumn>
           {caseData
             .filter(c => {
@@ -119,8 +124,10 @@ export default function Page() {
               />
             ))}
         </CardColumn>
-        {caseInfo && <CaseDetailDisplay caseData={caseInfo} />}
-      </MainDisplay>
+        <CaseDetailsContainer>
+          {caseInfo && <CaseDetails caseData={caseInfo} />}
+        </CaseDetailsContainer>
+      </Body>
     </PageContainer>
   );
 }

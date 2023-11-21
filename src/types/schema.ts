@@ -27,16 +27,6 @@ export interface ProfileRole {
   role: RoleEnum;
 }
 
-export interface CaseLanguage {
-  listing_id: UUID;
-  iso_code: string;
-}
-
-export interface CaseRelief {
-  listing_id: UUID;
-  relief_code: string;
-}
-
 // sql table rows
 export interface CaseListing {
   id: UUID;
@@ -53,6 +43,8 @@ export interface CaseListing {
   upcoming_date?: string;
   experience_needed: ImmigrationLawExperienceEnum;
   adjudicating_agency: string;
+  languages: string[];
+  relief_codes: string[];
 }
 
 export interface Profile {

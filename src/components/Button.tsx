@@ -4,41 +4,42 @@ import styled from 'styled-components';
   FOR PRIMARY BUTTON USAGE:
 
     Props: 
-      primaryColor (Required) - This color will determine the default background color of the button
-      secondaryColor (Required) - This color will determine the border color and background color on hover
+      $primarycolor (Required) - This color will determine the default background color of the button
+      $secondarycolor (Required) - This color will determine the border color and background color on hover
    
     Example:
-      <Button primaryColor={COLORS.primaryBlue} secondaryColor={COLORS.primaryBlueClicked} onClick={...}>
+      <Button $primarycolor={COLORS.blueMid} $secondarycolor={COLORS.blueDark} onClick={...}>
         [Button text here]
       </Button>
 
   FOR SECONDARY BUTTON USAGE:
 
     Props:
-      primaryColor (Omit) - IMPORTANT: DO NOT PASS IN A primaryColor PROP!!! The background color will be white by default
-      secondaryColor (Required) - This color will determine the border color and background color on hover
+      $primarycolor (Omit) - IMPORTANT: DO NOT PASS IN A $primarycolor PROP!!! The background color will be white by default
+      $secondarycolor (Required) - This color will determine the border color and background color on hover
 
     Example: 
-      <Button secondaryColor={COLORS.primaryBlue} onClick={...}>
+      <Button $secondarycolor={COLORS.blueMid} onClick={...}>
         [Button text here]
       </Button>
  */
 const Button = styled.button<{
-  primaryColor?: string;
-  secondaryColor: string;
+  $primarycolor?: string;
+  $secondarycolor: string;
 }>`
   appearance: none;
-  color: ${props => (props.primaryColor ? 'white' : 'black')};
-  background: ${props => (props.primaryColor ? props.primaryColor : 'white')};
+  color: ${props => (props.$primarycolor ? 'white' : 'black')};
+  background: ${props => (props.$primarycolor ? props.$primarycolor : 'white')};
   align-self: flex-end;
   padding: 0.625rem 1.25rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
-    ${props => (props.primaryColor ? props.primaryColor : props.secondaryColor)};
+    ${props =>
+      props.$primarycolor ? props.$primarycolor : props.$secondarycolor};
   &:hover {
-    background: ${props => props.secondaryColor};
+    background: ${props => props.$secondarycolor};
     color: white;
-    border-color: ${props => props.secondaryColor};
+    border-color: ${props => props.$secondarycolor};
   }
 `;
 

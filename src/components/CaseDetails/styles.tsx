@@ -6,6 +6,7 @@ import COLORS from '@/styles/colors';
 export const CaseDisplay = styled.aside`
   position: relative;
   width: 100%;
+  margin-bottom: 1.5rem;
 `;
 
 export const CaseTitle = styled(H1)`
@@ -17,7 +18,7 @@ export const CaseInterestContainer = styled.div`
   top: 4rem;
   width: 95%;
   border-radius: 10px;
-  margin: 0 auto;
+  margin-left: 3rem;
   padding: 2rem;
   border: 2px solid ${COLORS.blueMid};
   justify-content: space-between;

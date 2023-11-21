@@ -17,10 +17,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
       <CaseInterestContainer>
         <InfoContainer>
           <H1>Guatemalan mother and two children seeking protection</H1>
-          {/* <p>
-            <strong>Languages: </strong>
-            {caseData.languages}
-          </p> */}
+
           {caseData.upcoming_date && (
             <p>
               <strong>Next Court/Filing Date: </strong>

@@ -104,8 +104,8 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           Please submit before leaving this page.
         </FormWarning>
         <Button
-          primaryColor={COLORS.blueMid}
-          secondaryColor={COLORS.blueDark}
+          $primarycolor={COLORS.blueMid}
+          $secondarycolor={COLORS.blueDark}
           onClick={handleInsert}
         >
           Submit Interest
