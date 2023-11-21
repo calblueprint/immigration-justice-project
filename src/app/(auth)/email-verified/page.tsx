@@ -1,7 +1,7 @@
 'use client';
 
-import { H2, H4 } from '@/styles/text';
-import { OuterDiv, FormDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { H2 } from '@/styles/text';
+import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 
 export default function EmailVerified() {
