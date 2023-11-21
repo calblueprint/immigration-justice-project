@@ -6,18 +6,18 @@ export const OuterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
 `;
 
 export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; // 40 px
-  padding: 3.125rem;
+  gap: 2.5rem;
+  padding: 3rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
-  width: 580px;
+  width: 39.25rem;
 `;
 
 export const QuestionsDiv = styled.div`
@@ -35,4 +35,11 @@ export const SpacerDiv = styled.div`
 export const H4Centered = styled(H4)`
   color: ${COLORS.greyDark};
   text-align: center;
+`;
+
+export const HorizontalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 1.25rem;
 `;

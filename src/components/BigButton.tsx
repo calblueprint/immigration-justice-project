@@ -1,14 +1,30 @@
 import styled from 'styled-components';
+import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
 
-const BigButton = styled.button<{ $color?: string }>`
-  background-color: ${props => props.color || COLORS.blueMid};
-  color: ${props => props.$color};
-  padding: 0.94rem 11.5rem;
+const openSans = OpenSans({ subsets: ['latin'] });
+
+const BigButton = styled.button<{ disabled?: boolean }>`
+  background: ${props => (props.disabled ? COLORS.greyLight : COLORS.blueMid)};
+  color: ${props => (props.disabled ? COLORS.greyMid : 'white')};
+  // font should be same as H4
+  ${openSans.style}
+  font-size: 1rem;
+  font-weight: 600;
+
+  padding: 0.94rem 0;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  &:hover {
+    background: ${props =>
+      props.disabled ? COLORS.greyLight : COLORS.blueDark};
+  }
+  &:active {
+    background: ${props =>
+      props.disabled ? COLORS.greyLight : COLORS.blueDarker};
+  }
 `;
 
 export default BigButton;
@@ -22,7 +38,6 @@ export default BigButton;
   export default function ButtonTest() {
     return (
       <BigButton
-        color="yellow"
         onClick={() => {
           console.error('hi!');
         }}
