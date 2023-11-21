@@ -4,7 +4,7 @@ import COLORS from '@/styles/colors';
 const BigButton = styled.button<{ $color?: string }>`
   background-color: ${props => props.color || COLORS.blueMid};
   color: ${props => props.$color};
-  padding: 0.94rem 11.5rem;
+  padding: 0.94rem 0;
   border: none;
   border-radius: 5px;
   cursor: pointer;

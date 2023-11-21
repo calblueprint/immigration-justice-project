@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import styled from 'styled-components';
 // import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, AColored, P } from '@/styles/text';
@@ -20,6 +19,9 @@ export default function SignUp() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: 'http://localhost:3000/email-verified',
+      },
     });
 
     if (error) {
@@ -84,13 +86,13 @@ export default function SignUp() {
           <H2>An email verification link has been sent.</H2>
           <H4 $color={COLORS.greyDark}>
             This link will direct you to the next step. If you didn’t receive an
-            email, please click Resend Email.{' '}
+            email, please click Resend Email.
           </H4>
           <HorizontalDiv>
             <Button
               $primaryColor={COLORS.blueMid}
               $secondaryColor={COLORS.blueDark}
-              onClick={() => handleResendEmail()}
+              onClick={handleResendEmail}
             >
               <H4 $color="white">Resend Email</H4>
             </Button>

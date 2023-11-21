@@ -36,6 +36,7 @@ const Button = styled.button<{
   border: 2px solid
     ${props =>
       props.$primaryColor ? props.$primaryColor : props.$secondaryColor};
+  cursor: pointer;
   &:hover {
     background: ${props => props.$secondaryColor};
     color: white;
