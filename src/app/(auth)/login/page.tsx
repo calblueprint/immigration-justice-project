@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+// import Link from 'next/link';
 import TextInput from '@/components/TextInput/index';
-import { H1, P, AColored } from '@/styles/text';
+import { H1, P, LinkColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { H4Centered, QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
@@ -53,9 +53,9 @@ export default function Login() {
           />
         </QuestionsDiv>
         <P>
-          <Link href="/forgot-password" passHref legacyBehavior>
-            <AColored $color={COLORS.greyMid}>Forgot your password?</AColored>
-          </Link>
+          <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
+            Forgot your password?
+          </LinkColored>
         </P>
       </SpacerDiv>
       <SpacerDiv>
@@ -64,9 +64,9 @@ export default function Login() {
         </BigButton>
         <H4Centered>
           Don’t have an account yet?{' '}
-          <AColored $color={COLORS.greyDark} href="/signup">
+          <LinkColored $color={COLORS.greyDark} href="/signup">
             Sign up
-          </AColored>
+          </LinkColored>
         </H4Centered>
       </SpacerDiv>
     </>

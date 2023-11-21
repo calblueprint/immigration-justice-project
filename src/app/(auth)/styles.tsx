@@ -29,7 +29,7 @@ export const QuestionsDiv = styled.div`
 export const SpacerDiv = styled.div<{ gap?: number }>`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.gap || 1.2}rem; // default = 1.2 rem
+  gap: ${props => props.gap || 1.2}rem;
 `;
 
 export const H4Centered = styled(H4)`

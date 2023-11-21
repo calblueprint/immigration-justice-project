@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
+import Link from 'next/link';
 import COLORS from './colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
@@ -48,6 +49,15 @@ export const P = styled.p<{ $color?: string }>`
 `;
 
 export const AColored = styled.a<{ $color?: string }>`
+  // same text style as P
   ${openSans.style}
-  color: ${props => props.$color};
+  /* font-size: 0.875rem;
+  font-weight: 400; */
+  color: ${props => props.$color || COLORS.greyDarker};
+`;
+
+export const LinkColored = styled(Link)<{ $color?: string }>`
+  // same text style as P
+  ${openSans.style}
+  color: ${props => props.$color || COLORS.greyDarker};
 `;
