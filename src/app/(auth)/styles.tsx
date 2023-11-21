@@ -9,6 +9,7 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  background-color: ${COLORS.background};
 `;
 
 export const FormDiv = styled.div`
@@ -27,10 +28,10 @@ export const QuestionsDiv = styled.div`
   gap: 1.2rem; // 20 px
 `;
 
-export const SpacerDiv = styled.div<{ gap?: number }>`
+export const SpacerDiv = styled.div<{ $gap?: number }>`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.gap || 1.2}rem;
+  gap: ${props => props.$gap || 1.2}rem;
 `;
 
 export const H4Centered = styled(H4)`

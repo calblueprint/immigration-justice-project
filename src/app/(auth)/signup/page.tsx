@@ -14,8 +14,13 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
   // const { push } = useRouter();
   const handleSignUp = async () => {
+    if (errorMessage) {
+      // if there's an error, disable signup functionality
+      return;
+    }
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -25,12 +30,18 @@ export default function SignUp() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to sign up: ${error.message}`);
+      setErrorMessage(error.message);
+      // throw new Error(`An error occurred trying to sign up: ${error.message}`);
     }
     setEmailSentCount(1);
+    setErrorMessage('');
     // push('/verify-email');
   };
   const handleResendEmail = async () => {
+    if (errorMessage) {
+      // if there's an error, disable signup functionality
+      return;
+    }
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
@@ -39,18 +50,23 @@ export default function SignUp() {
       },
     });
     if (error) {
-      throw new Error(
-        `An error occurred trying to resend email: ${error.message}`,
-      );
+      setErrorMessage(error.message);
+      // throw new Error(
+      //   `An error occurred trying to resend email: ${error.message}`,
+      // );
     }
     setEmailSentCount(emailSentCount + 1);
+    setErrorMessage('');
   };
 
   return (
     <>
       {!emailSentCount && (
         <>
-          <H1>Sign Up</H1>
+          <SpacerDiv $gap={0.625}>
+            <H1>Sign Up</H1>
+            {errorMessage !== '' && <P>{errorMessage}</P>}
+          </SpacerDiv>
           <TextInput
             label="Email"
             placeholder="email@example.com"
@@ -64,7 +80,7 @@ export default function SignUp() {
             label="Password"
             placeholder="Password"
             errorText={
-              password === '' || password.length < 8 ? 'Invalid Password' : ''
+              password === '' || password.length < 6 ? 'Invalid Password' : ''
             }
             type="password"
             id="password"
