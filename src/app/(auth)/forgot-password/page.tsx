@@ -17,7 +17,6 @@ export default function ForgotPassword() {
       redirectTo: 'http://localhost:3000/reset-password',
     });
     setEmailSentCount(emailSentCount + 1);
-    // setEmail(email);
   };
 
   return (
@@ -33,7 +32,7 @@ export default function ForgotPassword() {
             value={email}
             setValue={setEmail}
           />
-          <BigButton type="button" onClick={() => sendPasswordResetLink()}>
+          <BigButton type="button" onClick={sendPasswordResetLink}>
             <H4 $color="white">Send link to email</H4>
           </BigButton>
         </>
@@ -43,13 +42,13 @@ export default function ForgotPassword() {
           <H2>A password reset link has been sent to your email.</H2>
           <H4 $color={COLORS.greyDark}>
             This link will direct you to the next step. If you didn’t receive an
-            email, please click Resend Email.{' '}
+            email, please click Resend Email.
           </H4>
           <HorizontalDiv>
             <Button
               primaryColor={COLORS.blueMid}
               secondaryColor={COLORS.blueDark}
-              onClick={() => sendPasswordResetLink()}
+              onClick={sendPasswordResetLink}
             >
               <H4 $color="white">Resend Email</H4>
             </Button>

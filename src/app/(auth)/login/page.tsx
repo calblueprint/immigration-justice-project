@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import TextInput from '@/components/TextInput/index';
 import { H1, P, AColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
@@ -52,9 +53,9 @@ export default function Login() {
           />
         </QuestionsDiv>
         <P>
-          <AColored $color={COLORS.greyMid} href="/forgot-password">
-            Forgot your password?
-          </AColored>
+          <Link href="/forgot-password" passHref legacyBehavior>
+            <AColored $color={COLORS.greyMid}>Forgot your password?</AColored>
+          </Link>
         </P>
       </SpacerDiv>
       <SpacerDiv>

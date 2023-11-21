@@ -6,7 +6,7 @@ import TextInput from '@/components/TextInput/index';
 import { H1, H4 } from '@/styles/text';
 import { QuestionsDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
-import supabase from '../../../api/supabase/createClient';
+import supabase from '@/api/supabase/createClient';
 
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');

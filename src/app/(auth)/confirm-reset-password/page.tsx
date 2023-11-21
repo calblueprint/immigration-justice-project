@@ -1,21 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { H1, H4 } from '@/styles/text';
-import { OuterDiv, FormDiv } from '@/app/(auth)/styles';
+import { H2, H4 } from '@/styles/text';
 import BigButton from '@/components/BigButton';
+import { SpacerDiv } from '../styles';
 
 export default function ConfirmResetPassword() {
   const { push } = useRouter();
 
   return (
-    <OuterDiv>
-      <FormDiv>
-        <H1>Your password has been reset.</H1>
-        <BigButton type="button" onClick={() => push('/login')}>
-          <H4 $color="white">Go to Log In</H4>
-        </BigButton>
-      </FormDiv>
-    </OuterDiv>
+    <SpacerDiv>
+      <H2>Your password has been reset.</H2>
+      <BigButton type="button" onClick={() => push('/login')}>
+        <H4 $color="white">Go to Log In</H4>
+      </BigButton>
+    </SpacerDiv>
   );
 }
