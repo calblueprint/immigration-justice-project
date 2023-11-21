@@ -3,7 +3,7 @@
 import { useState } from 'react';
 // import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H2, H4, AColored, P } from '@/styles/text';
+import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
@@ -54,20 +54,18 @@ export default function SignUp() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            erroring={false}
-            errorText="Email Error" // {errorMessage}
+            errorText="" // {errorMessage}
             type="email"
-            name="email"
+            id="email"
             value={email}
             setValue={setEmail}
           />
           <TextInput
             label="Password"
             placeholder="Password"
-            erroring={false}
-            errorText="Password Error"
+            errorText=""
             type="password"
-            name="password"
+            id="password"
             value={password}
             setValue={setPassword}
           />
@@ -77,9 +75,9 @@ export default function SignUp() {
             </BigButton>
             <H4Centered>
               Have an account already?{' '}
-              <AColored $color={COLORS.greyDark} href="/login">
+              <LinkColored $color={COLORS.greyDark} href="/login">
                 Log In
-              </AColored>
+              </LinkColored>
             </H4Centered>
           </SpacerDiv>
         </>

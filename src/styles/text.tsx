@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Open_Sans as OpenSans } from 'next/font/google';
+import Link from 'next/link';
 import COLORS from './colors';
 
 const openSans = OpenSans({ subsets: ['latin'] });
@@ -47,7 +48,7 @@ export const P = styled.p<{ $color?: string }>`
   margin: 0;
 `;
 
-export const AColored = styled.a<{ $color?: string }>`
+export const LinkColored = styled(Link)<{ $color?: string }>`
   ${openSans.style}
-  color: ${props => props.$color};
+  color: ${props => props.$color || COLORS.greyDarker};
 `;

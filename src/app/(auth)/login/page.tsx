@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+// import Link from 'next/link';
 import TextInput from '@/components/TextInput/index';
-import { H1, P, AColored } from '@/styles/text';
+import { H1, P, LinkColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { H4Centered, QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
@@ -35,28 +36,26 @@ export default function Login() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            erroring={false}
-            errorText="Email Error" // {errorMessage}
+            errorText="" // "Email Error"
             type="email"
-            name="email"
+            id="email"
             value={email}
             setValue={setEmail}
           />
           <TextInput
             label="Password"
             placeholder="Password"
-            erroring={false}
-            errorText="Password Error"
+            errorText="" // "Password Error"
             type="password"
-            name="password"
+            id="password"
             value={password}
             setValue={setPassword}
           />
         </QuestionsDiv>
         <P>
-          <AColored $color={COLORS.greyMid} href="/reset-password">
+          <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
             Forgot your password?
-          </AColored>
+          </LinkColored>
         </P>
       </SpacerDiv>
       <SpacerDiv>
@@ -65,9 +64,9 @@ export default function Login() {
         </BigButton>
         <H4Centered>
           Don’t have an account yet?{' '}
-          <AColored $color={COLORS.greyDark} href="/signup">
+          <LinkColored $color={COLORS.greyDark} href="/signup">
             Sign up
-          </AColored>
+          </LinkColored>
         </H4Centered>
       </SpacerDiv>
     </>

@@ -26,10 +26,10 @@ export const QuestionsDiv = styled.div`
   gap: 1.2rem; // 20 px
 `;
 
-export const SpacerDiv = styled.div`
+export const SpacerDiv = styled.div<{ gap?: number }>`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${props => props.gap || 1.2}rem;
 `;
 
 export const H4Centered = styled(H4)`
