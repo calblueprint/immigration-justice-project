@@ -48,11 +48,6 @@ export const P = styled.p<{ $color?: string }>`
   margin: 0;
 `;
 
-export const AColored = styled.a<{ $color?: string }>`
-  ${openSans.style}
-  color: ${props => props.$color || COLORS.greyDarker};
-`;
-
 export const LinkColored = styled(Link)<{ $color?: string }>`
   ${openSans.style}
   color: ${props => props.$color || COLORS.greyDarker};
