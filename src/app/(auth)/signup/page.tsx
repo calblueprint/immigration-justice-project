@@ -31,7 +31,7 @@ export default function SignUp() {
 
     if (error) {
       setErrorMessage(error.message);
-      // throw new Error(`An error occurred trying to sign up: ${error.message}`);
+      throw new Error(`An error occurred trying to sign up: ${error.message}`);
     }
     setEmailSentCount(1);
     setErrorMessage('');
@@ -65,7 +65,9 @@ export default function SignUp() {
         <>
           <SpacerDiv $gap={0.625}>
             <H1>Sign Up</H1>
-            {errorMessage !== '' && <P>{errorMessage}</P>}
+            {errorMessage !== '' && (
+              <P $color={COLORS.redMid}>{errorMessage}</P>
+            )}
           </SpacerDiv>
           <TextInput
             label="Email"
