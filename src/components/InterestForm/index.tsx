@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { insertInterest } from '@/api/supabase/queries/interest';
+import { upsertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing, RoleEnum } from '@/types/schema';
-import { H4 } from '@/styles/text';
+import { H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import Button from '../Button';
 import {
@@ -28,12 +28,14 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [reason, setReason] = useState<string>('');
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     // Reset form fields when caseData changes
     setReason('');
     setStartDate('');
     setRolesInterested('');
+    setSubmitted(false);
   }, [caseData]);
 
   const handleInsert = async () => {
@@ -43,21 +45,22 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
         // hardcoded values for now
         listing_id: caseData.id,
         listing_type: 'CASE',
-        user_id: '36b8f84d-df4e-4d49-b662-bcde71a8764f',
+        user_id: '515d9b33-9185-4601-9a13-23789bea3ac0',
         form_response: {
+          start_date: new Date(startDate),
+          interestReason: reason,
           rolesInterested:
             rolesInterested === radioOptions[2]
               ? ['ATTORNEY', 'INTERPRETER']
               : [rolesInterested.toUpperCase() as RoleEnum],
-          interestReason: reason,
-          start_date: new Date(startDate),
         },
       };
 
-      await insertInterest(newInterest);
+      await upsertInterest(newInterest);
       setReason('');
       setStartDate('');
       setRolesInterested('');
+      setSubmitted(true);
     }
   };
 

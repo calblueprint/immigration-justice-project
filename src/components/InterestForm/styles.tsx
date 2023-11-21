@@ -41,6 +41,7 @@ export const FormInput = styled.input`
   border: 2px solid ${COLORS.greyLight};
   padding: 0.5rem;
   margin-bottom: 0.6rem;
+  text-transform: uppercase;
   &:focus {
     border-color: ${COLORS.blueMid};
     outline: none;

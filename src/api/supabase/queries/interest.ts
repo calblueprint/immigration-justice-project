@@ -12,8 +12,8 @@ export async function getAllInterests() {
 }
 
 /** Insert a new interest object into supabase interest table. */
-export async function insertInterest(interest: Interest) {
-  const { error } = await supabase.from('interests').insert(interest).select();
+export async function upsertInterest(interest: Interest) {
+  const { error } = await supabase.from('interests').upsert(interest).select();
   if (error) {
     throw new Error(`Error inserting an interest: ${error.message}`);
   }
