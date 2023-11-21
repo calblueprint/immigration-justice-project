@@ -13,7 +13,7 @@ export const OuterDiv = styled.div`
 export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; // 40 px
+  gap: 2.5rem;
   padding: 3rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
