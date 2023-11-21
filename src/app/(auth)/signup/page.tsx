@@ -54,7 +54,7 @@ export default function SignUp() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText="" // {errorMessage}
+            errorText={email === '' ? 'Invalid Email' : ''}
             type="email"
             id="email"
             value={email}
@@ -63,7 +63,9 @@ export default function SignUp() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText=""
+            errorText={
+              password === '' || password.length < 8 ? 'Invalid Password' : ''
+            }
             type="password"
             id="password"
             value={password}
