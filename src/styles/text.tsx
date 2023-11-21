@@ -49,15 +49,11 @@ export const P = styled.p<{ $color?: string }>`
 `;
 
 export const AColored = styled.a<{ $color?: string }>`
-  // same text style as P
   ${openSans.style}
-  /* font-size: 0.875rem;
-  font-weight: 400; */
   color: ${props => props.$color || COLORS.greyDarker};
 `;
 
 export const LinkColored = styled(Link)<{ $color?: string }>`
-  // same text style as P
   ${openSans.style}
   color: ${props => props.$color || COLORS.greyDarker};
 `;
