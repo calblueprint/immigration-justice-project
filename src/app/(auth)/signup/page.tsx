@@ -34,6 +34,9 @@ export default function SignUp() {
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
+      options: {
+        emailRedirectTo: 'http://localhost:3000/email-verified',
+      },
     });
     if (error) {
       throw new Error(
