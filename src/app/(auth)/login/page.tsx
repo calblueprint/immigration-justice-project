@@ -14,20 +14,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
-  // commenting out Sign Up to use in the next PR -> create a separate sign in page
-  /*
-  const handleSignUp = async () => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      throw new Error(`An error occurred trying to sign up: ${error.message}`);
-    }
-    push('/');
-  };
-  */
 
   const handleSignIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -75,7 +61,7 @@ export default function Login() {
       </SpacerDiv>
       <SpacerDiv>
         <BigButton type="button" onClick={handleSignIn}>
-          <H4 $color="white">Sign in</H4>
+          Sign in
         </BigButton>
         <H4Centered>
           Don’t have an account yet?{' '}

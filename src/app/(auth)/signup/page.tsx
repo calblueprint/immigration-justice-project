@@ -73,7 +73,7 @@ export default function SignUp() {
           />
           <SpacerDiv>
             <BigButton type="button" onClick={handleSignUp}>
-              <H4 $color="white">Sign Up</H4>
+              Sign Up
             </BigButton>
             <H4Centered>
               Have an account already?{' '}

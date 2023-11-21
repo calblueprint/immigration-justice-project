@@ -6,7 +6,6 @@ import COLORS from '@/styles/colors';
 const openSans = OpenSans({ subsets: ['latin'] });
 
 export const InputText = styled(P)<{ $error: boolean }>`
-  // is possible to inherit text styles from H4?
   ${openSans.style}
   color: ${COLORS.greyDarker};
 

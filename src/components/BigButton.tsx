@@ -1,9 +1,17 @@
 import styled from 'styled-components';
+import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
+
+const openSans = OpenSans({ subsets: ['latin'] });
 
 const BigButton = styled.button<{ disabled?: boolean }>`
   background: ${props => (props.disabled ? COLORS.greyLight : COLORS.blueMid)};
   color: ${props => (props.disabled ? COLORS.greyMid : 'white')};
+  // font should be same as H4
+  ${openSans.style}
+  font-size: 1rem;
+  font-weight: 600;
+
   padding: 0.94rem 0;
   border: none;
   border-radius: 5px;
