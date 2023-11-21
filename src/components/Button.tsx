@@ -26,6 +26,7 @@ import styled from 'styled-components';
 const Button = styled.button<{
   $primaryColor?: string;
   $secondaryColor: string;
+  $disabled?: string;
 }>`
   appearance: none;
   color: ${props => (props.$primaryColor ? 'white' : 'black')};
