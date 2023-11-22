@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import TextInput from '@/components/TextInput/index';
-import { H1, H4 } from '@/styles/text';
-import { QuestionsDiv } from '@/app/(auth)/styles';
+import { H1, H4, P } from '@/styles/text';
+import COLORS from '@/styles/colors';
+import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import supabase from '@/api/supabase/createClient';
 
@@ -12,6 +13,7 @@ export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [canReset, setCanReset] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
   useEffect(() => {
     supabase.auth.onAuthStateChange(async event => {
@@ -22,26 +24,35 @@ export default function ResetPassword() {
   }, []);
 
   const resetPassword = async () => {
+    if (newPassword !== newPassword2) {
+      setErrorMessage('Passwords do not match.');
+      return;
+    }
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
-      throw new Error(
-        `An error occurred trying to reset password: ${error.message}`,
-      );
+      setErrorMessage(error.message);
+      // throw new Error(
+      //   `An error occurred trying to reset password: ${error.message}`,
+      // );
+    } else {
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) {
+        throw new Error(
+          `An error occurred trying to sign out: ${signOutError.message}`,
+        );
+      }
+      push('/confirm-reset-password');
     }
-    const { error: signOutError } = await supabase.auth.signOut();
-    if (signOutError) {
-      throw new Error(
-        `An error occurred trying to sign out: ${signOutError.message}`,
-      );
-    }
-    push('/confirm-reset-password');
   };
 
   return (
     canReset && (
       <>
-        <H1>Set New Password</H1>
-        <QuestionsDiv>
+        <SpacerDiv $gap={0.625}>
+          <H1>Set New Password</H1>
+          {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+        </SpacerDiv>
+        <SpacerDiv>
           <TextInput
             label="New Password"
             placeholder="Password"
@@ -58,7 +69,7 @@ export default function ResetPassword() {
             value={newPassword2}
             setValue={setNewPassword2}
           />
-        </QuestionsDiv>
+        </SpacerDiv>
         <BigButton type="button" onClick={resetPassword}>
           <H4 $color="white">Set Password</H4>
         </BigButton>
