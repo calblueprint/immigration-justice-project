@@ -24,6 +24,8 @@ export const InputDate = styled.input<{ $error: boolean; $filled: boolean }>`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 400;
+  color: ${props =>
+    props.$filled ? COLORS.greyDarker : COLORS.placeholderText};
   border-radius: 0.313rem; // 5px
   border: 2px solid ${({ $error, $filled }) => getBorderColor($error, $filled)};
   padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
