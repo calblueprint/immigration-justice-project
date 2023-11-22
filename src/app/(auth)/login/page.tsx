@@ -24,7 +24,6 @@ export default function Login() {
 
     if (error) {
       setErrorMessage(error.message);
-      // throw new Error(`An error occurred trying to sign in: ${error.message}`);
     } else {
       push('/');
     }

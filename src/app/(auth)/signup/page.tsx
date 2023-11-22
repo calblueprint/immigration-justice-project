@@ -34,10 +34,6 @@ export default function SignUp() {
     }
   };
   const handleResendEmail = async () => {
-    if (errorMessage) {
-      // if there's an error, disable signup functionality
-      return;
-    }
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
@@ -47,9 +43,6 @@ export default function SignUp() {
     });
     if (error) {
       setErrorMessage(error.message);
-      // throw new Error(
-      //   `An error occurred trying to resend email: ${error.message}`,
-      // );
     } else {
       setEmailSentCount(emailSentCount + 1);
       setErrorMessage('');
