@@ -48,10 +48,6 @@ export default function SignUp() {
     }
   };
   const handleResendEmail = async () => {
-    if (errorMessage) {
-      // if there's an error, disable signup functionality
-      return;
-    }
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
