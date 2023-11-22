@@ -3,13 +3,19 @@
 import React, { useCallback, useId, useMemo } from 'react';
 import Select, { MultiValue, SingleValue } from 'react-select';
 import { DropdownOption } from '@/types/dropdown';
+import { P } from '@/styles/text';
+import COLORS from '@/styles/colors';
 import { DropdownLabel, DropdownStyles, DropdownWrapper } from './styles';
+import { ErrorText } from '../TextInput/styles';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
   options: Set<string> | Map<string, string>;
-  placeholder: string;
   label: string;
+  placeholder?: string;
+  error?: string;
+  disabled?: boolean;
+  required?: boolean;
 }
 
 interface MultiSelectProps extends CommonProps {
@@ -24,10 +30,17 @@ interface SingleSelectProps extends CommonProps {
 
 type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
 
+function NoOptionsMessage() {
+  return <P $color={COLORS.greyMid}>No matches found</P>;
+}
+
 export default function InputDropdown({
   label,
   options,
-  placeholder,
+  placeholder = '',
+  error = '',
+  disabled,
+  required,
   onChange,
   multi,
 }: FilterDropdownProps) {
@@ -59,15 +72,22 @@ export default function InputDropdown({
     <DropdownWrapper>
       <DropdownLabel>{label}</DropdownLabel>
       <Select
+        isClearable
         closeMenuOnSelect={false}
+        tabSelectsValue={false}
         hideSelectedOptions={false}
-        styles={DropdownStyles(multi)}
+        noOptionsMessage={NoOptionsMessage}
+        unstyled
+        required={required}
+        isDisabled={disabled}
+        styles={DropdownStyles(multi, error !== '')}
         instanceId={useId()}
         options={optionsArray}
         placeholder={placeholder}
         isMulti={multi}
         onChange={newValue => handleChange(newValue)}
       />
+      {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
   );
 }
@@ -79,50 +99,112 @@ export default function InputDropdown({
 
 'use client';
 
+import BigButton from '@/components/BigButton';
 import InputDropdown from '@/components/InputDropdown';
-import React from 'react';
+import { P } from '@/styles/text';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   place-items: center;
-  padding-bottom: 4rem;
+  padding: 4rem 0;
 `;
 
 const Box = styled.div`
-  width: 25rem;
+  width: 31.25rem;
   padding: 4rem;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 export default function Page() {
+  const [elements, setElements] = useState<Set<string>>(new Set());
+  const [disaster, setDisaster] = useState<string | null>(null);
+  const [valuesVisible, setValuesVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (elements.size === 0 || !disaster) setValuesVisible(false);
+  }, [elements, disaster]);
+
   return (
     <Container>
       <Box>
         <InputDropdown
-          label="Natural Disasters"
-          placeholder="Hurricane"
+          label="Elements"
+          placeholder="Nitrogen"
           multi
+          onChange={v => setElements(v)}
           options={
             new Set([
-              'Hurricane',
-              'Tornado',
-              'Tsunami',
-              'Earthquake',
-              'Wildfire',
-              'Pandemic',
-              'Flood',
-              'Blizzard',
-              'Avalanche',
-              'Cyclone',
-              'Landslide',
-              'Volcanic Eruption',
+              'Argon',
+              'Berkelium',
+              'Carbon',
+              'Darmstadtium',
+              'Einsteinium',
+              'Fluorine',
+              'Gold',
+              'Helium',
+              'Iron',
+              'Krypton',
+              'Lithium',
+              'Magnesium',
+              'Neon',
+              'Oxygen',
+              'Phosphorus',
+              'Radium',
+              'Silicon',
+              'Titanium',
+              'Uranium',
+              'Vanadium',
+              'Xenon',
+              'Ytterbium',
+              'Zinc',
             ])
           }
         />
+        <InputDropdown
+          label="Natural Disaster"
+          placeholder="Hurricane"
+          error="Insufficient funds"
+          onChange={v => setDisaster(v)}
+          options={
+            new Set([
+              'Avalanche',
+              'Blizzard',
+              'Cyclone',
+              'Drought',
+              'Earthquake',
+              'Flood',
+              'Hurricane',
+              'Ice storm',
+              'Landslide',
+              'Pandemic',
+              'Ragnorak',
+              'Sinkhole',
+              'Tsunami',
+              'Volcanic Eruption',
+              'Wildfire',
+            ])
+          }
+        />
+        <InputDropdown label="Pandora's Box" disabled options={new Set([])} />
+        {valuesVisible && (
+          <P>
+            {Array.from(elements).join(', ')} {disaster}
+          </P>
+        )}
+        <BigButton
+          disabled={elements.size === 0 || !disaster}
+          onClick={() => setValuesVisible(!valuesVisible)}
+        >
+          {valuesVisible ? <>Hide Values</> : <>Check Values</>}
+        </BigButton>
       </Box>
     </Container>
   );
