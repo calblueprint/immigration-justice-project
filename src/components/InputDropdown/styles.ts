@@ -2,15 +2,12 @@ import styled, { keyframes } from 'styled-components';
 import { StylesConfig } from 'react-select';
 import COLORS from '@/styles/colors';
 import { DropdownOption } from '@/types/dropdown';
-import { InputLabel } from '../TextInput/styles';
 
 export const DropdownWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
-
-export const DropdownLabel = styled(InputLabel)``;
 
 const fadeInKeyframes = keyframes`
   from {

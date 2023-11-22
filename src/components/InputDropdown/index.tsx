@@ -10,13 +10,8 @@ import Select, {
 import { DropdownOption } from '@/types/dropdown';
 import { P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import {
-  AnimatedWrapper,
-  DropdownLabel,
-  DropdownStyles,
-  DropdownWrapper,
-} from './styles';
-import { ErrorText } from '../TextInput/styles';
+import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
+import { ErrorText, InputLabel } from '../TextInput/styles';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
@@ -90,7 +85,7 @@ export default function InputDropdown({
 
   return (
     <DropdownWrapper>
-      <DropdownLabel>{label}</DropdownLabel>
+      <InputLabel>{label}</InputLabel>
       <Select
         components={{ Menu: AnimatedMenu }}
         isClearable
