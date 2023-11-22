@@ -22,12 +22,6 @@ export const FormDiv = styled.div`
   width: 39.25rem;
 `;
 
-export const QuestionsDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem; // 20 px
-`;
-
 export const SpacerDiv = styled.div<{ $gap?: number }>`
   display: flex;
   flex-direction: column;

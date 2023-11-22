@@ -17,10 +17,6 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState('');
   // const { push } = useRouter();
   const handleSignUp = async () => {
-    if (errorMessage) {
-      // if there's an error, disable signup functionality
-      return;
-    }
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -31,11 +27,11 @@ export default function SignUp() {
 
     if (error) {
       setErrorMessage(error.message);
-      throw new Error(`An error occurred trying to sign up: ${error.message}`);
+    } else {
+      setEmailSentCount(1);
+      setErrorMessage('');
+      // push('/verify-email');
     }
-    setEmailSentCount(1);
-    setErrorMessage('');
-    // push('/verify-email');
   };
   const handleResendEmail = async () => {
     if (errorMessage) {
@@ -54,9 +50,10 @@ export default function SignUp() {
       // throw new Error(
       //   `An error occurred trying to resend email: ${error.message}`,
       // );
+    } else {
+      setEmailSentCount(emailSentCount + 1);
+      setErrorMessage('');
     }
-    setEmailSentCount(emailSentCount + 1);
-    setErrorMessage('');
   };
 
   return (
