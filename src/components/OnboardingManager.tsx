@@ -22,11 +22,11 @@ export default function OnboardingManager({
   const router = useRouter();
   const pathname = usePathname();
   const pageProgress = useMemo(() => {
-    if (!onboarding) return 0;
+    if (!onboarding) return -1;
     const find = onboarding.flow.findIndex(
       f => `/onboarding/${f.url}` === pathname,
     );
-    return find !== -1 ? find : 0;
+    return find;
   }, [pathname, onboarding]);
 
   useEffect(() => {
@@ -38,36 +38,24 @@ export default function OnboardingManager({
       onboarding.progress >= onboarding.flow.length
     ) {
       router.push('/cases');
-      return;
     }
 
-    // url not in flow
-    if (pageProgress === -1) {
-      router.replace(`/onboarding/${onboarding.flow[0].url}`);
-      onboarding.setProgress(0);
-      return;
-    }
-
-    // correct page given current progress, ignore
-    if (pageProgress <= onboarding.progress) {
-      return;
-    }
-
-    // course correct
-    const correctURL = `/onboarding/${
-      onboarding.flow[onboarding.progress].url
-    }`;
-
-    if (pathname !== correctURL) {
-      router.replace(correctURL);
-    }
-  }, [onboarding, pathname, router, pageProgress]);
+    if (pageProgress > onboarding.progress)
+      router.push(`/onboarding/${onboarding.flow[onboarding.progress].url}`);
+  }, [onboarding, router, pageProgress]);
 
   const advanceProgress = () => {
+    // safeguard
     if (!onboarding) return;
+    if (pageProgress > onboarding.progress) return;
+
     const newProgress = pageProgress + 1;
 
-    if (newProgress > onboarding.progress) onboarding.setProgress(newProgress);
+    if (
+      newProgress > onboarding.progress &&
+      onboarding.progress < onboarding.flow.length - 1
+    )
+      onboarding.setProgress(newProgress);
 
     if (newProgress >= onboarding.flow.length) {
       onboarding.flushData().then(() => {
