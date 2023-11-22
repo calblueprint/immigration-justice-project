@@ -1,5 +1,19 @@
 import COLORS from '@/styles/colors';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+// use this keyframe in input dropdown in the future
+export const FadeInKeyframes = keyframes`
+  from {
+    opacity: 0;
+    z-index: -1000;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    z-index: 999;
+    transform: translateY(0);
+  }
+`;
 
 export const MenuContainer = styled.div<{ $show: boolean }>`
   position: absolute;
@@ -30,20 +44,7 @@ export const MenuContainer = styled.div<{ $show: boolean }>`
     }
   }
 
-  animation: 80ms fade-in cubic-bezier(0, 0, 0.35, 1);
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      z-index: -1000;
-      transform: translateY(-0.5rem);
-    }
-    to {
-      opacity: 1;
-      z-index: 999;
-      transform: translateY(0);
-    }
-  }
+  animation: 80ms ${FadeInKeyframes} cubic-bezier(0, 0, 0.35, 1);
 `;
 
 // menu option

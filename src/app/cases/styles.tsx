@@ -33,11 +33,9 @@ export const FiltersContainer = styled.div`
 export const PageContainer = styled.div`
   height: 100vh;
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.2fr 1fr;
-  padding-top: 1rem;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 2rem 0rem 2rem;
 `;
 
 export const CardColumn = styled.div`
