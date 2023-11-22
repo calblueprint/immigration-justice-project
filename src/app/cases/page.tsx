@@ -6,7 +6,7 @@ import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H2, AColored } from '@/styles/text';
+import { H2 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
@@ -21,6 +21,7 @@ import {
   CaseDetailsContainer,
   AuthButtons,
   Header,
+  ResetFilters,
 } from './styles';
 
 type FilterType = {
@@ -149,9 +150,9 @@ export default function Page() {
             value={caseFilters.countries}
             onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
           />
-          <AColored onClick={() => resetFilters()} $color={COLORS.greyMid}>
+          <ResetFilters onClick={() => resetFilters()}>
             Reset Filters
-          </AColored>
+          </ResetFilters>
           <AuthButtons>{AuthButtonView}</AuthButtons>
         </FiltersContainer>
       </Header>

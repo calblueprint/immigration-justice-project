@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
+import { openSans } from '@/styles/fonts';
 
 export const AuthButtons = styled.div`
   display: flex;
@@ -68,4 +69,19 @@ export const Body = styled.div`
   grid-template-columns: 4.5fr 10fr;
   overflow: hidden;
   padding: 0 2rem;
+`;
+
+export const ResetFilters = styled.button`
+  ${openSans.style}
+
+  background: none;
+  outline: none;
+  border: none;
+
+  color: ${COLORS.greyMid};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
