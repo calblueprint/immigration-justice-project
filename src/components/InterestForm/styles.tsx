@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H3 } from '@/styles/text';
+import { H4 } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
 
 export const FormContainer = styled.div`
@@ -10,11 +10,11 @@ export const FormContainer = styled.div`
   width: 61%;
   float: right;
   margin-top: 1rem;
-  gap: 0.6rem;
+  gap: 0.625rem; // 10px
 `;
 
-export const FormTitle = styled(H3)`
-  margin-bottom: 0.2rem;
+export const FormQuestion = styled(H4)`
+  margin-top: 0.375rem;
 `;
 
 export const FormTextArea = styled.textarea`
@@ -26,35 +26,32 @@ export const FormTextArea = styled.textarea`
   border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
-  padding: 0.5rem;
+  padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
   &:focus {
     border-color: ${COLORS.blueMid};
     outline: none;
   }
-`;
+  &::placeholder {
+    color: ${COLORS.placeholderText};
+  }
 
-export const FormInput = styled.input`
-  ${openSans.style}
-  font-size: 1rem;
-  font-weight: 400;
-  border-radius: 0.313rem; // 5px
-  border: 2px solid ${COLORS.greyLight};
-  padding: 0.5rem;
-  margin-bottom: 0.6rem;
-  text-transform: uppercase;
-  &:focus {
-    border-color: ${COLORS.blueMid};
-    outline: none;
+  &:not(:placeholder-shown) {
+    border-color: ${COLORS.greyMid};
   }
 `;
 
 export const RadioGroup = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.6rem;
+  align-self: center;
   column-gap: 3rem;
   row-gap: 0.4rem;
   flex-wrap: wrap;
+  margin-bottom: 0.375rem;
+`;
+export const Radio = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const RadioLabel = styled.label`
@@ -98,4 +95,11 @@ export const FormWarning = styled.p`
   line-height: normal;
   max-width: 50%;
   height: 100%;
+`;
+
+export const ErrorText = styled.p`
+  color: ${COLORS.redMid};
+  font-size: 0.875rem; //14px
+  font-weight: 400;
+  ${openSans.style}
 `;

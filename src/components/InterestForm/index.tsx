@@ -3,19 +3,21 @@
 import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing, RoleEnum } from '@/types/schema';
-import { H4, P } from '@/styles/text';
+import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import DateInput from '../DateInput';
 import Button from '../Button';
 import {
   FormContainer,
   FormTextArea,
-  FormInput,
+  FormQuestion,
   RadioGroup,
+  Radio,
   RadioLabel,
   RadioInput,
   FormFooter,
   FormWarning,
-  FormTitle,
+  ErrorText,
 } from './styles';
 
 const radioOptions = [
@@ -29,6 +31,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
+  const [missingInfo, setMissingInfo] = useState(false);
 
   useEffect(() => {
     // Reset form fields when caseData changes
@@ -36,11 +39,16 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     setStartDate('');
     setRolesInterested('');
     setSubmitted(false);
+    setMissingInfo(false);
   }, [caseData]);
 
   const handleInsert = async () => {
     // will improve this in the next sprint
-    if (reason !== '' && startDate !== '' && rolesInterested !== '') {
+    if (startDate === '' || rolesInterested === '') {
+      setMissingInfo(true);
+      return;
+    }
+    if (startDate !== '' && rolesInterested !== '') {
       const newInterest: Interest = {
         // hardcoded values for now
         listing_id: caseData.id,
@@ -66,54 +74,66 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
 
   return (
     <FormContainer>
-      <FormTitle>Submit Interest</FormTitle>
-      <H4>What role(s) are you applying for?</H4>
-      <RadioGroup>
-        {radioOptions.map(option => (
-          <RadioLabel key={option}>
-            <RadioInput
-              id="radio"
-              type="radio"
-              name="radioOptions"
-              value={option}
-              checked={rolesInterested === option}
-              onChange={event => setRolesInterested(event.target.value)}
-            />
-            {option}
-          </RadioLabel>
-        ))}
-      </RadioGroup>
-
-      <H4>What is the earliest date you can contact the client?</H4>
-      <FormInput
-        id="startDate"
-        required
-        placeholder="MM/DD/YYYY"
-        value={startDate}
-        onChange={event => setStartDate(event.target.value)}
-      />
-
-      <H4>Why are you interested in this case?</H4>
-      <FormTextArea
-        id="reason"
-        required
-        value={reason}
-        onChange={event => setReason(event.target.value)}
-      />
-      <FormFooter>
-        <FormWarning>
-          Your interest form is not saved!
-          <br />
-          Please submit before leaving this page.
-        </FormWarning>
-        <Button
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          onClick={handleInsert}
-        >
-          Submit Interest
-        </Button>
-      </FormFooter>
+      <H3>Submit Interest</H3>
+      {submitted ? (
+        <P>We have received your submission!</P>
+      ) : (
+        <>
+          <FormQuestion $color={COLORS.greyDark}>
+            What role(s) are you applying for?
+          </FormQuestion>
+          <RadioGroup>
+            {radioOptions.map(option => (
+              <Radio key={option}>
+                <RadioInput
+                  id={`radio${option}`}
+                  type="radio"
+                  name="radioOptions"
+                  value={option}
+                  checked={rolesInterested === option}
+                  onChange={event => setRolesInterested(event.target.value)}
+                />
+                <RadioLabel>{option}</RadioLabel>
+              </Radio>
+            ))}
+            {missingInfo && rolesInterested === '' && (
+              <ErrorText>Must select your preferred role</ErrorText>
+            )}
+          </RadioGroup>
+          <DateInput
+            label="What is the earliest date you can contact the client?"
+            error={missingInfo && startDate === ''}
+            filled={startDate !== ''}
+            errorText="Must include earliest date"
+            name="startDate"
+            value={startDate}
+            setValue={setStartDate}
+          />
+          <FormQuestion $color={COLORS.greyDark}>
+            Why are you interested in this case?
+          </FormQuestion>
+          <FormTextArea
+            id="reason"
+            placeholder="I want to work on this case because..."
+            value={reason}
+            onChange={event => setReason(event.target.value)}
+          />
+          <FormFooter>
+            <FormWarning>
+              Your interest form is not saved!
+              <br />
+              Please submit before leaving this page.
+            </FormWarning>
+            <Button
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
+              onClick={handleInsert}
+            >
+              Submit Interest
+            </Button>
+          </FormFooter>
+        </>
+      )}
     </FormContainer>
   );
 }
