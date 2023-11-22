@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { StylesConfig } from 'react-select';
 import COLORS from '@/styles/colors';
 import { DropdownOption } from '@/types/dropdown';
@@ -11,6 +11,27 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const DropdownLabel = styled(InputLabel)``;
+
+const fadeInKeyframes = keyframes`
+  from {
+    opacity: 0;
+    z-index: -1000;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    z-index: 999;
+    transform: translateY(0);
+  }
+`;
+
+export const AnimatedWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background: white;
+  animation: 80ms ${fadeInKeyframes} cubic-bezier(0, 0, 0.35, 1);
+`;
 
 const getControlBorderColor = (
   hasValue: boolean,
@@ -99,7 +120,7 @@ export const DropdownStyles = (
     borderRadius: '0.25rem',
     padding: '0.5rem',
     paddingLeft: multi ? '2rem' : '1rem',
-    fontSize: '0.9375rem',
+    fontSize: '0.875rem',
     backgroundImage: state.isSelected
       ? `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' fill='%230069A9' stroke='%230069A9' /%3E %3Cpath d='M6.17794 10.8117L3.80728 8.32401L3 9.16517L6.17794 12.5L13 5.34116L12.1984 4.5L6.17794 10.8117Z' fill='white' /%3E %3C/svg%3E")`
       : `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 17' fill='none' %3E%3Crect x='0.5' y='1' width='15' height='15' rx='2.5' stroke='%230069A9' /%3E%3C/svg%3E")`,

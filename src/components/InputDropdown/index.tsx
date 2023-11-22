@@ -1,11 +1,21 @@
 'use client';
 
-import React, { useCallback, useId, useMemo } from 'react';
-import Select, { MultiValue, SingleValue } from 'react-select';
+import { useCallback, useId, useMemo } from 'react';
+import Select, {
+  MenuProps,
+  MultiValue,
+  SingleValue,
+  components,
+} from 'react-select';
 import { DropdownOption } from '@/types/dropdown';
 import { P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { DropdownLabel, DropdownStyles, DropdownWrapper } from './styles';
+import {
+  AnimatedWrapper,
+  DropdownLabel,
+  DropdownStyles,
+  DropdownWrapper,
+} from './styles';
 import { ErrorText } from '../TextInput/styles';
 
 // for map: key is actual data stored, value is displayed
@@ -30,10 +40,20 @@ interface SingleSelectProps extends CommonProps {
 
 type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
 
+// custom components
 function NoOptionsMessage() {
   return <P $color={COLORS.greyMid}>No matches found</P>;
 }
 
+function AnimatedMenu(props: MenuProps<DropdownOption>) {
+  return (
+    <AnimatedWrapper>
+      <components.Menu {...props} />
+    </AnimatedWrapper>
+  );
+}
+
+// main dropdown component
 export default function InputDropdown({
   label,
   options,
@@ -72,7 +92,9 @@ export default function InputDropdown({
     <DropdownWrapper>
       <DropdownLabel>{label}</DropdownLabel>
       <Select
+        components={{ Menu: AnimatedMenu }}
         isClearable
+        openMenuOnFocus
         closeMenuOnSelect={false}
         tabSelectsValue={false}
         hideSelectedOptions={false}
@@ -85,7 +107,7 @@ export default function InputDropdown({
         options={optionsArray}
         placeholder={placeholder}
         isMulti={multi}
-        onChange={newValue => handleChange(newValue)}
+        onChange={handleChange}
       />
       {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
@@ -123,6 +145,52 @@ const Box = styled.div`
   gap: 2rem;
 `;
 
+const elementOptions = new Set([
+  'Argon',
+  'Berkelium',
+  'Carbon',
+  'Darmstadtium',
+  'Einsteinium',
+  'Fluorine',
+  'Gold',
+  'Helium',
+  'Iron',
+  'Krypton',
+  'Lithium',
+  'Magnesium',
+  'Neon',
+  'Oxygen',
+  'Phosphorus',
+  'Radium',
+  'Silicon',
+  'Titanium',
+  'Uranium',
+  'Vanadium',
+  'Xenon',
+  'Ytterbium',
+  'Zinc',
+]);
+
+const disasterOptions = new Set([
+  'Avalanche',
+  'Blizzard',
+  'Cyclone',
+  'Drought',
+  'Earthquake',
+  'Flood',
+  'Hurricane',
+  'Ice storm',
+  'Landslide',
+  'Pandemic',
+  'Ragnorak',
+  'Sinkhole',
+  'Tsunami',
+  'Volcanic Eruption',
+  'Wildfire',
+]);
+
+const emptyOptions = new Set([]);
+
 export default function Page() {
   const [elements, setElements] = useState<Set<string>>(new Set());
   const [disaster, setDisaster] = useState<string | null>(null);
@@ -140,60 +208,16 @@ export default function Page() {
           placeholder="Nitrogen"
           multi
           onChange={v => setElements(v)}
-          options={
-            new Set([
-              'Argon',
-              'Berkelium',
-              'Carbon',
-              'Darmstadtium',
-              'Einsteinium',
-              'Fluorine',
-              'Gold',
-              'Helium',
-              'Iron',
-              'Krypton',
-              'Lithium',
-              'Magnesium',
-              'Neon',
-              'Oxygen',
-              'Phosphorus',
-              'Radium',
-              'Silicon',
-              'Titanium',
-              'Uranium',
-              'Vanadium',
-              'Xenon',
-              'Ytterbium',
-              'Zinc',
-            ])
-          }
+          options={elementOptions}
         />
         <InputDropdown
           label="Natural Disaster"
           placeholder="Hurricane"
           error="Insufficient funds"
           onChange={v => setDisaster(v)}
-          options={
-            new Set([
-              'Avalanche',
-              'Blizzard',
-              'Cyclone',
-              'Drought',
-              'Earthquake',
-              'Flood',
-              'Hurricane',
-              'Ice storm',
-              'Landslide',
-              'Pandemic',
-              'Ragnorak',
-              'Sinkhole',
-              'Tsunami',
-              'Volcanic Eruption',
-              'Wildfire',
-            ])
-          }
+          options={disasterOptions}
         />
-        <InputDropdown label="Pandora's Box" disabled options={new Set([])} />
+        <InputDropdown label="Pandora's Box" disabled options={emptyOptions} />
         {valuesVisible && (
           <P>
             {Array.from(elements).join(', ')} {disaster}
