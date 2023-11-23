@@ -26,7 +26,7 @@ interface FlowData {
 interface OnboardingContextType {
   profile: Profile;
   canReads: Set<string>;
-  canWrites: Set<string>;
+  canSpeaks: Set<string>;
   roles: Set<RoleEnum>;
   progress: number;
   flow: FlowData[];
@@ -37,7 +37,7 @@ interface OnboardingContextType {
   setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
   setCanReads: Dispatch<SetStateAction<Set<string>>>;
-  setCanWrites: Dispatch<SetStateAction<Set<string>>>;
+  setCanSpeaks: Dispatch<SetStateAction<Set<string>>>;
   setRoles: Dispatch<SetStateAction<Set<RoleEnum>>>;
 }
 
@@ -64,7 +64,7 @@ export default function OnboardingProvider({
   const [flow, setFlow] = useState<FlowData[]>([]);
   const [profile, setProfile] = useState<Profile>({ ...blankProfile });
   const [canReads, setCanReads] = useState<Set<string>>(new Set());
-  const [canWrites, setCanWrites] = useState<Set<string>>(new Set());
+  const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
   const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
   const [canContinue, setCanContinue] = useState<boolean>(false);
 
@@ -127,7 +127,7 @@ export default function OnboardingProvider({
           'Error flushing data: can read languages data is empty!',
         );
 
-      if (canWrites.size === 0)
+      if (canSpeaks.size === 0)
         throw new Error(
           'Error flushing data: can write languages data is empty!',
         );
@@ -139,12 +139,12 @@ export default function OnboardingProvider({
       };
 
       const userLangs = new Set(
-        Array.from(canReads).concat(Array.from(canWrites)),
+        Array.from(canReads).concat(Array.from(canSpeaks)),
       );
       const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
         user_id: uid,
         can_read: canReads.has(l),
-        can_write: canWrites.has(l),
+        can_speak: canSpeaks.has(l),
         iso_code: l,
       }));
 
@@ -164,7 +164,7 @@ export default function OnboardingProvider({
       progress,
       profile,
       canReads,
-      canWrites,
+      canSpeaks,
       roles,
       flow,
       canContinue,
@@ -173,7 +173,7 @@ export default function OnboardingProvider({
       setProgress,
       updateProfile,
       setCanReads,
-      setCanWrites,
+      setCanSpeaks,
       setRoles,
       setCanContinue,
     };
@@ -182,7 +182,7 @@ export default function OnboardingProvider({
     profile,
     flow,
     canReads,
-    canWrites,
+    canSpeaks,
     roles,
     canContinue,
     profileCtx,
@@ -215,6 +215,7 @@ export default function TestLayout({ children }: { children: ReactNode }) {
 
 /**
  * app/test/page.tsx
+
 'use client';
 
 import { useContext, useState } from 'react';
@@ -330,14 +331,14 @@ export default function Page() {
         }
       />
       <p>
-        Can write languages (comma separated):{' '}
-        {onboarding && Array.from(onboarding.canWrites).join(',')}
+        Can speak languages (comma separated):{' '}
+        {onboarding && Array.from(onboarding.canSpeaks).join(',')}
       </p>
       <input
         type="text"
         onBlur={e =>
           onboarding &&
-          onboarding.setCanWrites(new Set(e.target.value.split(',')))
+          onboarding.setCanSpeaks(new Set(e.target.value.split(',')))
         }
       />
       <br />
