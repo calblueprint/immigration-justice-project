@@ -30,7 +30,6 @@ const Button = styled.button<{
   appearance: none;
   color: ${props => (props.$primaryColor ? 'white' : 'black')};
   background: ${props => (props.$primaryColor ? props.$primaryColor : 'white')};
-  align-self: flex-end;
   padding: 0.625rem 1.25rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
