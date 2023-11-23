@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-// import { useRouter } from 'next/navigation';
-// import supabase from '../../api/supabase/createClient';
+import { useRouter } from 'next/navigation';
+import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button from '@/components/Button';
 import COLORS from '@/styles/colors';
@@ -10,14 +10,16 @@ import SettingsSection from '@/components/SettingsSection';
 import { ContentContainer, PageContainer } from './styles';
 
 export default function Settings() {
-  // const { push } = useRouter();
-  // const handleSignOut = async () => {
-  //   const { error } = await supabase.auth.signOut();
-  //   if (error) {
-  //     throw new Error(`An error occurred trying to sign out: ${error.message}`);
-  //   }
-  //   push('/login');
-  // };
+  const { push } = useRouter();
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      throw new Error(`An error occurred trying to sign out: ${error.message}`);
+    }
+    push('/login');
+  };
+
   // const resetPassword = () => {
   //   push('/reset-password');
   // };
@@ -95,7 +97,11 @@ export default function Settings() {
           ]}
         />
 
-        <Button $primaryColor={COLORS.redMid} $secondaryColor={COLORS.redDark}>
+        <Button
+          $primaryColor={COLORS.redMid}
+          $secondaryColor={COLORS.redDark}
+          onClick={handleSignOut}
+        >
           <H4 $color="white">Sign Out</H4>
         </Button>
       </ContentContainer>
