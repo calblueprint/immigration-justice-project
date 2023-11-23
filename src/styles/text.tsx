@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { Open_Sans as OpenSans } from 'next/font/google';
 import Link from 'next/link';
 import COLORS from './colors';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from './fonts';
 
 // 1 rem = 16 px
 

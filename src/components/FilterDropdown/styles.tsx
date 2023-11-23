@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from '@/styles/fonts';
 
 export const DropdownContainer = styled.div`
   position: relative;
