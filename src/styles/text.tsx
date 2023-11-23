@@ -57,18 +57,22 @@ export const BackLink = styled(Link)`
   position: absolute;
   top: 0;
   left: 0;
-  margin: 2.5rem;
-  margin-left: 3.6875rem;
+
   display: flex;
   align-items: center;
   gap: 0.625rem;
+
+  outline: none;
+  margin: 2.5rem;
+  margin-left: 3.6875rem;
+  border-bottom: 1px solid transparent;
+
+  color: ${COLORS.greyDarker};
+  text-decoration: none;
+  line-height: 1.2;
+
   cursor: pointer;
   z-index: 10;
-  text-decoration: none;
-  outline: none;
-
-  line-height: 1.2;
-  border-bottom: 1px solid transparent;
 
   &:hover,
   &:focus {

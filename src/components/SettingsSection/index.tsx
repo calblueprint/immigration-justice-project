@@ -1,6 +1,12 @@
 import React from 'react';
 import { H2, H3, H4, P } from '@/styles/text';
-import { KeyValueBlurb, Section, SectionRow } from './styles';
+import {
+  EditButton,
+  KeyValueBlurb,
+  Section,
+  SectionHeader,
+  SectionRow,
+} from './styles';
 
 // types
 interface SectionData {
@@ -23,7 +29,7 @@ const chooseFormatter = (data: SectionData): string => {
 };
 
 const dataMapper = (data: SectionData | SectionData[] | string) => {
-  if (typeof data === 'string') return <H3>{data}</H3>;
+  if (typeof data === 'string') return <H3 key={data}>{data}</H3>;
 
   if (data instanceof Array)
     return (
@@ -49,7 +55,10 @@ const dataMapper = (data: SectionData | SectionData[] | string) => {
 export default function SettingsSection({ title, data }: SettingsSectionProps) {
   return (
     <Section>
-      <H2>{title}</H2>
+      <SectionHeader>
+        <H2>{title}</H2>
+        <EditButton />
+      </SectionHeader>
       {data.map(dataMapper)}
     </Section>
   );
