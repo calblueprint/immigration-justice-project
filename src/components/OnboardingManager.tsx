@@ -1,12 +1,7 @@
 'use client';
 
-import {
-  BackLink,
-  FormDiv,
-  OuterDiv,
-  FormContainer,
-} from '@/app/onboarding/styles';
-import { P } from '@/styles/text';
+import { FormDiv, OuterDiv, FormContainer } from '@/app/onboarding/styles';
+import { BackLink, P } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
@@ -67,7 +62,7 @@ export default function OnboardingManager({
   };
 
   return (
-    <div>
+    <>
       <BackLink
         href={
           onboarding && pageProgress > 0
@@ -75,7 +70,7 @@ export default function OnboardingManager({
             : '/cases'
         }
       >
-        <P>Back</P>
+        Back
       </BackLink>
       <OuterDiv $bottomAdjust={pageProgress > 0}>
         <ProgressBar
@@ -100,7 +95,7 @@ export default function OnboardingManager({
           </FormDiv>
         </FormContainer>
       </OuterDiv>
-    </div>
+    </>
   );
 }
 
