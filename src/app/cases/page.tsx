@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
@@ -8,12 +8,17 @@ import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
 import { H2 } from '@/styles/text';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import ProfileButton from '@/components/ProfileButton';
+import { LinkButton } from '@/components/Button';
+import COLORS from '@/styles/colors';
 import {
   CardColumn,
   PageContainer,
   FiltersContainer,
   Body,
   CaseDetailsContainer,
+  AuthButtons,
 } from './styles';
 
 type FilterType = {
@@ -25,6 +30,7 @@ type FilterType = {
 };
 
 export default function Page() {
+  const profile = useContext(ProfileContext);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [selectedCard, setSelectedCard] = useState<UUID>();
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
@@ -94,6 +100,26 @@ export default function Page() {
               setCaseFilters({ ...caseFilters, countries: v as string[] })
             }
           />
+          <AuthButtons>
+            {profile && profile.profileData ? (
+              <ProfileButton href="/settings">
+                {profile.profileData.first_name}
+              </ProfileButton>
+            ) : (
+              <>
+                <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
+                  Sign Up
+                </LinkButton>
+                <LinkButton
+                  $primaryColor={COLORS.blueMid}
+                  $secondaryColor={COLORS.blueDark}
+                  href="/login"
+                >
+                  Log In
+                </LinkButton>
+              </>
+            )}
+          </AuthButtons>
         </FiltersContainer>
       </div>
       <Body>

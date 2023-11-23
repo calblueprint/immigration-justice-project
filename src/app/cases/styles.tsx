@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 
+export const AuthButtons = styled.div`
+  display: flex;
+  gap: 1.5625rem;
+
+  position: absolute;
+  top: 2.125rem;
+  right: 2.0625rem;
+`;
+
 export const FiltersContainer = styled.div`
   display: flex;
   width: 100%;
