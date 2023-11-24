@@ -9,8 +9,7 @@ export const OuterDiv = styled.div<{ $bottomAdjust?: boolean }>`
   width: 100%;
   min-height: 100vh;
   padding-top: 2.5rem;
-  padding-bottom: ${({ $bottomAdjust }) =>
-    $bottomAdjust ? '7.5rem' : '2.5rem'};
+  padding-bottom: 2.5rem;
 `;
 
 export const FormContainer = styled.div`

@@ -3,7 +3,8 @@ import { H4 } from '@/styles/text';
 import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
-  display: ${({ $show }) => ($show ? 'grid' : 'none')};
+  display: grid;
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
   place-items: center;
   width: 100%;
   padding-bottom: 2.5rem;
