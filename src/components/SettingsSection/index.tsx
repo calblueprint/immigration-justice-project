@@ -18,6 +18,7 @@ interface SectionData {
 interface SettingsSectionProps {
   title: string;
   data: Array<SectionData | SectionData[] | string>;
+  editable?: boolean;
 }
 
 // helpers
@@ -52,12 +53,16 @@ const dataMapper = (data: SectionData | SectionData[] | string) => {
 };
 
 // main component
-export default function SettingsSection({ title, data }: SettingsSectionProps) {
+export default function SettingsSection({
+  title,
+  data,
+  editable,
+}: SettingsSectionProps) {
   return (
     <Section>
       <SectionHeader>
         <H2>{title}</H2>
-        <EditButton />
+        {editable && <EditButton />}
       </SectionHeader>
       {data.map(dataMapper)}
     </Section>

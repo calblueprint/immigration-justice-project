@@ -44,6 +44,7 @@ export default function Settings() {
 
         <SettingsSection
           title="Basic Information"
+          editable
           data={[
             [
               { label: 'First Name', value: 'John' },
@@ -60,6 +61,7 @@ export default function Settings() {
 
         <SettingsSection
           title="Languages"
+          editable
           data={[
             {
               label: 'Languages (speak and understand)',
@@ -74,6 +76,7 @@ export default function Settings() {
 
         <SettingsSection
           title="Role-Specific"
+          editable
           data={[
             {
               label: 'Selected Roles',
