@@ -25,7 +25,7 @@ export const PageContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.2fr 1fr;
-  padding: 1rem 2rem 0rem 2rem;
+  padding-top: 1rem;
   overflow: hidden;
 `;
 
@@ -46,8 +46,16 @@ export const CaseDetailsContainer = styled.div`
   margin-top: 1.5rem;
 `;
 
+export const Header = styled.header`
+  padding: 0 2rem;
+  padding-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+`;
+
 export const Body = styled.div`
   display: grid;
   grid-template-columns: 4.5fr 10fr;
   overflow: hidden;
+  padding: 0 2rem;
 `;

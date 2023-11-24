@@ -19,6 +19,7 @@ import {
   Body,
   CaseDetailsContainer,
   AuthButtons,
+  Header,
 } from './styles';
 
 type FilterType = {
@@ -52,7 +53,7 @@ export default function Page() {
 
   return (
     <PageContainer>
-      <div>
+      <Header>
         <H2>Browse Available Cases</H2>
         <FiltersContainer>
           <FilterDropdown
@@ -121,7 +122,7 @@ export default function Page() {
             )}
           </AuthButtons>
         </FiltersContainer>
-      </div>
+      </Header>
       <Body>
         <CardColumn>
           {caseData
