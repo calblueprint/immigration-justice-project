@@ -76,6 +76,7 @@ export const ResetFilters = styled.button`
   outline: none;
   border: none;
 
+  font-size: 0.875rem;
   color: ${COLORS.greyMid};
   cursor: pointer;
 
