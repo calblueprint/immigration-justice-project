@@ -12,12 +12,10 @@ export const DropdownWrapper = styled.div`
 const fadeInKeyframes = keyframes`
   from {
     opacity: 0;
-    z-index: -1000;
     transform: translateY(-0.5rem);
   }
   to {
     opacity: 1;
-    z-index: 999;
     transform: translateY(0);
   }
 `;
@@ -27,7 +25,8 @@ export const AnimatedWrapper = styled.div`
   top: 100%;
   width: 100%;
   background: white;
-  animation: 80ms ${fadeInKeyframes} cubic-bezier(0, 0, 0.35, 1);
+  z-index: 999;
+  animation: 80ms ${fadeInKeyframes} cubic-bezier(0, 0, 0.35, 1) forwards;
 `;
 
 const getControlBorderColor = (
