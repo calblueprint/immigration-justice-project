@@ -22,6 +22,7 @@ import {
   AuthButtons,
   Header,
   ResetFilters,
+  ListingCount,
 } from './styles';
 
 type FilterType = {
@@ -52,6 +53,34 @@ export default function Page() {
     languages: new Set(),
     countries: new Set(),
   });
+
+  const filteredCases = useMemo(
+    () =>
+      caseData
+        .filter(
+          c =>
+            caseFilters.remote.size === 0 ||
+            (caseFilters.remote.has('Remote') && c.is_remote) ||
+            (caseFilters.remote.has('In Person') && !c.is_remote),
+        )
+        .filter(
+          c =>
+            caseFilters.role.size === 0 ||
+            (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
+            (caseFilters.role.has('Attorney') && c.needs_attorney),
+        )
+        .filter(
+          c =>
+            caseFilters.agency.size === 0 ||
+            caseFilters.agency.has(c.adjudicating_agency),
+        )
+        .filter(c =>
+          caseFilters.countries.size > 0
+            ? c.country && caseFilters.countries.has(c.country)
+            : true,
+        ),
+    [caseData, caseFilters],
+  );
 
   // load cases on render
   useEffect(() => {
@@ -157,41 +186,21 @@ export default function Page() {
         </FiltersContainer>
       </Header>
       <Body>
+        <ListingCount $color={COLORS.greyMid}>
+          {filteredCases.length} listings found
+        </ListingCount>
         <CardColumn>
-          {caseData
-            .filter(
-              c =>
-                caseFilters.remote.size === 0 ||
-                (caseFilters.remote.has('Remote') && c.is_remote) ||
-                (caseFilters.remote.has('In Person') && !c.is_remote),
-            )
-            .filter(
-              c =>
-                caseFilters.role.size === 0 ||
-                (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
-                (caseFilters.role.has('Attorney') && c.needs_attorney),
-            )
-            .filter(
-              c =>
-                caseFilters.agency.size === 0 ||
-                caseFilters.agency.has(c.adjudicating_agency),
-            )
-            .filter(c =>
-              caseFilters.countries.size > 0
-                ? c.country && caseFilters.countries.has(c.country)
-                : true,
-            )
-            .map(c => (
-              <ListingCard
-                key={c.id}
-                caseData={c}
-                isSelected={c.id === selectedCard}
-                onClick={() => {
-                  setSelectedCard(c.id);
-                  setCaseInfo(c);
-                }}
-              />
-            ))}
+          {filteredCases.map(c => (
+            <ListingCard
+              key={c.id}
+              caseData={c}
+              isSelected={c.id === selectedCard}
+              onClick={() => {
+                setSelectedCard(c.id);
+                setCaseInfo(c);
+              }}
+            />
+          ))}
         </CardColumn>
         <CaseDetailsContainer>
           {caseInfo && <CaseDetails caseData={caseInfo} />}

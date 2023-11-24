@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
+import { H4 } from '@/styles/text';
 
 export const AuthButtons = styled.div`
   display: flex;
@@ -38,8 +39,13 @@ export const PageContainer = styled.div`
   padding: 1rem 2rem 0rem 2rem;
 `;
 
+export const ListingCount = styled(H4)`
+  position: absolute;
+`;
+
 export const CardColumn = styled.div`
   overflow-y: auto;
+  display: flex;
   flex-direction: column;
   column-gap: 2rem;
   justify-content: space-between;
@@ -67,6 +73,7 @@ export const Body = styled.div`
   grid-template-columns: 4.5fr 10fr;
   overflow: hidden;
   padding: 0 2rem;
+  padding-top: 1rem;
 `;
 
 export const ResetFilters = styled.button`
