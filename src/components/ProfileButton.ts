@@ -8,7 +8,7 @@ const ProfileButton = styled(Link)`
 
   display: flex;
   align-items: center;
-  gap: 1.125rem;
+  gap: 0.75rem;
 
   outline: none;
   background: none;

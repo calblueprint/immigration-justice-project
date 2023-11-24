@@ -6,8 +6,10 @@ export const AuthButtons = styled.div`
   gap: 1.5625rem;
 
   position: absolute;
-  top: 2.125rem;
-  right: 2.0625rem;
+  top: 0;
+  right: 0;
+  margin-top: 2.8125rem;
+  margin-right: 3.75rem;
 `;
 
 export const FiltersContainer = styled.div`
