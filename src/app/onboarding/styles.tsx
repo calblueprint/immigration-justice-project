@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 
-export const OuterDiv = styled.div<{ $bottomAdjust?: boolean }>`
+export const OuterDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -9,7 +9,7 @@ export const OuterDiv = styled.div<{ $bottomAdjust?: boolean }>`
   width: 100%;
   min-height: 100vh;
   padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  padding-bottom: 7.5rem;
 `;
 
 export const FormContainer = styled.div`

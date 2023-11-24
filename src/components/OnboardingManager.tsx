@@ -72,7 +72,7 @@ export default function OnboardingManager({
       >
         Back
       </BackLink>
-      <OuterDiv $bottomAdjust={pageProgress > 0}>
+      <OuterDiv>
         <ProgressBar
           steps={
             new Set(onboarding ? onboarding.flow.slice(1).map(f => f.name) : [])
@@ -102,8 +102,8 @@ export default function OnboardingManager({
 /**
  * EXAMPLE USAGE
  * - Make sure there are pages in the onboarding folder
- * - Set their corresponding flows (somehow) to onboarding context
- * - Navigate to /onboarding
+ * - Set their corresponding flows in onboarding context (line 64)
+ * - Navigate to a valid page in /onboarding/...
  */
 
 /**
