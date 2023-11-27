@@ -5,12 +5,10 @@ import styled, { keyframes } from 'styled-components';
 export const FadeInKeyframes = keyframes`
   from {
     opacity: 0;
-    z-index: -1000;
     transform: translateY(-0.5rem);
   }
   to {
     opacity: 1;
-    z-index: 999;
     transform: translateY(0);
   }
 `;

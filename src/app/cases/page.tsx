@@ -54,6 +54,27 @@ export default function Page() {
     countries: new Set(),
   });
 
+  const remoteOptions = useMemo(() => new Set(['Remote', 'In Person']), []);
+  const roleOptions = useMemo(() => new Set(['Attorney', 'Interpreter']), []);
+  const agencyOptions = useMemo(
+    () =>
+      new Map(
+        caseData.map(c => [
+          c.adjudicating_agency,
+          parseAgency(c.adjudicating_agency),
+        ]),
+      ),
+    [caseData],
+  );
+  const languageOptions = useMemo(
+    () => new Set(caseData.flatMap(c => c.languages)),
+    [caseData],
+  );
+  const countryOptions = useMemo(
+    () => new Set(caseData.map(c => c.country).filter(c => c)) as Set<string>,
+    [caseData],
+  );
+
   const filteredCases = useMemo(
     () =>
       caseData
@@ -68,6 +89,11 @@ export default function Page() {
             caseFilters.role.size === 0 ||
             (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
             (caseFilters.role.has('Attorney') && c.needs_attorney),
+        )
+        .filter(
+          c =>
+            caseFilters.languages.size === 0 ||
+            c.languages.find(l => caseFilters.languages.has(l)),
         )
         .filter(
           c =>
@@ -140,7 +166,7 @@ export default function Page() {
           <FilterDropdown
             placeholder={defaultFilterValues.remote}
             multi
-            options={new Set(['Remote', 'In Person'])}
+            options={remoteOptions}
             value={caseFilters.remote}
             fullText="All Remote/In Person"
             onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
@@ -148,34 +174,29 @@ export default function Page() {
           <FilterDropdown
             placeholder={defaultFilterValues.role}
             multi
-            options={new Set(['Interpreter', 'Attorney'])}
+            options={roleOptions}
             value={caseFilters.role}
             fullText="All Interpreter/Attorney"
             onChange={v => setCaseFilters({ ...caseFilters, role: v })}
           />
-          {/* languages dropdown to implement later */}
+          <FilterDropdown
+            placeholder={defaultFilterValues.languages}
+            multi
+            options={languageOptions}
+            value={caseFilters.languages}
+            onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
+          />
           <FilterDropdown
             placeholder={defaultFilterValues.agency}
             multi
-            options={
-              new Map(
-                caseData.map(c => [
-                  c.adjudicating_agency,
-                  parseAgency(c.adjudicating_agency),
-                ]),
-              )
-            }
+            options={agencyOptions}
             value={caseFilters.agency}
             onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
           />
           <FilterDropdown
             placeholder={defaultFilterValues.countries}
             multi
-            options={
-              new Set(
-                caseData.filter(c => c.country).map(c => c.country),
-              ) as Set<string>
-            }
+            options={countryOptions}
             value={caseFilters.countries}
             onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
           />
