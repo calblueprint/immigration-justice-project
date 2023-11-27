@@ -56,6 +56,7 @@ export default function ResetPassword() {
           <TextInput
             label="New Password"
             placeholder="Password"
+            errorText={newPassword.length < 6 ? 'Invalid Password' : ''}
             type="password"
             id="newpass"
             value={newPassword}
