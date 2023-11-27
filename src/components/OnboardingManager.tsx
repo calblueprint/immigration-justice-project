@@ -49,8 +49,10 @@ export default function OnboardingManager({
     if (
       newProgress > onboarding.progress &&
       onboarding.progress < onboarding.flow.length - 1
-    )
+    ) {
+      onboarding.setCanContinue(false);
       onboarding.setProgress(newProgress);
+    }
 
     if (newProgress >= onboarding.flow.length) {
       onboarding.flushData().then(() => {
@@ -83,7 +85,11 @@ export default function OnboardingManager({
           <FormDiv>
             {children}
             <BigButton
-              disabled={onboarding && onboarding.canContinue}
+              disabled={
+                onboarding &&
+                pageProgress === onboarding.progress &&
+                !onboarding.canContinue
+              }
               onClick={() => advanceProgress()}
             >
               <P $color="white">
