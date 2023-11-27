@@ -33,7 +33,7 @@ interface SingleSelectProps extends CommonProps {
   onChange?: (value: string | null) => void;
 }
 
-type FilterDropdownProps = SingleSelectProps | MultiSelectProps;
+type InputDropdownProps = SingleSelectProps | MultiSelectProps;
 
 // custom components
 function NoOptionsMessage() {
@@ -58,7 +58,7 @@ export default function InputDropdown({
   required,
   onChange,
   multi,
-}: FilterDropdownProps) {
+}: InputDropdownProps) {
   const optionsArray = useMemo(
     () =>
       options instanceof Set
