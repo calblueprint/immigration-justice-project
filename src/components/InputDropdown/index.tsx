@@ -111,6 +111,9 @@ export default function InputDropdown({
 /**
  * EXAMPLE USAGE
  * 
+ * Note: data for options should be stored in a constant variable
+ *  OUTSIDE of the function component, or in a useState/useRef.
+ * 
  * src/app/test/page.tsx:
 
 'use client';
