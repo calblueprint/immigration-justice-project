@@ -87,7 +87,7 @@ export default function OnboardingManager({
             <BigButton
               disabled={
                 onboarding &&
-                pageProgress === onboarding.progress &&
+                pageProgress >= onboarding.progress &&
                 !onboarding.canContinue
               }
               onClick={() => advanceProgress()}
@@ -104,24 +104,3 @@ export default function OnboardingManager({
     </>
   );
 }
-
-/**
- * EXAMPLE USAGE
- * - Make sure there are pages in the onboarding folder
- * - Set their corresponding flows in onboarding context (line 64)
- * - Navigate to a valid page in /onboarding/...
- */
-
-/**
- * IMPORTANT: Make 3 of such pages:
- * 
- * app/onboarding/<PAGE_NAME>/page.tsx
- * 
-
-import React from 'react';
-
-export default function page() {
-  return <>EXAMPLE TEXT</>;
-}
-
-*/
