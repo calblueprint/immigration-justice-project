@@ -4,17 +4,18 @@ import {
   ProgressCircle,
 } from './styles';
 
+// note: progress is 1-indexed
+// this means that progress=1 => first circle checked
+// progress=0 => progress bar invisible
 export default function ProgressBar({
-  show = true,
   steps,
   progress,
 }: {
-  show?: boolean;
   steps: Set<string>;
   progress: number;
 }) {
   return (
-    <ProgressBarContainer $show={show}>
+    <ProgressBarContainer $show={progress > 0}>
       <ProgressBarBody>
         {Array.from(steps).map((s, i) => (
           <ProgressCircle key={s} text={s} checked={i < progress} />

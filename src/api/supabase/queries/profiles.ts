@@ -2,6 +2,17 @@ import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { UUID } from 'crypto';
 import supabase from '../createClient';
 
+export async function upsertProfile(profile: Profile) {
+  const { data, error } = await supabase
+    .from('profiles')
+    .upsert(profile)
+    .select();
+
+  if (error) throw new Error(`Error upserting profile data: ${error.message}`);
+
+  return data[0];
+}
+
 export async function fetchProfiles() {
   const { data, error } = await supabase.from('profiles').select('*');
 
@@ -21,10 +32,15 @@ export async function fetchProfileById(userId: UUID) {
 }
 
 export async function insertProfile(profileData: Profile) {
-  const { error } = await supabase.from('profiles').insert(profileData);
+  const { data, error } = await supabase
+    .from('profiles')
+    .insert(profileData)
+    .select();
   if (error) {
     throw new Error(`Error inserting profile data: ${error.message}`);
   }
+
+  return data[0];
 }
 
 export async function updateProfile(
@@ -70,6 +86,18 @@ export async function deleteLanguages(
     throw new Error(`Error deleting profiles-languages: ${error.message}`);
 }
 
+export async function insertLanguages(languages: ProfileLanguage[]) {
+  const { data, error } = await supabase
+    .from('profiles-languages')
+    .insert(languages)
+    .select();
+
+  if (error)
+    throw new Error(`Error inserting to profiles-languages: ${error.message}`);
+
+  return data;
+}
+
 export async function upsertLanguages(updatedInfo: ProfileLanguage[]) {
   const { data, error } = await supabase
     .from('profiles-languages')
@@ -102,6 +130,17 @@ export async function deleteRoles(userId: UUID, deleteInfo: ProfileRole[]) {
     .in('role', Array.from(new Set(deleteInfo.map(i => i.role))));
 
   if (error) throw new Error(`Error deleting profiles-roles: ${error.message}`);
+}
+
+export async function insertRoles(roles: ProfileRole[]) {
+  const { data, error } = await supabase
+    .from('profiles-roles')
+    .insert(roles)
+    .select();
+
+  if (error) throw new Error(`Error updating profiles-roles: ${error.message}`);
+
+  return data;
 }
 
 export async function upsertRoles(updatedInfo: ProfileRole[]) {

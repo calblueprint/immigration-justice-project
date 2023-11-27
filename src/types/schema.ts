@@ -19,7 +19,7 @@ export interface ProfileLanguage {
   user_id: UUID;
   iso_code: string;
   can_read: boolean;
-  can_write: boolean;
+  can_speak: boolean;
 }
 
 export interface ProfileRole {

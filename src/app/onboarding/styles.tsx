@@ -9,7 +9,7 @@ export const OuterDiv = styled.div`
   width: 100%;
   min-height: 100vh;
   padding-top: 2.5rem;
-  padding-bottom: 6rem;
+  padding-bottom: 7.5rem;
 `;
 
 export const FormContainer = styled.div`
@@ -25,5 +25,6 @@ export const FormDiv = styled.div`
   padding: 3.125rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
-  width: 580px;
+  width: 36.25rem;
+  margin: auto;
 `;

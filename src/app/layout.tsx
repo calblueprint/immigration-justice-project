@@ -2,6 +2,7 @@ import StyledComponentsRegistry from '@/lib/registry';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Open_Sans as OpenSans } from 'next/font/google';
+import ProfileProvider from '@/utils/ProfileProvider';
 
 const openSans = OpenSans({ subsets: ['latin'] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={openSans.className}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <ProfileProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </ProfileProvider>
       </body>
     </html>
   );
