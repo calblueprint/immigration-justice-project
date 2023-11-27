@@ -80,7 +80,10 @@ export async function deleteLanguages(
     .from('profiles-languages')
     .delete()
     .eq('user_id', userId)
-    .in('iso_code', Array.from(new Set(deleteInfo.map(i => i.iso_code))));
+    .in(
+      'language_name',
+      Array.from(new Set(deleteInfo.map(i => i.language_name))),
+    );
 
   if (error)
     throw new Error(`Error deleting profiles-languages: ${error.message}`);

@@ -151,7 +151,7 @@ export default function OnboardingProvider({
         user_id: uid,
         can_read: canReads.has(l),
         can_speak: canSpeaks.has(l),
-        iso_code: l,
+        language_name: l,
       }));
 
       const rolesToInsert: ProfileRole[] = Array.from(roles).map(r => ({
