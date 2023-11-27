@@ -90,7 +90,7 @@ export const DropdownStyles = (
     ...baseStyles,
     cursor: 'text',
     color: COLORS.greyDarker,
-    minHeight: '47px',
+    minHeight: '2.9375rem',
     padding: '0.375rem 1.25rem',
     borderRadius: '0.313rem',
     borderWidth: '2px',
