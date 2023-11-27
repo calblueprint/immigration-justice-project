@@ -48,7 +48,6 @@ export const CardColumn = styled.div`
   display: flex;
   flex-direction: column;
   column-gap: 2rem;
-  justify-content: space-between;
   border-right: 1px solid ${COLORS.greyLight};
   margin-top: 1.5rem;
   padding: 0.5rem 3rem 0rem 0rem;
