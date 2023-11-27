@@ -61,7 +61,13 @@ export default function OnboardingProvider({
 }) {
   const profileCtx = useContext(ProfileContext);
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([]);
+  const [flow, setFlow] = useState<FlowData[]>([
+    { name: 'Roles', url: 'roles' },
+    { name: 'Basic Info', url: 'basic-information' },
+    { name: 'Availability', url: 'availability' },
+    { name: 'Legal Experience', url: 'legal-experience' },
+    { name: 'Done', url: 'done' },
+  ]);
   const [profile, setProfile] = useState<Profile>({ ...blankProfile });
   const [canReads, setCanReads] = useState<Set<string>>(new Set());
   const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
