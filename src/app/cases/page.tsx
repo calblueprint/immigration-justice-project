@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
@@ -50,6 +50,38 @@ export default function Page() {
       setCaseInfo(casesData[0] as CaseListing);
     });
   }, []);
+
+  const AuthButtonView = useMemo(() => {
+    if (profile && profile.userId)
+      return profile.profileData ? (
+        <ProfileButton href="/settings">
+          {profile.profileData.first_name}
+        </ProfileButton>
+      ) : (
+        <LinkButton
+          $primaryColor={COLORS.blueMid}
+          $secondaryColor={COLORS.blueDark}
+          href="/onboarding/roles"
+        >
+          Go to Onboarding
+        </LinkButton>
+      );
+
+    return (
+      <>
+        <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
+          Sign Up
+        </LinkButton>
+        <LinkButton
+          $primaryColor={COLORS.blueMid}
+          $secondaryColor={COLORS.blueDark}
+          href="/login"
+        >
+          Log In
+        </LinkButton>
+      </>
+    );
+  }, [profile]);
 
   return (
     <PageContainer>
@@ -101,26 +133,7 @@ export default function Page() {
               setCaseFilters({ ...caseFilters, countries: v as string[] })
             }
           />
-          <AuthButtons>
-            {profile && profile.profileData ? (
-              <ProfileButton href="/settings">
-                {profile.profileData.first_name}
-              </ProfileButton>
-            ) : (
-              <>
-                <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
-                  Sign Up
-                </LinkButton>
-                <LinkButton
-                  $primaryColor={COLORS.blueMid}
-                  $secondaryColor={COLORS.blueDark}
-                  href="/login"
-                >
-                  Log In
-                </LinkButton>
-              </>
-            )}
-          </AuthButtons>
+          <AuthButtons>{AuthButtonView}</AuthButtons>
         </FiltersContainer>
       </Header>
       <Body>
