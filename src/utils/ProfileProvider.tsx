@@ -106,7 +106,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     };
 
     /**
-     * Takes in a new ProfileLanguage data (user_id, iso_code, can_read, can_write)
+     * Takes in a new ProfileLanguage data (user_id, language_name, can_read, can_write)
      * list and replaces the user's associated languages entirely.
      * Requires RLS delete, update, and insert access
      * on the profiles-languages table.
@@ -116,7 +116,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
 
       // find removed languages
       const toDelete = profileLangs.filter(
-        l1 => !languages.find(l2 => l1.iso_code === l2.iso_code),
+        l1 => !languages.find(l2 => l1.language_name === l2.language_name),
       );
 
       await Promise.all([
@@ -209,8 +209,8 @@ export default function Page() {
         {profile &&
           profile.languages &&
           profile.languages.map(l => (
-            <li key={l.iso_code}>
-              {l.iso_code}, READ: {l.can_read ? 'YES' : 'NO'}, WRITE:{' '}
+            <li key={l.language_name}>
+              {l.language_name}, READ: {l.can_read ? 'YES' : 'NO'}, WRITE:{' '}
               {l.can_write ? 'YES' : 'NO'}
             </li>
           ))}

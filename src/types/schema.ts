@@ -17,7 +17,7 @@ export type ListingTypeEnum =
 // join table rows
 export interface ProfileLanguage {
   user_id: UUID;
-  iso_code: string;
+  language_name: string;
   can_read: boolean;
   can_speak: boolean;
 }
