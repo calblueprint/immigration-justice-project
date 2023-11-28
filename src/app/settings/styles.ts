@@ -5,7 +5,7 @@ export const PageContainer = styled.div`
   place-items: center;
   width: 100%;
   min-height: 100vh;
-  padding: 10.375rem 0;
+  padding: 6.25rem 0;
 `;
 
 export const ContentContainer = styled.main`
