@@ -168,7 +168,7 @@ export default function Page() {
             multi
             options={remoteOptions}
             value={caseFilters.remote}
-            fullText="All Remote/In Person"
+            fullText="Remote, In Person"
             onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
           />
           <FilterDropdown
@@ -176,7 +176,7 @@ export default function Page() {
             multi
             options={roleOptions}
             value={caseFilters.role}
-            fullText="All Interpreter/Attorney"
+            fullText="Interpreter, Attorney"
             onChange={v => setCaseFilters({ ...caseFilters, role: v })}
           />
           <FilterDropdown
