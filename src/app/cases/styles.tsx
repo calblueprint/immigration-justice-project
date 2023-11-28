@@ -8,8 +8,8 @@ export const AuthButtons = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  margin-top: 1.875rem;
-  margin-right: 2.1875rem;
+  margin-top: 2.1875rem;
+  margin-right: 3.375rem;
 `;
 
 export const FiltersContainer = styled.div`
