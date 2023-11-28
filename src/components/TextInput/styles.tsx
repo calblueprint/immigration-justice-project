@@ -3,10 +3,11 @@ import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 
-export const InputText = styled(P)<{ $error: boolean }>`
+export const InputText = styled(P)<{ $error: boolean; $height?: number }>`
   ${openSans.style}
   color: ${COLORS.greyDarker};
-
+  min-height: ${props => (props.$height ? props.$height : 0.875)}rem;
+  resize: none;
   padding: 0.625rem 1.25rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
@@ -27,6 +28,10 @@ export const InputText = styled(P)<{ $error: boolean }>`
     border: 2px solid
       ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
   }
+`;
+
+export const InputTextLarge = styled(InputText)<{ $height?: number }>`
+  min-height: ${props => (props.$height ? props.$height : 0.875)}rem;
 `;
 
 export const InputLabel = styled(H4)`
