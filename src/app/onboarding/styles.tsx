@@ -22,7 +22,7 @@ export const FormDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.5rem; // 40 px
-  padding: 3.125rem;
+  padding: 3rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
   width: 36.25rem;

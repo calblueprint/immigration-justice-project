@@ -7,6 +7,7 @@ type TextInputProps = {
   errorText?: string;
   type?: string;
   id?: string;
+  height?: number;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
@@ -18,6 +19,7 @@ export default function TextInput({
   errorText = '',
   type = 'text',
   id,
+  height = 0.825,
   value,
   setValue,
   onChange,
@@ -40,6 +42,7 @@ export default function TextInput({
         $error={errorText !== ''}
         placeholder={placeholder}
         id={id}
+        $height={height}
         type={type}
         value={value}
         onChange={e => handleChange(e.target.value)}
