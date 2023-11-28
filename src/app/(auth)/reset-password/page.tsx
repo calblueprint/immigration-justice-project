@@ -28,12 +28,10 @@ export default function ResetPassword() {
       setErrorMessage('Passwords do not match.');
       return;
     }
+    setErrorMessage('');
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
       setErrorMessage(error.message);
-      // throw new Error(
-      //   `An error occurred trying to reset password: ${error.message}`,
-      // );
     } else {
       const { error: signOutError } = await supabase.auth.signOut();
       if (signOutError) {

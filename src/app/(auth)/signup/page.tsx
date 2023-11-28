@@ -15,8 +15,27 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   // const { push } = useRouter();
   const handleSignUp = async () => {
+    if (email === '' || password === '') {
+      if (email === '') {
+        setEmailError('Invalid Email');
+      } else {
+        setEmailError('');
+      }
+      if (password === '') {
+        setPasswordError('Invalid Password');
+      } else {
+        setPasswordError('');
+      }
+      setErrorMessage('');
+      return;
+    }
+    setEmailError('');
+    setPasswordError('');
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -62,7 +81,7 @@ export default function SignUp() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText={email === '' ? 'Invalid Email' : ''}
+            errorText={emailError}
             type="email"
             id="email"
             value={email}
@@ -71,9 +90,7 @@ export default function SignUp() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText={
-              password === '' || password.length < 6 ? 'Invalid Password' : ''
-            }
+            errorText={passwordError}
             type="password"
             id="password"
             value={password}

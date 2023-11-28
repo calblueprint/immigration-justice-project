@@ -14,9 +14,28 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { push } = useRouter();
 
   const handleSignIn = async () => {
+    if (email === '' || password === '') {
+      if (email === '') {
+        setEmailError('Invalid Email');
+      } else {
+        setEmailError('');
+      }
+      if (password === '') {
+        setPasswordError('Invalid Password');
+      } else {
+        setPasswordError('');
+      }
+      setErrorMessage('');
+      return;
+    }
+    setEmailError('');
+    setPasswordError('');
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -25,6 +44,7 @@ export default function Login() {
     if (error) {
       setErrorMessage(error.message);
     } else {
+      setErrorMessage('');
       push('/');
     }
   };
@@ -40,7 +60,7 @@ export default function Login() {
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText={email === '' ? 'Invalid Email' : ''}
+            errorText={emailError}
             type="email"
             id="email"
             value={email}
@@ -49,9 +69,7 @@ export default function Login() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText={
-              password === '' || password.length < 6 ? 'Invalid Password' : ''
-            }
+            errorText={passwordError}
             type="password"
             id="password"
             value={password}
