@@ -34,6 +34,8 @@ export default function Login() {
 
     if (error) {
       setErrorMessage(error.message);
+      // TODO: use error.status to check if it's an email-specific or password-specific error
+      // then, raise the error in the TextInput component.
     } else {
       setErrorMessage('');
       push('/cases');
