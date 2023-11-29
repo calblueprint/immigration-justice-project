@@ -176,7 +176,7 @@ export default function Page() {
             multi
             options={roleOptions}
             value={caseFilters.role}
-            fullText="Interpreter, Attorney"
+            fullText="Attorney, Interpreter"
             onChange={v => setCaseFilters({ ...caseFilters, role: v })}
           />
           <FilterDropdown
