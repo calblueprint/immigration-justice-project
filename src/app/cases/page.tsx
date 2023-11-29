@@ -207,10 +207,10 @@ export default function Page() {
         </FiltersContainer>
       </Header>
       <Body>
-        <ListingCount $color={COLORS.greyMid}>
-          {filteredCases.length} listings found
-        </ListingCount>
         <CardColumn>
+          <ListingCount $color={COLORS.greyMid}>
+            {filteredCases.length} listings found
+          </ListingCount>
           {filteredCases.map(c => (
             <ListingCard
               key={c.id}

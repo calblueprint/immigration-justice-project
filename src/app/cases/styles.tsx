@@ -36,11 +36,11 @@ export const PageContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem 0rem 2rem;
+  padding-top: 1rem;
 `;
 
 export const ListingCount = styled(H4)`
-  position: absolute;
+  margin-bottom: 0.5rem;
 `;
 
 export const CardColumn = styled.div`
@@ -49,21 +49,20 @@ export const CardColumn = styled.div`
   flex-direction: column;
   column-gap: 2rem;
   border-right: 1px solid ${COLORS.greyLight};
-  margin-top: 1.5rem;
-  padding: 0.5rem 3rem 0rem 0rem;
+  padding-right: 3rem;
+  padding-left: 2rem;
+  padding-top: 1rem;
 `;
 
 export const CaseDetailsContainer = styled.div`
   overflow-y: scroll;
-  padding: 0.5rem 1.25rem 0rem 0rem;
+  padding: 2rem 3.25rem 0rem 0rem;
   column-gap: 2rem;
-  margin-top: 1.5rem;
 `;
 
 export const Header = styled.header`
   padding: 0 2rem;
   padding-bottom: 1rem;
-  margin-bottom: 0.5rem;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
@@ -71,8 +70,6 @@ export const Body = styled.div`
   display: grid;
   grid-template-columns: 4.5fr 10fr;
   overflow: hidden;
-  padding: 0 2rem;
-  padding-top: 1rem;
 `;
 
 export const ResetFilters = styled.button`
