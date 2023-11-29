@@ -1,35 +1,12 @@
 import styled from 'styled-components';
-import { Inter } from 'next/font/google';
 import COLORS from '@/styles/colors';
-import { pSBC } from '@/utils/helpers';
+import { openSans } from '@/styles/fonts';
 
-// fonts
-const inter = Inter({ subsets: ['latin'] });
-
-// containers
-export const FilterDropdownContainer = styled.div`
+export const DropdownContainer = styled.div`
   position: relative;
 `;
 
-export const FilterDropdownMenuBox = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  transform: translateY(2px);
-
-  display: 'flex';
-  flex-direction: column;
-  width: max-content;
-  background: white;
-  box-shadow: 0 2px 0.25em 0.1em rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  padding: 0.2rem 0.3rem;
-  border-radius: 0.5rem;
-  z-index: 100;
-`;
-
-// button
-export const FilterDropdownButton = styled.button<{
+export const DropdownButton = styled.button<{
   $changed: boolean;
 }>`
   outline: none;
@@ -43,7 +20,7 @@ export const FilterDropdownButton = styled.button<{
 
   color: ${({ $changed }) => ($changed ? 'white' : 'black')};
   font-size: 0.9rem;
-  ${inter.style}
+  ${openSans.style}
 
   background-color: ${({ $changed }) => ($changed ? COLORS.blueMid : 'white')};
   background-image: ${({ $changed }) =>
@@ -59,34 +36,7 @@ export const FilterDropdownButton = styled.button<{
   &:hover,
   &:focus {
     background-color: ${({ $changed }) =>
-      $changed ? pSBC(-0.1, COLORS.blueMid) : pSBC(-0.1, '#FFF')};
-    color: ${({ $changed }) => ($changed ? pSBC(-0.1, '#FFFFFF') : 'black')};
-  }
-`;
-
-// menu option
-export const FilterDropdownOption = styled.p<{ $selected: boolean }>`
-  padding: 0.5rem;
-  color: ${COLORS.greyDarker};
-  cursor: default;
-  border-radius: 0.25rem;
-  position: relative;
-
-  &::before {
-    content: '';
-    background: #eee;
-    width: 100%;
-    height: calc(100% - 0.2rem);
-    border-radius: 0.25rem;
-    top: 0;
-    left: 0;
-    transform: translateY(0.1rem);
-    position: absolute;
-    z-index: -1;
-    opacity: ${({ $selected }) => ($selected ? '1' : '0')};
-  }
-
-  &:hover::before {
-    opacity: 1;
+      $changed ? COLORS.blueDark : COLORS.greyLighter};
+    color: ${({ $changed }) => ($changed ? COLORS.greyLighter : 'black')};
   }
 `;

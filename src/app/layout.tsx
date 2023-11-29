@@ -1,10 +1,8 @@
 import StyledComponentsRegistry from '@/lib/registry';
 import './globals.css';
 import type { Metadata } from 'next';
-import { Open_Sans as OpenSans } from 'next/font/google';
+import { openSans } from '@/styles/fonts';
 import ProfileProvider from '@/utils/ProfileProvider';
-
-const openSans = OpenSans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',

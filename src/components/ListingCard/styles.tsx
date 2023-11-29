@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { Open_Sans as OpenSans } from 'next/font/google';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from '@/styles/fonts';
 
 // the card itself
 export const CardBody = styled.div<{ $selected?: boolean }>`

@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
 import { H3 } from '@/styles/text';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from '@/styles/fonts';
 
 export const FormContainer = styled.div`
   display: flex;

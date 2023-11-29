@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { Open_Sans as OpenSans } from 'next/font/google';
 import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from '@/styles/fonts';
 
 export const InputText = styled(P)<{ $error: boolean }>`
   ${openSans.style}

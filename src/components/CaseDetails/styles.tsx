@@ -16,9 +16,8 @@ export const CaseTitle = styled(H1)`
 export const CaseInterestContainer = styled.div`
   position: sticky;
   top: 4rem;
-  width: 95%;
+  width: 100%;
   border-radius: 10px;
-  margin-left: 3rem;
   padding: 2rem;
   border: 2px solid ${COLORS.blueMid};
   justify-content: space-between;
@@ -34,7 +33,6 @@ export const InfoContainer = styled.div`
   width: 100%;
   min-height: 50%;
   gap: 0.5rem;
-  margin-bottom: 1rem;
   padding: 0.2rem;
 `;
 
