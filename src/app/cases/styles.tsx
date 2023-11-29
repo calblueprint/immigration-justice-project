@@ -49,14 +49,13 @@ export const CardColumn = styled.div`
   flex-direction: column;
   column-gap: 2rem;
   border-right: 1px solid ${COLORS.greyLight};
-  padding-right: 3rem;
-  padding-left: 2rem;
+  padding: 0 2rem;
   padding-top: 1rem;
 `;
 
 export const CaseDetailsContainer = styled.div`
   overflow-y: scroll;
-  padding: 2rem 3.25rem 0rem 0rem;
+  padding: 2rem 3rem 1rem 3rem;
   column-gap: 2rem;
 `;
 
@@ -64,11 +63,13 @@ export const Header = styled.header`
   padding: 0 2rem;
   padding-bottom: 1rem;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 10;
 `;
 
 export const Body = styled.div`
   display: grid;
   grid-template-columns: 4.5fr 10fr;
+  height: 100%;
   overflow: hidden;
 `;
 
