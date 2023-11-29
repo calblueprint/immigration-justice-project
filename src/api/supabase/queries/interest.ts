@@ -3,7 +3,7 @@ import supabase from '../createClient';
 
 /**
  * Fetches all interests from the database
- * @returns a Promise of all interests objects 
+ * @returns a Promise of all interests objects
  */
 export async function getAllInterests() {
   const { data, error } = await supabase.from('interests').select();
@@ -16,7 +16,7 @@ export async function getAllInterests() {
 
 /**
  * Upserts an interest object into the database's interest table
- * @param interest - an interest object 
+ * @param interest - an interest object
  */
 export async function upsertInterest(interest: Interest) {
   const { error } = await supabase.from('interests').upsert(interest).select();
