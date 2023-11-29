@@ -131,7 +131,10 @@ import { iso6393 } from 'iso-639-3';
 import { City, Country, State } from 'country-state-city';
 
 const langs = new Set(
-  iso6393.filter(i => i.type === 'living').map(i => i.name),
+  iso6393
+    .filter(i => i.type === 'living')
+    .map(i => i.name)
+    .sort((l1, l2) => l1.localeCompare(l2)),
 );
 
 const cities = new Set(
@@ -150,7 +153,8 @@ const Container = styled.div`
   place-items: center;
   width: 100%;
   height: 100vh;
-  padding-bottom: 2rem;
+  padding-top: 8rem;
+  padding-bottom: 45rem;
 `;
 
 const Box = styled.div`
@@ -171,6 +175,8 @@ export default function Page() {
   return (
     <Container>
       <Box>
+        <P>Langs: {Array.from(selectedLangs).join(', ')}</P>
+        <P>City: {selectedCity || ''}</P>
         <BigDataDropdown
           label="Languages"
           multi
@@ -182,8 +188,6 @@ export default function Page() {
           options={cities}
           onChange={nv => setSelectedCity(nv)}
         />
-        <P>Langs: {Array.from(selectedLangs).join(', ')}</P>
-        <P>City: {selectedCity || ''}</P>
       </Box>
     </Container>
   );
