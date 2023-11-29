@@ -35,9 +35,8 @@ export const FormTextArea = styled.textarea`
   &::placeholder {
     color: ${COLORS.placeholderText};
   }
-
   &:not(:placeholder-shown) {
-    border-color: ${COLORS.greyMid};
+    border-color: ${COLORS.greyDarker};
   }
 `;
 
