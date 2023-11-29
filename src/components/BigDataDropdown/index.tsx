@@ -155,7 +155,8 @@ import { City, Country, State } from 'country-state-city';
 const langs = new Set(
   iso6393
     .filter(i => i.type === 'living')
-    .map(i => i.name)
+    .filter(i => i.iso6392T || i.name.endsWith('Sign Language'))
+    .map(i => `${i.name}`)
     .sort((l1, l2) => l1.localeCompare(l2)),
 );
 
