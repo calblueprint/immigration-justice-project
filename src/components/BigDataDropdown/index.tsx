@@ -1,8 +1,13 @@
 'use client';
 
-import { useCallback, useId, useMemo } from 'react';
+import { useCallback, useId, useMemo, useRef } from 'react';
 import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
-import { GroupBase, MultiValue, SingleValue } from 'react-select';
+import {
+  GroupBase,
+  MultiValue,
+  SelectInstance,
+  SingleValue,
+} from 'react-select';
 import { DropdownOption } from '@/types/dropdown';
 import { DropdownStyles, DropdownWrapper } from '../InputDropdown/styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';
@@ -31,6 +36,11 @@ interface SingleSelectProps extends CommonProps {
 
 type BigDataDropdownProps = SingleSelectProps | MultiSelectProps;
 
+// future improvement: create a custom react-select component
+// then use that for BigDataDropdown and InputDropdown
+// to reduce repeated code
+// related: https://github.com/vtaits/react-select-async-paginate/tree/master/packages/react-select-async-paginate#replacing-components
+
 export default function BigDataDropdown({
   options,
   label,
@@ -42,6 +52,11 @@ export default function BigDataDropdown({
   pageSize = 10,
   onChange,
 }: BigDataDropdownProps) {
+  const ref =
+    useRef<SelectInstance<DropdownOption, false, GroupBase<DropdownOption>>>(
+      null,
+    );
+
   const optionsArray = useMemo(
     () =>
       options instanceof Set
@@ -89,10 +104,16 @@ export default function BigDataDropdown({
     [optionsArray, pageSize],
   );
 
+  const handleInputChange = useCallback(() => {
+    if (ref.current && ref.current.menuListRef)
+      ref.current.menuListRef.scrollTop = 0;
+  }, [ref]);
+
   return (
     <DropdownWrapper>
       <InputLabel>{label}</InputLabel>
       <AsyncPaginate
+        selectRef={ref}
         components={{ Menu: AnimatedMenu }}
         isClearable
         closeMenuOnSelect={false}
@@ -109,6 +130,7 @@ export default function BigDataDropdown({
         isDisabled={disabled}
         required={required}
         loadOptions={loadOptions}
+        onInputChange={handleInputChange}
       />
       {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
