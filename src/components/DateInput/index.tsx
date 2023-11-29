@@ -1,40 +1,35 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { InputLabel, ErrorText, InputDiv, InputDate } from './styles';
 
-type TextInputProps = {
+type DateInputProps = {
   label: string;
-  error: boolean;
-  errorText: string;
-  name: string;
+  error?: string;
+  name?: string;
   value: string;
-  filled: boolean;
   setValue: Dispatch<SetStateAction<string>>;
 };
 
 export default function DateInput({
   label,
-  error,
-  errorText = '',
+  error = '',
   name,
   value,
-  filled,
   setValue,
-}: TextInputProps) {
+}: DateInputProps) {
   return (
     <InputDiv>
-      {' '}
       <InputLabel>{label}</InputLabel>
       <InputDate
         required
         type="date"
         $error={error}
-        $filled={filled}
+        $filled={value !== ''}
         name={name}
         value={value}
         min={new Date().toISOString().split('T')[0]}
         onChange={e => setValue(e.target.value)}
       />
-      {error && <ErrorText>{errorText}</ErrorText>}
+      {error !== '' && <ErrorText>{error}</ErrorText>}
     </InputDiv>
   );
 }

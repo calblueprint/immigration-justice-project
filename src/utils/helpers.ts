@@ -31,3 +31,15 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+/**
+ * @param d - date in string format
+ * @returns true if the date is an upcoming date, false otherwise
+ */
+export const isValidDate = (d: string) => {
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  if (d !== '' && new Date(d) >= currentDate) {
+    return true;
+  }
+  return false;
+};

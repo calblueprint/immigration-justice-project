@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import DateInput from '../DateInput';
@@ -13,11 +14,11 @@ import {
   FormQuestion,
   RadioGroup,
   Radio,
-  RadioLabel,
   RadioInput,
   FormFooter,
   FormWarning,
   ErrorText,
+  RadioLabel,
 } from './styles';
 
 const radioOptions = [
@@ -43,12 +44,11 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   }, [caseData]);
 
   const handleInsert = async () => {
-    // will improve this in the next sprint
     if (startDate === '' || rolesInterested === '') {
       setMissingInfo(true);
       return;
     }
-    if (startDate !== '' && rolesInterested !== '') {
+    if (isValidDate(startDate)) {
       const newInterest: Interest = {
         // hardcoded values for now
         listing_id: caseData.id,
@@ -72,6 +72,16 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     }
   };
 
+  const getErrorText = () => {
+    if (startDate === '' && missingInfo) {
+      return 'Must include earliest contact date';
+    }
+    if (startDate !== '' && !isValidDate(startDate)) {
+      return 'Must select an upcoming date';
+    }
+    return '';
+  };
+
   return (
     <FormContainer>
       <H3>Submit Interest</H3>
@@ -93,7 +103,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
                   checked={rolesInterested === option}
                   onChange={event => setRolesInterested(event.target.value)}
                 />
-                <RadioLabel>{option}</RadioLabel>
+                <RadioLabel htmlFor={`radio${option}`}>{option}</RadioLabel>
               </Radio>
             ))}
             {missingInfo && rolesInterested === '' && (
@@ -102,9 +112,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           </RadioGroup>
           <DateInput
             label="What is the earliest date you can contact the client?"
-            error={missingInfo && startDate === ''}
-            filled={startDate !== ''}
-            errorText="Must include earliest date"
+            error={getErrorText()}
             name="startDate"
             value={startDate}
             setValue={setStartDate}

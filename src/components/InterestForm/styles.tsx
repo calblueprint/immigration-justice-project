@@ -19,6 +19,7 @@ export const FormQuestion = styled(H4)`
 
 export const FormTextArea = styled.textarea`
   ${openSans.style}
+  font-size: 0.875rem; //14px
   min-height: 10rem;
   resize: none;
   font-size: 1rem; // 16px;
@@ -43,7 +44,6 @@ export const FormTextArea = styled.textarea`
 export const RadioGroup = styled.div`
   display: flex;
   flex-direction: row;
-  align-self: center;
   column-gap: 3rem;
   row-gap: 0.4rem;
   flex-wrap: wrap;
@@ -57,6 +57,8 @@ export const Radio = styled.div`
 export const RadioLabel = styled.label`
   display: flex;
   font-size: 0.875rem; //14px
+  font-weight: 400;
+  color: ${COLORS.greyDarker};
 `;
 
 export const RadioInput = styled.input`
@@ -97,9 +99,7 @@ export const FormWarning = styled.p`
   height: 100%;
 `;
 
-export const ErrorText = styled.p`
+export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
-  font-size: 0.875rem; //14px
-  font-weight: 400;
   ${openSans.style}
 `;

@@ -1,7 +1,10 @@
 import { Interest } from '@/types/schema';
 import supabase from '../createClient';
 
-/** Get all interest from supabase interest table. */
+/**
+ * Fetches all interests from the database
+ * @returns a Promise of all interests objects 
+ */
 export async function getAllInterests() {
   const { data, error } = await supabase.from('interests').select();
 
@@ -11,7 +14,10 @@ export async function getAllInterests() {
   return data;
 }
 
-/** Insert a new interest object into supabase interest table. */
+/**
+ * Upserts an interest object into the database's interest table
+ * @param interest - an interest object 
+ */
 export async function upsertInterest(interest: Interest) {
   const { error } = await supabase.from('interests').upsert(interest).select();
   if (error) {

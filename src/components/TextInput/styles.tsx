@@ -34,11 +34,9 @@ export const InputLabel = styled(H4)`
   margin-bottom: 0.625rem; //10px
 `;
 
-export const ErrorText = styled.p`
+export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
   margin-top: 0.625rem;
-  font-size: 0.875rem; //14px
-  font-weight: 400;
   ${openSans.style}
 `;
 
