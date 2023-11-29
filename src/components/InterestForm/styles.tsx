@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H4 } from '@/styles/text';
+import { H4, P } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
 
 export const FormContainer = styled.div`
