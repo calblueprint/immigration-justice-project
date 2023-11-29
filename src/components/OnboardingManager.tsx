@@ -1,7 +1,7 @@
 'use client';
 
 import { FormDiv, OuterDiv, FormContainer } from '@/app/onboarding/styles';
-import { BackLink, P } from '@/styles/text';
+import { BackLink, H4 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
@@ -92,11 +92,11 @@ export default function OnboardingManager({
               }
               onClick={() => advanceProgress()}
             >
-              <P $color="white">
+              <H4 $color="white">
                 {onboarding && pageProgress === onboarding.flow.length - 1
                   ? 'Continue to Available Cases'
                   : 'Continue'}
-              </P>
+              </H4>
             </BigButton>
           </FormDiv>
         </FormContainer>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import FilterDropdown from '@/components/FilterDropdown';
@@ -8,12 +8,18 @@ import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
 import { H2 } from '@/styles/text';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import ProfileButton from '@/components/ProfileButton';
+import { LinkButton } from '@/components/Button';
+import COLORS from '@/styles/colors';
 import {
   CardColumn,
   PageContainer,
   FiltersContainer,
   Body,
   CaseDetailsContainer,
+  AuthButtons,
+  Header,
 } from './styles';
 
 type FilterType = {
@@ -25,6 +31,7 @@ type FilterType = {
 };
 
 export default function Page() {
+  const profile = useContext(ProfileContext);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [selectedCard, setSelectedCard] = useState<UUID>();
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
@@ -44,9 +51,41 @@ export default function Page() {
     });
   }, []);
 
+  const AuthButtonView = useMemo(() => {
+    if (profile && profile.userId)
+      return profile.profileData ? (
+        <ProfileButton href="/settings">
+          {profile.profileData.first_name}
+        </ProfileButton>
+      ) : (
+        <LinkButton
+          $primaryColor={COLORS.blueMid}
+          $secondaryColor={COLORS.blueDark}
+          href="/onboarding/roles"
+        >
+          Go to Onboarding
+        </LinkButton>
+      );
+
+    return (
+      <>
+        <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
+          Sign Up
+        </LinkButton>
+        <LinkButton
+          $primaryColor={COLORS.blueMid}
+          $secondaryColor={COLORS.blueDark}
+          href="/login"
+        >
+          Log In
+        </LinkButton>
+      </>
+    );
+  }, [profile]);
+
   return (
     <PageContainer>
-      <div>
+      <Header>
         <H2>Browse Available Cases</H2>
         <FiltersContainer>
           <FilterDropdown
@@ -94,8 +133,9 @@ export default function Page() {
               setCaseFilters({ ...caseFilters, countries: v as string[] })
             }
           />
+          <AuthButtons>{AuthButtonView}</AuthButtons>
         </FiltersContainer>
-      </div>
+      </Header>
       <Body>
         <CardColumn>
           {caseData
