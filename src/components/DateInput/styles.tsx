@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { Open_Sans as OpenSans } from 'next/font/google';
 import COLORS from '@/styles/colors';
 import { H4 } from '@/styles/text';
-
-const openSans = OpenSans({ subsets: ['latin'] });
+import { openSans } from '@/styles/fonts';
 
 const getBorderColor = (error: string, filled: boolean): string => {
   if (error !== '') return COLORS.redMid;

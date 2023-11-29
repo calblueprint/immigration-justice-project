@@ -49,7 +49,7 @@ export const CardColumn = styled.div`
   flex-direction: column;
   column-gap: 2rem;
   border-right: 1px solid ${COLORS.greyLight};
-  padding: 0 2rem;
+  padding: 0 3rem 0 2rem;
   padding-top: 1rem;
 `;
 
