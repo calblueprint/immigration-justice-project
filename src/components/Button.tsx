@@ -10,7 +10,7 @@ import { openSans } from '@/styles/fonts';
       $secondaryColor (Required) - This color will determine the border color and background color on hover
    
     Example:
-      <Button $primarycolor={COLORS.blueMid} $secondarycolor={COLORS.blueDark} onClick={...}>
+      <Button $primaryColor={COLORS.blueMid} $secondaryColor={COLORS.blueDark} onClick={...}>
         [Button text here]
       </Button>
 
@@ -21,7 +21,7 @@ import { openSans } from '@/styles/fonts';
       $secondaryColor (Required) - This color will determine the border color and background color on hover
 
     Example: 
-      <Button $secondarycolor={COLORS.blueMid} onClick={...}>
+      <Button $secondaryColor={COLORS.blueMid} onClick={...}>
         [Button text here]
       </Button>
  */

@@ -19,7 +19,7 @@ export const timestampStringToDate = (ts: string): Date => {
   return new Date(ms);
 };
 
-// parse js date to dd/mm/yyyy
+// parse js date to mm/dd/yyyy
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
@@ -31,3 +31,17 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+/**
+ * @param d - date in string format
+ * @returns true if the date is an upcoming date, false otherwise
+ */
+export const isValidDate = (d: string) => {
+  const currentDate = new Date();
+  const inputDate = new Date(`${d}T00:00`);
+  currentDate.setHours(0, 0, 0, 0);
+
+  if (d !== '' && inputDate >= currentDate) {
+    return true;
+  }
+  return false;
+};

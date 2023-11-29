@@ -10,7 +10,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   padding: 0.625rem 1.25rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
-    ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyDark)};
+    ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyLight)};
   justify-content: flex-start;
   align-items: flex-start;
   outline: none;
@@ -20,7 +20,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   }
 
   &:not(:placeholder-shown) {
-    border-color: ${COLORS.greyDarker};
+    border-color: ${COLORS.greyMid};
   }
 
   &:focus {
@@ -34,11 +34,9 @@ export const InputLabel = styled(H4)`
   margin-bottom: 0.625rem; //10px
 `;
 
-export const ErrorText = styled.p`
+export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
   margin-top: 0.625rem;
-  font-size: 0.875rem; //14px
-  font-weight: 400;
   ${openSans.style}
 `;
 
