@@ -104,10 +104,7 @@ export const DropdownStyles = (
     boxShadow: '0 2px 0.25rem 0.1rem rgba(0, 0, 0, 0.25)',
     borderRadius: '0.5rem',
     overflow: 'hidden',
-  }),
-  menuList: baseStyles => ({
-    ...baseStyles,
-    padding: '0.2rem 0.3rem',
+    padding: '0.3rem',
   }),
   option: (baseStyles, state) => ({
     ...baseStyles,

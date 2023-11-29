@@ -1,17 +1,12 @@
 'use client';
 
 import { useCallback, useId, useMemo } from 'react';
-import Select, {
-  MenuProps,
-  MultiValue,
-  SingleValue,
-  components,
-} from 'react-select';
+import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
+import { GroupBase, MultiValue, SingleValue } from 'react-select';
 import { DropdownOption } from '@/types/dropdown';
-import { P } from '@/styles/text';
-import COLORS from '@/styles/colors';
-import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
+import { DropdownStyles, DropdownWrapper } from '../InputDropdown/styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';
+import { AnimatedMenu, NoOptionsMessage } from '../InputDropdown';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
@@ -21,6 +16,7 @@ interface CommonProps {
   error?: string;
   disabled?: boolean;
   required?: boolean;
+  pageSize?: number;
 }
 
 interface MultiSelectProps extends CommonProps {
@@ -33,32 +29,19 @@ interface SingleSelectProps extends CommonProps {
   onChange?: (value: string | null) => void;
 }
 
-type InputDropdownProps = SingleSelectProps | MultiSelectProps;
+type BigDataDropdownProps = SingleSelectProps | MultiSelectProps;
 
-// custom components
-export function NoOptionsMessage() {
-  return <P $color={COLORS.greyMid}>No matches found</P>;
-}
-
-export function AnimatedMenu(props: MenuProps<DropdownOption>) {
-  return (
-    <AnimatedWrapper>
-      <components.Menu {...props} />
-    </AnimatedWrapper>
-  );
-}
-
-// main dropdown component
-export default function InputDropdown({
-  label,
+export default function BigDataDropdown({
   options,
+  label,
   placeholder = '',
   error = '',
   disabled,
   required,
-  onChange,
   multi,
-}: InputDropdownProps) {
+  pageSize = 10,
+  onChange,
+}: BigDataDropdownProps) {
   const optionsArray = useMemo(
     () =>
       options instanceof Set
@@ -83,25 +66,49 @@ export default function InputDropdown({
     [multi, onChange],
   );
 
+  const loadOptions: LoadOptions<
+    DropdownOption,
+    GroupBase<DropdownOption>,
+    null
+  > = useCallback(
+    async (search, prevOptions) => {
+      const filteredOptions = search
+        ? optionsArray.filter(o => o.label.includes(search))
+        : optionsArray;
+      const slicedOptions = filteredOptions.slice(
+        prevOptions.length,
+        prevOptions.length + pageSize,
+      );
+      // const hasMore = filteredOptions.length > prevOptions.length + pageSize;
+      return {
+        options: slicedOptions,
+        hasMore: true,
+      };
+    },
+    [optionsArray, pageSize],
+  );
+
   return (
     <DropdownWrapper>
       <InputLabel>{label}</InputLabel>
-      <Select
+      <AsyncPaginate
+        menuIsOpen
         components={{ Menu: AnimatedMenu }}
         isClearable
         closeMenuOnSelect={false}
-        tabSelectsValue={false}
         hideSelectedOptions={false}
-        noOptionsMessage={NoOptionsMessage}
-        unstyled
-        required={required}
-        isDisabled={disabled}
-        styles={DropdownStyles(multi, error !== '')}
+        tabSelectsValue={false}
         instanceId={useId()}
         options={optionsArray}
-        placeholder={placeholder}
         isMulti={multi}
         onChange={handleChange}
+        placeholder={placeholder}
+        noOptionsMessage={NoOptionsMessage}
+        unstyled
+        styles={DropdownStyles(multi, error !== '')}
+        isDisabled={disabled}
+        required={required}
+        loadOptions={loadOptions}
       />
       {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
