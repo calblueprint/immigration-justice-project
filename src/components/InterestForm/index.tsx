@@ -77,7 +77,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
       return 'Must include earliest contact date';
     }
     if (startDate !== '' && !isValidDate(startDate)) {
-      return 'Must select an upcoming date';
+      return 'Must select a current or future date';
     }
     return '';
   };

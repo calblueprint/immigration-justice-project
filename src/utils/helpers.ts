@@ -36,12 +36,11 @@ export const parseAgency = (agency: string): string =>
  * @returns true if the date is an upcoming date, false otherwise
  */
 export const isValidDate = (d: string) => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  const currentDate = new Date();
   const inputDate = new Date(`${d}T00:00`);
-  tomorrow.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
 
-  if (d !== '' && inputDate >= tomorrow) {
+  if (d !== '' && inputDate >= currentDate) {
     return true;
   }
   return false;
