@@ -39,6 +39,11 @@ const getControlBorderColor = (
   return hasValue ? COLORS.greyDarker : COLORS.greyLight;
 };
 
+const determineOptionColor = (focused: boolean, selected: boolean) => {
+  if (selected) return focused ? COLORS.blueLight : COLORS.blueLighter;
+  return focused ? COLORS.greyLighter : 'transparent';
+};
+
 export const DropdownStyles = (
   multi?: boolean,
   error?: boolean,
@@ -124,7 +129,7 @@ export const DropdownStyles = (
     cursor: 'pointer',
     '::before': {
       content: '""',
-      background: state.isSelected ? COLORS.blueLighter : COLORS.greyLighter,
+      background: determineOptionColor(state.isFocused, state.isSelected),
       width: '100%',
       height: 'calc(100% - 0.25rem)',
       borderRadius: '0.25rem',
@@ -133,7 +138,6 @@ export const DropdownStyles = (
       position: 'absolute',
       transform: 'translateY(0.1rem)',
       zIndex: -1,
-      opacity: state.isSelected || state.isFocused ? 1 : 0,
     },
   }),
 });

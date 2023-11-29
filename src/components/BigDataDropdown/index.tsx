@@ -72,17 +72,18 @@ export default function BigDataDropdown({
     null
   > = useCallback(
     async (search, prevOptions) => {
+      const searchLower = search.toLowerCase();
       const filteredOptions = search
-        ? optionsArray.filter(o => o.label.includes(search))
+        ? optionsArray.filter(o => o.label.toLowerCase().includes(searchLower))
         : optionsArray;
+      const hasMore = filteredOptions.length > prevOptions.length + pageSize;
       const slicedOptions = filteredOptions.slice(
         prevOptions.length,
         prevOptions.length + pageSize,
       );
-      // const hasMore = filteredOptions.length > prevOptions.length + pageSize;
       return {
         options: slicedOptions,
-        hasMore: true,
+        hasMore,
       };
     },
     [optionsArray, pageSize],
@@ -92,7 +93,6 @@ export default function BigDataDropdown({
     <DropdownWrapper>
       <InputLabel>{label}</InputLabel>
       <AsyncPaginate
-        menuIsOpen
         components={{ Menu: AnimatedMenu }}
         isClearable
         closeMenuOnSelect={false}
@@ -114,3 +114,79 @@ export default function BigDataDropdown({
     </DropdownWrapper>
   );
 }
+
+/**
+ * EXAMPLE USAGE:
+ * 
+ * app/test/page.tsx
+
+'use client';
+
+import BigDataDropdown from '@/components/BigDataDropdown';
+import COLORS from '@/styles/colors';
+import { P } from '@/styles/text';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { iso6393 } from 'iso-639-3';
+import { City, Country, State } from 'country-state-city';
+
+const langs = new Set(
+  iso6393.filter(i => i.type === 'living').map(i => i.name),
+);
+
+const cities = new Set(
+  City.getAllCities()
+    .sort((c1, c2) => c1.countryCode.localeCompare(c2.countryCode))
+    .map(
+      c =>
+        `${c.name}, ${
+          State.getStateByCodeAndCountry(c.stateCode, c.countryCode)?.name
+        }, ${Country.getCountryByCode(c.countryCode)?.name}`,
+    ),
+);
+
+const Container = styled.div`
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100vh;
+  padding-bottom: 2rem;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 4rem;
+  border: 2px solid ${COLORS.blueMid};
+  border-radius: 0.5rem;
+  margin: auto;
+  width: 31.25rem;
+`;
+
+export default function Page() {
+  const [selectedLangs, setSelectedLangs] = useState<Set<string>>(new Set());
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+
+  return (
+    <Container>
+      <Box>
+        <BigDataDropdown
+          label="Languages"
+          multi
+          options={langs}
+          onChange={nv => setSelectedLangs(nv)}
+        />
+        <BigDataDropdown
+          label="City"
+          options={cities}
+          onChange={nv => setSelectedCity(nv)}
+        />
+        <P>Langs: {Array.from(selectedLangs).join(', ')}</P>
+        <P>City: {selectedCity || ''}</P>
+      </Box>
+    </Container>
+  );
+}
+
+ */
