@@ -28,15 +28,15 @@ export const FormTextArea = styled.textarea`
   border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
   padding: 0.625rem;
-  &:focus {
-    border-color: ${COLORS.blueMid};
-    outline: none;
-  }
+  outline: none;
   &::placeholder {
     color: ${COLORS.placeholderText};
   }
   &:not(:placeholder-shown) {
     border-color: ${COLORS.greyDarker};
+  }
+  &:focus {
+    border-color: ${COLORS.blueMid};
   }
 `;
 
