@@ -22,7 +22,7 @@ export const FormTextArea = styled.textarea`
   font-size: 0.875rem; //14px
   min-height: 10rem;
   resize: none;
-  font-size: 1rem; // 16px;
+  font-size: 0.875rem;
   font-weight: 400;
   border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
