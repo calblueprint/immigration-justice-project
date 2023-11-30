@@ -1,11 +1,8 @@
 'use client';
 
-import 'crypto';
 import React, { useEffect, useState } from 'react';
 import { fetchProfiles } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
-
-import styles from '../page.module.css';
 
 export default function Page() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -44,24 +41,35 @@ export default function Page() {
   }, []);
 
   return (
-    <div className={styles.profilePage}>
+    <div>
       <h1>Profiles</h1>
 
       <ul>
         {profiles.map(profile => (
           <li key={profile.user_id}>
             <h2>Profile ID: {profile.user_id}</h2>
+<<<<<<< HEAD
             <p>Roles: {profile.roles.join(', ')}</p>
             <p>Languages: {profile.languages.join(', ')}</p>
             <p>Accreditations: {profile.accreditations.join(', ')}</p>
             <p>hoursPerWeek: {profile.hours_per_week.toString()}</p>
+=======
+            <p>Location: {profile.location}</p>
+            <p>Availability Description: {profile.availability_description}</p>
+            <p>EOIR Registered: {profile.eoir_registered}</p>
+            <p>First Name: {profile.first_name}</p>
+            <p>Last Name: {profile.last_name}</p>
+            <p>hoursPerMonth: {profile.hours_per_month}</p>
+>>>>>>> 5b0b30c95144186f7f5a870ea5ed1b8238113152
             <p>
               immigrationLawExperience:{' '}
-              {profile.immigration_law_experience.toString()}
+              {profile.immigration_law_experience &&
+                profile.immigration_law_experience.toString()}
             </p>
-            <p>barNumber: {profile.bar_number.toString()}</p>
+            {profile.bar_number && (
+              <p>barNumber: {profile.bar_number.toString()}</p>
+            )}
             <p>startDate: {profile.start_date.toString()}</p>
-            <p>interestIds: {profile.interest_ids.toString()}</p>
           </li>
         ))}
       </ul>

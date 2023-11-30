@@ -2,6 +2,7 @@
 
 import { UUID } from 'crypto';
 import { useState } from 'react';
+<<<<<<< HEAD
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { H1 } from '@/styles/text';
@@ -10,6 +11,10 @@ import { Open_Sans } from 'next/font/google';
 import { insertProfile } from '../../api/supabase/queries/profiles';
 import { Profile } from '../../types/schema';
 import styles from '../page.module.css';
+=======
+import { insertProfile } from '@/api/supabase/queries/profiles';
+import { Profile } from '@/types/schema';
+>>>>>>> 5b0b30c95144186f7f5a870ea5ed1b8238113152
 
 const openSans = Open_Sans({ subsets: ['latin'] });
 
@@ -22,6 +27,7 @@ export default function Profile() {
     const newProfile: Profile = {
       // hardcoded values for now
       user_id: crypto.randomUUID() as UUID,
+<<<<<<< HEAD
       roles: ['blah'],
       languages: ['blah', 'blah'],
       accreditations: ['blah'],
@@ -30,6 +36,14 @@ export default function Profile() {
       bar_number: '12345',
       start_date: new Date().toDateString(),
       interest_ids: [crypto.randomUUID()] as UUID[],
+=======
+      hours_per_month: 40,
+      immigration_law_experience: 'HIGH',
+      bar_number: '12345',
+      start_date: new Date().toDateString(),
+      availability_description: 'blah blah blah',
+      eoir_registered: false,
+>>>>>>> 5b0b30c95144186f7f5a870ea5ed1b8238113152
       first_name: firstName,
       last_name: lastName,
     };
@@ -82,6 +96,7 @@ export default function Profile() {
   `;
 
   return (
+<<<<<<< HEAD
     <InfoForm>
       <Header1>Basic Information</Header1>
       <SecondDiv>
@@ -109,6 +124,35 @@ export default function Profile() {
         </ThirdDiv>
       </SecondDiv>
       <SecondDiv>
+=======
+    <main>
+      <div>Create Profile Form</div>
+      <form>
+        <div>
+          <label htmlFor="firstName">
+            First Name:
+            <input
+              type="text"
+              name="firstName"
+              required
+              value={firstName}
+              onChange={event => setFirstName(event.target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="lastName">
+            Last Name:
+            <input
+              type="text"
+              name="lastName"
+              required
+              value={lastName}
+              onChange={event => setLastName(event.target.value)}
+            />
+          </label>
+        </div>
+>>>>>>> 5b0b30c95144186f7f5a870ea5ed1b8238113152
         <button type="button" onClick={handleInsert}>
           Submit
         </button>

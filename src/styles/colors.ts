@@ -1,12 +1,22 @@
 const COLORS = {
-  attorneyColor: '#85b4d2',
-  abaBlue: '#0069A9',
-  dark: '#292929',
-  interpreterColor: '#8dd89f',
-  inputSuggestionColor: '#B3B3B3', // light grey
-  existingInputColor: '#555555', // dark grey
-  errorColor: '#D13E40', // red
-  activeGreen: '#097A62',
+  // Blues
+  blueMid: '#0069A9', // tearful-blue
+  blueDark: '#035D85', // grieving
+  blueDarker: '#003453', // drowning
+  blueLight: '#D9F1FF',
+  blueLighter: '#E8F6FF',
+  // Greys
+  greyLighter: '#F2F2F2', // lightGrey
+  greyLight: '#CCC',
+  greyMid: '#818181',
+  greyDark: '#565656',
+  greyDarker: '#292929',
+  placeholderText: '#B3B3B3',
+  // Error Red
+  redMid: '#D13E40', // Mid = Primary!
+  redDark: '#B53839',
+  redLight: '#F3B1B2',
+  redLighter: '#FFE9E9',
 };
 
 export default COLORS;
