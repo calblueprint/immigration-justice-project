@@ -1,9 +1,11 @@
 'use client';
 
-import { useCallback, useId, useMemo } from 'react';
+import { useCallback, useId, useMemo, useRef } from 'react';
 import Select, {
+  GroupBase,
   MenuProps,
   MultiValue,
+  SelectInstance,
   SingleValue,
   components,
 } from 'react-select';
@@ -36,11 +38,11 @@ interface SingleSelectProps extends CommonProps {
 type InputDropdownProps = SingleSelectProps | MultiSelectProps;
 
 // custom components
-function NoOptionsMessage() {
+export function NoOptionsMessage() {
   return <P $color={COLORS.greyMid}>No matches found</P>;
 }
 
-function AnimatedMenu(props: MenuProps<DropdownOption>) {
+export function AnimatedMenu(props: MenuProps<DropdownOption>) {
   return (
     <AnimatedWrapper>
       <components.Menu {...props} />
@@ -59,6 +61,11 @@ export default function InputDropdown({
   onChange,
   multi,
 }: InputDropdownProps) {
+  const ref =
+    useRef<SelectInstance<DropdownOption, false, GroupBase<DropdownOption>>>(
+      null,
+    );
+
   const optionsArray = useMemo(
     () =>
       options instanceof Set
@@ -83,10 +90,16 @@ export default function InputDropdown({
     [multi, onChange],
   );
 
+  const handleInputChange = useCallback(() => {
+    if (ref.current && ref.current.menuListRef)
+      ref.current.menuListRef.scrollTop = 0;
+  }, [ref]);
+
   return (
     <DropdownWrapper>
       <InputLabel>{label}</InputLabel>
       <Select
+        ref={ref}
         components={{ Menu: AnimatedMenu }}
         isClearable
         closeMenuOnSelect={false}
@@ -102,6 +115,7 @@ export default function InputDropdown({
         placeholder={placeholder}
         isMulti={multi}
         onChange={handleChange}
+        onInputChange={handleInputChange}
       />
       {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
