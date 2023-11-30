@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H4 } from '@/styles/text';
+import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 
