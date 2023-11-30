@@ -1,7 +1,6 @@
 'use client';
 
-import { useContext, useState } from 'react';
-import Button from '@/components/Button';
+import { useContext, useState, useEffect } from 'react';
 import COLORS from '@/styles/colors';
 import { H1, H4 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
@@ -10,6 +9,7 @@ import TextInput from '@/components/TextInput';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import { isValidDate } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
+import { Profile } from '@/types/schema';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
@@ -23,6 +23,28 @@ export default function Page() {
     }
     return '';
   };
+  // const updateProfile = (h: string, date: string, availability: string) => {
+  //   const partialProfile: Partial<Profile> = {
+  //     hours_per_month: +h,
+  //     start_date: date,
+  //     availability_description: availability,
+  //   };
+  //   onboarding?.updateProfile(partialProfile);
+  // };
+
+  useEffect(() => {
+    // update profile
+    const partialProfile: Partial<Profile> = {
+      hours_per_month: +hours,
+      start_date: startDate,
+      availability_description: periods,
+    };
+    onboarding?.updateProfile(partialProfile);
+    // enable continue
+    if (hours !== '' && startDate !== '' && getErrorText() === '') {
+      onboarding?.setCanContinue(true);
+    }
+  }, [hours, startDate, periods, onboarding, getErrorText]);
 
   return (
     <>
@@ -54,13 +76,6 @@ export default function Page() {
           onChange={event => setPeriods(event.target.value)}
         />
       </SpacerDiv>
-      <Button
-        $primaryColor={COLORS.blueMid}
-        $secondaryColor={COLORS.blueDark}
-        onClick={() => onboarding && onboarding.setCanContinue(true)}
-      >
-        Enable continue
-      </Button>
     </>
   );
 }

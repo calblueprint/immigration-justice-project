@@ -15,7 +15,6 @@ export const InputLabel = styled(H4)`
 
 export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
   ${openSans.style}
-  font-size: 1rem;
   font-size: 0.875rem; //14px
   font-weight: 400;
   cursor: text;
