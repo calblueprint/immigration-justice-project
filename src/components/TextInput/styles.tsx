@@ -10,7 +10,7 @@ export const InputText = styled.textarea<{ $error: boolean; $height?: number }>`
   color: ${COLORS.greyDarker};
   min-height: ${props => (props.$height ? props.$height : 0.875)}rem;
   resize: none;
-  padding: 0.625rem 1.25rem;
+  padding: 0.625rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
     ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyLight)};

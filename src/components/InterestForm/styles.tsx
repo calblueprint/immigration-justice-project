@@ -27,7 +27,7 @@ export const FormTextArea = styled.textarea`
   border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
-  padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
+  padding: 0.625rem;
   &:focus {
     border-color: ${COLORS.blueMid};
     outline: none;

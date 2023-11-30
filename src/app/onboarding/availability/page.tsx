@@ -36,27 +36,6 @@ export default function Page() {
         value={hours}
         setValue={setHours}
       />
-      {/*
-      <TextInput
-        label="What is the earliest you are available to volunteer?"
-        placeholder=""
-        errorText=""
-        type="date"
-        id="date"
-        value={startDate}
-        setValue={setStartDate}
-      />
-      <TextInput
-        label="Are there specific time periods you will not be available? (Optional)"
-        placeholder="I won’t be available from..."
-        errorText=""
-        type="text"
-        id="periods"
-        height={5.1875}
-        value={periods}
-        setValue={setPeriods}
-      /> */}
-
       <DateInput
         label="What is the earliest you are available to volunteer?"
         // id="startDate"
