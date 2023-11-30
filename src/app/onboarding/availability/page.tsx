@@ -5,15 +5,24 @@ import Button from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { H1, H4 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { FormInput, FormTextArea } from '@/components/InterestForm/styles';
+import { FormTextArea } from '@/components/InterestForm/styles';
 import TextInput from '@/components/TextInput';
 import { SpacerDiv } from '@/app/(auth)/styles';
+import { isValidDate } from '@/utils/helpers';
+import DateInput from '@/components/DateInput';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [hours, setHours] = useState('');
   const [startDate, setStartDate] = useState('');
   const [periods, setPeriods] = useState('');
+
+  const getErrorText = () => {
+    if (startDate !== '' && !isValidDate(startDate)) {
+      return 'Must select a current or future date';
+    }
+    return '';
+  };
 
   return (
     <>
@@ -47,18 +56,16 @@ export default function Page() {
         value={periods}
         setValue={setPeriods}
       /> */}
+
+      <DateInput
+        label="What is the earliest you are available to volunteer?"
+        // id="startDate"
+        error={getErrorText()}
+        value={startDate}
+        setValue={setStartDate}
+      />
       <SpacerDiv gap={0.625}>
-        <H4>What is the earliest you are available to volunteer?</H4>
-        <FormInput
-          id="startDate"
-          required
-          placeholder="MM/DD/YYYY"
-          value={startDate}
-          onChange={event => setStartDate(event.target.value)}
-        />
-      </SpacerDiv>
-      <SpacerDiv gap={0.625}>
-        <H4>
+        <H4 $color={COLORS.greyDark}>
           Are there specific time periods you will not be available? (Optional)
         </H4>
         <FormTextArea
