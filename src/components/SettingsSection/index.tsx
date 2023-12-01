@@ -1,64 +1,16 @@
-import React, { useMemo, useState } from 'react';
-import { H2, H3, H4, P } from '@/styles/text';
+import React, { useCallback, useMemo, useState } from 'react';
+import { H2, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import { SectionData, SettingsSectionData } from '@/types/settingsSection';
 import {
   ButtonContainer,
   EditButton,
-  KeyValueBlurb,
   Section,
   SectionHeader,
   SectionRow,
 } from './styles';
 import Button from '../Button';
-import DateInput from '../DateInput';
-import BigDataDropdown from '../BigDataDropdown';
-import InputDropdown from '../InputDropdown';
-import TextInput from '../TextInput';
-import { FormTextArea } from '../InterestForm/styles';
-
-// config
-const DROPDOWN_LIMIT = 20;
-
-// types
-interface CommonSectionData {
-  label: string;
-  placeholder?: string;
-}
-
-interface MiscSectionData extends CommonSectionData {
-  type: 'text' | 'textarea' | 'date';
-  value: string;
-  format?: (v: string) => string;
-}
-
-interface CommonDropdownSectionData extends CommonSectionData {
-  type: 'dropdown';
-  options: Set<string> | Map<string, string>;
-  pageSize?: number;
-}
-
-interface MultiDropdownSectionData extends CommonDropdownSectionData {
-  multi: true;
-  value: Set<string>;
-  format?: (v: Set<string>) => string;
-}
-
-interface SingleDropdownSectionData extends CommonDropdownSectionData {
-  multi?: false;
-  value: string | null;
-  format?: (v: string | null) => string;
-}
-
-type SectionData =
-  | SingleDropdownSectionData
-  | MultiDropdownSectionData
-  | MiscSectionData;
-
-export type SettingsSectionData = readonly (
-  | SectionData
-  | SectionData[]
-  | string
-)[];
+import DataField from './DataField';
 
 interface SettingsSectionProps {
   title: string;
@@ -68,119 +20,15 @@ interface SettingsSectionProps {
 }
 
 // helpers
-const chooseFormatter = (data: SectionData): string => {
-  if (data.format) {
-    if (data.type !== 'dropdown') return data.format(data.value);
-    return data.multi ? data.format(data.value) : data.format(data.value); // fuck typescript
+const validateData = (v: SectionData) => {
+  let errorMsg = '';
+  if (v.validate) {
+    if (v.type !== 'dropdown') errorMsg = v.validate(v.value);
+    else errorMsg = v.multi ? v.validate(v.value) : v.validate(v.value);
   }
-  if (data.value instanceof Set) return Array.from(data.value).join(', ');
-  return data.value || '';
+  return errorMsg;
 };
 
-function MiscEditor({
-  data,
-  onChange,
-}: {
-  data: MiscSectionData;
-  onChange: (nv: string) => void;
-}) {
-  const [val, setVal] = useState(data.value);
-
-  if (data.type === 'text')
-    return (
-      <TextInput
-        label={data.label}
-        value={val}
-        setValue={setVal}
-        placeholder={data.placeholder}
-        onChange={onChange}
-      />
-    );
-
-  return data.type === 'date' ? (
-    <DateInput
-      label={data.label}
-      value={val}
-      setValue={setVal}
-      onChange={onChange}
-    />
-  ) : (
-    <FormTextArea />
-  );
-}
-
-function DataField({
-  data,
-  editing,
-  onChange,
-}: {
-  data: SectionData;
-  editing: boolean;
-  onChange: (nd: SectionData) => void;
-}) {
-  const editor = useMemo(() => {
-    if (data.type !== 'dropdown')
-      return (
-        <MiscEditor
-          data={data}
-          onChange={(nv: string) => onChange({ ...data, value: nv })}
-        />
-      );
-
-    // typescript complains when i try to put this condition
-    // in the multi prop :pensive:
-    if (data.multi)
-      return data.options.size > DROPDOWN_LIMIT ? (
-        <BigDataDropdown
-          label={data.label}
-          options={data.options}
-          pageSize={data.pageSize}
-          defaultValue={data.value}
-          onChange={nv => onChange({ ...data, value: nv })}
-          multi
-        />
-      ) : (
-        <InputDropdown
-          label={data.label}
-          options={data.options}
-          defaultValue={data.value}
-          onChange={nv => onChange({ ...data, value: nv })}
-          multi
-        />
-      );
-    return data.options.size > DROPDOWN_LIMIT ? (
-      <BigDataDropdown
-        label={data.label}
-        options={data.options}
-        pageSize={data.pageSize}
-        defaultValue={data.value || undefined}
-        onChange={nv => onChange({ ...data, value: nv })}
-      />
-    ) : (
-      <InputDropdown
-        label={data.label}
-        options={data.options}
-        defaultValue={data.value || undefined}
-        onChange={nv => onChange({ ...data, value: nv })}
-      />
-    );
-  }, [data, onChange]);
-
-  return (
-    <KeyValueBlurb>
-      {editing ? (
-        editor
-      ) : (
-        <>
-          <H4>{data.label}</H4>
-          <P>{chooseFormatter(data)}</P>
-        </>
-      )}
-    </KeyValueBlurb>
-  );
-}
-
-// main component
 export default function SettingsSection({
   title,
   data,
@@ -242,11 +90,46 @@ export default function SettingsSection({
     [storedData, isEditing],
   );
 
+  const handleSaveChanges = useCallback(() => {
+    let hasError = false;
+    const copy = [...storedData];
+
+    // validate data
+    copy.map(dataValue => {
+      if (typeof dataValue === 'string') return dataValue;
+
+      if (dataValue instanceof Array) {
+        const copyArr = [...dataValue];
+
+        copyArr.map(v => {
+          const errorMsg = validateData(v);
+          hasError = errorMsg !== '';
+          return errorMsg ? { ...v, error: errorMsg } : v;
+        });
+
+        return copyArr;
+      }
+
+      const errorMsg = validateData(dataValue);
+      hasError = errorMsg !== '';
+      return errorMsg ? { ...dataValue, error: errorMsg } : dataValue;
+    });
+
+    if (!hasError) {
+      onChange?.(storedData);
+      setIsEditing(false);
+    } else {
+      setStoredData(copy);
+    }
+  }, [onChange, storedData]);
+
   return (
     <Section>
       <SectionHeader>
         <H2>{title}</H2>
-        {editable && <EditButton onClick={() => setIsEditing(!isEditing)} />}
+        {editable && !isEditing && (
+          <EditButton onClick={() => setIsEditing(true)} />
+        )}
       </SectionHeader>
       {renderedData}
       {isEditing && (
@@ -263,10 +146,7 @@ export default function SettingsSection({
           <Button
             $primaryColor={COLORS.blueMid}
             $secondaryColor={COLORS.blueDark}
-            onClick={() => {
-              onChange?.(storedData);
-              setIsEditing(false);
-            }}
+            onClick={handleSaveChanges}
           >
             Save Changes
           </Button>
