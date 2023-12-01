@@ -12,7 +12,7 @@ export const ContentContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 39.0625rem;
+  width: 45.0625rem;
   margin: auto;
   gap: 2.5rem;
 `;

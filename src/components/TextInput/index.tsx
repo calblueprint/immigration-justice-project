@@ -1,25 +1,35 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputLabel, InputText, InputDiv, ErrorText } from './styles';
 
 type TextInputProps = {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   errorText?: string;
   type?: string;
   id?: string;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
+  onChange?: (s: string) => void;
 };
 
 export default function TextInput({
   label,
-  placeholder,
+  placeholder = '',
   errorText = '',
   type = 'text',
   id,
   value,
   setValue,
+  onChange,
 }: TextInputProps) {
+  const handleChange = useCallback(
+    (val: string) => {
+      setValue(val);
+      onChange?.(val);
+    },
+    [onChange, setValue],
+  );
+
   return (
     <InputDiv>
       <InputLabel as="label" htmlFor={id}>
@@ -32,7 +42,7 @@ export default function TextInput({
         id={id}
         type={type}
         value={value}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => handleChange(e.target.value)}
       />
       {errorText && <ErrorText>{errorText}</ErrorText>}
     </InputDiv>

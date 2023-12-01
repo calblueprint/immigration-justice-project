@@ -25,13 +25,16 @@ interface CommonProps {
   required?: boolean;
 }
 
+// if using map, default value should store the keys
 interface MultiSelectProps extends CommonProps {
   multi: true;
+  defaultValue?: Set<string>;
   onChange?: (value: Set<string>) => void;
 }
 
 interface SingleSelectProps extends CommonProps {
   multi?: false;
+  defaultValue?: string;
   onChange?: (value: string | null) => void;
 }
 
@@ -56,6 +59,7 @@ export default function InputDropdown({
   options,
   placeholder = '',
   error = '',
+  defaultValue,
   disabled,
   required,
   onChange,
@@ -65,6 +69,28 @@ export default function InputDropdown({
     useRef<SelectInstance<DropdownOption, false, GroupBase<DropdownOption>>>(
       null,
     );
+
+  const defaultDropdownVal = useMemo(() => {
+    if (!defaultValue) return undefined;
+
+    if (defaultValue instanceof Set)
+      return Array.from(defaultValue).map(dv => {
+        const v = options instanceof Map ? options.get(dv) : dv;
+        if (!v) throw new Error(`Value ${dv} not found in options`);
+        return {
+          label: v,
+          value: dv,
+        };
+      });
+
+    const v = options instanceof Map ? options.get(defaultValue) : defaultValue;
+    if (!v) throw new Error(`Value ${v} not found in options`);
+
+    return {
+      label: v,
+      value: defaultValue,
+    };
+  }, [defaultValue, options]);
 
   const optionsArray = useMemo(
     () =>
@@ -105,6 +131,7 @@ export default function InputDropdown({
         closeMenuOnSelect={false}
         tabSelectsValue={false}
         hideSelectedOptions={false}
+        defaultValue={defaultDropdownVal}
         noOptionsMessage={NoOptionsMessage}
         unstyled
         required={required}

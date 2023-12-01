@@ -7,7 +7,20 @@ import { BackLink, H1, H4 } from '@/styles/text';
 import Button from '@/components/Button';
 import COLORS from '@/styles/colors';
 import SettingsSection from '@/components/SettingsSection';
+import { cities, languages } from '@/lib/bigData';
+import { ImmigrationLawExperienceEnum, RoleEnum } from '@/types/schema';
 import { ContentContainer, PageContainer } from './styles';
+
+const rolesOptions = new Map<RoleEnum, string>([
+  ['ATTORNEY', 'Attorney'],
+  ['INTERPRETER', 'Interpreter'],
+]);
+
+const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
+  ['HIGH', 'Multiple cases of immigration law experience'],
+  ['MEDIUM', 'Few cases of immigration law experience'],
+  ['LOW', 'One or no case of immigration law experience'],
+]);
 
 export default function Settings() {
   const { push } = useRouter();
@@ -33,8 +46,9 @@ export default function Settings() {
         <SettingsSection
           title="Account"
           data={[
-            { label: 'Email', value: 'example@email.com' },
+            { type: 'text', label: 'Email', value: 'example@email.com' },
             {
+              type: 'text',
               label: 'Password',
               value: 'somerandomkey',
               format: v => '*'.repeat(v.toString().length),
@@ -47,14 +61,21 @@ export default function Settings() {
           editable
           data={[
             [
-              { label: 'First Name', value: 'John' },
-              { label: 'Last Name', value: 'Doe' },
+              { type: 'text', label: 'First Name', value: 'John' },
+              { type: 'text', label: 'Last Name', value: 'Doe' },
             ],
-            { label: 'City', value: 'Berkeley' },
             {
+              type: 'dropdown',
+              options: cities,
+              label: 'City',
+              value: 'Berkeley',
+            },
+            {
+              type: 'text', // should make number input later
               label: 'Time Commitment',
-              value: 10,
-              format: v => `${v} hours/week`,
+              value: '10',
+              placeholder: 'Hrs/month',
+              format: v => `${v} hours/month`,
             },
           ]}
         />
@@ -64,12 +85,18 @@ export default function Settings() {
           editable
           data={[
             {
+              type: 'dropdown',
+              options: languages,
+              multi: true,
               label: 'Languages (speak and understand)',
-              value: ['English', 'Spanish'],
+              value: new Set(['English', 'Spanish']),
             },
             {
+              type: 'dropdown',
+              options: languages,
+              multi: true,
               label: 'Languages (read and write)',
-              value: ['English', 'Spanish'],
+              value: new Set(['English', 'Spanish']),
             },
           ]}
         />
@@ -79,23 +106,44 @@ export default function Settings() {
           editable
           data={[
             {
+              type: 'dropdown',
+              options: rolesOptions,
+              multi: true,
               label: 'Selected Roles',
-              value: ['Attorney', 'Interpreter'],
+              value: new Set(['ATTORNEY', 'INTERPRETER']),
+              format: (v: Set<string>) =>
+                Array.from(v)
+                  .map(r => r.charAt(0) + r.toLowerCase())
+                  .join(', '),
             },
             'Attorney-Specific',
             {
+              type: 'text',
               label: 'Attorney Bar Number',
-              value: 12345678,
+              value: '12345678',
               format: v => {
-                const n = v.toString().padStart(8, '0');
+                const n = v.padStart(8, '0');
                 return `${n.substring(0, 2)}-${n.substring(2, 6)}-${n.substring(
                   6,
                 )}`;
               },
             },
             {
+              type: 'dropdown',
+              options: legalExperienceOptions,
               label: 'Immigration Law Experience',
-              value: 'Multiple cases of immigration law experience',
+              value: 'HIGH',
+              format: (v: string | null) => {
+                if (
+                  legalExperienceOptions.has(v as ImmigrationLawExperienceEnum)
+                )
+                  return (
+                    legalExperienceOptions.get(
+                      v as ImmigrationLawExperienceEnum,
+                    ) || ''
+                  );
+                return '';
+              },
             },
           ]}
         />
