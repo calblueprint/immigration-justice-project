@@ -9,7 +9,6 @@ export const FormContainer = styled.div`
   justify-content: flex-end;
   width: 61%;
   float: right;
-  margin-top: 1rem;
   gap: 0.625rem; // 10px
 `;
 
@@ -44,7 +43,7 @@ export const FormTextArea = styled.textarea`
 export const RadioGroup = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: 3rem;
+  column-gap: 2.5rem;
   row-gap: 0.4rem;
   flex-wrap: wrap;
   margin-bottom: 0.375rem;
@@ -68,7 +67,7 @@ export const RadioInput = styled.input`
   appearance: none;
   width: 1rem;
   height: 1rem;
-  border: 2px solid ${COLORS.greyMid};
+  border: 1.5px solid ${COLORS.greyMid};
   border-radius: 50%;
   position: relative;
 
