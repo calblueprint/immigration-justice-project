@@ -17,6 +17,15 @@ export default function Page() {
   const [startDate, setStartDate] = useState('');
   const [periods, setPeriods] = useState('');
 
+  const getHoursErrorText = () => {
+    const numericRegex = /^\d+$/;
+    if (hours !== '' && !numericRegex.test(hours)) {
+      return 'Must be a number';
+      // Number.isNaN(Number(hours))
+    }
+    return '';
+  };
+
   const getErrorText = () => {
     if (startDate !== '' && !isValidDate(startDate)) {
       return 'Must select a current or future date';
@@ -41,10 +50,17 @@ export default function Page() {
     };
     onboarding?.updateProfile(partialProfile);
     // enable continue
-    if (hours !== '' && startDate !== '' && getErrorText() === '') {
+    if (
+      hours !== '' &&
+      startDate !== '' &&
+      isValidDate(startDate) &&
+      /^\d+$/.test(hours)
+    ) {
       onboarding?.setCanContinue(true);
+    } else {
+      onboarding?.setCanContinue(false);
     }
-  }, [hours, startDate, periods, onboarding, getErrorText]);
+  }, [hours, startDate, periods, onboarding]);
 
   return (
     <>
@@ -52,7 +68,7 @@ export default function Page() {
       <TextInput
         label="How much time do you have to commit? (hrs/month)"
         placeholder="Hrs/month"
-        errorText=""
+        errorText={getHoursErrorText()}
         type="text"
         id="hours"
         value={hours}
@@ -65,7 +81,7 @@ export default function Page() {
         value={startDate}
         setValue={setStartDate}
       />
-      <SpacerDiv gap={0.625}>
+      <SpacerDiv $gap={0.625}>
         <H4 $color={COLORS.greyDark}>
           Are there specific time periods you will not be available? (Optional)
         </H4>
