@@ -54,9 +54,15 @@ type SectionData =
   | MultiDropdownSectionData
   | MiscSectionData;
 
+export type SettingsSectionData = readonly (
+  | SectionData
+  | SectionData[]
+  | string
+)[];
+
 interface SettingsSectionProps {
   title: string;
-  data: readonly (SectionData | SectionData[] | string)[];
+  data: SettingsSectionData;
   editable?: boolean;
   onChange?: (newValue: Array<SectionData | SectionData[] | string>) => void;
 }
