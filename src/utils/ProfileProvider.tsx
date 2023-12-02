@@ -23,6 +23,7 @@ interface ProfileContextType {
   languages: ProfileLanguage[];
   roles: ProfileRole[];
   userId: UUID | undefined;
+  userEmail: string | undefined;
   updateProfile: (newProfileData: Partial<Profile>) => Promise<void>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
   setRoles: (roles: ProfileRole[]) => Promise<void>;
@@ -39,6 +40,7 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<UUID | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
@@ -55,6 +57,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
         !sessionData.session.user.id
       )
         return;
+
+      const sessionUserEmail = sessionData.session.user.email;
+      setUserEmail(sessionUserEmail);
 
       const sessionUserId = sessionData.session.user.id as UUID;
       setUserId(sessionUserId);
@@ -150,12 +155,13 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       languages: profileLangs,
       roles: profileRoles,
       userId,
+      userEmail,
       createNewProfile,
       updateProfile,
       setLanguages,
       setRoles,
     };
-  }, [profileData, profileLangs, profileRoles, userId]);
+  }, [profileData, profileLangs, profileRoles, userId, userEmail]);
 
   return (
     <ProfileContext.Provider value={providerValue}>

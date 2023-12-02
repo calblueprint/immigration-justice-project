@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
@@ -10,6 +10,8 @@ import { cities, languages } from '@/lib/bigData';
 import { ImmigrationLawExperienceEnum, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import { parseDataAlt, timestampStringToDate } from '@/utils/helpers';
 import { ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -25,6 +27,15 @@ const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
 
 export default function Settings() {
   const { push } = useRouter();
+  const profile = useContext(ProfileContext);
+
+  useEffect(() => {
+    if (!profile || !profile.profileData) {
+      push('/cases');
+    }
+  }, [profile, push]);
+
+  const userEmail = useMemo(() => profile?.userEmail, [profile]);
 
   const [basicInformation, setBasicInformation] = useState<SettingsSectionData>(
     [
@@ -32,13 +43,13 @@ export default function Settings() {
         {
           type: 'text',
           label: 'First Name',
-          value: 'John',
+          value: profile?.profileData?.first_name || '',
           validate: v => (v ? '' : 'Must include a first name'),
         },
         {
           type: 'text',
           label: 'Last Name',
-          value: 'Doe',
+          value: profile?.profileData?.last_name || '',
           validate: v => (v ? '' : 'Must include a last name'),
         },
       ],
@@ -46,7 +57,7 @@ export default function Settings() {
         type: 'dropdown',
         options: cities,
         label: 'City',
-        value: 'Berkeley',
+        value: profile?.profileData?.location || '',
         validate: (v: string | null) => (v ? '' : 'Must include your city'),
       },
       {
@@ -54,7 +65,9 @@ export default function Settings() {
         options: languages,
         multi: true,
         label: 'Languages (speak and understand)',
-        value: new Set(['English', 'Spanish']),
+        value: new Set(
+          profile?.languages.filter(l => l.can_read).map(l => l.language_name),
+        ),
         validate: (v: Set<string>) =>
           v.size > 0 ? '' : 'Must select at least one language',
       },
@@ -63,7 +76,9 @@ export default function Settings() {
         options: languages,
         multi: true,
         label: 'Languages (read and write)',
-        value: new Set(['English', 'Spanish']),
+        value: new Set(
+          profile?.languages.filter(l => l.can_speak).map(l => l.language_name),
+        ),
         validate: (v: Set<string>) =>
           v.size > 0 ? '' : 'Must select at least one language',
       },
@@ -74,7 +89,7 @@ export default function Settings() {
     {
       type: 'text', // should make number input later
       label: 'Time Commitment',
-      value: '10',
+      value: profile?.profileData?.hours_per_month?.toString() || '',
       placeholder: '... hours/month',
       editorLabel: 'Time Commitment (hours/month)',
       format: (v: string) => `${v} hours/month`,
@@ -86,7 +101,9 @@ export default function Settings() {
     {
       type: 'date',
       label: 'Earliest Available Date',
-      value: '2022-10-31',
+      value: profile?.profileData?.start_date
+        ? parseDataAlt(timestampStringToDate(profile.profileData.start_date))
+        : '',
       editorLabel: 'Earliest Available Date (MM/DD/YYYY)',
       format: (v: string) => {
         const [year, month, day] = v.split('-');
@@ -98,7 +115,7 @@ export default function Settings() {
     {
       type: 'textarea',
       label: 'Availability Constraints',
-      value: '',
+      value: profile?.profileData?.availability_description || '',
       placeholder: "I won't be available from...",
       editorLabel: 'Availability Constraints (Optional)',
       format: (v: string) => v || 'N/A',
@@ -111,7 +128,7 @@ export default function Settings() {
       options: rolesOptions,
       multi: true,
       label: 'Selected Roles',
-      value: new Set(['ATTORNEY', 'INTERPRETER']),
+      value: new Set(profile?.roles.map(r => r.role)),
       format: (v: Set<string>) =>
         Array.from(v)
           .map(r => r.charAt(0) + r.toLowerCase().slice(1))
@@ -129,7 +146,7 @@ export default function Settings() {
       {
         type: 'text',
         label: 'Attorney Bar Number',
-        value: '123456',
+        value: profile?.profileData?.bar_number || '',
         format: (v: string) => `#${v}`,
         validate: (v: string) =>
           v ? '' : 'For attorneys, must include attorney bar number',
@@ -138,7 +155,7 @@ export default function Settings() {
         type: 'dropdown',
         options: legalExperienceOptions,
         label: 'Immigration Law Experience',
-        value: 'HIGH',
+        value: profile?.profileData?.immigration_law_experience || '',
         format: (v: string | null) => {
           if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
             return (
@@ -174,7 +191,7 @@ export default function Settings() {
         <SettingsSection
           title="Account"
           data={[
-            { type: 'text', label: 'Email', value: 'example@email.com' },
+            { type: 'text', label: 'Email', value: userEmail || '' },
             {
               type: 'text',
               label: 'Password',

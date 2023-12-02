@@ -23,6 +23,9 @@ export const timestampStringToDate = (ts: string): Date => {
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
+export const parseDataAlt = (d: Date): string =>
+  `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
 // parse adjudicating agency to normal words
 export const parseAgency = (agency: string): string =>
   agency.length <= 5
@@ -31,6 +34,7 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+
 /**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise
