@@ -6,8 +6,8 @@ import DateInput from '../DateInput';
 import BigDataDropdown from '../BigDataDropdown';
 import InputDropdown from '../InputDropdown';
 import TextInput from '../TextInput';
-import { FormTextArea } from '../InterestForm/styles';
 import { KeyValueBlurb } from './styles';
+import TextAreaInput from '../TextAreaInput';
 
 // config
 const DROPDOWN_LIMIT = 20;
@@ -47,10 +47,14 @@ function MiscEditor({
       error={data.error}
     />
   ) : (
-    <div>
-      <H4>{editorLabel}</H4>
-      <FormTextArea />
-    </div>
+    <TextAreaInput
+      label={editorLabel}
+      value={val}
+      setValue={setVal}
+      placeholder={data.placeholder}
+      onChange={onChange}
+      error={data.error}
+    />
   );
 }
 

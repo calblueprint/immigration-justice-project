@@ -99,6 +99,7 @@ export default function Settings() {
       type: 'textarea',
       label: 'Availability Constraints',
       value: '',
+      placeholder: "I won't be available from...",
       editorLabel: 'Availability Constraints (Optional)',
       format: (v: string) => v || 'N/A',
     },
