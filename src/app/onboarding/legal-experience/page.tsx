@@ -8,11 +8,17 @@ import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
 import { ImmigrationLawExperienceEnum, Profile } from '@/types/schema';
 
-const ExperienceTypes = new Set([
-  'Multiple cases of immigration law experience',
-  'Few cases of immigration law experience',
-  'One or no case of immigration law experience',
+const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
+  ['HIGH', 'Multiple cases of immigration law experience'],
+  ['MEDIUM', 'Few cases of immigration law experience'],
+  ['LOW', 'One or no case of immigration law experience'],
 ]);
+
+// const ExperienceTypes = new Set([
+//   'Multiple cases of immigration law experience',
+//   'Few cases of immigration law experience',
+//   'One or no case of immigration law experience',
+// ]);
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
@@ -21,8 +27,11 @@ export default function Page() {
     useState<ImmigrationLawExperienceEnum | null>(null);
   const [registered, setRegistered] = useState('');
 
+  const validBarNum = () =>
+    !Number.isNaN(parseInt(barNum, 10)) && barNum.length === 6;
+
   const getErrorText = () => {
-    if (barNum !== '' && (!/^\d+$/.test(barNum) || barNum.length !== 6)) {
+    if (barNum !== '' && !validBarNum()) {
       return 'Must include attorney bar number';
     }
     return '';
@@ -38,7 +47,9 @@ export default function Page() {
       };
       onboarding?.updateProfile(partialProfile);
       // enable continue
-      onboarding?.setCanContinue(true);
+      if (validBarNum()) {
+        onboarding?.setCanContinue(true);
+      }
     } else {
       onboarding?.setCanContinue(false);
     }
@@ -59,7 +70,7 @@ export default function Page() {
       <InputDropdown
         label="What level of immigration law experience do you have?"
         onChange={v => setExperience(v as ImmigrationLawExperienceEnum)}
-        options={ExperienceTypes}
+        options={legalExperienceOptions}
         error="" // "Must select your level of immigration law experience"
       />
       <RadioGroup
