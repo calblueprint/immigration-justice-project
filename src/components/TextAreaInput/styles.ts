@@ -9,7 +9,7 @@ export const TextAreaContainer = styled.div`
   gap: 0.625rem;
 `;
 
-export const TextArea = styled.textarea<{ $height?: number }>`
+export const TextArea = styled.textarea`
   ${openSans.style}
   resize: none;
   font-size: 0.875rem;
@@ -17,7 +17,7 @@ export const TextArea = styled.textarea<{ $height?: number }>`
   border-radius: 0.3125rem;
   border: 2px solid ${COLORS.greyLight};
   padding: 0.625rem;
-  min-height: ${({ $height }) => $height || 5.3125}rem;
+  min-height: 5.3125rem;
 
   &:focus {
     border-color: ${COLORS.blueMid};

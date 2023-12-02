@@ -73,7 +73,6 @@ export default function Page() {
         label="Are there specific time periods you will not be available? (Optional)"
         placeholder="I won’t be available from..."
         id="periods"
-        height={5.3125}
         value={periods}
         setValue={setPeriods}
       />
