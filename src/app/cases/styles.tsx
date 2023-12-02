@@ -55,7 +55,7 @@ export const CardColumn = styled.div`
 
 export const CaseDetailsContainer = styled.div`
   overflow-y: scroll;
-  padding: 2rem 3rem 1rem 3rem;
+  padding: 2.6rem 3rem 1rem 3rem;
   column-gap: 2rem;
 `;
 

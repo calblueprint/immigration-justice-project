@@ -1,6 +1,11 @@
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
-import { timestampStringToDate, parseDate, parseAgency } from '@/utils/helpers';
+import {
+  timestampStringToDate,
+  parseDate,
+  parseAgency,
+  parseRolesNeeded,
+} from '@/utils/helpers';
 import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import Icon from '../../../assets/icons/Icon';
@@ -19,13 +24,13 @@ export default function ListingCard({
   const generateCardTags = (): string[] => {
     const tags = [];
 
-    if (caseData.needs_interpreter && caseData.needs_attorney) {
-      tags.push('Interpreter & Attorney');
-    } else if (caseData.needs_interpreter) {
-      tags.push('Interpreter');
-    } else if (caseData.needs_attorney) {
-      tags.push('Attorney');
-    }
+    tags.push(
+      parseRolesNeeded(
+        true,
+        caseData.needs_attorney,
+        caseData.needs_interpreter,
+      ),
+    );
 
     if (caseData.relief_codes && caseData.relief_codes.length > 0) {
       tags.push(caseData.relief_codes.join(', '));
@@ -53,11 +58,7 @@ export default function ListingCard({
       $selected={isSelected}
       onClick={onClick ? () => onClick(caseData.id) : undefined}
     >
-      <H4>
-        {caseData.title
-          ? caseData.title
-          : 'Guatemalan mother and two children seeking protection'}
-      </H4>
+      <H4>{caseData.title || 'Migrant seeking representation'}</H4>
 
       <TagRow>
         {generateCardTags().map(s => (
