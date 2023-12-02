@@ -4,23 +4,40 @@ import InputDropdown from '@/components/InputDropdown';
 import { RoleEnum } from '@/types/schema';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
+
+const roleOptions = new Map<RoleEnum, string>([
+  ['ATTORNEY', 'Attorney'],
+  ['INTERPRETER', 'Interpreter'],
+]);
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
-  // const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
-  const roleOptions = new Set(['Attorney', 'Interpreter']);
 
-  useEffect(() => {
-    onboarding?.setCanContinue(false);
-  }, []);
-
-  const setRoles = (v: Set<RoleEnum>) => {
-    onboarding?.setRoles(v);
-    if (v.size !== 0) {
+  const setRoles = (roles: Set<RoleEnum>) => {
+    onboarding?.setRoles(roles);
+    if (roles.size !== 0) {
       onboarding?.setCanContinue(true);
     } else {
+      onboarding?.setProgress(0);
       onboarding?.setCanContinue(false);
+    }
+
+    if (roles.has('ATTORNEY')) {
+      onboarding?.setFlow([
+        { name: 'Roles', url: 'roles' },
+        { name: 'Basic Info', url: 'basic-information' },
+        { name: 'Availability', url: 'availability' },
+        { name: 'Legal Experience', url: 'legal-experience' },
+        { name: 'Done', url: 'done' },
+      ]);
+    } else {
+      onboarding?.setFlow([
+        { name: 'Roles', url: 'roles' },
+        { name: 'Basic Info', url: 'basic-information' },
+        { name: 'Availability', url: 'availability' },
+        { name: 'Done', url: 'done' },
+      ]);
     }
   };
 
@@ -31,9 +48,10 @@ export default function Page() {
       <InputDropdown
         label="What role(s) would you like to hold?"
         multi
+        defaultValue={onboarding?.roles as Set<string>}
         onChange={v => setRoles(v as Set<RoleEnum>)}
         options={roleOptions}
-      ></InputDropdown>
+      />
     </>
   );
 }
