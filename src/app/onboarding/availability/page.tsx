@@ -1,15 +1,13 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import COLORS from '@/styles/colors';
-import { H1, H4 } from '@/styles/text';
+import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { FormTextArea } from '@/components/InterestForm/styles';
 import TextInput from '@/components/TextInput';
-import { SpacerDiv } from '@/app/(auth)/styles';
 import { isValidDate } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import { Profile } from '@/types/schema';
+import TextAreaInput from '@/components/TextAreaInput';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
@@ -18,7 +16,6 @@ export default function Page() {
   const [periods, setPeriods] = useState('');
 
   const getHoursErrorText = () => {
-    // const numericRegex = /^\d+$/;
     if (hours !== '' && Number.isNaN(parseInt(hours, 10))) {
       return 'Must be a number';
     }
@@ -35,9 +32,9 @@ export default function Page() {
   useEffect(() => {
     if (
       hours !== '' &&
+      !Number.isNaN(parseInt(hours, 10)) &&
       startDate !== '' &&
-      isValidDate(startDate) &&
-      /^\d+$/.test(hours)
+      isValidDate(startDate)
     ) {
       // update profile
       const partialProfile: Partial<Profile> = {
@@ -68,23 +65,18 @@ export default function Page() {
       />
       <DateInput
         label="What is the earliest you are available to volunteer?"
-        // id="startDate"
         error={getErrorText()}
         value={startDate}
         setValue={setStartDate}
       />
-      <SpacerDiv $gap={0.625}>
-        <H4 $color={COLORS.greyDark}>
-          Are there specific time periods you will not be available? (Optional)
-        </H4>
-        <FormTextArea
-          $height={5.3125}
-          id="periods"
-          placeholder="I won’t be available from..."
-          value={periods}
-          onChange={event => setPeriods(event.target.value)}
-        />
-      </SpacerDiv>
+      <TextAreaInput
+        label="Are there specific time periods you will not be available? (Optional)"
+        placeholder="I won’t be available from..."
+        id="periods"
+        height={5.3125}
+        value={periods}
+        setValue={setPeriods}
+      />
     </>
   );
 }
