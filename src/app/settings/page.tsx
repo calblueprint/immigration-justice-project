@@ -11,7 +11,11 @@ import { ImmigrationLawExperienceEnum, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
-import { parseDataAlt, timestampStringToDate } from '@/utils/helpers';
+import {
+  isValidDate,
+  parseDataAlt,
+  timestampStringToDate,
+} from '@/utils/helpers';
 import { ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -112,7 +116,7 @@ export default function Settings() {
           return `${month}/${day}/${year}`;
         },
         validate: (v: string) =>
-          v ? '' : 'Must include earliest available date',
+          v && isValidDate(v) ? '' : 'Must include earliest date',
       },
       {
         type: 'textarea',
@@ -208,24 +212,24 @@ export default function Settings() {
           <SettingsSection
             title="Basic Information"
             editable
-            onChange={nv => setBasicInformation(nv)}
+            onSave={nv => setBasicInformation(nv)}
             data={basicInformation}
           />
 
           <SettingsSection
             title="Availability"
             editable
-            onChange={nv => setAvailability(nv)}
+            onSave={nv => setAvailability(nv)}
             data={availability}
           />
 
           <SettingsSection
             title="Role-Specific"
             editable
-            onChange={nv => setRoles(nv)}
+            onSave={nv => setRoles(nv)}
             data={roles}
             subsections={attorneySettings ? [attorneySettings] : []}
-            onSubSectionChange={([nv]) => setAttorneySettings(nv)}
+            onSubSectionSave={([nv]) => setAttorneySettings(nv)}
           />
 
           <Button

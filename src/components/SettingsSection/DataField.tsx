@@ -106,6 +106,7 @@ export default function DataField({
               onChange({ ...data, error: '', value: nv });
             else onChange({ ...data, value: nv });
           }}
+          error={data.error}
           multi
         />
       ) : (
@@ -118,6 +119,7 @@ export default function DataField({
               onChange({ ...data, error: '', value: nv });
             else onChange({ ...data, value: nv });
           }}
+          error={data.error}
           multi
         />
       );
@@ -131,6 +133,7 @@ export default function DataField({
           if (!data.validate?.(nv)) onChange({ ...data, error: '', value: nv });
           else onChange({ ...data, value: nv });
         }}
+        error={data.error}
       />
     ) : (
       <InputDropdown
@@ -141,6 +144,7 @@ export default function DataField({
           if (!data.validate?.(nv)) onChange({ ...data, error: '', value: nv });
           else onChange({ ...data, value: nv });
         }}
+        error={data.error}
       />
     );
   }, [data, onChange]);

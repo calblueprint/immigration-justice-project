@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { H2, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import {
@@ -15,8 +15,8 @@ interface SettingsSectionProps {
   data: SettingsSectionData;
   subsections?: SubSectionData[];
   editable?: boolean;
-  onChange?: (newValue: Array<SectionData | SectionData[]>) => void;
-  onSubSectionChange?: (newSubs: SubSectionData[]) => void;
+  onSave?: (newValue: Array<SectionData | SectionData[]>) => void;
+  onSubSectionSave?: (newSubs: SubSectionData[]) => void;
 }
 
 // helpers
@@ -58,14 +58,22 @@ export default function SettingsSection({
   data,
   editable,
   subsections,
-  onChange,
-  onSubSectionChange,
+  onSave,
+  onSubSectionSave,
 }: SettingsSectionProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [storedData, setStoredData] = useState<SettingsSectionData>([...data]);
   const [storedSubsections, setStoredSusbections] = useState<SubSectionData[]>(
     subsections ? [...subsections] : [],
   );
+
+  useEffect(() => {
+    setStoredData([...data]);
+  }, [data]);
+
+  useEffect(() => {
+    setStoredSusbections(subsections ? [...subsections] : []);
+  }, [subsections]);
 
   const subVisible = useCallback(
     (sub: SubSectionData) =>
@@ -97,14 +105,14 @@ export default function SettingsSection({
     });
 
     if (!hasError) {
-      onChange?.(storedData);
-      onSubSectionChange?.(storedSubsections);
+      onSave?.(storedData);
+      onSubSectionSave?.(storedSubsections);
       setIsEditing(false);
     } else {
       setStoredData(sectionCopy);
       setStoredSusbections(subc);
     }
-  }, [onChange, storedData, onSubSectionChange, storedSubsections, subVisible]);
+  }, [onSave, storedData, onSubSectionSave, storedSubsections, subVisible]);
 
   return (
     <Section>
