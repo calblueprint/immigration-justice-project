@@ -87,7 +87,7 @@ export default function Settings() {
         multi: true,
         label: 'Languages (speak and understand)',
         value: new Set(
-          profile?.languages.filter(l => l.can_read).map(l => l.language_name),
+          profile?.languages.filter(l => l.can_speak).map(l => l.language_name),
         ),
         validate: (v: Set<string>) =>
           v.size > 0 ? '' : 'Must select at least one language',
@@ -98,7 +98,7 @@ export default function Settings() {
         multi: true,
         label: 'Languages (read and write)',
         value: new Set(
-          profile?.languages.filter(l => l.can_speak).map(l => l.language_name),
+          profile?.languages.filter(l => l.can_read).map(l => l.language_name),
         ),
         validate: (v: Set<string>) =>
           v.size > 0 ? '' : 'Must select at least one language',
