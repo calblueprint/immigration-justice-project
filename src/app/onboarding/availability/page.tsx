@@ -87,6 +87,7 @@ export default function Page() {
           Are there specific time periods you will not be available? (Optional)
         </H4>
         <FormTextArea
+          $height={5.3125}
           id="periods"
           placeholder="I won’t be available from..."
           value={periods}
