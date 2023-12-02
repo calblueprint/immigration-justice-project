@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 // inspiration from https://stackoverflow.com/a/57941711/22063638
 // example timestamp format: 2024-01-18T11:22:40+00:00
 // WARNING: assumes +00:00 (which should be the case for timestamptz)
@@ -23,6 +22,7 @@ export const timestampStringToDate = (ts: string): Date => {
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
+// parse js date to yyyy-mm-dd
 export const parseDataAlt = (d: Date): string =>
   `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 

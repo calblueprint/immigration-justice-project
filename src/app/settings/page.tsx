@@ -266,8 +266,13 @@ export default function Settings() {
       )?.value as string;
       const hoursPerMonth = parseInt(timeCommitment, 10);
 
+      const [year, month, day] = earliestDate
+        .split('-')
+        .map(s => parseInt(s, 10));
+      const localDate = new Date(year, month - 1, day);
+
       profile.updateProfile({
-        start_date: earliestDate,
+        start_date: localDate.toISOString(),
         availability_description: availabilityConstraint,
         hours_per_month: hoursPerMonth,
       });
