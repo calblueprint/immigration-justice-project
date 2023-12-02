@@ -10,7 +10,7 @@ import React, {
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
-import Button from '@/components/Button';
+import Button, { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { cities, languages } from '@/lib/bigData';
 import {
@@ -27,7 +27,7 @@ import {
   parseDataAlt,
   timestampStringToDate,
 } from '@/utils/helpers';
-import { ContentContainer, PageContainer } from './styles';
+import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
   ['ATTORNEY', 'Attorney'],
@@ -112,7 +112,8 @@ export default function Settings() {
         editorLabel: 'Time Commitment (hours/month)',
         format: (v: string) => `${v} hours/month`,
         validate: (v: string) => {
-          if (Number.isNaN(v)) return 'Time commitment must be a number';
+          if (Number.isNaN(parseInt(v, 10)))
+            return 'Time commitment must be a number';
           return v ? '' : 'Must include time commitment';
         },
       },
@@ -125,7 +126,10 @@ export default function Settings() {
         editorLabel: 'Earliest Available Date (MM/DD/YYYY)',
         format: (v: string) => {
           const [year, month, day] = v.split('-');
-          return `${month}/${day}/${year}`;
+          return `${month.padStart(2, '0')}/${day.padStart(
+            2,
+            '0',
+          )}/${year.padStart(4, '0')}`;
         },
         validate: (v: string) =>
           v && isValidDate(v) ? '' : 'Must include earliest date',
@@ -189,6 +193,7 @@ export default function Settings() {
           options: eoirRegisteredOptions,
           label: 'EOIR Registered',
           value: profile?.profileData?.eoir_registered ? 'Yes' : 'No',
+          validate: (v: string) => (v ? '' : 'Must select one option'),
         },
       ],
     });
@@ -328,45 +333,62 @@ export default function Settings() {
   return (
     <PageContainer>
       <BackLink href="/cases">Back</BackLink>
-      {profile?.profileData && (
-        <ContentContainer>
-          <H1>Your Profile</H1>
+      <ContentContainer>
+        <H1>Your Profile</H1>
+        {profile?.userId && !profile?.profileData && (
+          <H4>
+            You haven&apos;t completed onboarding yet. Complete onboarding to
+            view your profile.
+          </H4>
+        )}
+        {profile?.userId && profile?.profileData && (
+          <>
+            <SettingsSection
+              title="Account"
+              data={[
+                { type: 'text', label: 'Email', value: userEmail || '' },
+                {
+                  type: 'text',
+                  label: 'Password',
+                  value: 'somerandomkey',
+                  format: v => '*'.repeat(v.toString().length),
+                },
+              ]}
+            />
 
-          <SettingsSection
-            title="Account"
-            data={[
-              { type: 'text', label: 'Email', value: userEmail || '' },
-              {
-                type: 'text',
-                label: 'Password',
-                value: 'somerandomkey',
-                format: v => '*'.repeat(v.toString().length),
-              },
-            ]}
-          />
+            <SettingsSection
+              title="Basic Information"
+              editable
+              onSave={handleUpdateBasicInformation}
+              data={basicInformation}
+            />
 
-          <SettingsSection
-            title="Basic Information"
-            editable
-            onSave={handleUpdateBasicInformation}
-            data={basicInformation}
-          />
+            <SettingsSection
+              title="Availability"
+              editable
+              onSave={handleUpdateAvailability}
+              data={availability}
+            />
 
-          <SettingsSection
-            title="Availability"
-            editable
-            onSave={handleUpdateAvailability}
-            data={availability}
-          />
-
-          <SettingsSection
-            title="Role-Specific"
-            editable
-            onSave={handleUpdateRoles}
-            data={roles}
-            subsections={attorneySettings ? [attorneySettings] : []}
-          />
-
+            <SettingsSection
+              title="Role-Specific"
+              editable
+              onSave={handleUpdateRoles}
+              data={roles}
+              subsections={attorneySettings ? [attorneySettings] : []}
+            />
+          </>
+        )}
+        <ButtonContainer>
+          {profile?.userId && !profile.profileData && (
+            <LinkButton
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
+              href="/onboarding/roles"
+            >
+              <H4 $color="white">Go to Onboarding</H4>
+            </LinkButton>
+          )}
           <Button
             $primaryColor={COLORS.redMid}
             $secondaryColor={COLORS.redDark}
@@ -374,8 +396,8 @@ export default function Settings() {
           >
             <H4 $color="white">Sign Out</H4>
           </Button>
-        </ContentContainer>
-      )}
+        </ButtonContainer>
+      </ContentContainer>
     </PageContainer>
   );
 }

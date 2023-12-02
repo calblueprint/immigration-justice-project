@@ -24,7 +24,9 @@ export const parseDate = (d: Date): string =>
 
 // parse js date to yyyy-mm-dd
 export const parseDataAlt = (d: Date): string =>
-  `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  `${d.getFullYear().toString().padStart(4, '0')}-${(d.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
 
 // parse adjudicating agency to normal words
 export const parseAgency = (agency: string): string =>
