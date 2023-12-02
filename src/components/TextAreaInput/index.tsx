@@ -8,6 +8,7 @@ export default function TextAreaInput({
   placeholder = '',
   error = '',
   id,
+  height,
   value,
   setValue,
   onChange,
@@ -16,6 +17,7 @@ export default function TextAreaInput({
   placeholder?: string;
   error?: string;
   id?: string;
+  height?: number;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
@@ -37,6 +39,7 @@ export default function TextAreaInput({
         id={id}
         placeholder={placeholder}
         value={value}
+        $height={height}
         onChange={e => handleChange(e.target.value)}
       />
       {error && <P $color={COLORS.redMid}>{error}</P>}
