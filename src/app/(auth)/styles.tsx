@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import COLORS from '@/styles/colors';
 import { H4, P } from '@/styles/text';
-import Link from 'next/link';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -9,7 +9,6 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  background-color: ${COLORS.background};
 `;
 
 export const FormDiv = styled.div`
