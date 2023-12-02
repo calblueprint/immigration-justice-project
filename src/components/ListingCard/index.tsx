@@ -58,9 +58,7 @@ export default function ListingCard({
       $selected={isSelected}
       onClick={onClick ? () => onClick(caseData.id) : undefined}
     >
-      <H4>
-        {caseData.title ? caseData.title : 'Migrant seeking representation'}
-      </H4>
+      <H4>{caseData.title || 'Migrant seeking representation'}</H4>
 
       <TagRow>
         {generateCardTags().map(s => (
