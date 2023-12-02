@@ -20,7 +20,7 @@ export const FormQuestion = styled(H4)`
 export const FormTextArea = styled.textarea<{ $height?: number }>`
   ${openSans.style}
   font-size: 0.875rem; //14px
-  min-height: ${props => props.$height || 10}rem;
+  min-height: ${({ $height }) => $height || 10}rem;
   resize: none;
   font-size: 0.875rem;
   font-weight: 400;

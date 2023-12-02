@@ -24,7 +24,7 @@ export const FormDiv = styled.div`
 export const SpacerDiv = styled.div<{ $gap?: number }>`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.$gap || 1.2}rem;
+  gap: ${({ $gap }) => $gap || 1.2}rem;
 `;
 
 export const H4Centered = styled(H4)`

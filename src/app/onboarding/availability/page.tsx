@@ -18,10 +18,9 @@ export default function Page() {
   const [periods, setPeriods] = useState('');
 
   const getHoursErrorText = () => {
-    const numericRegex = /^\d+$/;
-    if (hours !== '' && !numericRegex.test(hours)) {
+    // const numericRegex = /^\d+$/;
+    if (hours !== '' && Number.isNaN(parseInt(hours, 10))) {
       return 'Must be a number';
-      // Number.isNaN(Number(hours))
     }
     return '';
   };
@@ -32,14 +31,6 @@ export default function Page() {
     }
     return '';
   };
-  // const updateProfile = (h: string, date: string, availability: string) => {
-  //   const partialProfile: Partial<Profile> = {
-  //     hours_per_month: +h,
-  //     start_date: date,
-  //     availability_description: availability,
-  //   };
-  //   onboarding?.updateProfile(partialProfile);
-  // };
 
   useEffect(() => {
     if (

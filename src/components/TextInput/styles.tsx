@@ -8,7 +8,7 @@ export const InputText = styled.textarea<{ $error: boolean; $height?: number }>`
   font-size: 0.875rem;
   font-weight: 400;
   color: ${COLORS.greyDarker};
-  min-height: ${props => (props.$height ? props.$height : 0.875)}rem;
+  min-height: ${({ $height }) => $height || 0.875}rem;
   resize: none;
   padding: 0.625rem;
   border-radius: 0.313rem; // 5px
@@ -28,10 +28,6 @@ export const InputText = styled.textarea<{ $error: boolean; $height?: number }>`
     border: 2px solid
       ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
   }
-`;
-
-export const InputTextLarge = styled(InputText)<{ $height?: number }>`
-  min-height: ${props => (props.$height ? props.$height : 0.875)}rem;
 `;
 
 export const InputLabel = styled(H4)`
