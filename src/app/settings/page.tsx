@@ -335,13 +335,13 @@ export default function Settings() {
       <BackLink href="/cases">Back</BackLink>
       <ContentContainer>
         <H1>Your Profile</H1>
-        {profile?.userId && !profile?.profileData && (
+        {profile?.profileReady && !profile?.profileData && (
           <H4>
             You haven&apos;t completed onboarding yet. Complete onboarding to
             view your profile.
           </H4>
         )}
-        {profile?.userId && profile?.profileData && (
+        {profile?.profileReady && profile?.profileData && (
           <>
             <SettingsSection
               title="Account"
@@ -380,7 +380,7 @@ export default function Settings() {
           </>
         )}
         <ButtonContainer>
-          {profile?.userId && !profile.profileData && (
+          {profile?.profileReady && !profile.profileData && (
             <LinkButton
               $primaryColor={COLORS.blueMid}
               $secondaryColor={COLORS.blueDark}

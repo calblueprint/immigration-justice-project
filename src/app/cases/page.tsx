@@ -117,7 +117,7 @@ export default function Page() {
   }, []);
 
   const AuthButtonView = useMemo(() => {
-    if (profile && profile.userId)
+    if (profile?.profileReady)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
