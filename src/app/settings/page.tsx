@@ -75,16 +75,15 @@ export default function Settings() {
         },
       ],
       {
-        type: 'dropdown',
+        type: 'single-select',
         options: cities,
         label: 'City',
         value: profile?.profileData?.location || '',
         validate: (v: string | null) => (v ? '' : 'Must include your city'),
       },
       {
-        type: 'dropdown',
+        type: 'multi-select',
         options: languages,
-        multi: true,
         label: 'Languages (speak and understand)',
         value: new Set(
           profile?.languages.filter(l => l.can_speak).map(l => l.language_name),
@@ -93,9 +92,8 @@ export default function Settings() {
           v.size > 0 ? '' : 'Must select at least one language',
       },
       {
-        type: 'dropdown',
+        type: 'multi-select',
         options: languages,
-        multi: true,
         label: 'Languages (read and write)',
         value: new Set(
           profile?.languages.filter(l => l.can_read).map(l => l.language_name),
@@ -144,9 +142,8 @@ export default function Settings() {
 
     setRoles([
       {
-        type: 'dropdown',
+        type: 'multi-select',
         options: rolesOptions,
-        multi: true,
         label: 'Selected Roles',
         value: new Set(profile?.roles.map(r => r.role)),
         format: (v: Set<string>) =>
@@ -172,7 +169,7 @@ export default function Settings() {
             v ? '' : 'For attorneys, must include attorney bar number',
         },
         {
-          type: 'dropdown',
+          type: 'single-select',
           options: legalExperienceOptions,
           label: 'Immigration Law Experience',
           value: profile?.profileData?.immigration_law_experience || '',

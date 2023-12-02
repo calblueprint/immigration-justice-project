@@ -25,8 +25,8 @@ interface SettingsSectionProps {
 const validateData = (v: SectionData) => {
   let errorMsg = '';
   if (v.validate) {
-    if (v.type !== 'dropdown') errorMsg = v.validate(v.value);
-    else errorMsg = v.multi ? v.validate(v.value) : v.validate(v.value);
+    if (v.type !== 'multi-select') errorMsg = v.validate(v.value || '');
+    else errorMsg = v.validate(v.value);
   }
   return errorMsg;
 };

@@ -78,8 +78,8 @@ function MiscEditor({
 
 const chooseFormatter = (data: SectionData): string => {
   if (data.format) {
-    if (data.type !== 'dropdown') return data.format(data.value);
-    return data.multi ? data.format(data.value) : data.format(data.value);
+    if (data.type !== 'multi-select') return data.format(data.value || '');
+    return data.format(data.value);
   }
   if (data.value instanceof Set) return Array.from(data.value).join(', ');
   return data.value || '';
@@ -98,7 +98,7 @@ export default function DataField({
   const editor = useMemo(() => {
     const editorLabel = data.editorLabel ? data.editorLabel : data.label;
 
-    if (data.type !== 'dropdown')
+    if (data.type !== 'multi-select' && data.type !== 'single-select')
       return (
         <MiscEditor
           data={data}
@@ -112,7 +112,7 @@ export default function DataField({
 
     // typescript complains when i try to put this condition
     // in the multi prop :pensive:
-    if (data.multi)
+    if (data.type === 'multi-select')
       return data.options.size > DROPDOWN_LIMIT ? (
         <BigDataDropdown
           label={editorLabel}
