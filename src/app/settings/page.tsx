@@ -165,7 +165,7 @@ export default function Settings() {
           format: (v: string) => `#${v}`,
           validate: (v: string) =>
             Number.isNaN(parseInt(v, 10))
-              ? 'For attorneys, must include attorney bar number'
+              ? 'For attorneys, must include valid attorney bar number'
               : '',
         },
         {
