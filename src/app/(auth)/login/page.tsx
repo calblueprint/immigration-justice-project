@@ -47,7 +47,7 @@ export default function Login() {
       // then, raise the error in the TextInput component.
     } else {
       setErrorMessage('');
-      push('/');
+      push('/cases');
     }
   };
 

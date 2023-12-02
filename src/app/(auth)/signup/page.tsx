@@ -18,10 +18,10 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  // const { push } = useRouter();
 
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
-  // const { push } = useRouter();
   const handleSignUp = async () => {
     setEmailError(validEmail(email) ? '' : 'Invalid Email');
     setPasswordError(password !== '' ? '' : 'Invalid Password');
