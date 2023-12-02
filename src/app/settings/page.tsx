@@ -1,13 +1,24 @@
 'use client';
 
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { cities, languages } from '@/lib/bigData';
-import { ImmigrationLawExperienceEnum, RoleEnum } from '@/types/schema';
+import {
+  ImmigrationLawExperienceEnum,
+  ProfileLanguage,
+  ProfileRole,
+  RoleEnum,
+} from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
@@ -33,6 +44,7 @@ export default function Settings() {
   const { push } = useRouter();
   const profile = useContext(ProfileContext);
 
+  const userId = useMemo(() => profile?.userId, [profile]);
   const userEmail = useMemo(() => profile?.userEmail, [profile]);
 
   const [basicInformation, setBasicInformation] = useState<SettingsSectionData>(
@@ -177,13 +189,122 @@ export default function Settings() {
     });
   }, [profile]);
 
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
     push('/login');
-  };
+  }, [push]);
+
+  const handleUpdateBasicInformation = useCallback(
+    (nd: SettingsSectionData) => {
+      setBasicInformation(nd);
+
+      if (!profile || !userId) return;
+
+      const sections = nd.flat();
+      const firstName = sections.find(sec => sec.label === 'First Name')
+        ?.value as string;
+      const lastName = sections.find(sec => sec.label === 'Last Name')
+        ?.value as string;
+      const location = sections.find(sec => sec.label === 'City')
+        ?.value as string;
+
+      const canSpeaks = sections.find(
+        sec => sec.label === 'Languages (speak and understand)',
+      )?.value as Set<string>;
+      const canReads = sections.find(
+        sec => sec.label === 'Languages (read and write)',
+      )?.value as Set<string>;
+      const allSpeakRead = new Set(
+        Array.from(canReads).concat(Array.from(canSpeaks)),
+      );
+
+      const langs: ProfileLanguage[] = Array.from(allSpeakRead).map(l => ({
+        user_id: userId,
+        can_read: canReads.has(l),
+        can_speak: canSpeaks.has(l),
+        language_name: l,
+      }));
+
+      Promise.all([
+        profile.updateProfile({
+          first_name: firstName,
+          last_name: lastName,
+          location,
+        }),
+        profile.setLanguages(langs),
+      ]);
+    },
+    [userId, profile],
+  );
+
+  const handleUpdateAvailability = useCallback(
+    (nd: SettingsSectionData) => {
+      setAvailability(nd);
+
+      if (!profile || !userId) return;
+
+      const sections = nd.flat();
+      const timeCommitment = sections.find(
+        sec => sec.label === 'Time Commitment',
+      )?.value as string;
+      const earliestDate = sections.find(
+        sec => sec.label === 'Earliest Available Date',
+      )?.value as string;
+      const availabilityConstraint = sections.find(
+        sec => sec.label === 'Availability Constraints',
+      )?.value as string;
+      const hoursPerMonth = parseInt(timeCommitment, 10);
+
+      profile.updateProfile({
+        start_date: earliestDate,
+        availability_description: availabilityConstraint,
+        hours_per_month: hoursPerMonth,
+      });
+    },
+    [userId, profile],
+  );
+
+  const handleUpdateRoles = useCallback(
+    (nd: SettingsSectionData, ns: SubSectionData[]) => {
+      setRoles(nd);
+      setAttorneySettings(ns[0]);
+
+      if (!profile || !userId) return;
+
+      const sections = nd.flat();
+      const selectedRoles = sections.find(sec => sec.label === 'Selected Roles')
+        ?.value as Set<RoleEnum>;
+
+      if (selectedRoles.has('ATTORNEY')) {
+        const attorneySections = ns[0].data.flat();
+        const barNumber = attorneySections.find(
+          sec => sec.label === 'Attorney Bar Number',
+        )?.value as string;
+        const immLawExp = attorneySections.find(
+          sec => sec.label === 'Immigration Law Experience',
+        )?.value as ImmigrationLawExperienceEnum;
+        if (!barNumber || !immLawExp)
+          throw new Error(
+            'Attorney must have bar number and immigration law experience',
+          );
+
+        profile.updateProfile({
+          bar_number: barNumber,
+          immigration_law_experience: immLawExp,
+        });
+      }
+
+      const rolesArr: ProfileRole[] = [...selectedRoles].map(r => ({
+        user_id: userId,
+        role: r,
+      }));
+      profile.setRoles(rolesArr);
+    },
+    [userId, profile],
+  );
 
   // const resetPassword = () => {
   //   push('/reset-password');
@@ -212,24 +333,23 @@ export default function Settings() {
           <SettingsSection
             title="Basic Information"
             editable
-            onSave={nv => setBasicInformation(nv)}
+            onSave={handleUpdateBasicInformation}
             data={basicInformation}
           />
 
           <SettingsSection
             title="Availability"
             editable
-            onSave={nv => setAvailability(nv)}
+            onSave={handleUpdateAvailability}
             data={availability}
           />
 
           <SettingsSection
             title="Role-Specific"
             editable
-            onSave={nv => setRoles(nv)}
+            onSave={handleUpdateRoles}
             data={roles}
             subsections={attorneySettings ? [attorneySettings] : []}
-            onSubSectionSave={([nv]) => setAttorneySettings(nv)}
           />
 
           <Button

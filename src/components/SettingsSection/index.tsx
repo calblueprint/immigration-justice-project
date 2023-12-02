@@ -15,8 +15,10 @@ interface SettingsSectionProps {
   data: SettingsSectionData;
   subsections?: SubSectionData[];
   editable?: boolean;
-  onSave?: (newValue: Array<SectionData | SectionData[]>) => void;
-  onSubSectionSave?: (newSubs: SubSectionData[]) => void;
+  onSave?: (
+    newData: Array<SectionData | SectionData[]>,
+    newSubs: SubSectionData[],
+  ) => void;
 }
 
 // helpers
@@ -59,7 +61,6 @@ export default function SettingsSection({
   editable,
   subsections,
   onSave,
-  onSubSectionSave,
 }: SettingsSectionProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [storedData, setStoredData] = useState<SettingsSectionData>([...data]);
@@ -78,7 +79,7 @@ export default function SettingsSection({
   const subVisible = useCallback(
     (sub: SubSectionData) =>
       storedData
-        .flatMap(d => d)
+        .flat()
         .find(d =>
           d.label === sub.linkLabel && d.value instanceof Set
             ? d.value.has(sub.linkValue)
@@ -105,14 +106,13 @@ export default function SettingsSection({
     });
 
     if (!hasError) {
-      onSave?.(storedData);
-      onSubSectionSave?.(storedSubsections);
+      onSave?.(storedData, storedSubsections);
       setIsEditing(false);
     } else {
       setStoredData(sectionCopy);
       setStoredSusbections(subc);
     }
-  }, [onSave, storedData, onSubSectionSave, storedSubsections, subVisible]);
+  }, [onSave, storedData, storedSubsections, subVisible]);
 
   return (
     <Section>
