@@ -14,12 +14,6 @@ const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
   ['LOW', 'One or no case of immigration law experience'],
 ]);
 
-// const ExperienceTypes = new Set([
-//   'Multiple cases of immigration law experience',
-//   'Few cases of immigration law experience',
-//   'One or no case of immigration law experience',
-// ]);
-
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [barNum, setBarNum] = useState('');
@@ -38,7 +32,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (barNum !== '' && experience !== null && registered !== '') {
+    if (validBarNum() && experience !== null && registered !== '') {
       // update profile
       const partialProfile: Partial<Profile> = {
         bar_number: barNum,
@@ -47,9 +41,7 @@ export default function Page() {
       };
       onboarding?.updateProfile(partialProfile);
       // enable continue
-      if (validBarNum()) {
-        onboarding?.setCanContinue(true);
-      }
+      onboarding?.setCanContinue(true);
     } else {
       onboarding?.setCanContinue(false);
     }
