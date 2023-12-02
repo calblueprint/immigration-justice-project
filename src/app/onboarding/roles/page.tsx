@@ -48,7 +48,7 @@ export default function Page() {
       <InputDropdown
         label="What role(s) would you like to hold?"
         multi
-        defaultValue={onboarding?.roles as Set<string>}
+        defaultValue={onboarding?.roles}
         onChange={v => setRoles(v as Set<RoleEnum>)}
         options={roleOptions}
       />
