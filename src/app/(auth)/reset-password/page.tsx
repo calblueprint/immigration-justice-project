@@ -15,6 +15,7 @@ export default function ResetPassword() {
   const [canReset, setCanReset] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
+
   useEffect(() => {
     supabase.auth.onAuthStateChange(async event => {
       if (event === 'PASSWORD_RECOVERY') {
