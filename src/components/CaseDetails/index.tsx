@@ -8,7 +8,7 @@ import {
   parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
-import { H2, P } from '@/styles/text';
+import { H2, P, StrongP } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
 import InterestForm from '../InterestForm';
 import {
@@ -17,9 +17,7 @@ import {
   InfoContainer,
   Line,
   FieldContainer,
-  InnerInfoContainer,
-  FieldRow,
-  StrongP,
+  InnerFieldContainer,
 } from './styles';
 
 const renderField = (label: string, value: string | boolean) => (
@@ -34,7 +32,7 @@ const caseFields = [
   {
     label: 'Needs',
     value: (data: CaseListing) =>
-      parseRolesNeeded(data.needs_attorney, data.needs_interpreter, false),
+      parseRolesNeeded(false, data.needs_attorney, data.needs_interpreter),
   },
   {
     label: 'Adjudicating Agency',
@@ -91,23 +89,11 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
       <CaseInterestContainer>
         <InfoContainer>
           <H2>{caseData.title || 'Migrant seeking representation'}</H2>
-          <InnerInfoContainer>
-            <FieldRow>
-              {caseFields.slice(0, 4).map(({ label, value }) => (
-                <div key={label}>{renderField(label, value(caseData))}</div>
-              ))}
-            </FieldRow>
-            <FieldRow>
-              {caseFields.slice(4, 8).map(({ label, value }) => (
-                <div key={label}>{renderField(label, value(caseData))}</div>
-              ))}
-            </FieldRow>
-            <FieldRow>
-              {caseFields.slice(8, 12).map(({ label, value }) => (
-                <div key={label}>{renderField(label, value(caseData))}</div>
-              ))}
-            </FieldRow>
-          </InnerInfoContainer>
+          <InnerFieldContainer>
+            {caseFields.map(({ label, value }) => (
+              <div key={label}>{renderField(label, value(caseData))}</div>
+            ))}
+          </InnerFieldContainer>
           <P>{caseData.summary || 'No summary Found'}</P>
         </InfoContainer>
         <Line />

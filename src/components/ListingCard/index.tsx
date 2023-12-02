@@ -26,9 +26,9 @@ export default function ListingCard({
 
     tags.push(
       parseRolesNeeded(
+        true,
         caseData.needs_attorney,
         caseData.needs_interpreter,
-        true,
       ),
     );
 

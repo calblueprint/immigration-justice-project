@@ -37,19 +37,14 @@ export const InfoContainer = styled.div`
 
 export const InnerInfoContainer = styled.div`
   display: grid;
-  row-gap: 1.25rem;
   grid-template-rows: 1fr 1fr 1fr;
 `;
 
-export const FieldRow = styled.div`
-  column-gap: 1.3rem;
+export const InnerFieldContainer = styled.div`
+  gap: 1.25rem;
   justify-content: space-between;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-`;
-
-export const StrongP = styled(P)`
-  font-weight: 700;
 `;
 
 export const Line = styled.hr`
