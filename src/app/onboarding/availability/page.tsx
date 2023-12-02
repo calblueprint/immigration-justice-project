@@ -42,25 +42,26 @@ export default function Page() {
   // };
 
   useEffect(() => {
-    // update profile
-    const partialProfile: Partial<Profile> = {
-      hours_per_month: +hours,
-      start_date: startDate,
-      availability_description: periods,
-    };
-    onboarding?.updateProfile(partialProfile);
-    // enable continue
     if (
       hours !== '' &&
       startDate !== '' &&
       isValidDate(startDate) &&
       /^\d+$/.test(hours)
     ) {
+      // update profile
+      const partialProfile: Partial<Profile> = {
+        hours_per_month: +hours,
+        start_date: startDate,
+        availability_description: periods,
+      };
+      onboarding?.updateProfile(partialProfile);
+      // enable continue
       onboarding?.setCanContinue(true);
     } else {
       onboarding?.setCanContinue(false);
     }
-  }, [hours, startDate, periods, onboarding]);
+  }, [hours, startDate, periods]);
+  // onboarding is causing too many reloads...
 
   return (
     <>
