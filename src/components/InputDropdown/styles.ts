@@ -52,17 +52,23 @@ export const DropdownStyles = (
     ...baseStyles,
     padding: '0.3125rem 0',
   }),
+  indicatorSeparator: (baseStyles, state) => ({
+    ...baseStyles,
+    visibility: state.isDisabled ? 'hidden' : 'visible',
+    background: COLORS.greyLight,
+    height: 'calc(100% - 0.5rem)',
+    margin: 'auto 0.3125rem',
+  }),
   dropdownIndicator: (baseStyles, state) => ({
     ...baseStyles,
     transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : '',
     transition: '200ms ease-in-out',
     color: COLORS.greyDarker,
   }),
-  clearIndicator: (baseStyles, state) => ({
+  clearIndicator: baseStyles => ({
     ...baseStyles,
     cursor: 'default',
-    display: multi || state.selectProps.required ? 'none' : 'flex',
-    color: COLORS.greyLight,
+    color: COLORS.greyMid,
     ':hover': {
       color: COLORS.greyDark,
     },
@@ -96,7 +102,7 @@ export const DropdownStyles = (
     cursor: 'text',
     color: COLORS.greyDarker,
     minHeight: '2.9375rem',
-    padding: '0.375rem 1.25rem',
+    padding: '0.375rem 0.625rem',
     borderRadius: '0.313rem',
     borderWidth: '2px',
     borderStyle: 'solid',

@@ -4,6 +4,7 @@ import { useCallback, useId, useMemo, useRef } from 'react';
 import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
 import {
   GroupBase,
+  InputActionMeta,
   MultiValue,
   SelectInstance,
   SingleValue,
@@ -129,10 +130,15 @@ export default function BigDataDropdown({
     [optionsArray, pageSize],
   );
 
-  const handleInputChange = useCallback(() => {
-    if (ref.current && ref.current.menuListRef)
-      ref.current.menuListRef.scrollTop = 0;
-  }, [ref]);
+  const handleInputChange = useCallback(
+    (nv: string, meta: InputActionMeta) => {
+      if (meta.action !== 'input-change') return;
+
+      if (ref.current && ref.current.menuListRef)
+        ref.current.menuListRef.scrollTop = 0;
+    },
+    [ref],
+  );
 
   return (
     <DropdownWrapper>

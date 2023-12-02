@@ -29,16 +29,19 @@ export default function Settings() {
   const { push } = useRouter();
   const profile = useContext(ProfileContext);
 
-  useEffect(() => {
-    if (!profile || !profile.profileData) {
-      push('/cases');
-    }
-  }, [profile, push]);
-
   const userEmail = useMemo(() => profile?.userEmail, [profile]);
 
   const [basicInformation, setBasicInformation] = useState<SettingsSectionData>(
-    [
+    [],
+  );
+  const [availability, setAvailability] = useState<SettingsSectionData>([]);
+  const [roles, setRoles] = useState<SettingsSectionData>([]);
+  const [attorneySettings, setAttorneySettings] = useState<SubSectionData>();
+
+  useEffect(() => {
+    if (!profile?.profileData) return;
+
+    setBasicInformation([
       [
         {
           type: 'text',
@@ -82,93 +85,93 @@ export default function Settings() {
         validate: (v: Set<string>) =>
           v.size > 0 ? '' : 'Must select at least one language',
       },
-    ],
-  );
+    ]);
 
-  const [availability, setAvailability] = useState<SettingsSectionData>([
-    {
-      type: 'text', // should make number input later
-      label: 'Time Commitment',
-      value: profile?.profileData?.hours_per_month?.toString() || '',
-      placeholder: '... hours/month',
-      editorLabel: 'Time Commitment (hours/month)',
-      format: (v: string) => `${v} hours/month`,
-      validate: (v: string) => {
-        if (Number.isNaN(v)) return 'Time commitment must be a number';
-        return v ? '' : 'Must include time commitment';
-      },
-    },
-    {
-      type: 'date',
-      label: 'Earliest Available Date',
-      value: profile?.profileData?.start_date
-        ? parseDataAlt(timestampStringToDate(profile.profileData.start_date))
-        : '',
-      editorLabel: 'Earliest Available Date (MM/DD/YYYY)',
-      format: (v: string) => {
-        const [year, month, day] = v.split('-');
-        return `${month}/${day}/${year}`;
-      },
-      validate: (v: string) =>
-        v ? '' : 'Must include earliest available date',
-    },
-    {
-      type: 'textarea',
-      label: 'Availability Constraints',
-      value: profile?.profileData?.availability_description || '',
-      placeholder: "I won't be available from...",
-      editorLabel: 'Availability Constraints (Optional)',
-      format: (v: string) => v || 'N/A',
-    },
-  ]);
-
-  const [roles, setRoles] = useState<SettingsSectionData>([
-    {
-      type: 'dropdown',
-      options: rolesOptions,
-      multi: true,
-      label: 'Selected Roles',
-      value: new Set(profile?.roles.map(r => r.role)),
-      format: (v: Set<string>) =>
-        Array.from(v)
-          .map(r => r.charAt(0) + r.toLowerCase().slice(1))
-          .join(', '),
-      validate: (v: Set<string>) =>
-        v.size > 0 ? '' : 'Must select at least one role',
-    },
-  ]);
-
-  const [attorneySettings, setAttorneySettings] = useState<SubSectionData>({
-    title: 'Attorney-Specific',
-    linkLabel: 'Selected Roles',
-    linkValue: 'ATTORNEY',
-    data: [
+    setAvailability([
       {
-        type: 'text',
-        label: 'Attorney Bar Number',
-        value: profile?.profileData?.bar_number || '',
-        format: (v: string) => `#${v}`,
-        validate: (v: string) =>
-          v ? '' : 'For attorneys, must include attorney bar number',
+        type: 'text', // should make number input later
+        label: 'Time Commitment',
+        value: profile?.profileData?.hours_per_month?.toString() || '',
+        placeholder: '... hours/month',
+        editorLabel: 'Time Commitment (hours/month)',
+        format: (v: string) => `${v} hours/month`,
+        validate: (v: string) => {
+          if (Number.isNaN(v)) return 'Time commitment must be a number';
+          return v ? '' : 'Must include time commitment';
+        },
       },
+      {
+        type: 'date',
+        label: 'Earliest Available Date',
+        value: profile?.profileData?.start_date
+          ? parseDataAlt(timestampStringToDate(profile.profileData.start_date))
+          : '',
+        editorLabel: 'Earliest Available Date (MM/DD/YYYY)',
+        format: (v: string) => {
+          const [year, month, day] = v.split('-');
+          return `${month}/${day}/${year}`;
+        },
+        validate: (v: string) =>
+          v ? '' : 'Must include earliest available date',
+      },
+      {
+        type: 'textarea',
+        label: 'Availability Constraints',
+        value: profile?.profileData?.availability_description || '',
+        placeholder: "I won't be available from...",
+        editorLabel: 'Availability Constraints (Optional)',
+        format: (v: string) => v || 'N/A',
+      },
+    ]);
+
+    setRoles([
       {
         type: 'dropdown',
-        options: legalExperienceOptions,
-        label: 'Immigration Law Experience',
-        value: profile?.profileData?.immigration_law_experience || '',
-        format: (v: string | null) => {
-          if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
-            return (
-              legalExperienceOptions.get(v as ImmigrationLawExperienceEnum) ||
-              ''
-            );
-          return '';
-        },
-        validate: (v: string | null) =>
-          v ? '' : 'For attorneys, must include immigration law experience',
+        options: rolesOptions,
+        multi: true,
+        label: 'Selected Roles',
+        value: new Set(profile?.roles.map(r => r.role)),
+        format: (v: Set<string>) =>
+          Array.from(v)
+            .map(r => r.charAt(0) + r.toLowerCase().slice(1))
+            .join(', '),
+        validate: (v: Set<string>) =>
+          v.size > 0 ? '' : 'Must select at least one role',
       },
-    ],
-  });
+    ]);
+
+    setAttorneySettings({
+      title: 'Attorney-Specific',
+      linkLabel: 'Selected Roles',
+      linkValue: 'ATTORNEY',
+      data: [
+        {
+          type: 'text',
+          label: 'Attorney Bar Number',
+          value: profile?.profileData?.bar_number || '',
+          format: (v: string) => `#${v}`,
+          validate: (v: string) =>
+            v ? '' : 'For attorneys, must include attorney bar number',
+        },
+        {
+          type: 'dropdown',
+          options: legalExperienceOptions,
+          label: 'Immigration Law Experience',
+          value: profile?.profileData?.immigration_law_experience || '',
+          format: (v: string | null) => {
+            if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
+              return (
+                legalExperienceOptions.get(v as ImmigrationLawExperienceEnum) ||
+                ''
+              );
+            return '';
+          },
+          validate: (v: string | null) =>
+            v ? '' : 'For attorneys, must include immigration law experience',
+        },
+      ],
+    });
+  }, [profile]);
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -185,53 +188,55 @@ export default function Settings() {
   return (
     <PageContainer>
       <BackLink href="/cases">Back</BackLink>
-      <ContentContainer>
-        <H1>Your Profile</H1>
+      {profile?.profileData && (
+        <ContentContainer>
+          <H1>Your Profile</H1>
 
-        <SettingsSection
-          title="Account"
-          data={[
-            { type: 'text', label: 'Email', value: userEmail || '' },
-            {
-              type: 'text',
-              label: 'Password',
-              value: 'somerandomkey',
-              format: v => '*'.repeat(v.toString().length),
-            },
-          ]}
-        />
+          <SettingsSection
+            title="Account"
+            data={[
+              { type: 'text', label: 'Email', value: userEmail || '' },
+              {
+                type: 'text',
+                label: 'Password',
+                value: 'somerandomkey',
+                format: v => '*'.repeat(v.toString().length),
+              },
+            ]}
+          />
 
-        <SettingsSection
-          title="Basic Information"
-          editable
-          onChange={nv => setBasicInformation(nv)}
-          data={basicInformation}
-        />
+          <SettingsSection
+            title="Basic Information"
+            editable
+            onChange={nv => setBasicInformation(nv)}
+            data={basicInformation}
+          />
 
-        <SettingsSection
-          title="Availability"
-          editable
-          onChange={nv => setAvailability(nv)}
-          data={availability}
-        />
+          <SettingsSection
+            title="Availability"
+            editable
+            onChange={nv => setAvailability(nv)}
+            data={availability}
+          />
 
-        <SettingsSection
-          title="Role-Specific"
-          editable
-          onChange={nv => setRoles(nv)}
-          data={roles}
-          subsections={[attorneySettings]}
-          onSubSectionChange={([nv]) => setAttorneySettings(nv)}
-        />
+          <SettingsSection
+            title="Role-Specific"
+            editable
+            onChange={nv => setRoles(nv)}
+            data={roles}
+            subsections={attorneySettings ? [attorneySettings] : []}
+            onSubSectionChange={([nv]) => setAttorneySettings(nv)}
+          />
 
-        <Button
-          $primaryColor={COLORS.redMid}
-          $secondaryColor={COLORS.redDark}
-          onClick={handleSignOut}
-        >
-          <H4 $color="white">Sign Out</H4>
-        </Button>
-      </ContentContainer>
+          <Button
+            $primaryColor={COLORS.redMid}
+            $secondaryColor={COLORS.redDark}
+            onClick={handleSignOut}
+          >
+            <H4 $color="white">Sign Out</H4>
+          </Button>
+        </ContentContainer>
+      )}
     </PageContainer>
   );
 }

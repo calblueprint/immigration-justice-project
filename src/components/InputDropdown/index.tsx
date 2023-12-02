@@ -3,6 +3,7 @@
 import { useCallback, useId, useMemo, useRef } from 'react';
 import Select, {
   GroupBase,
+  InputActionMeta,
   MenuProps,
   MultiValue,
   SelectInstance,
@@ -116,10 +117,15 @@ export default function InputDropdown({
     [multi, onChange],
   );
 
-  const handleInputChange = useCallback(() => {
-    if (ref.current && ref.current.menuListRef)
-      ref.current.menuListRef.scrollTop = 0;
-  }, [ref]);
+  const handleInputChange = useCallback(
+    (nv: string, meta: InputActionMeta) => {
+      if (meta.action !== 'input-change') return;
+
+      if (ref.current && ref.current.menuListRef)
+        ref.current.menuListRef.scrollTop = 0;
+    },
+    [ref],
+  );
 
   return (
     <DropdownWrapper>
