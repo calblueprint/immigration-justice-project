@@ -117,19 +117,11 @@ export default function Page() {
   }, []);
 
   const AuthButtonView = useMemo(() => {
-    if (profile && profile.userId)
-      return profile.profileData ? (
+    if (profile?.profileReady)
+      return (
         <ProfileButton href="/settings">
-          {profile.profileData.first_name}
+          {profile.profileData?.first_name || 'Profile'}
         </ProfileButton>
-      ) : (
-        <LinkButton
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          href="/onboarding/roles"
-        >
-          Go to Onboarding
-        </LinkButton>
       );
 
     return (

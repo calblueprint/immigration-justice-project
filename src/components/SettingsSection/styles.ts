@@ -22,7 +22,6 @@ export const EditButton = styled.button`
   width: 1.875rem;
   height: 1.875rem;
   background: none;
-  outline: none;
   border: none;
   cursor: pointer;
 
@@ -36,6 +35,7 @@ export const SectionRow = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  gap: 1.25rem;
 `;
 
 export const KeyValueBlurb = styled.div`
@@ -43,4 +43,10 @@ export const KeyValueBlurb = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
 `;

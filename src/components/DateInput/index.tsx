@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputLabel, ErrorText, InputDiv, InputDate } from './styles';
 
 type DateInputProps = {
@@ -6,7 +6,9 @@ type DateInputProps = {
   error?: string;
   name?: string;
   value: string;
+  id?: string;
   setValue: Dispatch<SetStateAction<string>>;
+  onChange?: (s: string) => void;
 };
 
 export default function DateInput({
@@ -15,11 +17,24 @@ export default function DateInput({
   name,
   value,
   setValue,
+  id,
+  onChange,
 }: DateInputProps) {
+  const handleChange = useCallback(
+    (val: string) => {
+      setValue(val);
+      onChange?.(val);
+    },
+    [onChange, setValue],
+  );
+
   return (
     <InputDiv>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel as="label" htmlFor={id}>
+        {label}
+      </InputLabel>
       <InputDate
+        id={id}
         required
         type="date"
         $error={error}
@@ -27,7 +42,7 @@ export default function DateInput({
         name={name}
         value={value}
         min={new Date().toISOString().split('T')[0]}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => handleChange(e.target.value)}
       />
       {error !== '' && <ErrorText>{error}</ErrorText>}
     </InputDiv>

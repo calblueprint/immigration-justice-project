@@ -4,6 +4,7 @@ import { useCallback, useId, useMemo, useRef } from 'react';
 import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
 import {
   GroupBase,
+  InputActionMeta,
   MultiValue,
   SelectInstance,
   SingleValue,
@@ -26,11 +27,13 @@ interface CommonProps {
 
 interface MultiSelectProps extends CommonProps {
   multi: true;
+  defaultValue?: Set<string>;
   onChange?: (value: Set<string>) => void;
 }
 
 interface SingleSelectProps extends CommonProps {
   multi?: false;
+  defaultValue?: string;
   onChange?: (value: string | null) => void;
 }
 
@@ -46,6 +49,7 @@ export default function BigDataDropdown({
   label,
   placeholder = '',
   error = '',
+  defaultValue,
   disabled,
   required,
   multi,
@@ -56,6 +60,28 @@ export default function BigDataDropdown({
     useRef<SelectInstance<DropdownOption, false, GroupBase<DropdownOption>>>(
       null,
     );
+
+  const defaultDropdownVal = useMemo(() => {
+    if (!defaultValue) return undefined;
+
+    if (defaultValue instanceof Set)
+      return Array.from(defaultValue).map(dv => {
+        const v = options instanceof Map ? options.get(dv) : dv;
+        if (!v) throw new Error(`Value ${dv} not found in options`);
+        return {
+          label: v,
+          value: dv,
+        };
+      });
+
+    const v = options instanceof Map ? options.get(defaultValue) : defaultValue;
+    if (!v) throw new Error(`Value ${v} not found in options`);
+
+    return {
+      label: v,
+      value: defaultValue,
+    };
+  }, [defaultValue, options]);
 
   const optionsArray = useMemo(
     () =>
@@ -104,10 +130,15 @@ export default function BigDataDropdown({
     [optionsArray, pageSize],
   );
 
-  const handleInputChange = useCallback(() => {
-    if (ref.current && ref.current.menuListRef)
-      ref.current.menuListRef.scrollTop = 0;
-  }, [ref]);
+  const handleInputChange = useCallback(
+    (nv: string, meta: InputActionMeta) => {
+      if (meta.action !== 'input-change') return;
+
+      if (ref.current && ref.current.menuListRef)
+        ref.current.menuListRef.scrollTop = 0;
+    },
+    [ref],
+  );
 
   return (
     <DropdownWrapper>
@@ -120,6 +151,7 @@ export default function BigDataDropdown({
         hideSelectedOptions={false}
         tabSelectsValue={false}
         instanceId={useId()}
+        defaultValue={defaultDropdownVal}
         options={optionsArray}
         isMulti={multi}
         onChange={handleChange}

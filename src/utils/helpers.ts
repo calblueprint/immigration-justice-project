@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 // inspiration from https://stackoverflow.com/a/57941711/22063638
 // example timestamp format: 2024-01-18T11:22:40+00:00
 // WARNING: assumes +00:00 (which should be the case for timestamptz)
@@ -23,6 +22,12 @@ export const timestampStringToDate = (ts: string): Date => {
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
+// parse js date to yyyy-mm-dd
+export const parseDataAlt = (d: Date): string =>
+  `${d.getFullYear().toString().padStart(4, '0')}-${(d.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
+
 // parse adjudicating agency to normal words
 export const parseAgency = (agency: string): string =>
   agency.length <= 5
@@ -31,6 +36,7 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+
 /**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise
