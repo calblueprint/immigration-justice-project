@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H1, P } from '@/styles/text';
+import { H1 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 
 export const CaseDisplay = styled.aside`

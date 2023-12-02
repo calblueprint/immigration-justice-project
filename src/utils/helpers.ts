@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { ImmigrationLawExperienceEnum } from "@/types/schema";
+import { ImmigrationLawExperienceEnum } from '@/types/schema';
 /**
  * inspiration from https://stackoverflow.com/a/57941711/22063638
  * example timestamp format: 2024-01-18T11:22:40+00:00
@@ -97,7 +97,7 @@ export const parseRolesNeeded = (
   interpreter?: boolean,
 ) => {
   if (interpreter && attorney) {
-    return card ?  'Interpreter & Attorney': 'Attorney, Interpreter';
+    return card ? 'Interpreter & Attorney' : 'Attorney, Interpreter';
   }
   return interpreter ? 'Interpreter' : 'Attorney';
 };
