@@ -1,22 +1,22 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { H2, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { SectionData, SettingsSectionData } from '@/types/settingsSection';
 import {
-  ButtonContainer,
-  EditButton,
-  Section,
-  SectionHeader,
-  SectionRow,
-} from './styles';
+  SectionData,
+  SettingsSectionData,
+  SubSectionData,
+} from '@/types/settingsSection';
+import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
 import Button from '../Button';
-import DataField from './DataField';
+import SectionPartial from './SectionPartial';
 
 interface SettingsSectionProps {
   title: string;
   data: SettingsSectionData;
+  subsections?: SubSectionData[];
   editable?: boolean;
-  onChange?: (newValue: Array<SectionData | SectionData[] | string>) => void;
+  onChange?: (newValue: Array<SectionData | SectionData[]>) => void;
+  onSubSectionChange?: (newSubs: SubSectionData[]) => void;
 }
 
 // helpers
@@ -29,99 +29,82 @@ const validateData = (v: SectionData) => {
   return errorMsg;
 };
 
+const validateSettingsSection = (data: SettingsSectionData) => {
+  let hasError = false;
+
+  // validate data
+  const copy = [...data].map(dataValue => {
+    if (dataValue instanceof Array) {
+      const copyArr = [...dataValue].map(v => {
+        const errorMsg = validateData(v);
+        if (errorMsg !== '') hasError = true;
+        return errorMsg ? { ...v, error: errorMsg } : v;
+      });
+
+      return copyArr;
+    }
+
+    const errorMsg = validateData(dataValue);
+    if (errorMsg !== '') hasError = true;
+    return errorMsg ? { ...dataValue, error: errorMsg } : dataValue;
+  });
+
+  return { hasError, copy };
+};
+
+// main component
 export default function SettingsSection({
   title,
   data,
   editable,
+  subsections,
   onChange,
+  onSubSectionChange,
 }: SettingsSectionProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [storedData, setStoredData] = useState<
-    Array<SectionData | SectionData[] | string>
-  >([...data]);
+  const [storedData, setStoredData] = useState<SettingsSectionData>([...data]);
+  const [storedSubsections, setStoredSusbections] = useState<SubSectionData[]>(
+    subsections ? [...subsections] : [],
+  );
 
-  const renderedData = useMemo(
-    () =>
-      storedData.map((dataValue, idx) => {
-        const handleDataChange = (nd: SectionData) => {
-          const copy = [...storedData];
-          copy[idx] = nd;
-          setStoredData(copy);
-        };
-
-        if (typeof dataValue === 'string')
-          return <H3 key={dataValue}>{dataValue}</H3>;
-
-        if (dataValue instanceof Array)
-          return (
-            <SectionRow key={`*${dataValue[0].label}`}>
-              {dataValue.map((v, i) => {
-                const handleSubFieldChange = (nd: SectionData) => {
-                  const copy = [...storedData];
-                  const d = copy[idx];
-                  if (d instanceof Array) {
-                    const copyd = [...d];
-                    copyd[i] = nd;
-                    copy[idx] = copyd;
-                    setStoredData(copy);
-                  }
-                };
-                return (
-                  <DataField
-                    key={v.label}
-                    data={v}
-                    editing={isEditing}
-                    onChange={handleSubFieldChange}
-                  />
-                );
-              })}
-            </SectionRow>
-          );
-
-        return (
-          <DataField
-            key={dataValue.label}
-            data={dataValue}
-            editing={isEditing}
-            onChange={(nd: SectionData) => handleDataChange(nd)}
-          />
-        );
-      }),
-    [storedData, isEditing],
+  const subVisible = useCallback(
+    (sub: SubSectionData) =>
+      storedData
+        .flatMap(d => d)
+        .find(d =>
+          d.label === sub.linkLabel && d.value instanceof Set
+            ? d.value.has(sub.linkValue)
+            : d.value === sub.linkValue,
+        ),
+    [storedData],
   );
 
   const handleSaveChanges = useCallback(() => {
     let hasError = false;
-    const copy = [...storedData];
 
     // validate data
-    copy.map(dataValue => {
-      if (typeof dataValue === 'string') return dataValue;
+    const { hasError: sectionErrored, copy: sectionCopy } =
+      validateSettingsSection(storedData);
+    if (sectionErrored) hasError = true;
 
-      if (dataValue instanceof Array) {
-        const copyArr = [...dataValue];
-
-        copyArr.map(v => {
-          const errorMsg = validateData(v);
-          hasError = errorMsg !== '';
-          return errorMsg ? { ...v, error: errorMsg } : v;
-        });
-
-        return copyArr;
-      }
-
-      const errorMsg = validateData(dataValue);
-      hasError = errorMsg !== '';
-      return errorMsg ? { ...dataValue, error: errorMsg } : dataValue;
+    // validate subsections
+    const subc = (storedSubsections ? [...storedSubsections] : []).map(sub => {
+      const { hasError: subErrored, copy: subCopy } = validateSettingsSection(
+        sub.data,
+      );
+      if (subErrored && subVisible(sub)) hasError = true;
+      return { ...sub, data: subCopy };
     });
 
     if (!hasError) {
       onChange?.(storedData);
+      onSubSectionChange?.(storedSubsections);
       setIsEditing(false);
     } else {
-      setStoredData(copy);
+      setStoredData(sectionCopy);
+      setStoredSusbections(subc);
     }
-  }, [onChange, storedData]);
+  }, [onChange, storedData, onSubSectionChange, storedSubsections, subVisible]);
 
   return (
     <Section>
@@ -131,13 +114,40 @@ export default function SettingsSection({
           <EditButton onClick={() => setIsEditing(true)} />
         )}
       </SectionHeader>
-      {renderedData}
+      <SectionPartial
+        data={storedData}
+        onChange={nd => setStoredData(nd)}
+        isEditing={isEditing}
+      />
+      {storedSubsections?.map((sub, idx) => {
+        const handleSubChange = (nd: SettingsSectionData) => {
+          const copy = [...storedSubsections];
+          copy[idx] = { ...sub, data: nd };
+          setStoredSusbections(copy);
+        };
+
+        return (
+          subVisible(sub) && (
+            <React.Fragment key={sub.title}>
+              <H3>{sub.title}</H3>
+              <SectionPartial
+                data={sub.data}
+                onChange={handleSubChange}
+                isEditing={isEditing}
+              />
+            </React.Fragment>
+          )
+        );
+      })}
       {isEditing && (
         <ButtonContainer>
           <Button
             $secondaryColor={COLORS.redMid}
             onClick={() => {
               setStoredData([...data]);
+              setStoredSusbections(
+                subsections ? [...subsections.map(d => ({ ...d }))] : [],
+              );
               setIsEditing(false);
             }}
           >

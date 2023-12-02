@@ -8,7 +8,7 @@ import Button from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { cities, languages } from '@/lib/bigData';
 import { ImmigrationLawExperienceEnum, RoleEnum } from '@/types/schema';
-import { SettingsSectionData } from '@/types/settingsSection';
+import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ContentContainer, PageContainer } from './styles';
 
@@ -47,6 +47,7 @@ export default function Settings() {
         options: cities,
         label: 'City',
         value: 'Berkeley',
+        validate: (v: string | null) => (v ? '' : 'Must include your city'),
       },
       {
         type: 'dropdown',
@@ -54,6 +55,8 @@ export default function Settings() {
         multi: true,
         label: 'Languages (speak and understand)',
         value: new Set(['English', 'Spanish']),
+        validate: (v: Set<string>) =>
+          v.size > 0 ? '' : 'Must select at least one language',
       },
       {
         type: 'dropdown',
@@ -61,6 +64,8 @@ export default function Settings() {
         multi: true,
         label: 'Languages (read and write)',
         value: new Set(['English', 'Spanish']),
+        validate: (v: Set<string>) =>
+          v.size > 0 ? '' : 'Must select at least one language',
       },
     ],
   );
@@ -73,6 +78,10 @@ export default function Settings() {
       placeholder: '... hours/month',
       editorLabel: 'Time Commitment (hours/month)',
       format: (v: string) => `${v} hours/month`,
+      validate: (v: string) => {
+        if (Number.isNaN(v)) return 'Time commitment must be a number';
+        return v ? '' : 'Must include time commitment';
+      },
     },
     {
       type: 'date',
@@ -83,6 +92,8 @@ export default function Settings() {
         const [year, month, day] = v.split('-');
         return `${month}/${day}/${year}`;
       },
+      validate: (v: string) =>
+        v ? '' : 'Must include earliest available date',
     },
     {
       type: 'textarea',
@@ -104,28 +115,42 @@ export default function Settings() {
         Array.from(v)
           .map(r => r.charAt(0) + r.toLowerCase().slice(1))
           .join(', '),
-    },
-    'Attorney-Specific',
-    {
-      type: 'text',
-      label: 'Attorney Bar Number',
-      value: '123456',
-      format: (v: string) => `#${v}`,
-    },
-    {
-      type: 'dropdown',
-      options: legalExperienceOptions,
-      label: 'Immigration Law Experience',
-      value: 'HIGH',
-      format: (v: string | null) => {
-        if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
-          return (
-            legalExperienceOptions.get(v as ImmigrationLawExperienceEnum) || ''
-          );
-        return '';
-      },
+      validate: (v: Set<string>) =>
+        v.size > 0 ? '' : 'Must select at least one role',
     },
   ]);
+
+  const [attorneySettings, setAttorneySettings] = useState<SubSectionData>({
+    title: 'Attorney-Specific',
+    linkLabel: 'Selected Roles',
+    linkValue: 'ATTORNEY',
+    data: [
+      {
+        type: 'text',
+        label: 'Attorney Bar Number',
+        value: '123456',
+        format: (v: string) => `#${v}`,
+        validate: (v: string) =>
+          v ? '' : 'For attorneys, must include attorney bar number',
+      },
+      {
+        type: 'dropdown',
+        options: legalExperienceOptions,
+        label: 'Immigration Law Experience',
+        value: 'HIGH',
+        format: (v: string | null) => {
+          if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
+            return (
+              legalExperienceOptions.get(v as ImmigrationLawExperienceEnum) ||
+              ''
+            );
+          return '';
+        },
+        validate: (v: string | null) =>
+          v ? '' : 'For attorneys, must include immigration law experience',
+      },
+    ],
+  });
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -177,6 +202,8 @@ export default function Settings() {
           editable
           onChange={nv => setRoles(nv)}
           data={roles}
+          subsections={[attorneySettings]}
+          onSubSectionChange={([nv]) => setAttorneySettings(nv)}
         />
 
         <Button

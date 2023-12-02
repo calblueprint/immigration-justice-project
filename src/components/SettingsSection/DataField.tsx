@@ -80,7 +80,11 @@ export default function DataField({
       return (
         <MiscEditor
           data={data}
-          onChange={(nv: string) => onChange({ ...data, value: nv })}
+          onChange={(nv: string) => {
+            if (!data.validate?.(nv))
+              onChange({ ...data, error: '', value: nv });
+            else onChange({ ...data, value: nv });
+          }}
         />
       );
 
@@ -93,7 +97,11 @@ export default function DataField({
           options={data.options}
           pageSize={data.pageSize}
           defaultValue={data.value}
-          onChange={nv => onChange({ ...data, value: nv })}
+          onChange={nv => {
+            if (!data.validate?.(nv))
+              onChange({ ...data, error: '', value: nv });
+            else onChange({ ...data, value: nv });
+          }}
           multi
         />
       ) : (
@@ -101,7 +109,11 @@ export default function DataField({
           label={editorLabel}
           options={data.options}
           defaultValue={data.value}
-          onChange={nv => onChange({ ...data, value: nv })}
+          onChange={nv => {
+            if (!data.validate?.(nv))
+              onChange({ ...data, error: '', value: nv });
+            else onChange({ ...data, value: nv });
+          }}
           multi
         />
       );
@@ -111,14 +123,20 @@ export default function DataField({
         options={data.options}
         pageSize={data.pageSize}
         defaultValue={data.value || undefined}
-        onChange={nv => onChange({ ...data, value: nv })}
+        onChange={nv => {
+          if (!data.validate?.(nv)) onChange({ ...data, error: '', value: nv });
+          else onChange({ ...data, value: nv });
+        }}
       />
     ) : (
       <InputDropdown
         label={editorLabel}
         options={data.options}
         defaultValue={data.value || undefined}
-        onChange={nv => onChange({ ...data, value: nv })}
+        onChange={nv => {
+          if (!data.validate?.(nv)) onChange({ ...data, error: '', value: nv });
+          else onChange({ ...data, value: nv });
+        }}
       />
     );
   }, [data, onChange]);

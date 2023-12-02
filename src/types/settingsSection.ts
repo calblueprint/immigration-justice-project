@@ -1,4 +1,4 @@
-export interface CommonSectionData {
+interface CommonSectionData {
   label: string;
   placeholder?: string;
   error?: string;
@@ -15,20 +15,20 @@ export interface MiscSectionData extends CommonSectionData {
 // specify multi-select vs single-select via type of value
 // for empty multi, pass in an empty Set
 // for empty single, pass in null or empty string
-export interface CommonDropdownSectionData extends CommonSectionData {
+interface CommonDropdownSectionData extends CommonSectionData {
   type: 'dropdown';
   options: Set<string> | Map<string, string>;
   pageSize?: number;
 }
 
-export interface SingleDropdownSectionData extends CommonDropdownSectionData {
+interface SingleDropdownSectionData extends CommonDropdownSectionData {
   multi?: false;
   value: string | null;
   format?: (s: string | null) => string;
   validate?: (s: string | null) => string;
 }
 
-export interface MultiDropdownSectionData extends CommonDropdownSectionData {
+interface MultiDropdownSectionData extends CommonDropdownSectionData {
   multi: true;
   value: Set<string>;
   format?: (s: Set<string>) => string;
@@ -40,8 +40,11 @@ export type SectionData =
   | MultiDropdownSectionData
   | MiscSectionData;
 
-export type SettingsSectionData = readonly (
-  | SectionData
-  | SectionData[]
-  | string
-)[];
+export type SettingsSectionData = Array<SectionData | SectionData[]>;
+
+export interface SubSectionData {
+  title: string;
+  linkLabel: string;
+  linkValue: string;
+  data: SettingsSectionData;
+}
