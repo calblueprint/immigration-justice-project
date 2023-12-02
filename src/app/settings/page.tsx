@@ -40,6 +40,8 @@ const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
   ['LOW', 'One or no case of immigration law experience'],
 ]);
 
+const eoirRegisteredOptions = ['Yes', 'No'];
+
 export default function Settings() {
   const { push } = useRouter();
   const profile = useContext(ProfileContext);
@@ -185,6 +187,12 @@ export default function Settings() {
           validate: (v: string | null) =>
             v ? '' : 'For attorneys, must include immigration law experience',
         },
+        {
+          type: 'radio',
+          options: eoirRegisteredOptions,
+          label: 'EOIR Registered',
+          value: profile?.profileData?.eoir_registered ? 'Yes' : 'No',
+        },
       ],
     });
   }, [profile]);
@@ -286,7 +294,11 @@ export default function Settings() {
         const immLawExp = attorneySections.find(
           sec => sec.label === 'Immigration Law Experience',
         )?.value as ImmigrationLawExperienceEnum;
-        if (!barNumber || !immLawExp)
+        const eoirRegistered = attorneySections.find(
+          sec => sec.label === 'EOIR Registered',
+        )?.value as string;
+
+        if (!barNumber || !immLawExp || !eoirRegistered)
           throw new Error(
             'Attorney must have bar number and immigration law experience',
           );
@@ -294,6 +306,7 @@ export default function Settings() {
         profile.updateProfile({
           bar_number: barNumber,
           immigration_law_experience: immLawExp,
+          eoir_registered: eoirRegistered === 'Yes',
         });
       }
 

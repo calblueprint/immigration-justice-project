@@ -12,6 +12,14 @@ export interface MiscSectionData extends CommonSectionData {
   validate?: (v: string) => string;
 }
 
+export interface RadioSectionData extends CommonSectionData {
+  type: 'radio';
+  value: string;
+  options: string[];
+  format?: (v: string) => string;
+  validate?: (v: string) => string;
+}
+
 // specify multi-select vs single-select via type of value
 // for empty multi, pass in an empty Set
 // for empty single, pass in null or empty string
@@ -38,7 +46,8 @@ interface MultiDropdownSectionData extends CommonDropdownSectionData {
 export type SectionData =
   | SingleDropdownSectionData
   | MultiDropdownSectionData
-  | MiscSectionData;
+  | MiscSectionData
+  | RadioSectionData;
 
 export type SettingsSectionData = Array<SectionData | SectionData[]>;
 

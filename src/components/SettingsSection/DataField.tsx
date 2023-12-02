@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react';
-import { MiscSectionData, SectionData } from '@/types/settingsSection';
+import {
+  MiscSectionData,
+  RadioSectionData,
+  SectionData,
+} from '@/types/settingsSection';
 import { H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import DateInput from '../DateInput';
@@ -8,6 +12,7 @@ import InputDropdown from '../InputDropdown';
 import TextInput from '../TextInput';
 import { KeyValueBlurb } from './styles';
 import TextAreaInput from '../TextAreaInput';
+import RadioGroup from '../RadioGroup';
 
 // config
 const DROPDOWN_LIMIT = 20;
@@ -17,7 +22,7 @@ function MiscEditor({
   data,
   onChange,
 }: {
-  data: MiscSectionData;
+  data: MiscSectionData | RadioSectionData;
   onChange: (nv: string) => void;
 }) {
   const [val, setVal] = useState(data.value);
@@ -35,6 +40,19 @@ function MiscEditor({
         placeholder={data.placeholder}
         onChange={onChange}
         errorText={data.error}
+      />
+    );
+
+  if (data.type === 'radio')
+    return (
+      <RadioGroup
+        label={editorLabel}
+        name={editorLabel}
+        options={data.options}
+        value={val}
+        setValue={setVal}
+        onChange={onChange}
+        error={data.error}
       />
     );
 
