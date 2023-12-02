@@ -22,11 +22,7 @@ import {
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
-import {
-  isValidDate,
-  parseDataAlt,
-  timestampStringToDate,
-} from '@/utils/helpers';
+import { isValidDate } from '@/utils/helpers';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -120,9 +116,7 @@ export default function Settings() {
       {
         type: 'date',
         label: 'Earliest Available Date',
-        value: profile?.profileData?.start_date
-          ? parseDataAlt(timestampStringToDate(profile.profileData.start_date))
-          : '',
+        value: profile?.profileData?.start_date || '',
         editorLabel: 'Earliest Available Date (MM/DD/YYYY)',
         format: (v: string) => {
           const [year, month, day] = v.split('-');
