@@ -164,7 +164,9 @@ export default function Settings() {
           value: profile?.profileData?.bar_number || '',
           format: (v: string) => `#${v}`,
           validate: (v: string) =>
-            v ? '' : 'For attorneys, must include attorney bar number',
+            Number.isNaN(parseInt(v, 10))
+              ? 'For attorneys, must include attorney bar number'
+              : '',
         },
         {
           type: 'single-select',
@@ -305,7 +307,7 @@ export default function Settings() {
           );
 
         profile.updateProfile({
-          bar_number: barNumber,
+          bar_number: parseInt(barNumber, 10).toString(),
           immigration_law_experience: immLawExp,
           eoir_registered: eoirRegistered === 'Yes',
         });
