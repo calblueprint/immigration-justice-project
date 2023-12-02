@@ -6,6 +6,7 @@ type DateInputProps = {
   error?: string;
   name?: string;
   value: string;
+  id?: string;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
 };
@@ -16,6 +17,7 @@ export default function DateInput({
   name,
   value,
   setValue,
+  id,
   onChange,
 }: DateInputProps) {
   const handleChange = useCallback(
@@ -28,8 +30,11 @@ export default function DateInput({
 
   return (
     <InputDiv>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel as="label" htmlFor={id}>
+        {label}
+      </InputLabel>
       <InputDate
+        id={id}
         required
         type="date"
         $error={error}

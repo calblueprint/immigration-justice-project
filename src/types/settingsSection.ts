@@ -3,6 +3,7 @@ interface CommonSectionData {
   placeholder?: string;
   error?: string;
   editorLabel?: string;
+  emptyText?: string;
 }
 
 export interface MiscSectionData extends CommonSectionData {

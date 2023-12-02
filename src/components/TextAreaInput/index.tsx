@@ -30,7 +30,9 @@ export default function TextAreaInput({
 
   return (
     <TextAreaContainer>
-      <H4 $color={COLORS.greyDark}>{label}</H4>
+      <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
+        {label}
+      </H4>
       <TextArea
         id={id}
         placeholder={placeholder}

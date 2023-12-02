@@ -34,6 +34,7 @@ function MiscEditor({
   if (data.type === 'text')
     return (
       <TextInput
+        id={data.label}
         label={editorLabel}
         value={val}
         setValue={setVal}
@@ -58,6 +59,7 @@ function MiscEditor({
 
   return data.type === 'date' ? (
     <DateInput
+      id={data.label}
       label={editorLabel}
       value={val}
       setValue={setVal}
@@ -66,6 +68,7 @@ function MiscEditor({
     />
   ) : (
     <TextAreaInput
+      id={data.label}
       label={editorLabel}
       value={val}
       setValue={setVal}
@@ -174,7 +177,13 @@ export default function DataField({
       ) : (
         <>
           <H4 $color={COLORS.greyDark}>{data.label}</H4>
-          <P>{chooseFormatter(data)}</P>
+          {data.emptyText &&
+          ((data.type === 'multi-select' && data.value.size === 0) ||
+            (data.type !== 'multi-select' && !data.value)) ? (
+            <P $color={COLORS.greyMid}>{data.emptyText}</P>
+          ) : (
+            <P>{chooseFormatter(data)}</P>
+          )}
         </>
       )}
     </KeyValueBlurb>

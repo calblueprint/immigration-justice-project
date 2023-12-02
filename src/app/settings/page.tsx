@@ -140,7 +140,7 @@ export default function Settings() {
         value: profile?.profileData?.availability_description || '',
         placeholder: "I won't be available from...",
         editorLabel: 'Availability Constraints (Optional)',
-        format: (v: string) => v || 'N/A',
+        emptyText: 'N/A',
       },
     ]);
 
