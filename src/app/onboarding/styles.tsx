@@ -16,6 +16,7 @@ export const FormContainer = styled.div`
   display: grid;
   place-items: center;
   flex-grow: 2;
+  width: 39.25rem;
 `;
 
 export const FormDiv = styled.div`
@@ -25,6 +26,6 @@ export const FormDiv = styled.div`
   padding: 3rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
-  width: 36.25rem;
+  width: 100%;
   margin: auto;
 `;

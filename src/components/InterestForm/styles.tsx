@@ -17,10 +17,10 @@ export const FormQuestion = styled(H4)`
   margin-top: 0.375rem;
 `;
 
-export const FormTextArea = styled.textarea`
+export const FormTextArea = styled.textarea<{ $height?: number }>`
   ${openSans.style}
   font-size: 0.875rem; //14px
-  min-height: 10rem;
+  min-height: ${props => props.$height || 10}rem;
   resize: none;
   font-size: 0.875rem;
   font-weight: 400;
