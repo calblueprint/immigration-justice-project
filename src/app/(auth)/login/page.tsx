@@ -57,7 +57,7 @@ export default function Login() {
         <H1>Log In</H1>
         {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
       </SpacerDiv>
-      <SpacerDiv $gap={13 / 16}>
+      <SpacerDiv $gap={0.8125}>
         <SpacerDiv>
           <TextInput
             label="Email"

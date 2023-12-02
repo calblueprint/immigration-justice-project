@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 // import { useRouter } from 'next/navigation';
+import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
@@ -18,19 +19,21 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const validEmail = (e: string) => e !== '' && isEmail(e);
+
   // const { push } = useRouter();
   const handleSignUp = async () => {
-    if (email === '' || password === '') {
-      if (email === '') {
-        setEmailError('Invalid Email');
-      } else {
-        setEmailError('');
-      }
-      if (password === '') {
-        setPasswordError('Invalid Password');
-      } else {
-        setPasswordError('');
-      }
+    if (!validEmail(email)) {
+      setEmailError('Invalid Email');
+    } else {
+      setEmailError('');
+    }
+    if (password === '') {
+      setPasswordError('Invalid Password');
+    } else {
+      setPasswordError('');
+    }
+    if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
     }
