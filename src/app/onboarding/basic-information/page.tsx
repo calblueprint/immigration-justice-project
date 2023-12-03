@@ -12,30 +12,35 @@ export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
   useEffect(() => {
     setFirstName(onboarding?.profile.first_name || '');
     setLastName(onboarding?.profile.last_name || '');
-  }, []);
-
-  useEffect(() => {
     if (
-      firstName !== '' &&
-      lastName !== '' &&
-      onboarding?.profile.location !== undefined
+      onboarding?.profile.first_name !== '' &&
+      onboarding?.profile.last_name !== '' &&
+      onboarding?.profile.location !== '' &&
+      onboarding?.canReads.size !== 0 &&
+      onboarding?.canSpeaks.size !== 0
     ) {
       onboarding?.setCanContinue(true);
     } else {
       onboarding?.setProgress(1);
       onboarding?.setCanContinue(false);
     }
-  }, [onboarding, firstName, lastName]);
+  }, [onboarding]);
 
-  useEffect(() => {
+  const handleFirstName = (v: string) => {
     onboarding?.updateProfile({
-      first_name: firstName,
-      last_name: lastName,
+      first_name: v,
     });
-  }, [firstName, lastName]);
+  };
+
+  const handleLastName = (v: string) => {
+    onboarding?.updateProfile({
+      last_name: v,
+    });
+  };
 
   return (
     <>
@@ -47,6 +52,7 @@ export default function Page() {
           type="firstName"
           setValue={setFirstName}
           value={firstName}
+          onChange={handleFirstName}
         />
         <TextInput
           label="Last Name"
@@ -54,6 +60,7 @@ export default function Page() {
           type="lastName"
           setValue={setLastName}
           value={lastName}
+          onChange={handleLastName}
         />
       </LineDiv>
       <BigDataDropdown
@@ -61,7 +68,7 @@ export default function Page() {
         options={cities}
         onChange={v => {
           onboarding?.updateProfile({
-            location: v || undefined,
+            location: v || '',
           });
         }}
         defaultValue={onboarding?.profile.location}
