@@ -1,23 +1,4 @@
 import styled from 'styled-components';
-<<<<<<< HEAD
-
-interface BigButtonProps {
-  color?: string;
-  onChange?: () => void;
-}
-
-const BigButton = styled.button<BigButtonProps>`
-  background-color: ${props => props.color || 'blue'};
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-`;
-
-export default BigButton;
-=======
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 
@@ -64,4 +45,3 @@ export default BigButton;
     );
   }
  */
->>>>>>> 5b0b30c95144186f7f5a870ea5ed1b8238113152
