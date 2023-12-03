@@ -3,6 +3,8 @@
 import { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/Button';
+import { cities, languages } from '@/lib/bigData';
+import BigDataDropdown from '@/components/BigDataDropdown';
 import COLORS from '@/styles/colors';
 import { H1, P, LinkColored } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
@@ -10,11 +12,25 @@ import { H4Centered, QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
 import TextInput from '@/components/TextInput';
 import { LineDiv } from './styles';
 
+/*
+export const cities = new Set(
+  City.getAllCities()
+    .sort((c1, c2) => c1.countryCode.localeCompare(c2.countryCode))
+    .map(
+      c =>
+        `${c.name}, ${
+          State.getStateByCodeAndCountry(c.stateCode, c.countryCode)?.name
+        }, ${Country.getCountryByCode(c.countryCode)?.name}`,
+    ),
+);
+*/
+
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [city, setCity] = useState('');
+  const [language, setLanguage] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
   const { push } = useRouter();
 
@@ -24,6 +40,7 @@ export default function Page() {
     setFirstName('');
     setLastName('');
     setCity('');
+    setLanguage('');
   };
 
   // <div style={{ display: 'flex', gap: '4.5rem' }}>
@@ -40,7 +57,6 @@ export default function Page() {
               type="firstName"
               setValue={setFirstName}
               value={firstName}
-              errorText="first name error"
             />
             <TextInput
               label="Last Name"
@@ -48,15 +64,33 @@ export default function Page() {
               type="lastName"
               setValue={setLastName}
               value={lastName}
-              errorText="last name error"
             />
           </LineDiv>
-          <TextInput
+          <BigDataDropdown
             label="City"
-            placeholder="ur mom's house"
-            errorText="city error"
-            value={city}
-            setValue={setCity}
+            options={cities}
+            onChange={selectedCity => setCity(selectedCity || '')}
+            // value={city || ''}
+            // setValue={setCity}
+            placeholder="Select a city"
+          />
+          <BigDataDropdown
+            label="What languages can you speak and understand?"
+            options={languages}
+            onChange={selectedLanguage => setLanguage(selectedLanguage || '')}
+            // value={language || ''}
+            // setValue={setLanguage}
+            placeholder="Select a language"
+            multi
+          />
+          <BigDataDropdown
+            label="What languages can you read and write?"
+            options={languages}
+            onChange={selectedLanguage => setLanguage(selectedLanguage || '')}
+            // value={language || ''}
+            // setValue={setLanguage}
+            placeholder="Select a language"
+            multi
           />
         </QuestionsDiv>
       </SpacerDiv>
