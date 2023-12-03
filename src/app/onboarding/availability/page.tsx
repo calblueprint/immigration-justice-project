@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
@@ -14,19 +14,19 @@ export default function Page() {
   const [startDate, setStartDate] = useState('');
   const [periods, setPeriods] = useState('');
 
-  const getHoursErrorText = () => {
-    if (hours !== '' && Number.isNaN(parseInt(hours, 10))) {
-      return 'Must be a number';
-    }
-    return '';
-  };
+  const getHoursErrorText = useMemo(
+    () =>
+      hours && Number.isNaN(parseInt(hours, 10)) ? 'Must be a number' : '',
+    [hours],
+  );
 
-  const getErrorText = () => {
-    if (startDate !== '' && !isValidDate(startDate)) {
-      return 'Must select a current or future date';
-    }
-    return '';
-  };
+  const getStartDateErrorText = useMemo(
+    () =>
+      startDate && !isValidDate(startDate)
+        ? 'Must select a current or future date'
+        : '',
+    [hours],
+  );
 
   useEffect(() => {
     setHours(
@@ -38,9 +38,9 @@ export default function Page() {
     setPeriods(onboarding?.profile.availability_description || '');
 
     if (
-      onboarding?.profile.hours_per_month !== undefined &&
+      onboarding?.profile.hours_per_month &&
       onboarding?.profile.hours_per_month > 0 &&
-      onboarding?.profile.start_date !== '' &&
+      onboarding?.profile.start_date &&
       isValidDate(onboarding?.profile.start_date)
     ) {
       onboarding?.setCanContinue(true);
@@ -78,7 +78,7 @@ export default function Page() {
       <TextInput
         label="How much time do you have to commit? (hrs/month)"
         placeholder="hours/month"
-        errorText={getHoursErrorText()}
+        errorText={getHoursErrorText}
         type="text"
         id="hours"
         value={hours}
@@ -87,7 +87,7 @@ export default function Page() {
       />
       <DateInput
         label="What is the earliest you are available to volunteer?"
-        error={getErrorText()}
+        error={getStartDateErrorText}
         value={startDate}
         setValue={setStartDate}
         onChange={handleStartDate}
