@@ -10,6 +10,7 @@ export const FormContainer = styled.div`
   width: 61%;
   float: right;
   gap: 0.625rem; // 10px
+  margin-left: auto;
 `;
 
 export const FormQuestion = styled(H4)`
