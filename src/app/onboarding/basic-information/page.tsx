@@ -30,13 +30,13 @@ export default function Page() {
     }
   }, [onboarding]);
 
-  const handleFirstName = (v: string) => {
+  const handleFirstNameChange = (v: string) => {
     onboarding?.updateProfile({
       first_name: v,
     });
   };
 
-  const handleLastName = (v: string) => {
+  const handleLastNameChange = (v: string) => {
     onboarding?.updateProfile({
       last_name: v,
     });
@@ -52,7 +52,7 @@ export default function Page() {
           type="firstName"
           setValue={setFirstName}
           value={firstName}
-          onChange={handleFirstName}
+          onChange={handleFirstNameChange}
         />
         <TextInput
           label="Last Name"
@@ -60,7 +60,7 @@ export default function Page() {
           type="lastName"
           setValue={setLastName}
           value={lastName}
-          onChange={handleLastName}
+          onChange={handleLastNameChange}
         />
       </LineDiv>
       <BigDataDropdown
