@@ -7,7 +7,6 @@ type TextInputProps = {
   errorText?: string;
   type?: string;
   id?: string;
-  height?: number;
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
