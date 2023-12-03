@@ -25,7 +25,7 @@ export default function Page() {
       startDate && !isValidDate(startDate)
         ? 'Must select a current or future date'
         : '',
-    [hours],
+    [startDate],
   );
 
   useEffect(() => {

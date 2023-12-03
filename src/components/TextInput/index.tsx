@@ -19,7 +19,6 @@ export default function TextInput({
   errorText = '',
   type = 'text',
   id,
-  height = 0.825,
   value,
   setValue,
   onChange,
@@ -42,7 +41,6 @@ export default function TextInput({
         $error={errorText !== ''}
         placeholder={placeholder}
         id={id}
-        height={height}
         type={type}
         value={value}
         onChange={e => handleChange(e.target.value)}
