@@ -3,11 +3,9 @@ import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 
-export const InputText = styled(P)<{ $error: boolean; $height?: number }>`
+export const InputText = styled(P)<{ $error: boolean }>`
   ${openSans.style}
   color: ${COLORS.greyDarker};
-  min-height: ${({ $height }) => $height || 0.875}rem;
-  resize: none;
   padding: 0.625rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
