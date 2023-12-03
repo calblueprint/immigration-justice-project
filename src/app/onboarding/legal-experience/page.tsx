@@ -24,13 +24,10 @@ export default function Page() {
   useEffect(() => {
     setBarNum(onboarding?.profile.bar_number || '');
     setExperience(onboarding?.profile.immigration_law_experience || null);
-    setRegistered(
-      onboarding?.profile.eoir_registered !== undefined
-        ? onboarding?.profile.eoir_registered
-          ? 'Yes'
-          : 'No'
-        : '',
-    );
+
+    if (onboarding?.profile.eoir_registered !== undefined) {
+      setRegistered(onboarding?.profile.eoir_registered ? 'Yes' : 'No');
+    }
   }, []);
 
   const validBarNum = () =>
@@ -60,8 +57,6 @@ export default function Page() {
       onboarding?.setCanContinue(false);
     }
   }, [barNum, experience, registered]);
-
-  console.log(experience);
 
   return (
     <>
