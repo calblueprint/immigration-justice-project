@@ -36,10 +36,10 @@ export default function Page() {
 
     setBarNum(barNumber);
     if (isRegistered !== undefined)
-      setRegistered(onboarding?.profile.eoir_registered ? 'Yes' : 'No');
+      setRegistered(onboarding.profile.eoir_registered ? 'Yes' : 'No');
 
     if (isValidBarNumber(barNumber) && experience && isRegistered !== undefined)
-      onboarding?.setCanContinue(true);
+      onboarding.setCanContinue(true);
   }, [onboarding, isValidBarNumber]);
 
   const handleBarNumChange = useCallback(
