@@ -92,7 +92,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
 
   const Interest = useMemo(() => {
     if (profile && profile.userId)
-      return profile.profileReady ? (
+      return profile.profileData ? (
         <InterestForm caseData={caseData} />
       ) : (
         <>

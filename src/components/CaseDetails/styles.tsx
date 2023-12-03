@@ -5,7 +5,6 @@ import COLORS from '@/styles/colors';
 export const CaseDisplay = styled.aside`
   position: relative;
   width: 100%;
-  /* margin-bottom: 0.5rem; */ //idk if I need this
 `;
 
 export const CaseTitle = styled(H1)`
