@@ -14,6 +14,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   justify-content: flex-start;
   align-items: flex-start;
   outline: none;
+  width: 100%;
 
   &::placeholder {
     color: ${COLORS.placeholderText};
@@ -43,4 +44,6 @@ export const ErrorText = styled(P)`
 export const InputDiv = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  flex: 1;
 `;
