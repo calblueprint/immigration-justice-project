@@ -38,8 +38,16 @@ export default function Page() {
     if (isRegistered !== undefined)
       setRegistered(onboarding.profile.eoir_registered ? 'Yes' : 'No');
 
-    if (isValidBarNumber(barNumber) && experience && isRegistered !== undefined)
+    if (
+      isValidBarNumber(barNumber) &&
+      experience &&
+      isRegistered !== undefined
+    ) {
       onboarding.setCanContinue(true);
+    } else {
+      onboarding.setProgress(3);
+      onboarding.setCanContinue(false);
+    }
   }, [onboarding, isValidBarNumber]);
 
   const handleBarNumChange = useCallback(
