@@ -6,7 +6,7 @@ import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
-import { H2 } from '@/styles/text';
+import { H1, H2, CenteredH3 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
@@ -23,6 +23,7 @@ import {
   Header,
   ResetFilters,
   ListingCount,
+  NoCasesContainer,
 } from './styles';
 
 type FilterType = {
@@ -203,20 +204,35 @@ export default function Page() {
           <ListingCount $color={COLORS.greyMid}>
             {filteredCases.length} listings found
           </ListingCount>
-          {filteredCases.map(c => (
-            <ListingCard
-              key={c.id}
-              caseData={c}
-              isSelected={c.id === selectedCard}
-              onClick={() => {
-                setSelectedCard(c.id);
-                setCaseInfo(c);
-              }}
-            />
-          ))}
+          {filteredCases.length === 0 ? (
+            <CenteredH3 $color={COLORS.greyMid}>No cases listed</CenteredH3>
+          ) : (
+            <>
+              {filteredCases.map(c => (
+                <ListingCard
+                  key={c.id}
+                  caseData={c}
+                  isSelected={c.id === selectedCard}
+                  onClick={() => {
+                    setSelectedCard(c.id);
+                    setCaseInfo(c);
+                  }}
+                />
+              ))}
+            </>
+          )}
         </CardColumn>
         <CaseDetailsContainer>
-          {caseInfo && <CaseDetails caseData={caseInfo} />}
+          {caseInfo ? (
+            <CaseDetails caseData={caseInfo} />
+          ) : (
+            <NoCasesContainer>
+              <H1 $color={COLORS.greyMid}>No cases listed</H1>
+              <CenteredH3 $color={COLORS.greyMid}>
+                Check back later for more cases
+              </CenteredH3>
+            </NoCasesContainer>
+          )}
         </CaseDetailsContainer>
       </Body>
     </PageContainer>

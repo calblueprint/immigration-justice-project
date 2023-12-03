@@ -55,8 +55,8 @@ export const CardColumn = styled.div`
 
 export const CaseDetailsContainer = styled.div`
   overflow-y: scroll;
-  padding: 2.6rem 3rem 1rem 3rem;
-  column-gap: 2rem;
+  padding: 2.7rem 3rem 1.7rem 3rem;
+  position: relative;
 `;
 
 export const Header = styled.header`
@@ -87,4 +87,10 @@ export const ResetFilters = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+export const NoCasesContainer = styled.div`
+  position: relative;
+  text-align: center;
+  top: 35%;
 `;

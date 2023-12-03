@@ -5,7 +5,7 @@ import COLORS from '@/styles/colors';
 export const CaseDisplay = styled.aside`
   position: relative;
   width: 100%;
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */ //idk if I need this
 `;
 
 export const CaseTitle = styled(H1)`
@@ -21,7 +21,6 @@ export const CaseInterestContainer = styled.div`
   border: 2px solid ${COLORS.blueMid};
   justify-content: space-between;
   flex-direction: column;
-  gap: 1.4rem;
   display: block;
   overflow-y: auto;
 `;
@@ -56,4 +55,10 @@ export const FieldContainer = styled.div`
   display: flex;
   gap: 0.188rem;
   flex-direction: column;
+`;
+
+export const AuthButtons = styled.div`
+  display: flex;
+  gap: 1.5625rem;
+  margin-top: 1.25rem;
 `;
