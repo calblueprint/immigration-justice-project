@@ -86,8 +86,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     loadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadProfile]);
 
   const providerValue = useMemo(() => {
     /**
