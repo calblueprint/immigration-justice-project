@@ -1,49 +1,48 @@
 'use client';
 
-import { useState, useContext } from 'react';
-import { useRouter } from 'next/navigation';
-import Button from '@/components/Button';
+import { useState, useContext, useEffect } from 'react';
 import { cities, languages } from '@/lib/bigData';
 import BigDataDropdown from '@/components/BigDataDropdown';
-import COLORS from '@/styles/colors';
-import { H1, P, LinkColored } from '@/styles/text';
+import { H1, P } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { H4Centered, QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
 import TextInput from '@/components/TextInput';
 import { LineDiv } from './styles';
-
-/*
-export const cities = new Set(
-  City.getAllCities()
-    .sort((c1, c2) => c1.countryCode.localeCompare(c2.countryCode))
-    .map(
-      c =>
-        `${c.name}, ${
-          State.getStateByCodeAndCountry(c.stateCode, c.countryCode)?.name
-        }, ${Country.getCountryByCode(c.countryCode)?.name}`,
-    ),
-);
-*/
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [city, setCity] = useState('');
-  const [language, setLanguage] = useState('');
-  // const [errorMessage, setErrorMessage] = useState('');
-  const { push } = useRouter();
+  useEffect(() => {
+    setFirstName(onboarding?.profile.first_name || '');
+    setLastName(onboarding?.profile.last_name || '');
+  }, []);
 
-  const handleInsert = async () => {
-    if (!firstName || !lastName) return;
+  useEffect(() => {
+    console.log(firstName);
+    console.log(lastName);
+    console.log(onboarding?.profile.location);
+    console.log('crying');
+    if (
+      firstName !== '' &&
+      lastName !== '' &&
+      onboarding?.profile.location !== ''
+    ) {
+      onboarding?.setCanContinue(true);
+      console.log('sobbing');
+    } else {
+      onboarding?.setProgress(1);
+      onboarding?.setCanContinue(false);
+      console.log('screaming');
+    }
+  }, [onboarding, firstName, lastName]);
 
-    setFirstName('');
-    setLastName('');
-    setCity('');
-    setLanguage('');
-  };
-
-  // <div style={{ display: 'flex', gap: '4.5rem' }}>
+  useEffect(() => {
+    onboarding?.updateProfile({
+      first_name: firstName,
+      last_name: lastName,
+    });
+  }, [firstName, lastName]);
 
   return (
     <>
@@ -53,14 +52,14 @@ export default function Page() {
           <LineDiv>
             <TextInput
               label="First Name"
-              placeholder="Rahi"
+              placeholder="Jane"
               type="firstName"
               setValue={setFirstName}
               value={firstName}
             />
             <TextInput
               label="Last Name"
-              placeholder="Hazra"
+              placeholder="Doe"
               type="lastName"
               setValue={setLastName}
               value={lastName}
@@ -69,54 +68,36 @@ export default function Page() {
           <BigDataDropdown
             label="City"
             options={cities}
-            onChange={selectedCity => setCity(selectedCity || '')}
-            // value={city || ''}
-            // setValue={setCity}
+            onChange={v => {
+              onboarding?.updateProfile({
+                location: v || undefined,
+              });
+            }}
+            defaultValue={onboarding?.profile.location}
             placeholder="Select a city"
           />
           <BigDataDropdown
             label="What languages can you speak and understand?"
             options={languages}
-            onChange={selectedLanguage => setLanguage(selectedLanguage || '')}
-            // value={language || ''}
-            // setValue={setLanguage}
+            onChange={v => {
+              onboarding?.setCanSpeaks(v || new Set<string>());
+            }}
+            defaultValue={onboarding?.canSpeaks}
             placeholder="Select a language"
             multi
           />
           <BigDataDropdown
             label="What languages can you read and write?"
             options={languages}
-            onChange={selectedLanguage => setLanguage(selectedLanguage || '')}
-            // value={language || ''}
-            // setValue={setLanguage}
+            onChange={v => {
+              onboarding?.setCanReads(v || new Set<string>());
+            }}
+            defaultValue={onboarding?.canReads}
             placeholder="Select a language"
             multi
           />
         </QuestionsDiv>
       </SpacerDiv>
-      <SpacerDiv>
-        <Button
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          onClick={() => onboarding && onboarding.setCanContinue(true)}
-        >
-          Enable continue
-        </Button>
-      </SpacerDiv>
     </>
   );
 }
-
-/* return (
-    <>
-      <H1>Basic Information</H1>
-      <Button
-        $primaryColor={COLORS.blueMid}
-        $secondaryColor={COLORS.blueDark}
-        onClick={() => onboarding && onboarding.setCanContinue(true)}
-      >
-        Enable continue
-      </Button>
-    </>
-  );
-  */
