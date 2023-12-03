@@ -87,6 +87,7 @@ export default function Page() {
       />
       <DateInput
         label="What is the earliest you are available to volunteer?"
+        id="start_date"
         error={getStartDateErrorText}
         value={startDate}
         setValue={setStartDate}
