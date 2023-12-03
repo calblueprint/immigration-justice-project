@@ -21,12 +21,24 @@ export default function Page() {
     useState<ImmigrationLawExperienceEnum | null>(null);
   const [registered, setRegistered] = useState('');
 
+  useEffect(() => {
+    setBarNum(onboarding?.profile.bar_number || '');
+    setExperience(onboarding?.profile.immigration_law_experience || null);
+    setRegistered(
+      onboarding?.profile.eoir_registered !== undefined
+        ? onboarding?.profile.eoir_registered
+          ? 'Yes'
+          : 'No'
+        : '',
+    );
+  }, []);
+
   const validBarNum = () =>
     !Number.isNaN(parseInt(barNum, 10)) && barNum.length === 6;
 
   const getErrorText = () => {
     if (barNum !== '' && !validBarNum()) {
-      return 'Must include attorney bar number';
+      return 'Invalid bar number';
     }
     return '';
   };
@@ -34,11 +46,13 @@ export default function Page() {
   useEffect(() => {
     if (validBarNum() && experience !== null && registered !== '') {
       // update profile
+
       const partialProfile: Partial<Profile> = {
         bar_number: barNum,
         immigration_law_experience: experience,
         eoir_registered: registered === 'Yes',
       };
+
       onboarding?.updateProfile(partialProfile);
       // enable continue
       onboarding?.setCanContinue(true);
@@ -46,6 +60,8 @@ export default function Page() {
       onboarding?.setCanContinue(false);
     }
   }, [barNum, experience, registered]);
+
+  console.log(experience);
 
   return (
     <>
@@ -62,6 +78,7 @@ export default function Page() {
       <InputDropdown
         label="What level of immigration law experience do you have?"
         onChange={v => setExperience(v as ImmigrationLawExperienceEnum)}
+        defaultValue={experience || ''}
         options={legalExperienceOptions}
         error="" // "Must select your level of immigration law experience"
       />
