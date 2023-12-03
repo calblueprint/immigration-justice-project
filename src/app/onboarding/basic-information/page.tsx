@@ -18,21 +18,15 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    console.log(firstName);
-    console.log(lastName);
-    console.log(onboarding?.profile.location);
-    console.log('crying');
     if (
       firstName !== '' &&
       lastName !== '' &&
       onboarding?.profile.location !== undefined
     ) {
       onboarding?.setCanContinue(true);
-      console.log('sobbing');
     } else {
       onboarding?.setProgress(1);
       onboarding?.setCanContinue(false);
-      console.log('screaming');
     }
   }, [onboarding, firstName, lastName]);
 
