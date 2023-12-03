@@ -104,8 +104,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       if (!userId) throw new Error('Fatal: user is not logged in!');
       if (profileData) throw new Error('Fatal: user already has a profile!');
 
+      await insertProfile(newProfile).then(data => setProfileData(data));
+
       await Promise.all([
-        insertProfile(newProfile).then(data => setProfileData(data)),
         insertLanguages(newLanguages).then(data => setProfileLangs(data)),
         insertRoles(newRoles).then(data => setProfileRoles(data)),
       ]);
