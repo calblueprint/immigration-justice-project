@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
 import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
-import { ImmigrationLawExperienceEnum, Profile } from '@/types/schema';
+import { ImmigrationLawExperienceEnum } from '@/types/schema';
 
 const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
   ['HIGH', 'Multiple cases of immigration law experience'],
@@ -17,46 +17,38 @@ const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const [barNum, setBarNum] = useState('');
-  const [experience, setExperience] =
-    useState<ImmigrationLawExperienceEnum | null>(null);
   const [registered, setRegistered] = useState('');
+  const [barNumError, setBarNumError] = useState('');
+
+  const isValidBarNumber = useCallback(
+    (barNumber: string) =>
+      !Number.isNaN(parseInt(barNumber, 10)) &&
+      barNumber.replace(/\D/, '').length <= 6,
+    [],
+  );
 
   useEffect(() => {
-    setBarNum(onboarding?.profile.bar_number || '');
-    setExperience(onboarding?.profile.immigration_law_experience || null);
+    if (!onboarding) return;
 
-    if (onboarding?.profile.eoir_registered !== undefined) {
+    const barNumber = onboarding.profile.bar_number || '';
+    const experience = onboarding.profile.immigration_law_experience;
+    const isRegistered = onboarding.profile.eoir_registered;
+
+    setBarNum(barNumber);
+    if (isRegistered !== undefined)
       setRegistered(onboarding?.profile.eoir_registered ? 'Yes' : 'No');
-    }
-  }, []);
 
-  const validBarNum = () =>
-    !Number.isNaN(parseInt(barNum, 10)) && barNum.length === 6;
-
-  const getErrorText = () => {
-    if (barNum !== '' && !validBarNum()) {
-      return 'Invalid bar number';
-    }
-    return '';
-  };
-
-  useEffect(() => {
-    if (validBarNum() && experience !== null && registered !== '') {
-      // update profile
-
-      const partialProfile: Partial<Profile> = {
-        bar_number: barNum,
-        immigration_law_experience: experience,
-        eoir_registered: registered === 'Yes',
-      };
-
-      onboarding?.updateProfile(partialProfile);
-      // enable continue
+    if (isValidBarNumber(barNumber) && experience && isRegistered !== undefined)
       onboarding?.setCanContinue(true);
-    } else {
-      onboarding?.setCanContinue(false);
-    }
-  }, [barNum, experience, registered]);
+  }, [onboarding, isValidBarNumber]);
+
+  const handleBarNumChange = useCallback(
+    (v: string) => {
+      setBarNumError(isValidBarNumber(v) ? '' : 'Invalid bar number');
+      onboarding?.updateProfile({ bar_number: v });
+    },
+    [onboarding, isValidBarNumber],
+  );
 
   return (
     <>
@@ -64,16 +56,21 @@ export default function Page() {
       <TextInput
         label="What is your attorney bar number?"
         placeholder="123456"
-        errorText={getErrorText()}
+        errorText={barNumError}
         type="text"
         id="barNum"
         value={barNum}
         setValue={setBarNum}
+        onChange={v => handleBarNumChange(v)}
       />
       <InputDropdown
         label="What level of immigration law experience do you have?"
-        onChange={v => setExperience(v as ImmigrationLawExperienceEnum)}
-        defaultValue={experience || ''}
+        onChange={v =>
+          onboarding?.updateProfile({
+            immigration_law_experience: v as ImmigrationLawExperienceEnum,
+          })
+        }
+        defaultValue={onboarding?.profile.immigration_law_experience}
         options={legalExperienceOptions}
         error="" // "Must select your level of immigration law experience"
       />
@@ -84,6 +81,9 @@ export default function Page() {
         options={['Yes', 'No']}
         label="Are you registered by the Executive Office of Immigration Review?"
         error=""
+        onChange={v =>
+          onboarding?.updateProfile({ eoir_registered: v === 'Yes' })
+        }
       />
     </>
   );
