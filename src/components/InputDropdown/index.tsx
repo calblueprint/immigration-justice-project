@@ -72,6 +72,7 @@ export default function InputDropdown({
     );
 
   const defaultDropdownVal = useMemo(() => {
+    console.log(defaultValue);
     if (!defaultValue) return undefined;
 
     if (defaultValue instanceof Set)
