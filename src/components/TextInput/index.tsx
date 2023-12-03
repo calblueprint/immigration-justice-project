@@ -42,7 +42,7 @@ export default function TextInput({
         $error={errorText !== ''}
         placeholder={placeholder}
         id={id}
-        $height={height}
+        height={height}
         type={type}
         value={value}
         onChange={e => handleChange(e.target.value)}
