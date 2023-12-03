@@ -15,6 +15,16 @@ export default function Page() {
   const [startDate, setStartDate] = useState('');
   const [periods, setPeriods] = useState('');
 
+  useEffect(() => {
+    setHours(
+      onboarding?.profile.hours_per_month
+        ? onboarding?.profile.hours_per_month.toString()
+        : '',
+    );
+    setStartDate(onboarding?.profile.start_date || '');
+    setPeriods(onboarding?.profile.availability_description || '');
+  }, []);
+
   const getHoursErrorText = () => {
     if (hours !== '' && Number.isNaN(parseInt(hours, 10))) {
       return 'Must be a number';
@@ -46,6 +56,7 @@ export default function Page() {
       // enable continue
       onboarding?.setCanContinue(true);
     } else {
+      onboarding?.setProgress(2);
       onboarding?.setCanContinue(false);
     }
   }, [hours, startDate, periods]);
@@ -56,7 +67,7 @@ export default function Page() {
       <H1>Availability</H1>
       <TextInput
         label="How much time do you have to commit? (hrs/month)"
-        placeholder="Hrs/month"
+        placeholder="hours/month"
         errorText={getHoursErrorText()}
         type="text"
         id="hours"
@@ -71,7 +82,7 @@ export default function Page() {
       />
       <TextAreaInput
         label="Are there specific time periods you will not be available? (Optional)"
-        placeholder="I won’t be available from..."
+        placeholder="I won't be available from..."
         id="periods"
         value={periods}
         setValue={setPeriods}
