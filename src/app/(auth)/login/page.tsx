@@ -2,41 +2,58 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import Link from 'next/link';
+import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, P, LinkColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
-import { H4Centered, QuestionsDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { push } = useRouter();
+  const validEmail = (e: string) => e !== '' && isEmail(e);
 
   const handleSignIn = async () => {
+    setEmailError(validEmail(email) ? '' : 'Invalid Email');
+    setPasswordError(password !== '' ? '' : 'Invalid Password');
+    if (!validEmail(email) || password === '') {
+      setErrorMessage('');
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to sign in: ${error.message}`);
+      setErrorMessage(error.message);
+      // TODO: use error.status to check if it's an email-specific or password-specific error
+      // then, raise the error in the TextInput component.
+    } else {
+      setErrorMessage('');
+      push('/cases');
     }
-    push('/');
   };
 
   return (
     <>
-      <H1>Log In</H1>
-      <SpacerDiv>
-        <QuestionsDiv>
+      <SpacerDiv $gap={0.625}>
+        <H1>Log In</H1>
+        {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+      </SpacerDiv>
+      <SpacerDiv $gap={0.8125}>
+        <SpacerDiv>
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText="" // "Email Error"
+            errorText={emailError}
             type="email"
             id="email"
             value={email}
@@ -45,13 +62,13 @@ export default function Login() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText="" // "Password Error"
+            errorText={passwordError}
             type="password"
             id="password"
             value={password}
             setValue={setPassword}
           />
-        </QuestionsDiv>
+        </SpacerDiv>
         <P>
           <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
             Forgot your password?
@@ -60,7 +77,7 @@ export default function Login() {
       </SpacerDiv>
       <SpacerDiv>
         <BigButton type="button" onClick={handleSignIn}>
-          Sign in
+          Log in
         </BigButton>
         <H4Centered>
           Don’t have an account yet?{' '}

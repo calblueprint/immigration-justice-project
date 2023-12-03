@@ -27,11 +27,13 @@
     "react-dom": "18.2.0",
     "react-select": "^5.8.0",
     "react-select-async-paginate": "^0.7.3",
-    "styled-components": "^6.0.8"
+    "styled-components": "^6.0.8",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@calblueprint/eslint-config-react": "^0.0.3",
     "@types/styled-components": "^5.1.29",
+    "@types/validator": "^13.11.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.49.0",

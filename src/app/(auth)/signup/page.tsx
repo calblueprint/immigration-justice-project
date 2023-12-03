@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 // import { useRouter } from 'next/navigation';
+import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
@@ -14,8 +15,22 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   // const { push } = useRouter();
+
+  const validEmail = (e: string) => e !== '' && isEmail(e);
+
   const handleSignUp = async () => {
+    setEmailError(validEmail(email) ? '' : 'Invalid Email');
+    setPasswordError(password !== '' ? '' : 'Invalid Password');
+    if (!validEmail(email) || password === '') {
+      setErrorMessage('');
+      return;
+    }
+    setEmailError('');
+    setPasswordError('');
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -25,10 +40,12 @@ export default function SignUp() {
     });
 
     if (error) {
-      throw new Error(`An error occurred trying to sign up: ${error.message}`);
+      setErrorMessage(error.message);
+    } else {
+      setEmailSentCount(1);
+      setErrorMessage('');
+      // push('/verify-email');
     }
-    setEmailSentCount(1);
-    // push('/verify-email');
   };
   const handleResendEmail = async () => {
     const { error } = await supabase.auth.resend({
@@ -39,22 +56,27 @@ export default function SignUp() {
       },
     });
     if (error) {
-      throw new Error(
-        `An error occurred trying to resend email: ${error.message}`,
-      );
+      setErrorMessage(error.message);
+    } else {
+      setEmailSentCount(emailSentCount + 1);
+      setErrorMessage('');
     }
-    setEmailSentCount(emailSentCount + 1);
   };
 
   return (
     <>
       {!emailSentCount && (
         <>
-          <H1>Sign Up</H1>
+          <SpacerDiv $gap={0.625}>
+            <H1>Sign Up</H1>
+            {errorMessage !== '' && (
+              <P $color={COLORS.redMid}>{errorMessage}</P>
+            )}
+          </SpacerDiv>
           <TextInput
             label="Email"
             placeholder="email@example.com"
-            errorText="" // {errorMessage}
+            errorText={emailError}
             type="email"
             id="email"
             value={email}
@@ -63,7 +85,7 @@ export default function SignUp() {
           <TextInput
             label="Password"
             placeholder="Password"
-            errorText=""
+            errorText={passwordError}
             type="password"
             id="password"
             value={password}

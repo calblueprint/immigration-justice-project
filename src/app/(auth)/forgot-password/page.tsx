@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
@@ -12,7 +13,13 @@ import Button from '@/components/Button';
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
+  const [emailError, setEmailError] = useState('');
+
   const sendPasswordResetLink = async () => {
+    if (!isEmail(email)) {
+      setEmailError('Could not find email');
+      return;
+    }
     await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: 'http://localhost:3000/reset-password',
     });
@@ -29,6 +36,7 @@ export default function ForgotPassword() {
             placeholder="email@example.com"
             type="email"
             id="email"
+            errorText={emailError}
             value={email}
             setValue={setEmail}
           />

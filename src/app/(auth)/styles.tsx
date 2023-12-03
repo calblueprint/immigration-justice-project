@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import COLORS from '@/styles/colors';
 import { H4, P } from '@/styles/text';
-import Link from 'next/link';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -21,16 +21,10 @@ export const FormDiv = styled.div`
   width: 39.25rem;
 `;
 
-export const QuestionsDiv = styled.div`
+export const SpacerDiv = styled.div<{ $gap?: number }>`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; // 20 px
-`;
-
-export const SpacerDiv = styled.div<{ gap?: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.gap || 1.2}rem;
+  gap: ${props => props.$gap || 1.2}rem;
 `;
 
 export const H4Centered = styled(H4)`
