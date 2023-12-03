@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import Link from 'next/link';
+import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, P, LinkColored } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
@@ -17,24 +17,15 @@ export default function Login() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const { push } = useRouter();
+  const validEmail = (e: string) => e !== '' && isEmail(e);
 
   const handleSignIn = async () => {
-    if (email === '' || password === '') {
-      if (email === '') {
-        setEmailError('Invalid Email');
-      } else {
-        setEmailError('');
-      }
-      if (password === '') {
-        setPasswordError('Invalid Password');
-      } else {
-        setPasswordError('');
-      }
+    setEmailError(validEmail(email) ? '' : 'Invalid Email');
+    setPasswordError(password !== '' ? '' : 'Invalid Password');
+    if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
     }
-    setEmailError('');
-    setPasswordError('');
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
