@@ -6,7 +6,6 @@ import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
 import { isValidDate } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
-import { Profile } from '@/types/schema';
 import TextAreaInput from '@/components/TextAreaInput';
 
 export default function Page() {
@@ -14,16 +13,6 @@ export default function Page() {
   const [hours, setHours] = useState('');
   const [startDate, setStartDate] = useState('');
   const [periods, setPeriods] = useState('');
-
-  useEffect(() => {
-    setHours(
-      onboarding?.profile.hours_per_month
-        ? onboarding?.profile.hours_per_month.toString()
-        : '',
-    );
-    setStartDate(onboarding?.profile.start_date || '');
-    setPeriods(onboarding?.profile.availability_description || '');
-  }, []);
 
   const getHoursErrorText = () => {
     if (hours !== '' && Number.isNaN(parseInt(hours, 10))) {
@@ -40,27 +29,48 @@ export default function Page() {
   };
 
   useEffect(() => {
+    setHours(
+      onboarding?.profile.hours_per_month
+        ? onboarding?.profile.hours_per_month.toString()
+        : '',
+    );
+    setStartDate(onboarding?.profile.start_date || '');
+    setPeriods(onboarding?.profile.availability_description || '');
+
     if (
-      hours !== '' &&
-      !Number.isNaN(parseInt(hours, 10)) &&
-      startDate !== '' &&
-      isValidDate(startDate)
+      onboarding?.profile.hours_per_month !== undefined &&
+      onboarding?.profile.hours_per_month > 0 &&
+      onboarding?.profile.start_date !== '' &&
+      isValidDate(onboarding?.profile.start_date)
     ) {
-      // update profile
-      const partialProfile: Partial<Profile> = {
-        hours_per_month: +hours,
-        start_date: startDate,
-        availability_description: periods,
-      };
-      onboarding?.updateProfile(partialProfile);
-      // enable continue
       onboarding?.setCanContinue(true);
     } else {
       onboarding?.setProgress(2);
       onboarding?.setCanContinue(false);
     }
-  }, [hours, startDate, periods]);
-  // onboarding is causing too many reloads...
+  }, [onboarding]);
+
+  const handleHours = (v: string) => {
+    if (!Number.isNaN(parseInt(v, 10))) {
+      onboarding?.updateProfile({
+        hours_per_month: +v,
+      });
+    }
+  };
+
+  const handleStartDate = (v: string) => {
+    if (v === '' || isValidDate(v)) {
+      onboarding?.updateProfile({
+        start_date: v,
+      });
+    }
+  };
+
+  const handleAvailability = (v: string) => {
+    onboarding?.updateProfile({
+      availability_description: v,
+    });
+  };
 
   return (
     <>
@@ -73,12 +83,14 @@ export default function Page() {
         id="hours"
         value={hours}
         setValue={setHours}
+        onChange={handleHours}
       />
       <DateInput
         label="What is the earliest you are available to volunteer?"
         error={getErrorText()}
         value={startDate}
         setValue={setStartDate}
+        onChange={handleStartDate}
       />
       <TextAreaInput
         label="Are there specific time periods you will not be available? (Optional)"
@@ -86,6 +98,7 @@ export default function Page() {
         id="periods"
         value={periods}
         setValue={setPeriods}
+        onChange={handleAvailability}
       />
     </>
   );
