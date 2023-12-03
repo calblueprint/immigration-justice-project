@@ -22,8 +22,7 @@ export default function Page() {
 
   const isValidBarNumber = useCallback(
     (barNumber: string) =>
-      !Number.isNaN(parseInt(barNumber, 10)) &&
-      barNumber.replace(/\D/, '').length <= 6,
+      !Number.isNaN(parseInt(barNumber, 10)) && /^\d{6}$/.test(barNumber),
     [],
   );
 
