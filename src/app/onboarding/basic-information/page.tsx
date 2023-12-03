@@ -3,7 +3,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { cities, languages } from '@/lib/bigData';
 import BigDataDropdown from '@/components/BigDataDropdown';
-import { H1, P } from '@/styles/text';
+import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
 import { LineDiv } from './styles';
@@ -25,7 +25,7 @@ export default function Page() {
     if (
       firstName !== '' &&
       lastName !== '' &&
-      onboarding?.profile.location !== ''
+      onboarding?.profile.location !== undefined
     ) {
       onboarding?.setCanContinue(true);
       console.log('sobbing');
