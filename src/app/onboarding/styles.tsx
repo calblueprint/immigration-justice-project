@@ -26,6 +26,6 @@ export const FormDiv = styled.div`
   padding: 3rem;
   border-radius: 0.625rem;
   border: 2px solid ${COLORS.blueMid};
-  width: 100%;
+  width: 39.25rem;
   margin: auto;
 `;

@@ -9,9 +9,9 @@ import RadioGroup from '@/components/RadioGroup';
 import { ImmigrationLawExperienceEnum } from '@/types/schema';
 
 const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
-  ['HIGH', 'Multiple cases of immigration law experience'],
-  ['MEDIUM', 'Few cases of immigration law experience'],
-  ['LOW', 'One or no case of immigration law experience'],
+  ['HIGH', '2+ prior immigration cases'],
+  ['MEDIUM', '1 prior immigration case'],
+  ['LOW', '0 prior immigration cases'],
 ]);
 
 export default function Page() {
@@ -22,7 +22,7 @@ export default function Page() {
 
   const isValidBarNumber = useCallback(
     (barNumber: string) =>
-      !Number.isNaN(parseInt(barNumber, 10)) && /^\d{6}$/.test(barNumber),
+      !Number.isNaN(parseInt(barNumber, 10)) && /^\d{1,6}$/.test(barNumber),
     [],
   );
 
