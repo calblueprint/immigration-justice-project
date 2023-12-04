@@ -81,7 +81,7 @@ export default function Page() {
         label="How much time do you have to commit? (hrs/month)"
         placeholder="hours/month"
         errorText={getHoursErrorText}
-        type="text"
+        type="number"
         id="hours"
         value={hours}
         setValue={setHours}
