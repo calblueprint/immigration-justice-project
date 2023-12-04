@@ -22,7 +22,7 @@ import {
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
-import { isValidDate } from '@/utils/helpers';
+import { isValidBarNumber } from '@/utils/helpers';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -108,8 +108,7 @@ export default function Settings() {
         editorLabel: 'Time Commitment (hours/month)',
         format: (v: string) => `${v} hours/month`,
         validate: (v: string) => {
-          if (Number.isNaN(parseInt(v, 10)))
-            return 'Time commitment must be a number';
+          if (/\D/.test(v)) return 'Time commitment must be a number';
           return v ? '' : 'Must include time commitment';
         },
       },
@@ -125,8 +124,7 @@ export default function Settings() {
             '0',
           )}/${year.padStart(4, '0')}`;
         },
-        validate: (v: string) =>
-          v && isValidDate(v) ? '' : 'Must include earliest date',
+        validate: (v: string) => (v ? '' : 'Must include earliest date'),
       },
       {
         type: 'textarea',
@@ -164,9 +162,9 @@ export default function Settings() {
           value: profile?.profileData?.bar_number || '',
           format: (v: string) => `#${v}`,
           validate: (v: string) =>
-            Number.isNaN(parseInt(v, 10))
-              ? 'For attorneys, must include valid attorney bar number'
-              : '',
+            isValidBarNumber(v)
+              ? ''
+              : 'For attorneys, must include valid attorney bar number',
         },
         {
           type: 'single-select',
