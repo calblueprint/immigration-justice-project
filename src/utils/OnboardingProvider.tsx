@@ -24,7 +24,7 @@ interface FlowData {
 }
 
 interface OnboardingContextType {
-  profile: Profile;
+  profile: Partial<Profile>;
   canReads: Set<string>;
   canSpeaks: Set<string>;
   roles: Set<RoleEnum>;
@@ -45,15 +45,6 @@ export const OnboardingContext = createContext<
   OnboardingContextType | undefined
 >(undefined);
 
-const blankProfile: Profile = {
-  first_name: '',
-  last_name: '',
-  hours_per_month: 0,
-  location: '',
-  start_date: '',
-  user_id: '0-0-0-0-0',
-};
-
 export default function OnboardingProvider({
   children,
 }: {
@@ -68,7 +59,7 @@ export default function OnboardingProvider({
     { name: 'Legal Experience', url: 'legal-experience' },
     { name: 'Done', url: 'done' },
   ]);
-  const [profile, setProfile] = useState<Profile>({ ...blankProfile });
+  const [profile, setProfile] = useState<Partial<Profile>>({});
   const [canReads, setCanReads] = useState<Set<string>>(new Set());
   const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
   const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
@@ -91,28 +82,28 @@ export default function OnboardingProvider({
 
       const uid: UUID = profileCtx.userId;
 
-      if (profile.first_name === blankProfile.first_name)
+      if (!profile.first_name)
         throw new Error('Error flushing data: profile missing first name!');
 
-      if (profile.last_name === blankProfile.last_name)
+      if (!profile.last_name)
         throw new Error('Error flushing data: profile missing last name!');
 
-      if (profile.hours_per_month === blankProfile.hours_per_month)
+      if (profile.hours_per_month === undefined)
         throw new Error(
           'Error flushing data: profile missing hours per month!',
         );
 
-      if (profile.location === blankProfile.location)
+      if (!profile.location)
         throw new Error('Error flushing data: profile missing location!');
 
-      if (profile.start_date === blankProfile.start_date)
+      if (!profile.start_date)
         throw new Error('Error flushing data: profile missing start date!');
 
       if (roles.size === 0)
         throw new Error('Error flushing data: roles data is empty!');
 
       if (roles.has('ATTORNEY')) {
-        if (profile.bar_number === undefined)
+        if (!profile.bar_number)
           throw new Error(
             'Error flushing data: attorney profile missing bar number!',
           );
@@ -122,7 +113,7 @@ export default function OnboardingProvider({
             'Error flushing data: attorney profile missing EOIR registered!',
           );
 
-        if (profile.immigration_law_experience === undefined)
+        if (!profile.immigration_law_experience)
           throw new Error(
             'Error flushing data: attorney profile missing immigration law experience!',
           );
@@ -140,7 +131,15 @@ export default function OnboardingProvider({
 
       // format data
       const profileToInsert: Profile = {
-        ...profile,
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        hours_per_month: profile.hours_per_month,
+        location: profile.location,
+        start_date: profile.start_date,
+        availability_description: profile.availability_description,
+        bar_number: profile.bar_number,
+        eoir_registered: profile.eoir_registered,
+        immigration_law_experience: profile.immigration_law_experience,
         user_id: uid,
       };
 

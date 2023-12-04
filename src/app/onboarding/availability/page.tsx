@@ -10,9 +10,9 @@ import TextAreaInput from '@/components/TextAreaInput';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
-  const [hours, setHours] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [periods, setPeriods] = useState('');
+  const [hours, setHours] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [periods, setPeriods] = useState<string>('');
 
   const getHoursErrorText = useMemo(
     () =>
@@ -29,17 +29,14 @@ export default function Page() {
   );
 
   useEffect(() => {
-    setHours(
-      onboarding?.profile.hours_per_month
-        ? onboarding?.profile.hours_per_month.toString()
-        : '',
-    );
+    const hpm = onboarding?.profile.hours_per_month;
+    setHours(hpm !== undefined && hpm >= 0 ? hpm.toString() : '');
     setStartDate(onboarding?.profile.start_date || '');
     setPeriods(onboarding?.profile.availability_description || '');
 
     if (
-      onboarding?.profile.hours_per_month &&
-      onboarding?.profile.hours_per_month > 0 &&
+      hpm !== undefined &&
+      hpm >= 0 &&
       onboarding?.profile.start_date &&
       isValidDate(onboarding?.profile.start_date)
     ) {
@@ -51,9 +48,14 @@ export default function Page() {
   }, [onboarding]);
 
   const handleHours = (v: string) => {
-    if (!Number.isNaN(parseInt(v, 10))) {
+    const n = parseInt(v, 10);
+    if (Number.isNaN(n)) {
       onboarding?.updateProfile({
-        hours_per_month: +v,
+        hours_per_month: undefined,
+      });
+    } else {
+      onboarding?.updateProfile({
+        hours_per_month: n,
       });
     }
   };
