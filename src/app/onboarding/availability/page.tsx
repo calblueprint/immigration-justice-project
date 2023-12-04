@@ -4,7 +4,7 @@ import { useContext, useMemo, useState, useEffect } from 'react';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
-import { isValidDate } from '@/utils/helpers';
+import { isValidDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import TextAreaInput from '@/components/TextAreaInput';
 
@@ -92,6 +92,7 @@ export default function Page() {
         id="start_date"
         error={getStartDateErrorText}
         value={startDate}
+        min={parseDateAlt(new Date())}
         setValue={setStartDate}
         onChange={handleStartDate}
       />
