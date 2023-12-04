@@ -34,6 +34,9 @@ export const parseDataAlt = (d: Date): string =>
     .toString()
     .padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
 
+// check if a string is a valid bar number
+export const isValidBarNumber = (b: string): boolean => /^\d{1,6}$/.test(b);
+
 /**
  * Parses the adjudicating agency to normal words & acronyms.
  * @param agency - a case's adjudicating agency.

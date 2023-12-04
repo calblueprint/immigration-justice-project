@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
@@ -9,8 +9,10 @@ import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
+import { ProfileContext } from '@/utils/ProfileProvider';
 
 export default function Login() {
+  const profile = useContext(ProfileContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,6 +39,7 @@ export default function Login() {
       // TODO: use error.status to check if it's an email-specific or password-specific error
       // then, raise the error in the TextInput component.
     } else {
+      profile?.loadProfile();
       setErrorMessage('');
       push('/cases');
     }
