@@ -7,6 +7,7 @@ import TextInput from '@/components/TextInput';
 import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
 import { ImmigrationLawExperienceEnum } from '@/types/schema';
+import { isValidBarNumber } from '@/utils/helpers';
 
 const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
   ['HIGH', '2+ prior immigration cases'],
@@ -19,12 +20,6 @@ export default function Page() {
   const [barNum, setBarNum] = useState('');
   const [registered, setRegistered] = useState('');
   const [barNumError, setBarNumError] = useState('');
-
-  const isValidBarNumber = useCallback(
-    (barNumber: string) =>
-      !Number.isNaN(parseInt(barNumber, 10)) && /^\d{1,6}$/.test(barNumber),
-    [],
-  );
 
   useEffect(() => {
     if (!onboarding) return;
@@ -47,14 +42,14 @@ export default function Page() {
       onboarding.setProgress(3);
       onboarding.setCanContinue(false);
     }
-  }, [onboarding, isValidBarNumber]);
+  }, [onboarding]);
 
   const handleBarNumChange = useCallback(
     (v: string) => {
       setBarNumError(isValidBarNumber(v) ? '' : 'Invalid bar number');
       onboarding?.updateProfile({ bar_number: v });
     },
-    [onboarding, isValidBarNumber],
+    [onboarding],
   );
 
   return (
