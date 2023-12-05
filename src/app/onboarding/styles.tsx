@@ -29,3 +29,10 @@ export const FormDiv = styled.div`
   width: 39.25rem;
   margin: auto;
 `;
+
+export const LineDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+  width: 100%;
+`;
