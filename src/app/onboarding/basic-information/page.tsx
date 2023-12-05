@@ -6,7 +6,7 @@ import BigDataDropdown from '@/components/BigDataDropdown';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
-import { LineDiv } from './styles';
+import { LineDiv } from '../styles';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
@@ -30,18 +30,6 @@ export default function Page() {
     }
   }, [onboarding]);
 
-  const handleFirstNameChange = (v: string) => {
-    onboarding?.updateProfile({
-      first_name: v,
-    });
-  };
-
-  const handleLastNameChange = (v: string) => {
-    onboarding?.updateProfile({
-      last_name: v,
-    });
-  };
-
   return (
     <>
       <H1>Basic Information</H1>
@@ -52,7 +40,11 @@ export default function Page() {
           type="firstName"
           setValue={setFirstName}
           value={firstName}
-          onChange={handleFirstNameChange}
+          onChange={v => {
+            onboarding?.updateProfile({
+              first_name: v,
+            });
+          }}
         />
         <TextInput
           label="Last Name"
@@ -60,7 +52,11 @@ export default function Page() {
           type="lastName"
           setValue={setLastName}
           value={lastName}
-          onChange={handleLastNameChange}
+          onChange={v => {
+            onboarding?.updateProfile({
+              last_name: v,
+            });
+          }}
         />
       </LineDiv>
       <BigDataDropdown
