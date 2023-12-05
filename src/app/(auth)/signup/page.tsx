@@ -35,7 +35,8 @@ export default function SignUp() {
       email,
       password,
       options: {
-        emailRedirectTo: 'http://localhost:3000/email-verified',
+        emailRedirectTo:
+          'https://immigration-justice-project.vercel.app/email-verified',
       },
     });
 
@@ -52,7 +53,8 @@ export default function SignUp() {
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: 'http://localhost:3000/email-verified',
+        emailRedirectTo:
+          'https://immigration-justice-project.vercel.app/email-verified',
       },
     });
     if (error) {
