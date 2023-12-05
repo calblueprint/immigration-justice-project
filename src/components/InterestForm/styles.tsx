@@ -20,24 +20,23 @@ export const FormQuestion = styled(H4)`
 export const FormTextArea = styled.textarea`
   ${openSans.style}
   font-size: 0.875rem; //14px
-  min-height: 10rem;
+  min-height: 5.3125rem;
   resize: none;
-  font-size: 1rem; // 16px;
+  font-size: 0.875rem;
   font-weight: 400;
   border-radius: 0.313rem; // 5px
   border: 2px solid ${COLORS.greyLight};
   margin-bottom: 0.6rem;
-  padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
-  &:focus {
-    border-color: ${COLORS.blueMid};
-    outline: none;
-  }
+  padding: 0.625rem;
+  outline: none;
   &::placeholder {
     color: ${COLORS.placeholderText};
   }
-
   &:not(:placeholder-shown) {
-    border-color: ${COLORS.greyMid};
+    border-color: ${COLORS.greyDarker};
+  }
+  &:focus {
+    border-color: ${COLORS.blueMid};
   }
 `;
 

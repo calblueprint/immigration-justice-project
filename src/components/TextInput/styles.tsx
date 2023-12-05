@@ -6,13 +6,10 @@ import { openSans } from '@/styles/fonts';
 export const InputText = styled(P)<{ $error: boolean }>`
   ${openSans.style}
   color: ${COLORS.greyDarker};
-
-  padding: 0.625rem 1.25rem;
+  padding: 0.625rem;
   border-radius: 0.313rem; // 5px
   border: 2px solid
     ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyLight)};
-  justify-content: flex-start;
-  align-items: flex-start;
   outline: none;
 
   &::placeholder {
