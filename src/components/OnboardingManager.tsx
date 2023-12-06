@@ -5,6 +5,7 @@ import { BackLink, H4 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
+import { ProfileContext } from '@/utils/ProfileProvider';
 import ProgressBar from './ProgressBar';
 import BigButton from './BigButton';
 
@@ -13,6 +14,7 @@ export default function OnboardingManager({
 }: {
   children: ReactNode;
 }) {
+  const profile = useContext(ProfileContext);
   const onboarding = useContext(OnboardingContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -23,6 +25,13 @@ export default function OnboardingManager({
     );
     return find;
   }, [pathname, onboarding]);
+
+  useEffect(() => {
+    if (!profile) return;
+
+    if (!profile.userId || (profile.profileReady && profile.profileData))
+      router.push('/cases');
+  }, [profile, router]);
 
   useEffect(() => {
     if (!onboarding) return;
