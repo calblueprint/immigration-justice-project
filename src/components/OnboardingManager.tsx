@@ -27,26 +27,22 @@ export default function OnboardingManager({
   }, [pathname, onboarding]);
 
   useEffect(() => {
-    if (!profile) return;
-
-    if (!profile.userId || (profile.profileReady && profile.profileData))
-      router.push('/cases');
-  }, [profile, router]);
-
-  useEffect(() => {
     if (!onboarding) return;
 
     // out of bounds redirect
     if (
       onboarding.progress < 0 ||
-      onboarding.progress >= onboarding.flow.length
+      onboarding.progress >= onboarding.flow.length ||
+      profile?.userId ||
+      (profile?.profileReady && profile?.profileData)
     ) {
       router.push('/cases');
+      return;
     }
 
     if (pageProgress > onboarding.progress)
       router.push(`/onboarding/${onboarding.flow[onboarding.progress].url}`);
-  }, [onboarding, router, pageProgress]);
+  }, [onboarding, profile, router, pageProgress]);
 
   const advanceProgress = () => {
     // safeguard
