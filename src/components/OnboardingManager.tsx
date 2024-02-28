@@ -6,6 +6,7 @@ import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
 import { ProfileContext } from '@/utils/ProfileProvider';
+import CONFIG from '@/lib/configs';
 import ProgressBar from './ProgressBar';
 import BigButton from './BigButton';
 
@@ -33,10 +34,9 @@ export default function OnboardingManager({
     if (
       onboarding.progress < 0 ||
       onboarding.progress >= onboarding.flow.length ||
-      profile?.userId ||
       (profile?.profileReady && profile?.profileData)
     ) {
-      router.push('/cases');
+      router.push(CONFIG.homepage);
       return;
     }
 
@@ -61,7 +61,7 @@ export default function OnboardingManager({
 
     if (newProgress >= onboarding.flow.length) {
       onboarding.flushData().then(() => {
-        router.push('/cases');
+        router.push(CONFIG.homepage);
       });
     } else {
       router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
@@ -74,7 +74,7 @@ export default function OnboardingManager({
         href={
           onboarding && pageProgress > 0
             ? `/onboarding/${onboarding.flow[pageProgress - 1].url}`
-            : '/cases'
+            : CONFIG.homepage
         }
       >
         Back
