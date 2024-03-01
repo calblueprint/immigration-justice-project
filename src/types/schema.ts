@@ -88,3 +88,13 @@ export interface TranslationRequest {
   languages: string[];
   interest_ids: UUID[];
 }
+
+export interface LanguageSupport {
+  id: UUID; 
+  title?: string;
+  summary?: string; 
+  is_remote?: boolean;
+  deadline: string;
+  language: string;
+  num_pages?: number; 
+}
