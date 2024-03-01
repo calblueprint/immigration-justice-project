@@ -19,29 +19,48 @@ export default function Page() {
     fetchData();
   }, []);
 
+  const getIsRemoteValue = (isRemote: boolean | undefined) => {
+    let isRemoteDisplay;
+    switch (isRemote) {
+      case true:
+        isRemoteDisplay = 'true';
+        break;
+      case false:
+        isRemoteDisplay = 'false';
+        break;
+      default:
+        isRemoteDisplay = 'null';
+    }
+    return isRemoteDisplay;
+  };
+
   return (
     <div>
       <table>
-        <tr>
-          <th>id</th>
-          <th>title</th>
-          <th>summary</th>
-          <th>is_remote</th>
-          <th>deadline</th>
-          <th>language</th>
-          <th>num_pages</th>
-        </tr>
-        {languageSupport.map(l => (
-          <tr key={l.id}>
-            <td>{l.id}</td>
-            <td>{l.title}</td>
-            <td>{l.summary}</td>
-            <td>{l.is_remote}</td>
-            <td>{l.deadline}</td>
-            <td>{l.language}</td>
-            <td>{l.num_pages}</td>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>summary</th>
+            <th>is_remote</th>
+            <th>deadline</th>
+            <th>language</th>
+            <th>num_pages</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {languageSupport.map(l => (
+            <tr key={l.id}>
+              <td>{l.id}</td>
+              <td>{l.title || 'null'}</td>
+              <td>{l.summary || 'null'}</td>
+              <td>{getIsRemoteValue(l.is_remote)}</td>
+              <td>{l.deadline}</td>
+              <td>{l.language}</td>
+              <td>{l.num_pages || 'null'}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
