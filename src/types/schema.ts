@@ -90,11 +90,11 @@ export interface TranslationRequest {
 }
 
 export interface LanguageSupport {
-  id: UUID; 
+  id: UUID;
   title?: string;
-  summary?: string; 
+  summary?: string;
   is_remote?: boolean;
   deadline: string;
   language: string;
-  num_pages?: number; 
+  num_pages?: number;
 }
