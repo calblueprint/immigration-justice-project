@@ -1,5 +1,5 @@
-/* eslint-disable no-bitwise */
 import { ImmigrationLawExperienceEnum } from '@/types/schema';
+
 /**
  * inspiration from https://stackoverflow.com/a/57941711/22063638
  * example timestamp format: 2024-01-18T11:22:40+00:00
@@ -22,6 +22,10 @@ export function timestampStringToDate(ts: string): Date {
   );
 
   return new Date(ms);
+}
+
+export function dateToTimestampString(d: Date): string {
+  return d.toUTCString();
 }
 
 // parse js date to mm/dd/yyyy
@@ -49,6 +53,7 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+
 /**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise

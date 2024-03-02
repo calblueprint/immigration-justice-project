@@ -29,22 +29,21 @@ export interface ProfileRole {
 
 // sql table rows
 export interface CaseListing {
-  id: UUID;
+  legal_server_id: string;
   title?: string;
   summary?: string;
   country?: string;
   client_location?: string;
-  legal_server_id: number;
   hours_per_month?: number;
   num_months?: number;
   is_remote?: boolean;
   needs_attorney?: boolean;
   needs_interpreter?: boolean;
   upcoming_date?: string;
-  experience_needed: ImmigrationLawExperienceEnum;
   adjudicating_agency: string;
   languages: string[];
   relief_codes: string[];
+  deadline?: string;
 }
 
 export interface Profile {
