@@ -1,7 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { UUID } from 'crypto';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
@@ -43,8 +42,8 @@ const defaultFilterValues = {
 };
 
 export default function Page() {
-  const selectedCardRef = useRef<UUID>();
   const profile = useContext(ProfileContext);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
@@ -114,7 +113,7 @@ export default function Page() {
     getNCases(20).then(casesData => {
       setCaseData(casesData as CaseListing[]);
       setCaseInfo(casesData[0] as CaseListing);
-      selectedCardRef.current = casesData[0]?.id;
+      setSelectedCard(casesData[0]?.legal_server_id);
     });
   }, []);
 
@@ -211,11 +210,11 @@ export default function Page() {
             <>
               {filteredCases.map(c => (
                 <ListingCard
-                  key={c.id}
+                  key={c.legal_server_id}
                   caseData={c}
-                  isSelected={c.id === selectedCardRef.current}
+                  isSelected={c.legal_server_id === selectedCard}
                   onClick={() => {
-                    selectedCardRef.current = c.id;
+                    setSelectedCard(c.legal_server_id);
                     setCaseInfo(c);
                   }}
                 />

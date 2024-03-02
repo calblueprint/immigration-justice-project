@@ -1,4 +1,3 @@
-import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import {
   timestampStringToDate,
@@ -18,7 +17,7 @@ export default function ListingCard({
 }: {
   caseData: CaseListing;
   isSelected?: boolean;
-  onClick?: (id: UUID) => void;
+  onClick?: (id: string) => void;
 }) {
   // Helper function to generate an array of strings for CardTag components
   const generateCardTags = (): string[] => {
@@ -56,7 +55,7 @@ export default function ListingCard({
   return (
     <CardBody
       $selected={isSelected}
-      onClick={onClick ? () => onClick(caseData.id) : undefined}
+      onClick={onClick ? () => onClick(caseData.legal_server_id) : undefined}
     >
       <H4>{caseData.title || 'Migrant seeking representation'}</H4>
 

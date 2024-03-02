@@ -60,7 +60,7 @@ export interface Profile {
 }
 
 export interface Interest {
-  listing_id: UUID;
+  listing_id: string;
   user_id: UUID;
   listing_type: ListingTypeEnum;
   form_response: {

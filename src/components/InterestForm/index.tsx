@@ -53,7 +53,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     if (isValidDate(startDate)) {
       if (profile && profile.userId) {
         const newInterest: Interest = {
-          listing_id: caseData.id,
+          listing_id: caseData.legal_server_id,
           listing_type: 'CASE',
           user_id: profile.userId,
           form_response: {

@@ -130,3 +130,8 @@ export const parseTimeCommitment = (
   }
   return 'N/A';
 };
+
+// returns number from min to max (exclusive)
+export function randInt(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
