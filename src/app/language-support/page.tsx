@@ -11,7 +11,7 @@ export default function Page() {
     const fetchData = async () => {
       try {
         const data = await getAllLanguageSupport();
-        setLanguageSupport(data as LanguageSupport[]);
+        setLanguageSupport(data);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }
@@ -20,18 +20,13 @@ export default function Page() {
   }, []);
 
   const getIsRemoteValue = (isRemote: boolean | undefined) => {
-    let isRemoteDisplay;
-    switch (isRemote) {
-      case true:
-        isRemoteDisplay = 'true';
-        break;
-      case false:
-        isRemoteDisplay = 'false';
-        break;
-      default:
-        isRemoteDisplay = 'null';
+    if (isRemote === true) {
+      return 'true';
     }
-    return isRemoteDisplay;
+    if (isRemote === false) {
+      return 'false';
+    }
+    return 'null';
   };
 
   return (
