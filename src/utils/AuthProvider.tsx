@@ -2,7 +2,7 @@
 
 import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { UUID, sign } from 'crypto';
+import { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
 
 // TODO: resolve inconsistent null/undefined types for empty values
@@ -23,10 +23,8 @@ export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 );
 
-export const useAuth = () => {
-  // TODO: we might need error handling here?
-  return useContext(AuthContext);
-};
+// TODO: we might need error handling here?
+export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
