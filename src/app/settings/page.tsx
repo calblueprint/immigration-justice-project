@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
@@ -24,6 +23,7 @@ import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import { isValidBarNumber } from '@/utils/helpers';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
+import { useAuth } from '@/utils/AuthProvider';
 
 const rolesOptions = new Map<RoleEnum, string>([
   ['ATTORNEY', 'Attorney'],
@@ -39,11 +39,12 @@ const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
 const eoirRegisteredOptions = ['Yes', 'No'];
 
 export default function Settings() {
+  const auth = useAuth();
   const { push } = useRouter();
   const profile = useContext(ProfileContext);
 
-  const userId = useMemo(() => profile?.userId, [profile]);
-  const userEmail = useMemo(() => profile?.userEmail, [profile]);
+  const userId = useMemo(() => auth?.userId, [profile]);
+  const userEmail = useMemo(() => auth?.userEmail, [profile]);
 
   const [basicInformation, setBasicInformation] = useState<SettingsSectionData>(
     [],
@@ -194,7 +195,7 @@ export default function Settings() {
   }, [profile]);
 
   const handleSignOut = useCallback(async () => {
-    const { error } = await supabase.auth.signOut();
+    const error = await auth?.signOut();
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
