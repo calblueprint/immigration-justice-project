@@ -46,10 +46,8 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
   undefined,
 );
 
-export const useProfile = () => {
-  // we might need error handling here?
-  return useContext(ProfileContext);
-};
+// TODO: we might need error handling here?
+export const useProfile = () => useContext(ProfileContext);
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
   const auth = useAuth();
@@ -70,7 +68,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     ]);
 
     setProfileReady(true);
-  }, []);
+  }, []); // TODO: should auth be a dependency here?
 
   useEffect(() => {
     loadProfile();
@@ -166,7 +164,14 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       setRoles,
       loadProfile,
     };
-  }, [profileData, profileLangs, profileRoles, profileReady, loadProfile]);
+  }, [
+    profileData,
+    profileLangs,
+    profileRoles,
+    profileReady,
+    loadProfile,
+    auth,
+  ]);
 
   return (
     <ProfileContext.Provider value={providerValue}>
