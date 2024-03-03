@@ -23,6 +23,7 @@ export default function SignUp() {
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   const handleSignUp = async () => {
+    console.log(auth);
     if (!auth) return;
     setEmailError(validEmail(email) ? '' : 'Invalid Email');
     setPasswordError(password !== '' ? '' : 'Invalid Password');
