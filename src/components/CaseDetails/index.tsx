@@ -9,7 +9,8 @@ import {
 } from '@/utils/helpers';
 import { H2, H3, P, StrongP } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { useProfile } from '@/utils/ProfileProvider';
+import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
@@ -82,10 +83,11 @@ const caseFields = [
 ];
 
 export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
-  const profile = useContext(ProfileContext);
+  const auth = useAuth();
+  const profile = useProfile();
 
   const Interest = useMemo(() => {
-    if (profile && profile.userId)
+    if (auth && auth.userId && profile)
       return profile.profileData ? (
         <InterestForm caseData={caseData} />
       ) : (

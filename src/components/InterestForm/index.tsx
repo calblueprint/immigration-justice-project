@@ -29,12 +29,13 @@ const radioOptions = [
 ];
 
 export default function InterestForm({ caseData }: { caseData: CaseListing }) {
+  const auth = useAuth();
+  const profile = useProfile();
   const [reason, setReason] = useState<string>('');
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);
-  const profile = useContext(ProfileContext);
 
   useEffect(() => {
     // Reset form fields when caseData changes
@@ -51,11 +52,11 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
       return;
     }
     if (isValidDate(startDate)) {
-      if (profile && profile.userId) {
+      if (auth && auth.userId && profile) {
         const newInterest: Interest = {
           listing_id: caseData.id,
           listing_type: 'CASE',
-          user_id: profile.userId,
+          user_id: auth.userId,
           form_response: {
             start_date: new Date(startDate),
             interest_reason: reason,
