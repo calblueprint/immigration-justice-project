@@ -1,12 +1,6 @@
 'use client';
 
 import {
-  Profile,
-  ProfileLanguage,
-  ProfileRole,
-  RoleEnum,
-} from '@/types/schema';
-import {
   createContext,
   useState,
   useMemo,
@@ -15,8 +9,16 @@ import {
   Dispatch,
   useContext,
 } from 'react';
+
+import {
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  RoleEnum,
+} from '@/types/schema';
 import { UUID } from 'crypto';
-import { ProfileContext } from './ProfileProvider';
+import { useProfile } from '@/utils/ProfileProvider';
+import { useAuth } from '@/utils/AuthProvider';
 
 interface FlowData {
   url: string;
@@ -50,7 +52,8 @@ export default function OnboardingProvider({
 }: {
   children: ReactNode;
 }) {
-  const profileCtx = useContext(ProfileContext);
+  const auth = useAuth();
+  const profileCtx = useProfile();
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<FlowData[]>([
     { name: 'Roles', url: 'roles' },
@@ -76,11 +79,12 @@ export default function OnboardingProvider({
     };
 
     const flushData = async () => {
+      if (!auth) throw new Error('Fatal: No auth context provided!');
       if (!profileCtx) throw new Error('Fatal: No profile context provided!');
-      if (profileCtx.userId === undefined)
+      if (auth.userId === undefined)
         throw new Error('Fatal: User is not logged in!');
 
-      const uid: UUID = profileCtx.userId;
+      const uid: UUID = auth.userId;
 
       if (!profile.first_name)
         throw new Error('Error flushing data: profile missing first name!');
