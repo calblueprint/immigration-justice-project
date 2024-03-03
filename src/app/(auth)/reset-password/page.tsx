@@ -8,8 +8,10 @@ import COLORS from '@/styles/colors';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import supabase from '@/api/supabase/createClient';
+import { useAuth } from '@/utils/AuthProvider';
 
 export default function ResetPassword() {
+  const auth = useAuth();
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [canReset, setCanReset] = useState(false);
@@ -34,7 +36,7 @@ export default function ResetPassword() {
     if (error) {
       setErrorMessage(error.message);
     } else {
-      const { error: signOutError } = await supabase.auth.signOut();
+      const signOutError = await auth?.signOut();
       if (signOutError) {
         throw new Error(
           `An error occurred trying to sign out: ${signOutError.message}`,
