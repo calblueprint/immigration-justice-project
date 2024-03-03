@@ -7,7 +7,7 @@ import supabase from '@/api/supabase/createClient';
 
 // TODO: resolve inconsistent null/undefined types for empty values
 export interface AuthContextType {
-  session: Session | null;
+  session: Session | undefined;
   userId: UUID | undefined;
   userEmail: string | undefined;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
@@ -31,12 +31,12 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | undefined>(undefined);
   const [userId, setUserId] = useState<UUID | undefined>(undefined);
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
   // set the session, userId, and userEmail
-  const setAll = (newSession: Session | null) => {
+  const setAll = (newSession: Session | undefined) => {
     if (!newSession) return;
     setSession(newSession);
     if (newSession?.user?.id) {
@@ -50,11 +50,11 @@ export default function AuthProvider({
   // on page load, check if there's a session and set it
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: newSession } }) => {
-      setAll(newSession);
+      setAll(newSession != null ? newSession : undefined);
     });
 
     supabase.auth.onAuthStateChange((_event, newSession) => {
-      setAll(newSession);
+      setAll(newSession != null ? newSession : undefined);
     });
   }, []);
 
@@ -65,7 +65,7 @@ export default function AuthProvider({
       password,
     }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session);
+    setAll(value.data.session ? value.data.session : undefined);
 
     return value;
   };
@@ -74,7 +74,7 @@ export default function AuthProvider({
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
 
-    setSession(null);
+    setSession(undefined);
     setUserId(undefined);
     setUserEmail(undefined);
 
@@ -92,7 +92,7 @@ export default function AuthProvider({
       },
     }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session);
+    setAll(value.data.session ? value.data.session : undefined);
     return value;
   };
 
