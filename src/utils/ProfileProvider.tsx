@@ -68,7 +68,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     ]);
 
     setProfileReady(true);
-  }, []); // TODO: should auth be a dependency here?
+  }, [auth]); // TODO: should auth be a dependency here?
 
   useEffect(() => {
     loadProfile();

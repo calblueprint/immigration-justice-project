@@ -26,7 +26,11 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 // TODO: we might need error handling here?
 export const useAuth = () => useContext(AuthContext);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [session, setSession] = useState<Session | null>(null);
   const [userId, setUserId] = useState<UUID | undefined>(undefined);
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
@@ -79,6 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // sign up and set the session, userId, and userEmail
   const signUp = async (email: string, password: string, options: object) => {
+    console.log('signUp', email, password, options);
     const value = await supabase.auth.signUp({
       email,
       password,

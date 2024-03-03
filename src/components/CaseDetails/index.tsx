@@ -4,6 +4,7 @@ import {
   timestampStringToDate,
   parseDate,
   parseAgency,
+  //parseExperience,
   parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
@@ -69,6 +70,11 @@ const caseFields = [
     label: 'Client Language',
     getValue: (data: CaseListing) => data.languages.join(', '),
   },
+  // {
+  //   label: 'Attorney Experience Level',
+  //   getValue: (data: CaseListing) =>
+  //     parseExperience(data.experience_needed) || 'N/A',
+  // },
   {
     label: 'Relief Sought',
     getValue: (data: CaseListing) => data.relief_codes.join(', ') || 'N/A',

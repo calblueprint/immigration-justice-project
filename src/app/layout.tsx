@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { openSans } from '@/styles/fonts';
 import ProfileProvider from '@/utils/ProfileProvider';
+import AuthProvider from '@/utils/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={openSans.className}>
-        <ProfileProvider>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        </ProfileProvider>
+        <AuthProvider>
+          <ProfileProvider>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          </ProfileProvider>
+        </AuthProvider>
       </body>
     </html>
   );
