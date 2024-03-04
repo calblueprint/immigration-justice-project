@@ -110,11 +110,12 @@ export default function Page() {
 
   // load cases on render
   useEffect(() => {
-    getNCases(20).then(casesData => {
-      setCaseData(casesData as CaseListing[]);
+    (async () => {
+      const casesData = await getNCases(20);
+      setCaseData(casesData);
       setCaseInfo(casesData[0] as CaseListing);
       setSelectedCard(casesData[0]?.legal_server_id);
-    });
+    })();
   }, []);
 
   const AuthButtonView = useMemo(() => {

@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
   timestampStringToDate,
   parseDate,
@@ -66,7 +65,7 @@ const caseFields = [
   },
   {
     label: 'Client Language',
-    getValue: (data: CaseListing) => data.languages.join(', '),
+    getValue: (data: CaseListing) => data.languages.join(', ') || 'N/A',
   },
   {
     label: 'Relief Sought',
