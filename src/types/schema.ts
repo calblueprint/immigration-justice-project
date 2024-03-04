@@ -97,5 +97,5 @@ export interface LanguageSupport {
   deadline: string;
   language: string;
   num_pages?: number;
-  listing_type: string; 
+  listing_type: string;
 }
