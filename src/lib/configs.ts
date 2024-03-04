@@ -1,5 +1,5 @@
 const CONFIG = {
-  homepage: '/cases',
+  homepage: '/',
 };
 
 export default CONFIG;
