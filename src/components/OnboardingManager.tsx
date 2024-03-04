@@ -34,6 +34,7 @@ export default function OnboardingManager({
     if (
       onboarding.progress < 0 ||
       onboarding.progress >= onboarding.flow.length ||
+      !profile?.userId ||
       (profile?.profileReady && profile?.profileData)
     ) {
       router.push(CONFIG.homepage);
