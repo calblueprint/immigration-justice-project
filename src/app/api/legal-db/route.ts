@@ -62,6 +62,11 @@ export async function GET() {
   const legalServerData = (await legalServerResponse.json())
     .data as ReportData[];
 
+  if (!legalServerData)
+    throw new Error(
+      'No legal server data found. Check environment variables and try again.',
+    );
+
   const openCases = legalServerData.filter(
     lsData =>
       lsData.matter_builtin_lookup_case_disposition_case_disposition_expn?.toUpperCase() ===
