@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { openSans } from '@/styles/fonts';
 import Link from 'next/link';
-import COLORS from '@/styles/colors';
 
 const ProfileButton = styled(Link)`
   ${openSans.style}
@@ -14,7 +13,7 @@ const ProfileButton = styled(Link)`
   background: none;
   border: none;
 
-  color: ${COLORS.greyDarker};
+  color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
