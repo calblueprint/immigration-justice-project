@@ -14,7 +14,7 @@ const ProfileButton = styled(Link)`
   background: none;
   border: none;
 
-  color: ${COLORS.greyDarker};
+  color: #ffffff;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
