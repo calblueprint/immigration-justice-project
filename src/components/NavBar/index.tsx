@@ -36,7 +36,7 @@ export default function NavBar() {
           Log In
         </LinkButton>
         <LinkButton
-          $primaryColor="#CA9B30"
+          $primaryColor={COLORS.goldMid}
           $secondaryColor={COLORS.blueMid}
           href="/signup"
         >

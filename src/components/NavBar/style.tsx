@@ -4,9 +4,6 @@ import { sans } from '@/styles/fonts';
 import { LinkColored } from '@/styles/text';
 
 export const NavBarContainer = styled.div`
-  /* top: 0;
-  left: 0;
-  position: absolute; */
   width: 100%;
   height: 78px;
   background: ${COLORS.blueMid};
