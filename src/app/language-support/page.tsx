@@ -19,6 +19,13 @@ export default function Page() {
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }
+
+      // try {
+      //   const data = await getCaseInterpretations();
+      //   setCaseInterpretation(data);
+      // } catch (error) {
+      //   console.error('(useEffect)[CaseInterpretation]', error);
+      // }
     };
     fetchData();
   }, []);
@@ -33,6 +40,15 @@ export default function Page() {
     return 'null';
   };
 
+  const getLanguages = (languages: string[]) => {
+    if (languages.length === 1) {
+      return languages[0];
+    } 
+    var allLang = ""
+    languages.forEach((lang) => {allLang = allLang + lang + ", "})
+    return allLang.slice(0, -2);
+  };
+
   return (
     <div>
       <table>
@@ -45,6 +61,7 @@ export default function Page() {
             <th>deadline</th>
             <th>languages</th>
             <th>num_pages</th>
+            <th>listing_type</th>
           </tr>
         </thead>
         <tbody>
