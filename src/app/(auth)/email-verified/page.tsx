@@ -9,14 +9,11 @@ import NavBar from '@/components/NavBar';
 export default function EmailVerified() {
   const { push } = useRouter();
   return (
-    <>
-      <NavBar />
-      <SpacerDiv>
-        <H2>Your email has been verified!</H2>
-        <BigButton type="button" onClick={() => push('/onboarding/roles')}>
-          Go to Onboarding
-        </BigButton>
-      </SpacerDiv>
-    </>
+    <SpacerDiv>
+      <H2>Your email has been verified!</H2>
+      <BigButton type="button" onClick={() => push('/onboarding/roles')}>
+        Go to Onboarding
+      </BigButton>
+    </SpacerDiv>
   );
 }
