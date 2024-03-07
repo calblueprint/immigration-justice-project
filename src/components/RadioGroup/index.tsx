@@ -39,7 +39,8 @@ export default function RadioGroup({
               type="radio"
               id={o}
               name={name}
-              defaultChecked={value === o}
+              value={value}
+              checked={value === o}
               onChange={() => handleChange(o)}
             />
             {o}

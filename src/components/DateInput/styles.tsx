@@ -15,7 +15,6 @@ export const InputLabel = styled(H4)`
 
 export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
   ${openSans.style}
-  font-size: 1rem;
   font-size: 0.875rem; //14px
   font-weight: 400;
   cursor: text;
@@ -23,7 +22,7 @@ export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
     $filled ? COLORS.greyDarker : COLORS.placeholderText};
   border-radius: 0.313rem; // 5px
   border: 2px solid ${({ $error, $filled }) => getBorderColor($error, $filled)};
-  padding: 0.625rem 1.25rem; // 10px 20px 10px 20px;
+  padding: 0.625rem;
   text-transform: uppercase;
   &:focus {
     border-color: ${COLORS.blueMid};

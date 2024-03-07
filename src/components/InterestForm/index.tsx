@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
 import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import { ProfileContext } from '@/utils/ProfileProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
@@ -33,6 +34,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);
+  const profile = useContext(ProfileContext);
 
   useEffect(() => {
     // Reset form fields when caseData changes
@@ -49,22 +51,23 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
       return;
     }
     if (isValidDate(startDate)) {
-      const newInterest: Interest = {
-        // hardcoded values for now
-        listing_id: caseData.id,
-        listing_type: 'CASE',
-        user_id: '515d9b33-9185-4601-9a13-23789bea3ac0',
-        form_response: {
-          start_date: new Date(startDate),
-          interestReason: reason,
-          rolesInterested:
-            rolesInterested === radioOptions[2]
-              ? ['ATTORNEY', 'INTERPRETER']
-              : [rolesInterested.toUpperCase() as RoleEnum],
-        },
-      };
+      if (profile && profile.userId) {
+        const newInterest: Interest = {
+          listing_id: caseData.id,
+          listing_type: 'CASE',
+          user_id: profile.userId,
+          form_response: {
+            start_date: new Date(startDate),
+            interestReason: reason,
+            rolesInterested:
+              rolesInterested === radioOptions[2]
+                ? ['ATTORNEY', 'INTERPRETER']
+                : [rolesInterested.toUpperCase() as RoleEnum],
+          },
+        };
+        await upsertInterest(newInterest);
+      }
 
-      await upsertInterest(newInterest);
       setReason('');
       setStartDate('');
       setRolesInterested('');

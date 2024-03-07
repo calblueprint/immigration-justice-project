@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   timestampStringToDate,
   parseDate,
@@ -8,9 +8,12 @@ import {
   parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
-import { H2, P, StrongP } from '@/styles/text';
+import { H2, H3, P, StrongP } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
+import { LinkButton } from '../Button';
 import {
   CaseInterestContainer,
   CaseDisplay,
@@ -18,6 +21,7 @@ import {
   Line,
   FieldContainer,
   InnerFieldContainer,
+  AuthButtons,
 } from './styles';
 
 const renderField = (label: string, value: string | boolean) => (
@@ -84,6 +88,52 @@ const caseFields = [
 ];
 
 export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
+  const profile = useContext(ProfileContext);
+
+  const Interest = useMemo(() => {
+    if (profile && profile.userId)
+      return profile.profileData ? (
+        <InterestForm caseData={caseData} />
+      ) : (
+        <>
+          <H3>
+            Please finish submitting your profile before submitting interest.
+          </H3>
+          <AuthButtons>
+            <LinkButton
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
+              href="/onboarding/roles"
+            >
+              Go to Onboarding
+            </LinkButton>
+          </AuthButtons>
+        </>
+      );
+
+    return (
+      <>
+        <H3>
+          You aren&apos;t signed in. In order to submit your interest, log into
+          your account, or create a new account.
+        </H3>
+        <AuthButtons>
+          <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
+            Sign Up
+          </LinkButton>
+
+          <LinkButton
+            $primaryColor={COLORS.blueMid}
+            $secondaryColor={COLORS.blueDark}
+            href="/login"
+          >
+            Log In
+          </LinkButton>
+        </AuthButtons>
+      </>
+    );
+  }, [caseData, profile]);
+
   return (
     <CaseDisplay>
       <CaseInterestContainer>
@@ -97,7 +147,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
           <P>{caseData.summary || 'No summary Found'}</P>
         </InfoContainer>
         <Line />
-        <InterestForm caseData={caseData} />
+        {Interest}
       </CaseInterestContainer>
     </CaseDisplay>
   );

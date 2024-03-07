@@ -7,6 +7,7 @@ type DateInputProps = {
   name?: string;
   value: string;
   id?: string;
+  min?: string | number;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
 };
@@ -18,6 +19,7 @@ export default function DateInput({
   value,
   setValue,
   id,
+  min,
   onChange,
 }: DateInputProps) {
   const handleChange = useCallback(
@@ -41,7 +43,7 @@ export default function DateInput({
         $filled={value !== ''}
         name={name}
         value={value}
-        min={new Date().toISOString().split('T')[0]}
+        min={min}
         onChange={e => handleChange(e.target.value)}
       />
       {error !== '' && <ErrorText>{error}</ErrorText>}

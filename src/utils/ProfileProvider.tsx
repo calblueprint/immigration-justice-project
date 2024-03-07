@@ -16,7 +16,14 @@ import {
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { UUID } from 'crypto';
-import { createContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import {
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 
 interface ProfileContextType {
   profileData: Profile | null;
@@ -33,6 +40,7 @@ interface ProfileContextType {
     languages: ProfileLanguage[],
     roles: ProfileRole[],
   ) => Promise<void>;
+  loadProfile: () => Promise<void>;
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
@@ -47,34 +55,38 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
 
-  useEffect(() => {
-    (async () => {
-      const { data: sessionData, error } = await supabase.auth.getSession();
+  const loadProfile = useCallback(async () => {
+    setProfileReady(false);
 
-      if (error) throw error;
-      if (
-        !sessionData ||
-        !sessionData.session ||
-        !sessionData.session.user ||
-        !sessionData.session.user.id
-      )
-        return;
+    const { data: sessionData, error } = await supabase.auth.getSession();
 
-      const sessionUserEmail = sessionData.session.user.email;
-      setUserEmail(sessionUserEmail);
+    if (error) throw error;
+    if (
+      !sessionData ||
+      !sessionData.session ||
+      !sessionData.session.user ||
+      !sessionData.session.user.id
+    )
+      return;
 
-      const sessionUserId = sessionData.session.user.id as UUID;
-      setUserId(sessionUserId);
+    const sessionUserEmail = sessionData.session.user.email;
+    setUserEmail(sessionUserEmail);
 
-      await Promise.all([
-        fetchProfileById(sessionUserId).then(data => setProfileData(data)),
-        fetchLanguagesById(sessionUserId).then(data => setProfileLangs(data)),
-        fetchRolesById(sessionUserId).then(data => setProfileRoles(data)),
-      ]);
+    const sessionUserId = sessionData.session.user.id as UUID;
+    setUserId(sessionUserId);
 
-      setProfileReady(true);
-    })();
+    await Promise.all([
+      fetchProfileById(sessionUserId).then(data => setProfileData(data)),
+      fetchLanguagesById(sessionUserId).then(data => setProfileLangs(data)),
+      fetchRolesById(sessionUserId).then(data => setProfileRoles(data)),
+    ]);
+
+    setProfileReady(true);
   }, []);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   const providerValue = useMemo(() => {
     /**
@@ -91,8 +103,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       if (!userId) throw new Error('Fatal: user is not logged in!');
       if (profileData) throw new Error('Fatal: user already has a profile!');
 
+      await insertProfile(newProfile).then(data => setProfileData(data));
+
       await Promise.all([
-        insertProfile(newProfile).then(data => setProfileData(data)),
         insertLanguages(newLanguages).then(data => setProfileLangs(data)),
         insertRoles(newRoles).then(data => setProfileRoles(data)),
       ]);
@@ -165,6 +178,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       updateProfile,
       setLanguages,
       setRoles,
+      loadProfile,
     };
   }, [
     profileData,
@@ -173,6 +187,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     userId,
     userEmail,
     profileReady,
+    loadProfile,
   ]);
 
   return (

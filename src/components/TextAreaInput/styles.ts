@@ -11,14 +11,13 @@ export const TextAreaContainer = styled.div`
 
 export const TextArea = styled.textarea`
   ${openSans.style}
-  font-size: 0.875rem;
   resize: none;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
   border-radius: 0.3125rem;
   border: 2px solid ${COLORS.greyLight};
   padding: 0.625rem;
-  min-height: 10rem;
+  min-height: 5.3125rem;
 
   &:focus {
     border-color: ${COLORS.blueMid};

@@ -152,7 +152,6 @@ export default function BigDataDropdown({
         tabSelectsValue={false}
         instanceId={useId()}
         defaultValue={defaultDropdownVal}
-        options={optionsArray}
         isMulti={multi}
         onChange={handleChange}
         placeholder={placeholder}

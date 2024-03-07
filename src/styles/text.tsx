@@ -30,6 +30,10 @@ export const H3 = styled.h3<{ $color?: string }>`
   margin: 0;
 `;
 
+export const CenteredH3 = styled(H3)`
+  align-self: center;
+`;
+
 export const H4 = styled.h4<{ $color?: string }>`
   ${openSans.style}
   font-size: 1rem;

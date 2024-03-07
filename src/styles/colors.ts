@@ -5,6 +5,7 @@ const COLORS = {
   blueDarker: '#003453', // drowning
   blueLight: '#D9F1FF',
   blueLighter: '#E8F6FF',
+  background: '#FBFCFF',
   // Greys
   greyLighter: '#F2F2F2', // lightGrey
   greyLight: '#CCC',

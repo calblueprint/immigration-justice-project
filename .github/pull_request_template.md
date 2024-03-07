@@ -8,7 +8,7 @@
 
 
 ### :evergreen_tree: Screenshots
-[//]: # "REQUIRED for frontend changes, otherwise optional but strongly recommended. Add screenshots of expected behavior - GIFs if you're feeling fancy! If you are making changes here, please CC: @davidqing6432 at the bottom."
+[//]: # "REQUIRED for frontend changes, otherwise optional but strongly recommended. Add screenshots of expected behavior - GIFs if you're feeling fancy! If you are making changes here, please CC: @kyrenetam at the bottom."
 
 
 
@@ -37,4 +37,4 @@
 
 
 [//]: # 'This tags the project leader as a default. Feel free to change, or add on anyone who you should be in on the conversation.'
-CC: @pragyakallanagoudar
+CC: @varortz
