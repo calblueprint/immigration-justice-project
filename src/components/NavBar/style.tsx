@@ -20,8 +20,6 @@ export const NavBarDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* padding-top: 15px;
-  padding-bottom: 15px; */
   padding: 15px 0px;
   justify-items: flex-start;
   align-items: center;
@@ -44,10 +42,8 @@ export const AuthButtons = styled.div`
   display: flex;
   gap: 1.5625rem;
   align-self: center;
-  //position: absolute;
   top: 0;
   right: 0;
-  //margin-top: 2.1875rem;
   margin-right: 3.375rem;
 `;
 export const NoUnderlineLink = styled(LinkColored)`
@@ -60,24 +56,3 @@ export const NoUnderlineLink = styled(LinkColored)`
     text-decoration: underline;
   }
 `;
-
-// export const LinkToPage = styled.a`
-// ${openSans.style}
-// font-size: 1rem; // 16px
-// color: #FFFFFF;
-// text-decoration: none;
-
-// &:hover {
-//   text-decoration: underline; // Adding a hover effect
-// }
-// `;
-
-// export const LinkToPage = styled.div`
-//   font: ${openSans.style};
-//   font-size: 1rem; // 16px;
-//   color: #ffffff;
-//   text-decoration: underline;
-//   font-weight: 500;
-//   text-decoration-color: ${COLORS.blueMid};
-//   padding-left: 34px;
-// `;
