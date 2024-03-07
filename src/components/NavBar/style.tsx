@@ -21,19 +21,14 @@ export const NavBarDiv = styled.div`
   justify-items: flex-start;
   align-items: center;
 `;
-export const IconLink = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
 
-export const CustomDiv = styled.div`
+export const NavBarSectionDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 18px;
   margin-left: 34px;
   margin-right: 34px;
-  text-decoration: none;
 `;
 export const AuthButtons = styled.div`
   display: flex;

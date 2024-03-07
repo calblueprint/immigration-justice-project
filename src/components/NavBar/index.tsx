@@ -9,10 +9,9 @@ import Icon from '../../../assets/icons/Icon';
 import { LinkButton } from '../Buttons';
 import {
   AuthButtons,
-  CustomDiv,
-  IconLink,
   NavBarContainer,
   NavBarDiv,
+  NavBarSectionDiv,
   NoUnderlineLink,
 } from './style';
 
@@ -49,11 +48,9 @@ export default function NavBar() {
   return (
     <NavBarContainer>
       <NavBarDiv>
-        <CustomDiv>
+        <NavBarSectionDiv>
           <Link href="/">
-            <IconLink>
-              <Icon type="logo" />
-            </IconLink>
+            <Icon type="logo" />
           </Link>
           <NoUnderlineLink href="/cases" $color="white">
             Cases
@@ -65,10 +62,10 @@ export default function NavBar() {
           <NoUnderlineLink href="/cases" $color="white">
             Language Support
           </NoUnderlineLink>
-        </CustomDiv>
-        <CustomDiv>
+        </NavBarSectionDiv>
+        <NavBarSectionDiv>
           <AuthButtons>{AuthButtonView}</AuthButtons>
-        </CustomDiv>
+        </NavBarSectionDiv>
       </NavBarDiv>
     </NavBarContainer>
   );
