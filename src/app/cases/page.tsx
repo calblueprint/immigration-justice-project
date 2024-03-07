@@ -171,7 +171,6 @@ export default function Page() {
             <ResetFilters onClick={() => resetFilters()}>
               Reset Filters
             </ResetFilters>
-            {/* <AuthButtons>{AuthButtonView}</AuthButtons> */}
           </FiltersContainer>
         </Header>
         <Body>
