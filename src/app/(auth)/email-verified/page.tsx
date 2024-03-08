@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { H2 } from '@/styles/text';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
-import NavBar from '@/components/NavBar';
 
 export default function EmailVerified() {
   const { push } = useRouter();
