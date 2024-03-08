@@ -10,7 +10,6 @@ import { LinkButton } from '../Buttons';
 import {
   AuthButtons,
   NavBarContainer,
-  NavBarDiv,
   NavBarSectionDiv,
   NoUnderlineLink,
 } from './style';
@@ -47,7 +46,6 @@ export default function NavBar() {
 
   return (
     <NavBarContainer>
-      <NavBarDiv>
         <NavBarSectionDiv>
           <Link href="/">
             <Icon type="logo" />
@@ -66,7 +64,6 @@ export default function NavBar() {
         <NavBarSectionDiv>
           <AuthButtons>{AuthButtonView}</AuthButtons>
         </NavBarSectionDiv>
-      </NavBarDiv>
     </NavBarContainer>
   );
 }
