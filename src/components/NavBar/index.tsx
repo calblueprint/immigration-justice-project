@@ -8,7 +8,6 @@ import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/Button';
 import {
   NavBarContainer,
-  NavBarDiv,
   NavBarSectionDiv,
   AuthButtons,
   NoUnderlineLink,
@@ -47,7 +46,6 @@ export default function NavBar() {
 
   return (
     <NavBarContainer>
-      <NavBarDiv>
         <NavBarSectionDiv>
           <Link href="/">
             <Icon type="logo" />
@@ -66,7 +64,6 @@ export default function NavBar() {
         <NavBarSectionDiv>
           <AuthButtons>{AuthButtonView}</AuthButtons>
         </NavBarSectionDiv>
-      </NavBarDiv>
     </NavBarContainer>
   );
 }
