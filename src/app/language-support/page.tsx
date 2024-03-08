@@ -27,8 +27,12 @@ export default function Page() {
       //   console.error('(useEffect)[CaseInterpretation]', error);
       // }
     };
+  
     fetchData();
   }, []);
+
+  console.log("allLanguageSupport length", allLanguageSupport.length) 
+  console.log("languageSupport length", languageSupport.length) 
 
   const getIsRemoteValue = (isRemote: boolean | undefined) => {
     if (isRemote === true) {
@@ -40,18 +44,82 @@ export default function Page() {
     return 'null';
   };
 
-  const getLanguages = (languages: string[]) => {
-    if (languages.length === 1) {
-      return languages[0];
-    } 
-    var allLang = ""
-    languages.forEach((lang) => {allLang = allLang + lang + ", "})
-    return allLang.slice(0, -2);
+  const isCaseInterpretation = (obj: AllLanguageSupport) => {
+    return 'legal_server_id' in obj; 
   };
+
+  const isNotCaseInterp = (obj: AllLanguageSupport) => {
+    return 'listing_type' in obj; 
+  };
+
+  const allLangSupportRow = (langSupport: AllLanguageSupport) => {
+    if (isCaseInterpretation(langSupport)) {
+      let caseInterp = langSupport as CaseListing
+      // console.log("Case Language Support Case")
+      return (
+        <tr key={caseInterp.legal_server_id}>
+          <td>{caseInterp.legal_server_id}</td>
+          <td>{caseInterp.title}</td>
+          <td>{caseInterp.summary}</td>
+          <td>{caseInterp.languages.join(', ')}</td>
+          <td>{getIsRemoteValue(caseInterp.is_remote)}</td>
+          <td>Case Interpretation</td>
+          <td></td>
+          <td>{caseInterp.upcoming_date}</td>
+          <td>{caseInterp.num_months}</td>
+          <td>{caseInterp.hours_per_month}</td>
+          <td></td>
+        </tr>
+      )} 
+    
+      let ls = langSupport as LanguageSupport
+      console.log("Non-Case Language Support Case")
+      return (
+        <tr key={ls.id}>
+          <td>{ls.id}</td>
+          <td>{ls.title}</td>
+          <td>{ls.summary}</td>
+          <td>{ls.language}</td>
+          <td>{getIsRemoteValue(ls.is_remote)}</td>
+          <td>{ls.listing_type}</td>
+          <td>{ls.deadline}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{ls.num_pages}</td>
+        </tr>
+    )}
 
   return (
     <div>
       <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>summary</th>
+            <th>language</th>
+            <th>is_remote</th>
+            <th>listing_type</th>
+            <th>deadline</th>
+            <th>upcoming_date</th>
+            <th>num_months</th>
+            <th>hours_per_month</th>
+            <th>num_pages</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allLanguageSupport.map(l => 
+            allLangSupportRow(l)
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/*
+<table>
         <thead>
           <tr>
             <th>id</th>
@@ -89,6 +157,4 @@ export default function Page() {
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
+      */
