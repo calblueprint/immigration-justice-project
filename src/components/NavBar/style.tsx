@@ -4,22 +4,16 @@ import { openSans } from '@/styles/fonts';
 import { LinkColored } from '@/styles/text';
 
 export const NavBarContainer = styled.div`
+  display: flex;
   width: 100%;
   height: 78px;
   background: ${COLORS.blueMid};
-  align-items: center;
   z-index: 1000;
   width: 100%;
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
-`;
-export const NavBarDiv = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: 15px 0px;
-  justify-items: flex-start;
-  align-items: center;
+
 `;
 
 export const NavBarSectionDiv = styled.div`
