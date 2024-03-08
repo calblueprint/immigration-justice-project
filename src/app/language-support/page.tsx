@@ -27,12 +27,9 @@ export default function Page() {
       //   console.error('(useEffect)[CaseInterpretation]', error);
       // }
     };
-  
+
     fetchData();
   }, []);
-
-  console.log("allLanguageSupport length", allLanguageSupport.length) 
-  console.log("languageSupport length", languageSupport.length) 
 
   const getIsRemoteValue = (isRemote: boolean | undefined) => {
     if (isRemote === true) {
@@ -44,51 +41,46 @@ export default function Page() {
     return 'null';
   };
 
-  const isCaseInterpretation = (obj: AllLanguageSupport) => {
-    return 'legal_server_id' in obj; 
-  };
-
-  const isNotCaseInterp = (obj: AllLanguageSupport) => {
-    return 'listing_type' in obj; 
-  };
+  const isCaseInterpretation = (obj: AllLanguageSupport) =>
+    'legal_server_id' in obj;
 
   const allLangSupportRow = (langSupport: AllLanguageSupport) => {
     if (isCaseInterpretation(langSupport)) {
-      let caseInterp = langSupport as CaseListing
-      // console.log("Case Language Support Case")
+      const l = langSupport as CaseListing;
       return (
-        <tr key={caseInterp.legal_server_id}>
-          <td>{caseInterp.legal_server_id}</td>
-          <td>{caseInterp.title}</td>
-          <td>{caseInterp.summary}</td>
-          <td>{caseInterp.languages.join(', ')}</td>
-          <td>{getIsRemoteValue(caseInterp.is_remote)}</td>
+        <tr key={l.legal_server_id}>
+          <td>{l.legal_server_id}</td>
+          <td>{l.title}</td>
+          <td>{l.summary}</td>
+          <td>{l.languages.join(', ')}</td>
+          <td>{getIsRemoteValue(l.is_remote)}</td>
           <td>Case Interpretation</td>
-          <td></td>
-          <td>{caseInterp.upcoming_date}</td>
-          <td>{caseInterp.num_months}</td>
-          <td>{caseInterp.hours_per_month}</td>
-          <td></td>
+          <td>N/A</td>
+          <td>{l.upcoming_date}</td>
+          <td>{l.num_months}</td>
+          <td>{l.hours_per_month}</td>
+          <td>N/A</td>
         </tr>
-      )} 
-    
-      let ls = langSupport as LanguageSupport
-      console.log("Non-Case Language Support Case")
-      return (
-        <tr key={ls.id}>
-          <td>{ls.id}</td>
-          <td>{ls.title}</td>
-          <td>{ls.summary}</td>
-          <td>{ls.language}</td>
-          <td>{getIsRemoteValue(ls.is_remote)}</td>
-          <td>{ls.listing_type}</td>
-          <td>{ls.deadline}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{ls.num_pages}</td>
-        </tr>
-    )}
+      );
+    }
+
+    const ls = langSupport as LanguageSupport;
+    return (
+      <tr key={ls.id}>
+        <td>{ls.id}</td>
+        <td>{ls.title}</td>
+        <td>{ls.summary}</td>
+        <td>{ls.language}</td>
+        <td>{getIsRemoteValue(ls.is_remote)}</td>
+        <td>{ls.listing_type}</td>
+        <td>{ls.deadline}</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>{ls.num_pages}</td>
+      </tr>
+    );
+  };
 
   return (
     <div>
@@ -108,11 +100,7 @@ export default function Page() {
             <th>num_pages</th>
           </tr>
         </thead>
-        <tbody>
-          {allLanguageSupport.map(l => 
-            allLangSupportRow(l)
-          )}
-        </tbody>
+        <tbody>{allLanguageSupport.map(l => allLangSupportRow(l))}</tbody>
       </table>
     </div>
   );
