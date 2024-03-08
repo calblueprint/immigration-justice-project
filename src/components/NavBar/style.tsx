@@ -13,7 +13,7 @@ export const NavBarContainer = styled.div`
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
   padding: 15px 0px;
-
+  position: fixed;
 `;
 
 export const NavBarSectionDiv = styled.div`
