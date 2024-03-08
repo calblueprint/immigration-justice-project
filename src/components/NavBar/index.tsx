@@ -46,24 +46,24 @@ export default function NavBar() {
 
   return (
     <NavBarContainer>
-        <NavBarSectionDiv>
-          <Link href="/">
-            <Icon type="logo" />
-          </Link>
-          <NoUnderlineLink href="/cases" $color="white">
-            Cases
-          </NoUnderlineLink>
+      <NavBarSectionDiv>
+        <Link href="/">
+          <Icon type="logo" />
+        </Link>
+        <NoUnderlineLink href="/cases" $color="white">
+          Cases
+        </NoUnderlineLink>
 
-          <NoUnderlineLink href="/cases" $color="white">
-            Limited Case Assignments
-          </NoUnderlineLink>
-          <NoUnderlineLink href="/cases" $color="white">
-            Language Support
-          </NoUnderlineLink>
-        </NavBarSectionDiv>
-        <NavBarSectionDiv>
-          <AuthButtons>{AuthButtonView}</AuthButtons>
-        </NavBarSectionDiv>
+        <NoUnderlineLink href="/cases" $color="white">
+          Limited Case Assignments
+        </NoUnderlineLink>
+        <NoUnderlineLink href="/cases" $color="white">
+          Language Support
+        </NoUnderlineLink>
+      </NavBarSectionDiv>
+      <NavBarSectionDiv>
+        <AuthButtons>{AuthButtonView}</AuthButtons>
+      </NavBarSectionDiv>
     </NavBarContainer>
   );
 }
