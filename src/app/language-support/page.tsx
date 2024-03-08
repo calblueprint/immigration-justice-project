@@ -2,30 +2,32 @@
 
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
+import { getAllCases } from '@/api/supabase/queries/cases';
 import { useEffect, useState } from 'react';
-import { DocumentTranslation, Interpretation } from '@/types/schema';
+import { DocumentTranslation, Interpretation, CaseListing } from '@/types/schema';
 
 export default function Page() {
-  const [docListings, setDocListings] = useState<DocumentTranslation[]>([]);
-  const [intListings, setIntListings] = useState<Interpretation[]>([]);
+  type AllLanguageSupport = DocumentTranslation | Interpretation | CaseListing; 
+  const [allLanguageSupport, setAllLanguageSupport] = useState<AllLanguageSupport[]>([]);
+  // const [docListings, setDocListings] = useState<DocumentTranslation[]>([]);
+  // const [intListings, setIntListings] = useState<Interpretation[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const docs = await getAllDocuments();
-        const ints = await getAllInterpretation();
-        setDocListings(docs);
-        setIntListings(ints);
+        const [docListings, intListings, casesInterpretationListings] = await Promise.all(
+          [getAllDocuments(), getAllInterpretation(), getAllCases()],
+        );
+        setAllLanguageSupport([
+          ...docListings,
+          ...intListings,
+          ...casesInterpretationListings.filter(
+            caseInterpretation => caseInterpretation.needs_interpreter === true,
+          ),
+        ]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }
-
-      // try {
-      //   const data = await getCaseInterpretations();
-      //   setCaseInterpretation(data);
-      // } catch (error) {
-      //   console.error('(useEffect)[CaseInterpretation]', error);
-      // }
     };
 
     fetchData();
@@ -41,43 +43,60 @@ export default function Page() {
     return 'null';
   };
 
-  const isCaseInterpretation = (obj: AllLanguageSupport) =>
-    'legal_server_id' in obj;
+  // const isCaseInterpretation = (obj: AllLanguageSupport) =>
+  //   obj.listing_type === 'CASE';
 
   const allLangSupportRow = (langSupport: AllLanguageSupport) => {
-    if (isCaseInterpretation(langSupport)) {
-      const l = langSupport as CaseListing;
+    if (langSupport.listing_type === 'INT') {
+      const ls = langSupport as Interpretation;
       return (
-        <tr key={l.legal_server_id}>
-          <td>{l.legal_server_id}</td>
-          <td>{l.title}</td>
-          <td>{l.summary}</td>
-          <td>{l.languages.join(', ')}</td>
-          <td>{getIsRemoteValue(l.is_remote)}</td>
-          <td>Case Interpretation</td>
+        <tr key={ls.id}>
+          <td>{ls.id}</td>
+          <td>{ls.title}</td>
+          <td>{ls.summary}</td>
+          <td>{ls.languages.join(', ')}</td>
+          <td>{ls.is_remote}</td> 
+          <td>{ls.listing_type}</td> 
+          <td>N/A</td> 
+          <td>N/A</td> 
+          <td>N/A</td> 
+          <td>N/A</td> 
+          <td>N/A</td> 
+        </tr>
+      )
+    }
+    if (langSupport.listing_type === 'DOC') {
+      const ls = langSupport as DocumentTranslation;
+      return (
+        <tr key={ls.id}>
+          <td>{ls.id}</td>
+          <td>{ls.title}</td>
+          <td>{ls.summary}</td>
+          <td>{ls.languages.join(', ')}</td>
+          <td>Asynchronous</td>
+          <td>{ls.listing_type}</td>
+          <td>{ls.deadline}</td>
           <td>N/A</td>
-          <td>{l.upcoming_date}</td>
-          <td>{l.num_months}</td>
-          <td>{l.hours_per_month}</td>
           <td>N/A</td>
+          <td>N/A</td>
+          <td>{ls.num_pages}</td>
         </tr>
       );
     }
-
-    const ls = langSupport as LanguageSupport;
+    const l = langSupport as CaseListing;
     return (
-      <tr key={ls.id}>
-        <td>{ls.id}</td>
-        <td>{ls.title}</td>
-        <td>{ls.summary}</td>
-        <td>{ls.language}</td>
-        <td>{getIsRemoteValue(ls.is_remote)}</td>
-        <td>{ls.listing_type}</td>
-        <td>{ls.deadline}</td>
+      <tr key={l.id}>
+        <td>{l.id}</td>
+        <td>{l.title}</td>
+        <td>{l.summary}</td>
+        <td>{l.languages.join(', ')}</td>
+        <td>{getIsRemoteValue(l.is_remote)}</td>
+        <td>Case Interpretation</td>
         <td>N/A</td>
+        <td>{l.upcoming_date}</td>
+        <td>{l.num_weeks}</td>
+        <td>{l.hours_per_week}</td>
         <td>N/A</td>
-        <td>N/A</td>
-        <td>{ls.num_pages}</td>
       </tr>
     );
   };
@@ -95,8 +114,8 @@ export default function Page() {
             <th>listing_type</th>
             <th>deadline</th>
             <th>upcoming_date</th>
-            <th>num_months</th>
-            <th>hours_per_month</th>
+            <th>num_weeks</th>
+            <th>hours_per_week</th>
             <th>num_pages</th>
           </tr>
         </thead>
@@ -105,44 +124,3 @@ export default function Page() {
     </div>
   );
 }
-
-/*
-<table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>summary</th>
-            <th>is_remote</th>
-            <th>deadline</th>
-            <th>languages</th>
-            <th>num_pages</th>
-            <th>listing_type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {docListings.map(l => (
-            <tr key={l.id}>
-              <td>{l.id}</td>
-              <td>{l.title || 'null'}</td>
-              <td>{l.summary || 'null'}</td>
-              <td>n/a</td>
-              <td>{l.deadline}</td>
-              <td>[{l.languages.join(', ')}]</td>
-              <td>{l.num_pages || 'null'}</td>
-            </tr>
-          ))}
-          {intListings.map(l => (
-            <tr key={l.id}>
-              <td>{l.id}</td>
-              <td>{l.title || 'null'}</td>
-              <td>{l.summary || 'null'}</td>
-              <td>{getIsRemoteValue(l.is_remote)}</td>
-              <td>n/a</td>
-              <td>[{l.languages.join(', ')}]</td>
-              <td>n/a</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      */
