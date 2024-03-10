@@ -30,6 +30,10 @@ export default function ResetPassword() {
   }, []);
 
   const resetPassword = async () => {
+    if (!passwordComplexity) {
+      setErrorMessage('Password must meet complexity requirements');
+      return;
+    }
     if (newPassword !== newPassword2) {
       setErrorMessage('Passwords do not match.');
       return;
@@ -61,7 +65,6 @@ export default function ResetPassword() {
             <TextInput
               label="New Password"
               placeholder="Password"
-              errorText={newPassword.length < 6 ? 'Invalid Password' : ''}
               type="password"
               id="newpass"
               value={newPassword}
