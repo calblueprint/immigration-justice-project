@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
-import image from '../images/Home.svg';
+import image from '../images/HomePage.webp';
 
 export const PageContainer = styled.div`
   width: 100%;

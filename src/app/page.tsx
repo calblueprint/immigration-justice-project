@@ -3,7 +3,7 @@
 import COLORS from '@/styles/colors';
 import { H5, H3 } from '../styles/text';
 import Button from '../components/Button';
-import image from '../images/image2.svg';
+import image from '../images/HomePage.webp';
 import {
   TitleSection,
   PageContainer,
@@ -109,7 +109,7 @@ export default function Home() {
         </ServicesDiv>
       </HowYouCanHelpContainer>
       <MissionValuesContainer>
-        <img src={image.src} alt="Smaller Stock" />
+        <img src={image.src} alt="Smaller Stock" width={521} height={338} />
         <MissionStatement>
           <Title>OUR MISSION VALUES</Title>
           <Subtitle>
