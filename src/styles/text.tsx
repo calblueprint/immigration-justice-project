@@ -22,11 +22,11 @@ export const H2 = styled.h2<{ $color?: string }>`
   margin: 0;
 `;
 
-export const H3 = styled.h3<{ $color?: string }>`
+export const H3 = styled.h3<{ $color?: string; $fontWeight?: number | string }>`
   ${openSans.style}
   font-size: 1.5rem;
-  font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
+  font-weight: ${props => props.$fontWeight || '600'};
   margin: 0;
 `;
 
@@ -39,6 +39,14 @@ export const H4 = styled.h4<{ $color?: string }>`
   font-size: 1rem;
   font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
+  margin: 0;
+`;
+
+export const H5 = styled.h5<{ $color?: string }>`
+  ${openSans.style}
+  font-size: 5.31rem;
+  font-weight: 600;
+  color: white;
   margin: 0;
 `;
 
