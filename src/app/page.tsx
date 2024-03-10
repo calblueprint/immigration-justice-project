@@ -3,7 +3,7 @@
 import COLORS from '@/styles/colors';
 import { H5, H3 } from '../styles/text';
 import Button from '../components/Button';
-import image from '../images/HomePage.webp';
+import image from '../../public/HomePage.webp';
 import {
   TitleSection,
   PageContainer,
