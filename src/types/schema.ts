@@ -72,14 +72,15 @@ export interface Interest {
 }
 
 // irrelevant until mvp
-export interface LimitedAssistance {
+export interface LimitedCaseAssignment {
   id: UUID;
+  title: Text;
   summary: string;
-  languages: string[];
   country: string;
-  experience_level: string;
   deadline: string;
-  interest_ids: UUID[];
+  research_topic: Text;
+  language: string;
+  listing_type: 'Listing Case Assignment';
 }
 
 export interface TranslationRequest {
