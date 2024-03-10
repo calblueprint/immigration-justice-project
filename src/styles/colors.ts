@@ -19,6 +19,7 @@ const COLORS = {
   redLight: '#F3B1B2',
   redLighter: '#FFE9E9',
   green: '#2E9D1B',
+  goldMid: '#CA9B30',
 };
 
 export default COLORS;
