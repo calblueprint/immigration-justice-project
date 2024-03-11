@@ -22,6 +22,15 @@ const PasswordRequirementText = styled.p<{ met: boolean }>`
   color: ${props => (props.met ? COLORS.green : COLORS.greyMid)};
 `;
 
+function PasswordRequirement({ met, text }: { met: boolean; text: string }) {
+  return (
+    <PasswordRequirementDiv met={met}>
+      <Icon type={met ? 'green_check' : 'gray_dot'} />
+      <PasswordRequirementText met={met}>{text}</PasswordRequirementText>
+    </PasswordRequirementDiv>
+  );
+}
+
 export default function PasswordComplexity({
   password,
   setComplexity,
@@ -44,36 +53,20 @@ export default function PasswordComplexity({
   if (password.length > 0) {
     return (
       <PasswordComplexityDiv>
-        <PasswordRequirementDiv met={longEnough}>
-          <Icon type={hasUpperCase ? 'green_check' : 'gray_dot'} />
-          <PasswordRequirementText met={hasUpperCase}>
-            At least 1 uppercase character
-          </PasswordRequirementText>
-        </PasswordRequirementDiv>
-        <PasswordRequirementDiv met={hasLowerCase}>
-          <Icon type={hasLowerCase ? 'green_check' : 'gray_dot'} />
-          <PasswordRequirementText met={hasLowerCase}>
-            At least 1 lowercase character
-          </PasswordRequirementText>
-        </PasswordRequirementDiv>
-        <PasswordRequirementDiv met={hasNumber}>
-          <Icon type={hasNumber ? 'green_check' : 'gray_dot'} />
-          <PasswordRequirementText met={hasNumber}>
-            At least 1 number
-          </PasswordRequirementText>
-        </PasswordRequirementDiv>
-        <PasswordRequirementDiv met={hasSpecial}>
-          <Icon type={hasSpecial ? 'green_check' : 'gray_dot'} />
-          <PasswordRequirementText met={hasSpecial}>
-            At least 1 special character
-          </PasswordRequirementText>
-        </PasswordRequirementDiv>
-        <PasswordRequirementDiv met={longEnough}>
-          <Icon type={longEnough ? 'green_check' : 'gray_dot'} />
-          <PasswordRequirementText met={longEnough}>
-            At least 8 characters
-          </PasswordRequirementText>
-        </PasswordRequirementDiv>
+        <PasswordRequirement
+          met={hasUpperCase}
+          text="At least 1 uppercase character"
+        />
+        <PasswordRequirement
+          met={hasLowerCase}
+          text="At least 1 lowercase character"
+        />
+        <PasswordRequirement met={hasNumber} text="At least 1 number" />
+        <PasswordRequirement
+          met={hasSpecial}
+          text="At least 1 special character"
+        />
+        <PasswordRequirement met={longEnough} text="At least 8 characters" />
       </PasswordComplexityDiv>
     );
   }
