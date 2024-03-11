@@ -43,9 +43,6 @@ export default function Page() {
     return 'null';
   };
 
-  // const isCaseInterpretation = (obj: AllLanguageSupport) =>
-  //   obj.listing_type === 'CASE';
-
   const allLangSupportRow = (langSupport: AllLanguageSupport) => {
     if (langSupport.listing_type === 'INT') {
       const ls = langSupport as Interpretation;

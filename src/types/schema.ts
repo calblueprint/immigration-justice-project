@@ -42,6 +42,7 @@ export interface CaseListing {
   adjudicating_agency: string;
   languages: string[];
   relief_codes: string[];
+  listing_type: 'Case';
 }
 
 export interface Profile {
