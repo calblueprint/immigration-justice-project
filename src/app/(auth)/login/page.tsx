@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, P, LinkColored } from '@/styles/text';
-import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import { ProfileContext } from '@/utils/ProfileProvider';
+import { useAuth } from '@/utils/AuthProvider';
 
 export default function Login() {
+  const auth = useAuth();
   const profile = useContext(ProfileContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +23,11 @@ export default function Login() {
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   const handleSignIn = async () => {
+    if (!auth) {
+      setErrorMessage('');
+      return;
+    }
+
     setEmailError(validEmail(email) ? '' : 'Invalid Email');
     setPasswordError(password !== '' ? '' : 'Invalid Password');
     if (!validEmail(email) || password === '') {
@@ -29,10 +35,7 @@ export default function Login() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await auth.signIn(email, password);
 
     if (error) {
       setErrorMessage(error.message);

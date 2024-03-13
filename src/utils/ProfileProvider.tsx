@@ -1,6 +1,5 @@
 'use client';
 
-import supabase from '@/api/supabase/createClient';
 import {
   deleteLanguages,
   deleteRoles,
@@ -15,9 +14,9 @@ import {
   insertRoles,
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
-import { UUID } from 'crypto';
 import {
   createContext,
+  useContext,
   useState,
   useEffect,
   useMemo,
@@ -25,12 +24,12 @@ import {
   useCallback,
 } from 'react';
 
+import { useAuth } from '@/utils/AuthProvider';
+
 interface ProfileContextType {
   profileData: Profile | null;
   languages: ProfileLanguage[];
   roles: ProfileRole[];
-  userId: UUID | undefined;
-  userEmail: string | undefined;
   profileReady: boolean;
   updateProfile: (newProfileData: Partial<Profile>) => Promise<void>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
@@ -47,9 +46,11 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
   undefined,
 );
 
+// TODO: we might need error handling here?
+export const useProfile = () => useContext(ProfileContext);
+
 export default function ProfileProvider({ children }: { children: ReactNode }) {
-  const [userId, setUserId] = useState<UUID | undefined>(undefined);
-  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
+  const auth = useAuth();
   const [profileReady, setProfileReady] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
@@ -58,31 +59,16 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
   const loadProfile = useCallback(async () => {
     setProfileReady(false);
 
-    const { data: sessionData, error } = await supabase.auth.getSession();
-
-    if (error) throw error;
-    if (
-      !sessionData ||
-      !sessionData.session ||
-      !sessionData.session.user ||
-      !sessionData.session.user.id
-    )
-      return;
-
-    const sessionUserEmail = sessionData.session.user.email;
-    setUserEmail(sessionUserEmail);
-
-    const sessionUserId = sessionData.session.user.id as UUID;
-    setUserId(sessionUserId);
+    if (!auth?.userId) return;
 
     await Promise.all([
-      fetchProfileById(sessionUserId).then(data => setProfileData(data)),
-      fetchLanguagesById(sessionUserId).then(data => setProfileLangs(data)),
-      fetchRolesById(sessionUserId).then(data => setProfileRoles(data)),
+      fetchProfileById(auth?.userId).then(data => setProfileData(data)),
+      fetchLanguagesById(auth?.userId).then(data => setProfileLangs(data)),
+      fetchRolesById(auth?.userId).then(data => setProfileRoles(data)),
     ]);
 
     setProfileReady(true);
-  }, []);
+  }, [auth]); // TODO: should auth be a dependency here?
 
   useEffect(() => {
     loadProfile();
@@ -100,7 +86,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       newLanguages: ProfileLanguage[],
       newRoles: ProfileRole[],
     ) => {
-      if (!userId) throw new Error('Fatal: user is not logged in!');
+      if (!auth?.userId) throw new Error('Fatal: user is not logged in!');
       if (profileData) throw new Error('Fatal: user already has a profile!');
 
       await insertProfile(newProfile).then(data => setProfileData(data));
@@ -117,10 +103,10 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      * setup for the profiles table.
      */
     const updateProfile = async (updatedInfo: Partial<Profile>) => {
-      if (!userId) throw new Error('Fatal: user is not logged in');
+      if (!auth?.userId) throw new Error('Fatal: user is not logged in');
 
       const newProfileData = { ...profileData, ...updatedInfo };
-      await updateSupabaseProfile(userId, newProfileData)
+      await updateSupabaseProfile(auth.userId, newProfileData)
         .then(data => setProfileData(data))
         .catch((err: Error) => {
           throw new Error(`Error updating profile data: ${err.message}`);
@@ -134,7 +120,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      * on the profiles-languages table.
      */
     const setLanguages = async (languages: ProfileLanguage[]) => {
-      if (!userId) throw new Error('Fatal: user is not logged in');
+      if (!auth?.userId) throw new Error('Fatal: user is not logged in');
 
       // find removed languages
       const toDelete = profileLangs.filter(
@@ -142,7 +128,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       );
 
       await Promise.all([
-        deleteLanguages(userId, toDelete),
+        deleteLanguages(auth.userId, toDelete),
         upsertLanguages(languages).then(data => setProfileLangs(data)),
       ]);
     };
@@ -154,7 +140,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      * setup on the profiles-roles table.
      */
     const setRoles = async (roles: ProfileRole[]) => {
-      if (!userId) throw new Error('Fatal: user is not logged in');
+      if (!auth?.userId) throw new Error('Fatal: user is not logged in');
 
       // find removed roles
       const toDelete = profileRoles.filter(
@@ -162,7 +148,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       );
 
       await Promise.all([
-        deleteRoles(userId, toDelete),
+        deleteRoles(auth.userId, toDelete),
         upsertRoles(roles).then(data => setProfileRoles(data)),
       ]);
     };
@@ -171,8 +157,6 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       profileData,
       languages: profileLangs,
       roles: profileRoles,
-      userId,
-      userEmail,
       profileReady,
       createNewProfile,
       updateProfile,
@@ -184,10 +168,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     profileData,
     profileLangs,
     profileRoles,
-    userId,
-    userEmail,
     profileReady,
     loadProfile,
+    auth,
   ]);
 
   return (
