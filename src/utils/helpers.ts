@@ -26,6 +26,10 @@ export function timestampStringToDate(ts: string): Date {
 export const parseDate = (d: Date): string =>
   `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
+// format timestamp string
+export const formatTimestamp = (timestamp?: string): string =>
+  timestamp ? parseDate(timestampStringToDate(timestamp)) : 'Not Available';
+
 // parse js date to yyyy-mm-dd
 export const parseDateAlt = (d: Date): string =>
   `${d.getFullYear().toString().padStart(4, '0')}-${(d.getMonth() + 1)

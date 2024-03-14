@@ -215,7 +215,7 @@ export default function Page() {
               {filteredCases.map(c => (
                 <ListingCard
                   key={c.id}
-                  caseData={c}
+                  listing={c}
                   isSelected={c.id === selectedCardRef.current}
                   onClick={() => {
                     selectedCardRef.current = c.id;
