@@ -7,7 +7,7 @@ import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import Icon from '../Icon';
-import { CardBody, TagRow, CardTag, IconTextGroup } from './styles';
+import * as Styles from './styles';
 
 export default function ListingCard({
   listing,
@@ -40,9 +40,9 @@ export default function ListingCard({
 
     // language tag
     if (listing.languages && listing.languages.length > 0) {
-      let langTag = listing.languages[0];
-      if (listing.languages.length > 1)
-        langTag += ` + ${listing.languages.length - 1}`;
+      let langTag = listing.languages.slice(0, 2).join(', ');
+      if (listing.languages.length > 2)
+        langTag += ` + ${listing.languages.length - 2}`;
       tags.push(langTag);
     }
 
@@ -79,54 +79,52 @@ export default function ListingCard({
   }, [listing]);
 
   return (
-    <CardBody
+    <Styles.CardBody
       $selected={isSelected}
-      onClick={() =>
-        onClick?.(
-          listing.listing_type === 'CASE'
-            ? listing.legal_server_id
-            : listing.id,
-        )
-      }
+      onClick={() => onClick?.(listing.id)}
     >
       <H4>{listing.title || 'Migrant seeking representation'}</H4>
 
-      <TagRow>
+      <Styles.TagRow>
         {cardTags.map(s => (
-          <CardTag key={s} color={COLORS.blueLight}>
+          <Styles.CardTag key={s} color={COLORS.blueLight}>
             {s}
-          </CardTag>
+          </Styles.CardTag>
         ))}
-      </TagRow>
+      </Styles.TagRow>
 
       {listing.listing_type === 'CASE' && (
         <Flex $gap="1rem">
-          <IconTextGroup>
+          <Styles.IconTextGroup>
             <Icon type="location" />
             <P>{remoteInfo}</P>
-          </IconTextGroup>
+          </Styles.IconTextGroup>
 
           {!interpretation && listing.adjudicating_agency ? (
-            <IconTextGroup>
+            <Styles.IconTextGroup>
               <Icon type="gavel" />
               <P>{parseAgency(listing.adjudicating_agency)}</P>
-            </IconTextGroup>
+            </Styles.IconTextGroup>
           ) : null}
         </Flex>
       )}
 
       {!(listing.listing_type === 'LS' && !listing.num_pages) ? (
-        <P>
-          <strong>
+        <Flex $align="center" $gap="8px">
+          <Icon type="calendar" />
+          <P>
+            <strong>
+              {listing.listing_type === 'CASE'
+                ? 'Next Filing/Court Date:'
+                : 'Assignment Deadline:'}
+            </strong>
+            &nbsp;
             {listing.listing_type === 'CASE'
-              ? 'Next Filing/Court Date:'
-              : 'Assignment Deadline:'}
-          </strong>{' '}
-          {listing.listing_type === 'CASE'
-            ? formatTimestamp(listing.upcoming_date)
-            : formatTimestamp(listing.deadline)}
-        </P>
+              ? formatTimestamp(listing.upcoming_date)
+              : formatTimestamp(listing.deadline)}
+          </P>
+        </Flex>
       ) : null}
-    </CardBody>
+    </Styles.CardBody>
   );
 }

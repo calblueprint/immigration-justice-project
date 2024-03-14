@@ -34,7 +34,7 @@ const listingCaseInt: CaseListing = {
 
 const listingLCA: LimitedCaseAssignment = {
   id: 'aaa-aaa-aaa-aaa-aaa',
-  languages: ['English'],
+  languages: ['English', 'Spanish', 'French'],
   listing_type: 'LCA',
   research_topic: 'Lorem ipsum dolor sit amet',
   country: 'Vietnam',
@@ -79,7 +79,7 @@ export default function Page() {
   return (
     <Container>
       <Box>
-        <ListingCard listing={listingCase} />
+        <ListingCard listing={listingCase} isSelected />
         <ListingCard listing={listingCaseInt} interpretation />
         <ListingCard listing={listingLCA} />
         <ListingCard listing={listingLang} />
