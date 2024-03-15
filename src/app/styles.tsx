@@ -11,18 +11,24 @@ export const PageContainer = styled.div`
 export const TitleSection = styled.div`
   width: 100%;
   height: 100vh; // Use 100vh to make the div fill the entire viewport height
-  background: linear-gradient(
+  /* background: linear-gradient(
       222deg,
       rgba(40, 120, 194, 0.5) 14.2%,
       rgba(0, 50, 96, 0.5) 76.27%
     ),
-    url(${image.src}) no-repeat center / cover;
+    url(${image.src}) no-repeat center / cover; */
   display: flex;
   flex-direction: column;
   padding-top: 200px;
   padding-right: 440px;
   padding-left: 84px;
+  background: linear-gradient(
+    222deg,
+    rgba(40, 120, 194, 0.5) 14.2%,
+    rgba(0, 50, 96, 0.5) 76.27%
+  );
   gap: 30px;
+  z-index: 1;
 `;
 
 export const ButtonDiv = styled.div`
@@ -55,8 +61,6 @@ export const StatLabel = styled.div`
 `;
 export const StatContainer = styled.div`
   text-align: center;
-  /* padding-left: 374px;
-  padding-right: 374px; */
 `;
 export const HowYouCanHelpContainer = styled.div`
   background-color: ${COLORS.background};
@@ -113,12 +117,6 @@ export const ServiceTitle = styled.h2`
   color: ${COLORS.blueMid};
 `;
 
-// Service description
-export const ServiceDescription = styled.p`
-  font-size: 16px;
-  color: ${COLORS.greyDark};
-`;
-
 export const MissionValuesContainer = styled.div`
   background-color: ${COLORS.blueLighter};
   width: 100%;
@@ -136,4 +134,13 @@ export const MissionStatement = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+`;
+
+export const Test = styled.div`
+  z-index: 10;
+  background: linear-gradient(
+    222deg,
+    rgba(40, 120, 194, 0.5) 14.2%,
+    rgba(0, 50, 96, 0.5) 76.27%
+  );
 `;
