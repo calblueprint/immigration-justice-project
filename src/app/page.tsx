@@ -1,9 +1,10 @@
 'use client';
 
 import COLORS from '@/styles/colors';
-import { H5, H3 } from '../styles/text';
+import Image from 'next/image';
+import { H5, H3, H4 } from '../styles/text';
 import Button from '../components/Button';
-import image from '../../public/HomePage.webp';
+
 import {
   TitleSection,
   PageContainer,
@@ -18,48 +19,96 @@ import {
   ServiceContainer,
   ServiceIcon,
   ServiceTitle,
-  ServiceDescription,
   ServicesDiv,
   MissionValuesContainer,
   MissionStatement,
+  Test,
 } from './styles';
+
+type Stat = {
+  number: string;
+  label: string;
+};
+
+const stats: Stat[] = [
+  { number: '100+', label: 'Matched Cases' },
+  { number: '50+', label: 'Attorneys' },
+  { number: '100+', label: 'Translation Support' },
+  { number: '100+', label: 'Successful Outcomes' },
+];
+
+const renderStat = (stat: Stat) => (
+  <StatContainer key={stat.label}>
+    <StatNumber>{stat.number}</StatNumber>
+    <StatLabel>{stat.label}</StatLabel>
+  </StatContainer>
+);
+type Service = {
+  iconSrc: string;
+  title: string;
+  description: string;
+};
+
+const services: Service[] = [
+  {
+    iconSrc: 'An Icon will be Here',
+    title: 'Case Assistance',
+    description:
+      'Attorneys licensed in any state with or without immigration law experience can represent immigrants and asylum-seekers in removal proceeding before the Immigration Court, the Board of Immigration Appeals and the U.S. Court of Appeals for the Ninth Circuit.',
+  },
+  {
+    iconSrc: 'An Icon will be Here',
+    title: 'Limited Case Assistance',
+    description:
+      'Law students and recent graduates awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
+  },
+  {
+    iconSrc: 'An Icon will be Here',
+    title: 'Translation Assignment',
+    description:
+      'Interpreters and translators can conduct volunteer translation and live interpertation. We have frequent need for individuals who speak Creole, Portuguese, Spanish, French, Arabic, and Russian',
+  },
+];
+
+const renderService = (service: Service) => (
+  <ServiceContainer key={service.title}>
+    <ServiceIcon src={service.iconSrc} alt={service.title} />
+    <ServiceTitle>{service.title}</ServiceTitle>
+    <H4 $color={COLORS.greyDark}>{service.description}</H4>
+  </ServiceContainer>
+);
 
 export default function Home() {
   return (
     <PageContainer>
       <TitleSection>
-        <H5>IMMIGRATION JUSTICE PROJECT</H5>
-        <H3 $color="white" $fontWeight="400">
-          The Immigration Justice Project (IJP) seeks to promote due process and
-          access to justice through the provision of high quality legal services
-          on behalf of indigent immigrants and asylum seekers.
-        </H3>
-        <ButtonDiv>
-          <Button
-            $primaryColor={COLORS.goldMid}
-            $secondaryColor={COLORS.blueDarker}
-          >
-            Volunteer Now
-          </Button>
-        </ButtonDiv>
+        <Image
+          alt="background"
+          src="/HomePage.webp"
+          placeholder="blur"
+          blurDataURL="/HomePage.webp"
+          quality={100}
+          fill
+        />
+        <Test>
+          <H5>IMMIGRATION JUSTICE PROJECT</H5>
+          <H3 $color="white" $fontWeight="400">
+            The Immigration Justice Project (IJP) seeks to promote due process
+            and access to justice through the provision of high quality legal
+            services on behalf of indigent immigrants and asylum seekers.
+          </H3>
+          <ButtonDiv>
+            <Button
+              $primaryColor={COLORS.goldMid}
+              $secondaryColor={COLORS.blueDarker}
+            >
+              Volunteer Now
+            </Button>
+          </ButtonDiv>
+        </Test>
       </TitleSection>
       <StatisticsSection>
-        <StatContainer>
-          <StatNumber>100+</StatNumber>
-          <StatLabel>Matched Cases</StatLabel>
-        </StatContainer>
-        <StatContainer>
-          <StatNumber>50+</StatNumber>
-          <StatLabel>Attorneys</StatLabel>
-        </StatContainer>
-        <StatContainer>
-          <StatNumber>100+</StatNumber>
-          <StatLabel>Translation Support</StatLabel>
-        </StatContainer>
-        <StatContainer>
-          <StatNumber>100+</StatNumber>
-          <StatLabel>Succesful Outcomes</StatLabel>
-        </StatContainer>
+        {stats.map(stat => renderStat(stat))}
       </StatisticsSection>
       <HowYouCanHelpContainer>
         <Title>HOW YOU CAN HELP</Title>
@@ -68,48 +117,19 @@ export default function Home() {
           access to justice for indigent immigrants and asylum seekers.
         </Subtitle>
         <ServicesDiv>
-          <ServiceContainer>
-            <ServiceIcon
-              src="path_to_case_assistance_icon"
-              alt="An Icon Will Be here"
-            />
-            <ServiceTitle>Case Assistance</ServiceTitle>
-            <ServiceDescription>
-              Attorneys licensed in any state with or without immigration law
-              experience can represent immigrants and asylum-seekers in removal
-              proceeding before the Immigration Court, the Board of Immigration
-              Appeals and the U.S. Court of Appeals for the Ninth Circuit.
-            </ServiceDescription>
-          </ServiceContainer>
-          <ServiceContainer>
-            <ServiceIcon
-              src="path_to_case_assistance_icon"
-              alt="An Icon Will Be here"
-            />
-            <ServiceTitle>Limited Case Assistance</ServiceTitle>
-            <ServiceDescription>
-              Law students and recent graduates awaiting bar results can assist
-              attorneys to screen potential clients, conduct legal and factual
-              research and write motions and briefs in support of on-going court
-              cases.
-            </ServiceDescription>
-          </ServiceContainer>
-          <ServiceContainer>
-            <ServiceIcon
-              src="path_to_case_assistance_icon"
-              alt="An Icon Will Be here"
-            />
-            <ServiceTitle>Translation Assignment</ServiceTitle>
-            <ServiceDescription>
-              Interpreters and translators can conduct volunteer translation and
-              live interpretation. We have frequent need for individuals who
-              speak Creole, Portuguese, Spanish, French, Arabic, and Russian.
-            </ServiceDescription>
-          </ServiceContainer>
+          {services.map(Service => renderService(Service))}
         </ServicesDiv>
       </HowYouCanHelpContainer>
       <MissionValuesContainer>
-        <img src={image.src} alt="Smaller Stock" width={521} height={338} />
+        <Image
+          alt="Mountains"
+          src="/HomePage.webp"
+          placeholder="blur"
+          blurDataURL="/HomePage.webp"
+          quality={100}
+          width={521}
+          height={338}
+        />
         <MissionStatement>
           <Title>OUR MISSION VALUES</Title>
           <Subtitle>
