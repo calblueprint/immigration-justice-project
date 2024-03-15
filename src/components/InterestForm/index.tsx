@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import { Interest, CaseListing } from '@/types/schema';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
@@ -58,11 +58,8 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
           user_id: profile.userId,
           form_response: {
             start_date: new Date(startDate),
-            interestReason: reason,
-            rolesInterested:
-              rolesInterested === radioOptions[2]
-                ? ['ATTORNEY', 'INTERPRETER']
-                : [rolesInterested.toUpperCase() as RoleEnum],
+            interest_reason: reason,
+            // TODO: add needs_interpreter field
           },
         };
         await upsertInterest(newInterest);

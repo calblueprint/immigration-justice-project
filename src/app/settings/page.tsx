@@ -13,12 +13,7 @@ import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { cities, languages } from '@/lib/bigData';
-import {
-  ImmigrationLawExperienceEnum,
-  ProfileLanguage,
-  ProfileRole,
-  RoleEnum,
-} from '@/types/schema';
+import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
@@ -28,12 +23,6 @@ import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 const rolesOptions = new Map<RoleEnum, string>([
   ['ATTORNEY', 'Attorney'],
   ['INTERPRETER', 'Interpreter'],
-]);
-
-const legalExperienceOptions = new Map<ImmigrationLawExperienceEnum, string>([
-  ['HIGH', 'Multiple cases of immigration law experience'],
-  ['MEDIUM', 'Few cases of immigration law experience'],
-  ['LOW', 'One or no case of immigration law experience'],
 ]);
 
 const eoirRegisteredOptions = ['Yes', 'No'];
@@ -167,22 +156,6 @@ export default function Settings() {
               : 'For attorneys, must include valid attorney bar number',
         },
         {
-          type: 'single-select',
-          options: legalExperienceOptions,
-          label: 'Immigration Law Experience',
-          value: profile?.profileData?.immigration_law_experience || '',
-          format: (v: string | null) => {
-            if (legalExperienceOptions.has(v as ImmigrationLawExperienceEnum))
-              return (
-                legalExperienceOptions.get(v as ImmigrationLawExperienceEnum) ||
-                ''
-              );
-            return '';
-          },
-          validate: (v: string | null) =>
-            v ? '' : 'For attorneys, must include immigration law experience',
-        },
-        {
           type: 'radio',
           options: eoirRegisteredOptions,
           label: 'EOIR Registered',
@@ -292,21 +265,16 @@ export default function Settings() {
         const barNumber = attorneySections.find(
           sec => sec.label === 'Attorney Bar Number',
         )?.value as string;
-        const immLawExp = attorneySections.find(
-          sec => sec.label === 'Immigration Law Experience',
-        )?.value as ImmigrationLawExperienceEnum;
         const eoirRegistered = attorneySections.find(
           sec => sec.label === 'EOIR Registered',
         )?.value as string;
 
-        if (!barNumber || !immLawExp || !eoirRegistered)
-          throw new Error(
-            'Attorney must have bar number and immigration law experience',
-          );
+        // TODO: update with expected bar date and other relevant info
+        if (!barNumber || !eoirRegistered)
+          throw new Error('Attorney must have a bar number');
 
         profile.updateProfile({
           bar_number: parseInt(barNumber, 10).toString(),
-          immigration_law_experience: immLawExp,
           eoir_registered: eoirRegistered === 'Yes',
         });
       }

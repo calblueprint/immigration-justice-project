@@ -1,5 +1,3 @@
-/* eslint-disable no-bitwise */
-import { ImmigrationLawExperienceEnum } from '@/types/schema';
 /**
  * inspiration from https://stackoverflow.com/a/57941711/22063638
  * example timestamp format: 2024-01-18T11:22:40+00:00
@@ -65,26 +63,6 @@ export const isValidDate = (d: string) => {
 };
 
 /**
- * @param experience - an attorney's required experience for a listed case.
- * @returns appropriate string description according to the experience level.
- */
-export const parseExperience = (experience: ImmigrationLawExperienceEnum) => {
-  if (experience === 'LOW') {
-    return `${
-      experience.charAt(0).toUpperCase() + experience.toLowerCase().substring(1)
-    } (No prior case)`;
-  }
-  if (experience === 'MEDIUM') {
-    return `${
-      experience.charAt(0).toUpperCase() + experience.toLowerCase().substring(1)
-    } (One prior case)`;
-  }
-  return `${
-    experience.charAt(0).toUpperCase() + experience.toLowerCase().substring(1)
-  } (Multiple prior cases)`;
-};
-
-/**
  * If the description is used for the case listing cards, CARD should be passed in as
  * TRUE, FALSE otherwise.
  * @param attorney - a boolean indicating whether a case needs an attorney.
@@ -104,24 +82,22 @@ export const parseRolesNeeded = (
 };
 
 /**
- * @param hoursPerMonth - expected hours/month rate a volunteer or attorney spends on a case.
- * @param numMonths expected number of months a volunteer/attorney will help with the case.
+ * @param hoursPerWeek - expected hours/weeks rate a volunteer or attorney spends on a case.
+ * @param numWeeks expected number of weeks a volunteer/attorney will help with the case.
  * @returns appropriate format for the time commitment description based on the parameters.
  */
 export const parseTimeCommitment = (
-  hoursPerMonth: number | undefined,
-  numMonths: number | undefined,
+  hoursPerWeek?: number,
+  numWeeks?: number,
 ) => {
-  if (hoursPerMonth && numMonths) {
-    return `${hoursPerMonth} hours/month for ${numMonths} ${
-      numMonths > 1 ? 'months' : 'month'
-    }`;
-  }
-  if (hoursPerMonth) {
-    return `${hoursPerMonth} hours/month`;
-  }
-  if (numMonths) {
-    return `${numMonths} ${numMonths} ${numMonths > 1 ? 'months' : 'month'}`;
-  }
-  return 'N/A';
+  if (hoursPerWeek === undefined && numWeeks === undefined) return 'N/A';
+  if (numWeeks === undefined) return `${hoursPerWeek} hours/week`;
+
+  const unit = numWeeks > 4 ? 'month' : 'week';
+  const numUnit = numWeeks > 4 ? numWeeks / 4 : numWeeks;
+  const plural = numUnit > 1 ? 's' : '';
+  if (hoursPerWeek === undefined) return `${numWeeks} ${unit}${plural}`;
+
+  const rate = numWeeks > 4 ? hoursPerWeek / 4 : hoursPerWeek;
+  return `${rate} hours/${unit} for ${numUnit} ${unit}${plural}`;
 };
