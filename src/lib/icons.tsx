@@ -34,22 +34,24 @@ export const IconSvgs = {
       viewBox="0 0 16 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      <g clipPath="url(#clip0_3940_6920)">
-        <path
-          d="M6.39981 4.6002C5.99981 4.2002 5.99981 3.7002 6.29981 3.4002L8.89981 0.800195C9.19981 0.500195 9.69981 0.500195 10.0998 0.800195L10.1998 0.900195C10.4998 1.2002 10.4998 1.7002 10.1998 2.1002L7.59981 4.6002C7.29981 4.9002 6.69981 4.9002 6.39981 4.6002ZM11.9998 10.2002C11.5998 9.8002 11.5998 9.3002 11.8998 8.9002L14.4998 6.3002C14.7998 6.0002 15.2998 6.0002 15.6998 6.3002L15.7998 6.4002C16.0998 6.7002 16.0998 7.2002 15.7998 7.6002L13.1998 10.2002C12.7998 10.5002 12.2998 10.5002 11.9998 10.2002ZM9.99981 8.2002L8.29981 6.5002C7.89981 6.1002 7.89981 5.5002 8.29981 5.1002L10.5998 2.8002C10.9998 2.4002 11.5998 2.4002 11.9998 2.8002L13.6998 4.5002C14.0998 4.9002 14.0998 5.5002 13.6998 5.9002L11.3998 8.2002C10.9998 8.6002 10.3998 8.6002 9.99981 8.2002ZM3.99981 14.7002C4.59981 14.1002 7.99981 9.1002 8.49981 9.4002C8.89981 9.6002 9.49981 8.9002 9.49981 8.9002L7.59981 7.0002C7.59981 7.0002 6.89981 7.6002 7.09981 8.0002C7.39981 8.5002 2.39981 11.9002 1.79981 12.5002C1.79981 12.5002 -1.00019 14.7002 0.399812 16.1002C1.79981 17.5002 3.99981 14.7002 3.99981 14.7002Z"
-          fill="#0069A9"
-        />
-      </g>
+      <rect y="0.5" width="16" height="16" fill="url(#pattern0)" />
       <defs>
-        <clipPath id="clip0_3940_6920">
-          <rect
-            width="16"
-            height="16"
-            fill="white"
-            transform="translate(0 0.5)"
-          />
-        </clipPath>
+        <pattern
+          id="pattern0"
+          patternContentUnits="objectBoundingBox"
+          width="1"
+          height="1"
+        >
+          <use xlinkHref="#image0_3940_6325" transform="scale(0.0111111)" />
+        </pattern>
+        <image
+          id="image0_3940_6325"
+          width="90"
+          height="90"
+          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEdUlEQVR4nO2dy4scVRSHfxPQPBQfceVjoehGF4KK4CLuooISVHRc6GIWA9339EwTg39Ax4UQoigaxQwuBqJ2nXthVEYYRBBiFj4WPtAQ3Y2gEhESNck4gTxK6lbSmZFJd1X13Krqe88Hd9f03Po4nDr31KkeQBAEQRAEQVhJe2EjSL8C4mNQ+hSIZ7DLbF71GWFdJC+AdLx68cywXy0MlGxFn+h9ThiCvpKt6L/Fr3PJOobiV0W0a8mkF+znhIKMmyuh9PwAyZ9gYnaTOBbJNWZcInk0JJPeDdIGUx/cUMKOg5YcX6hEjoLMY6VeQ3CSqVdfn7enxhcOXFXq9XhbwtFaklcJ/xmqew+CZdxVJK95qDkNMjuBeAxBMV6i5FXC9UeYNFsRBO0y0kXftQjq3g3vId5XoeSLefsEmvwovKXT2QDipWol92SfRdNMw1/Rerl6ySuWt7IVz9ZGci+yfUwjLXP1BdnLUHwSpF+rTvKKnO3vDTIeXNOWIrm3FrHzw+sQHFSq5Ivr47AONVSJ5HQpPYVgIB1VJ5pPY4rvRRBMmq0g/q0y2UkjqjG/BUFAvD1tdVYmex+Cgfj1CkWfB0UPIwjaCxuh9DfV5Wv9ezjdvkZ0O5T+p0LZcwiGpn6mOtHcQVCQfkckl8HE7CaQ/l4iuQyUebYk0bszDcPb3rpvw/DEO9Ip/8olezwMT9yyfeNaSvZiGD4eA/HemqQLT4fh28lhhbn+kkd5GH4yaSrpQwMFJTm7yc+B9I+VSR7ZYfhpcxuIfxosKMnZ/MSl0q9AX6TfYcTrEWLi+0H6j8JPrxU/BcV/ieR+KH4kfUiaJRp5z2W/pxndCtJfSiQPX75FA5/rpV2/Ny7Tzw4xJ8djOZ8PHsqVE5vmISj+NeycPGFvYDr7jUsfKdQbTiuYKMxIpvevh9Kf56gO/kTL3OFkL95G8nTW8q1341uC4gec7MVbyZSjfEsln0UretzJXjyWvKNA90052Yu/OVmr/N23PrVy1cPwNe2+vZQzimMo7jqbgRt2GL52NGauAPGBApIPOr3QYYbha0f73WtA/Gl+yfqILf3qOAxfO6a6N0HxdwUi+ajtU9RxGL52NM1dUPxLAcknQea+8jc8irPQKnoQpI8XkHxGXpDPStM8CcX/5pZMtoxrOQ0Ab0jesVb6XCHJil+sevs+tjjj/633RjNHlv+EultcMn9mew3CoBYnHywsWfEPaJhrxXHfSJ67BYoPD5EuFtGYu1Ek9yNpFxY5iFxKF8dA0Z0ieRDE7SEieRkts00kZ4H462I5WZ9DyzwtkrNSdGRW8fMiOQ9p8yWv5Jdz/Q3BRvRXOSWz7f0KDm+Grpv3XpM+0Pw2g+TDzpr3jfktUPotO/hdvAJav2UHKvnN9X+HpWlu7is7ecs1OdS4gvT+yuWuvfa7iexkZDaZ2EwqkfTfdHxhf+fCZf+i09lQvBXrevGSP/ejjoguD6pp6lD8Nrxil9lsh1+yTvW7X8ftHLZXL3QKgiAIgiAIgoAQ+Q9s+JiBaXKM+QAAAABJRU5ErkJggg=="
+        />
       </defs>
     </svg>
   ),

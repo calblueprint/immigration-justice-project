@@ -60,13 +60,13 @@ export default function ListingCard({
     }
 
     // language support
-    if (listing.listing_type === 'LS') {
-      if (listing.num_pages) {
-        tags.push(`${listing.num_pages} pages`);
-        tags.push('Document Translation');
-      } else {
-        tags.push('Interpretation');
-      }
+    if (listing.listing_type === 'DOC') {
+      tags.push(`${listing.num_pages} pages`);
+      tags.push('Document Translation');
+    }
+
+    if (listing.listing_type === 'INT') {
+      tags.push('Interpretation');
     }
 
     return tags;
@@ -85,13 +85,15 @@ export default function ListingCard({
     >
       <H4>{listing.title || 'Migrant seeking representation'}</H4>
 
-      <Styles.TagRow>
-        {cardTags.map(s => (
-          <Styles.CardTag key={s} color={COLORS.blueLight}>
-            {s}
-          </Styles.CardTag>
-        ))}
-      </Styles.TagRow>
+      {cardTags.length > 0 && (
+        <Styles.TagRow>
+          {cardTags.map(s => (
+            <Styles.CardTag key={s} color={COLORS.blueLight}>
+              {s}
+            </Styles.CardTag>
+          ))}
+        </Styles.TagRow>
+      )}
 
       {listing.listing_type === 'CASE' && (
         <Flex $gap="1rem">
@@ -109,7 +111,7 @@ export default function ListingCard({
         </Flex>
       )}
 
-      {!(listing.listing_type === 'LS' && !listing.num_pages) ? (
+      {listing.listing_type !== 'INT' ? (
         <Flex $align="center" $gap="8px">
           <Icon type="calendar" />
           <P>

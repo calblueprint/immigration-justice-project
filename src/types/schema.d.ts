@@ -75,8 +75,8 @@ export interface LimitedCaseAssignment {
   country: string;
   deadline: string; // timestamp (deadline to submit assignment)
   research_topic: string;
-  deliverable: string; // expected deliverable
-  languages: string[];
+  deliverable: string; // (new) expected deliverable
+  languages: string[]; //
   listing_type: 'LCA';
 }
 

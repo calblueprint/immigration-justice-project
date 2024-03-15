@@ -3,7 +3,8 @@
 import ListingCard from '@/components/ListingCard';
 import {
   CaseListing,
-  LanguageSupport,
+  Interpretation,
+  DocumentTranslation,
   LimitedCaseAssignment,
 } from '@/types/schema';
 import styled from 'styled-components';
@@ -44,21 +45,23 @@ const listingLCA: LimitedCaseAssignment = {
   deliverable: 'PDF',
 };
 
-const listingLang: LanguageSupport = {
+const listingInt: Interpretation = {
   id: 'aaa-aaa-aaa-aaa-aaa',
   languages: ['English'],
-  listing_type: 'LS',
-  deadline: '2024-01-18T11:22:40+00:00',
-  is_remote: false,
+  is_remote: true,
   title: 'Language Support - Interpretation',
   summary: 'Lorem ipsum dolor sit amet',
+  listing_type: 'INT',
 };
 
-const listingDoc: LanguageSupport = {
-  ...listingLang,
+const listingDoc: DocumentTranslation = {
+  id: 'aaa-aaa-aaa-aaa-aaa',
+  languages: ['English'],
+  title: 'Language Support - Interpretation',
+  summary: 'Lorem ipsum dolor sit amet',
+  listing_type: 'DOC',
+  deadline: '2024-01-18T11:22:40+00:00',
   num_pages: 4,
-  is_remote: true,
-  title: 'Language Support - Documents',
 };
 
 const Container = styled.div`
@@ -82,7 +85,7 @@ export default function Page() {
         <ListingCard listing={listingCase} isSelected />
         <ListingCard listing={listingCaseInt} interpretation />
         <ListingCard listing={listingLCA} />
-        <ListingCard listing={listingLang} />
+        <ListingCard listing={listingInt} />
         <ListingCard listing={listingDoc} />
       </Box>
     </Container>
