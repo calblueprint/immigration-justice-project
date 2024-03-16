@@ -43,6 +43,7 @@ export default function Page() {
             <th>summary</th>
             <th>is_remote</th>
             <th>deadline</th>
+            <th>languages</th>
             <th>num_pages</th>
           </tr>
         </thead>
@@ -54,6 +55,7 @@ export default function Page() {
               <td>{l.summary || 'null'}</td>
               <td>n/a</td>
               <td>{l.deadline}</td>
+              <td>[{l.languages.join(', ')}]</td>
               <td>{l.num_pages || 'null'}</td>
             </tr>
           ))}
@@ -64,6 +66,7 @@ export default function Page() {
               <td>{l.summary || 'null'}</td>
               <td>{getIsRemoteValue(l.is_remote)}</td>
               <td>n/a</td>
+              <td>[{l.languages.join(', ')}]</td>
               <td>n/a</td>
             </tr>
           ))}
