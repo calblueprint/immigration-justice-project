@@ -13,7 +13,7 @@ import type { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
 
 export interface AuthContextType {
-  session: Session | undefined;
+  session?: Session;
   userId: UUID | undefined;
   userEmail: string | undefined;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
