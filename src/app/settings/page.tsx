@@ -18,6 +18,7 @@ import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import { isValidBarNumber } from '@/utils/helpers';
+import NavBar from '@/components/NavBar';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -293,73 +294,76 @@ export default function Settings() {
   // };
 
   return (
-    <PageContainer>
-      <BackLink href="/cases">Back</BackLink>
-      <ContentContainer>
-        <H1>Your Profile</H1>
-        {profile?.profileReady && !profile?.profileData && (
-          <H4>
-            You haven&apos;t completed onboarding yet. Complete onboarding to
-            view your profile.
-          </H4>
-        )}
-        {profile?.profileReady && profile?.profileData && (
-          <>
-            <SettingsSection
-              title="Account"
-              data={[
-                { type: 'text', label: 'Email', value: userEmail || '' },
-                {
-                  type: 'text',
-                  label: 'Password',
-                  value: 'somerandomkey',
-                  format: v => '*'.repeat(v.toString().length),
-                },
-              ]}
-            />
-
-            <SettingsSection
-              title="Basic Information"
-              editable
-              onSave={handleUpdateBasicInformation}
-              data={basicInformation}
-            />
-
-            <SettingsSection
-              title="Availability"
-              editable
-              onSave={handleUpdateAvailability}
-              data={availability}
-            />
-
-            <SettingsSection
-              title="Role-Specific"
-              editable
-              onSave={handleUpdateRoles}
-              data={roles}
-              subsections={attorneySettings ? [attorneySettings] : []}
-            />
-          </>
-        )}
-        <ButtonContainer>
-          {profile?.profileReady && !profile.profileData && (
-            <LinkButton
-              $primaryColor={COLORS.blueMid}
-              $secondaryColor={COLORS.blueDark}
-              href="/onboarding/roles"
-            >
-              <H4 $color="white">Go to Onboarding</H4>
-            </LinkButton>
+    <>
+      <NavBar />
+      <PageContainer>
+        <BackLink href="/cases">Back</BackLink>
+        <ContentContainer>
+          <H1>Your Profile</H1>
+          {profile?.profileReady && !profile?.profileData && (
+            <H4>
+              You haven&apos;t completed onboarding yet. Complete onboarding to
+              view your profile.
+            </H4>
           )}
-          <Button
-            $primaryColor={COLORS.redMid}
-            $secondaryColor={COLORS.redDark}
-            onClick={handleSignOut}
-          >
-            <H4 $color="white">Sign Out</H4>
-          </Button>
-        </ButtonContainer>
-      </ContentContainer>
-    </PageContainer>
+          {profile?.profileReady && profile?.profileData && (
+            <>
+              <SettingsSection
+                title="Account"
+                data={[
+                  { type: 'text', label: 'Email', value: userEmail || '' },
+                  {
+                    type: 'text',
+                    label: 'Password',
+                    value: 'somerandomkey',
+                    format: v => '*'.repeat(v.toString().length),
+                  },
+                ]}
+              />
+
+              <SettingsSection
+                title="Basic Information"
+                editable
+                onSave={handleUpdateBasicInformation}
+                data={basicInformation}
+              />
+
+              <SettingsSection
+                title="Availability"
+                editable
+                onSave={handleUpdateAvailability}
+                data={availability}
+              />
+
+              <SettingsSection
+                title="Role-Specific"
+                editable
+                onSave={handleUpdateRoles}
+                data={roles}
+                subsections={attorneySettings ? [attorneySettings] : []}
+              />
+            </>
+          )}
+          <ButtonContainer>
+            {profile?.profileReady && !profile.profileData && (
+              <LinkButton
+                $primaryColor={COLORS.blueMid}
+                $secondaryColor={COLORS.blueDark}
+                href="/onboarding/roles"
+              >
+                <H4 $color="white">Go to Onboarding</H4>
+              </LinkButton>
+            )}
+            <Button
+              $primaryColor={COLORS.redMid}
+              $secondaryColor={COLORS.redDark}
+              onClick={handleSignOut}
+            >
+              <H4 $color="white">Sign Out</H4>
+            </Button>
+          </ButtonContainer>
+        </ContentContainer>
+      </PageContainer>
+    </>
   );
 }

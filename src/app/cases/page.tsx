@@ -1,25 +1,22 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
 import CaseDetails from '@/components/CaseDetails';
 import { H1, H2, CenteredH3 } from '@/styles/text';
-import { ProfileContext } from '@/utils/ProfileProvider';
-import ProfileButton from '@/components/ProfileButton';
-import { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
 import FilterDropdown from '@/components/FilterDropdown';
 import { parseAgency } from '@/utils/helpers';
+import NavBar from '@/components/NavBar';
 import {
   CardColumn,
   PageContainer,
   FiltersContainer,
   Body,
   CaseDetailsContainer,
-  AuthButtons,
   Header,
   ResetFilters,
   ListingCount,
@@ -44,7 +41,6 @@ const defaultFilterValues = {
 
 export default function Page() {
   const selectedCardRef = useRef<UUID>();
-  const profile = useContext(ProfileContext);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
@@ -121,30 +117,6 @@ export default function Page() {
     });
   }, []);
 
-  const AuthButtonView = useMemo(() => {
-    if (profile?.profileReady)
-      return (
-        <ProfileButton href="/settings">
-          {profile.profileData?.first_name || 'Profile'}
-        </ProfileButton>
-      );
-
-    return (
-      <>
-        <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
-          Sign Up
-        </LinkButton>
-        <LinkButton
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          href="/login"
-        >
-          Log In
-        </LinkButton>
-      </>
-    );
-  }, [profile]);
-
   const resetFilters = () => {
     setCaseFilters({
       remote: new Set(),
@@ -156,89 +128,91 @@ export default function Page() {
   };
 
   return (
-    <PageContainer>
-      <Header>
-        <H2>Browse Available Cases</H2>
-        <FiltersContainer>
-          <FilterDropdown
-            placeholder={defaultFilterValues.remote}
-            multi
-            options={remoteOptions}
-            value={caseFilters.remote}
-            fullText="Remote, In Person"
-            onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.role}
-            multi
-            options={roleOptions}
-            value={caseFilters.role}
-            fullText="Attorney, Interpreter"
-            onChange={v => setCaseFilters({ ...caseFilters, role: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.languages}
-            multi
-            options={languageOptions}
-            value={caseFilters.languages}
-            onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.agency}
-            multi
-            options={agencyOptions}
-            value={caseFilters.agency}
-            onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.countries}
-            multi
-            options={countryOptions}
-            value={caseFilters.countries}
-            onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
-          />
-          <ResetFilters onClick={() => resetFilters()}>
-            Reset Filters
-          </ResetFilters>
-          <AuthButtons>{AuthButtonView}</AuthButtons>
-        </FiltersContainer>
-      </Header>
-      <Body>
-        <CardColumn>
-          <ListingCount $color={COLORS.greyMid}>
-            {filteredCases.length} listings found
-          </ListingCount>
-          {filteredCases.length === 0 ? (
-            <CenteredH3 $color={COLORS.greyMid}>No cases listed</CenteredH3>
-          ) : (
-            <>
-              {filteredCases.map(c => (
-                <ListingCard
-                  key={c.id}
-                  caseData={c}
-                  isSelected={c.id === selectedCardRef.current}
-                  onClick={() => {
-                    selectedCardRef.current = c.id;
-                    setCaseInfo(c);
-                  }}
-                />
-              ))}
-            </>
-          )}
-        </CardColumn>
-        <CaseDetailsContainer>
-          {caseInfo ? (
-            <CaseDetails caseData={caseInfo} />
-          ) : (
-            <NoCasesContainer>
-              <H1 $color={COLORS.greyMid}>No cases listed</H1>
-              <CenteredH3 $color={COLORS.greyMid}>
-                Check back later for more cases
-              </CenteredH3>
-            </NoCasesContainer>
-          )}
-        </CaseDetailsContainer>
-      </Body>
-    </PageContainer>
+    <>
+      <NavBar />
+      <PageContainer>
+        <Header>
+          <H2>Browse Available Cases</H2>
+          <FiltersContainer>
+            <FilterDropdown
+              placeholder={defaultFilterValues.remote}
+              multi
+              options={remoteOptions}
+              value={caseFilters.remote}
+              fullText="Remote, In Person"
+              onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
+            />
+            <FilterDropdown
+              placeholder={defaultFilterValues.role}
+              multi
+              options={roleOptions}
+              value={caseFilters.role}
+              fullText="Attorney, Interpreter"
+              onChange={v => setCaseFilters({ ...caseFilters, role: v })}
+            />
+            <FilterDropdown
+              placeholder={defaultFilterValues.languages}
+              multi
+              options={languageOptions}
+              value={caseFilters.languages}
+              onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
+            />
+            <FilterDropdown
+              placeholder={defaultFilterValues.agency}
+              multi
+              options={agencyOptions}
+              value={caseFilters.agency}
+              onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
+            />
+            <FilterDropdown
+              placeholder={defaultFilterValues.countries}
+              multi
+              options={countryOptions}
+              value={caseFilters.countries}
+              onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
+            />
+            <ResetFilters onClick={() => resetFilters()}>
+              Reset Filters
+            </ResetFilters>
+          </FiltersContainer>
+        </Header>
+        <Body>
+          <CardColumn>
+            <ListingCount $color={COLORS.greyMid}>
+              {filteredCases.length} listings found
+            </ListingCount>
+            {filteredCases.length === 0 ? (
+              <CenteredH3 $color={COLORS.greyMid}>No cases listed</CenteredH3>
+            ) : (
+              <>
+                {filteredCases.map(c => (
+                  <ListingCard
+                    key={c.id}
+                    caseData={c}
+                    isSelected={c.id === selectedCardRef.current}
+                    onClick={() => {
+                      selectedCardRef.current = c.id;
+                      setCaseInfo(c);
+                    }}
+                  />
+                ))}
+              </>
+            )}
+          </CardColumn>
+          <CaseDetailsContainer>
+            {caseInfo ? (
+              <CaseDetails caseData={caseInfo} />
+            ) : (
+              <NoCasesContainer>
+                <H1 $color={COLORS.greyMid}>No cases listed</H1>
+                <CenteredH3 $color={COLORS.greyMid}>
+                  Check back later for more cases
+                </CenteredH3>
+              </NoCasesContainer>
+            )}
+          </CaseDetailsContainer>
+        </Body>
+      </PageContainer>
+    </>
   );
 }

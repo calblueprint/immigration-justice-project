@@ -7,7 +7,6 @@ import BigButton from '@/components/BigButton';
 
 export default function EmailVerified() {
   const { push } = useRouter();
-
   return (
     <SpacerDiv>
       <H2>Your email has been verified!</H2>
