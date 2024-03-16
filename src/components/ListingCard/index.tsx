@@ -48,8 +48,6 @@ export default function ListingCard({
 
     // case interpretation
     if (listing.listing_type === 'CASE' && interpretation) {
-      if (listing.country) tags.push(listing.country);
-
       tags.push('Case Interpretation');
     }
 
