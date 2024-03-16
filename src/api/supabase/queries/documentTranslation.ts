@@ -6,11 +6,11 @@ import supabase from '../createClient';
  * @returns a Promise of all non-case-specific language support objects
  */
 export async function getAllDocuments(): Promise<DocumentTranslation[]> {
-  const { data, error } = await supabase
-    .from('document-translation')
-    .select('*');
+  const { data, error } = await supabase.rpc('get_document_translations');
+
   if (error) {
     throw new Error(`Error reading document translation: ${error.message}`);
   }
+
   return data.map((d: DocumentTranslation) => ({ ...d, listing_type: 'DOC' }));
 }
