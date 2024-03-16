@@ -108,4 +108,7 @@ export type Listing =
   | LimitedCaseAssignment
   | DocumentTranslation;
 
-export type AllLanguageSupport = DocumentTranslation | Interpretation | CaseListing;
+export type AllLanguageSupport =
+  | DocumentTranslation
+  | Interpretation
+  | CaseListing;

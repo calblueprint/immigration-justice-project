@@ -9,7 +9,7 @@ import {
   DocumentTranslation,
   Interpretation,
   CaseListing,
-  AllLanguageSupport
+  AllLanguageSupport,
 } from '@/types/schema';
 
 export default function Page() {
