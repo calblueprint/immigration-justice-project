@@ -41,10 +41,9 @@ export default function PasswordComplexity({
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /\d/.test(password);
-  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-  const longEnough = password.length >= 8;
+  const longEnough = password.length >= 12;
 
-  if (longEnough && hasUpperCase && hasLowerCase && hasNumber && hasSpecial) {
+  if (hasUpperCase && hasLowerCase && hasNumber && longEnough) {
     setComplexity(true);
   } else {
     setComplexity(false);
@@ -62,11 +61,7 @@ export default function PasswordComplexity({
           text="At least 1 lowercase character"
         />
         <PasswordRequirement met={hasNumber} text="At least 1 number" />
-        <PasswordRequirement
-          met={hasSpecial}
-          text="At least 1 special character"
-        />
-        <PasswordRequirement met={longEnough} text="At least 8 characters" />
+        <PasswordRequirement met={longEnough} text="At least 12 characters" />
       </PasswordComplexityDiv>
     );
   }
