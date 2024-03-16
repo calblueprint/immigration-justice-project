@@ -94,7 +94,7 @@ export default function ListingCard({
         </Styles.TagRow>
       )}
 
-      <Flex $gap="1rem">
+      <Flex $gap="16px">
         <Styles.IconTextGroup>
           <Icon type="location" />
           <P>{remoteInfo}</P>
