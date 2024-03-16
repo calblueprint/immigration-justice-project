@@ -4,20 +4,29 @@ import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllCases } from '@/api/supabase/queries/cases';
 import { useEffect, useState } from 'react';
-import { DocumentTranslation, Interpretation, CaseListing } from '@/types/schema';
+import {
+  DocumentTranslation,
+  Interpretation,
+  CaseListing,
+} from '@/types/schema';
 
 export default function Page() {
-  type AllLanguageSupport = DocumentTranslation | Interpretation | CaseListing; 
-  const [allLanguageSupport, setAllLanguageSupport] = useState<AllLanguageSupport[]>([]);
+  type AllLanguageSupport = DocumentTranslation | Interpretation | CaseListing;
+  const [allLanguageSupport, setAllLanguageSupport] = useState<
+    AllLanguageSupport[]
+  >([]);
   // const [docListings, setDocListings] = useState<DocumentTranslation[]>([]);
   // const [intListings, setIntListings] = useState<Interpretation[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [docListings, intListings, casesInterpretationListings] = await Promise.all(
-          [getAllDocuments(), getAllInterpretation(), getAllCases()],
-        );
+        const [docListings, intListings, casesInterpretationListings] =
+          await Promise.all([
+            getAllDocuments(),
+            getAllInterpretation(),
+            getAllCases(),
+          ]);
         setAllLanguageSupport([
           ...docListings,
           ...intListings,
@@ -52,15 +61,15 @@ export default function Page() {
           <td>{ls.title}</td>
           <td>{ls.summary}</td>
           <td>{ls.languages.join(', ')}</td>
-          <td>{getIsRemoteValue(ls.is_remote)}</td> 
-          <td>{ls.listing_type}</td> 
-          <td>N/A</td> 
-          <td>N/A</td> 
-          <td>N/A</td> 
-          <td>N/A</td> 
-          <td>N/A</td> 
+          <td>{getIsRemoteValue(ls.is_remote)}</td>
+          <td>{ls.listing_type}</td>
+          <td>N/A</td>
+          <td>N/A</td>
+          <td>N/A</td>
+          <td>N/A</td>
+          <td>N/A</td>
         </tr>
-      )
+      );
     }
     if (langSupport.listing_type === 'DOC') {
       const ls = langSupport as DocumentTranslation;
