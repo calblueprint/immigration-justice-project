@@ -14,19 +14,20 @@ export const H1 = styled.h1<{ $color?: string }>`
   margin: 0;
 `;
 
-export const H2 = styled.h2<{ $color?: string }>`
+export const H2 = styled.h2<{ $color?: string; $fontWeight?: number | string }>`
   ${openSans.style}
   font-size: 2.25rem;
   font-weight: 600;
-  color: ${props => props.$color || COLORS.greyDarker};
+  color: ${({ $color }) => $color || COLORS.greyDarker};
+  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
   margin: 0;
 `;
 
 export const H3 = styled.h3<{ $color?: string; $fontWeight?: number | string }>`
   ${openSans.style}
   font-size: 1.5rem;
-  color: ${props => props.$color || COLORS.greyDarker};
-  font-weight: ${props => props.$fontWeight || '600'};
+  color: ${({ $color }) => $color || COLORS.greyDarker};
+  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
   margin: 0;
 `;
 
@@ -34,19 +35,12 @@ export const CenteredH3 = styled(H3)`
   align-self: center;
 `;
 
-export const H4 = styled.h4<{ $color?: string }>`
+export const H4 = styled.h4<{ $color?: string; $fontWeight?: number | string }>`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 600;
-  color: ${props => props.$color || COLORS.greyDarker};
-  margin: 0;
-`;
-
-export const H5 = styled.h5<{ $color?: string }>`
-  ${openSans.style}
-  font-size: 5.31rem;
-  font-weight: 600;
-  color: white;
+  color: ${({ $color }) => $color || COLORS.greyDarker};
+  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
   margin: 0;
 `;
 

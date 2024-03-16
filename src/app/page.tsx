@@ -2,27 +2,26 @@
 
 import COLORS from '@/styles/colors';
 import Image from 'next/image';
-import { H5, H3, H4 } from '../styles/text';
-import Button from '../components/Button';
+import { H2, H3, H4 } from '../styles/text';
+import { LinkButton } from '../components/Button';
 
 import {
   TitleSection,
   PageContainer,
   ButtonDiv,
   StatisticsSection,
-  StatNumber,
   StatLabel,
   StatContainer,
   HowYouCanHelpContainer,
   Title,
-  Subtitle,
   ServiceContainer,
   ServiceIcon,
-  ServiceTitle,
   ServicesDiv,
   MissionValuesContainer,
   MissionStatement,
-  Test,
+  TextContainer,
+  ImageBackground,
+  ImageContainer,
 } from './styles';
 
 type Stat = {
@@ -39,7 +38,7 @@ const stats: Stat[] = [
 
 const renderStat = (stat: Stat) => (
   <StatContainer key={stat.label}>
-    <StatNumber>{stat.number}</StatNumber>
+    <H2 $color={COLORS.blueDark}>{stat.number}</H2>
     <StatLabel>{stat.label}</StatLabel>
   </StatContainer>
 );
@@ -73,8 +72,10 @@ const services: Service[] = [
 const renderService = (service: Service) => (
   <ServiceContainer key={service.title}>
     <ServiceIcon src={service.iconSrc} alt={service.title} />
-    <ServiceTitle>{service.title}</ServiceTitle>
-    <H4 $color={COLORS.greyDark}>{service.description}</H4>
+    <H3 $color={COLORS.blueMid}>{service.title}</H3>
+    <H4 $color={COLORS.greyDark} $fontWeight="400">
+      {service.description}
+    </H4>
   </ServiceContainer>
 );
 
@@ -82,57 +83,52 @@ export default function Home() {
   return (
     <PageContainer>
       <TitleSection>
-        <Image
-          alt="background"
-          src="/HomePage.webp"
-          placeholder="blur"
-          blurDataURL="/HomePage.webp"
-          quality={100}
-          fill
-        />
-        <Test>
-          <H5>IMMIGRATION JUSTICE PROJECT</H5>
+        <ImageContainer>
+          <Image
+            alt="background"
+            src="/HomePage.webp"
+            placeholder="blur"
+            blurDataURL="/HomePage.webp"
+            quality={100}
+            fill
+          />
+          <ImageBackground />
+        </ImageContainer>
+        <TextContainer>
+          <Title>IMMIGRATION JUSTICE PROJECT</Title>
           <H3 $color="white" $fontWeight="400">
             The Immigration Justice Project (IJP) seeks to promote due process
             and access to justice through the provision of high quality legal
             services on behalf of indigent immigrants and asylum seekers.
           </H3>
           <ButtonDiv>
-            <Button
+            <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.blueDarker}
+              href="../signup"
             >
-              Volunteer Now
-            </Button>
+              Learn More
+            </LinkButton>
           </ButtonDiv>
-        </Test>
+        </TextContainer>
       </TitleSection>
       <StatisticsSection>
         {stats.map(stat => renderStat(stat))}
       </StatisticsSection>
       <HowYouCanHelpContainer>
-        <Title>HOW YOU CAN HELP</Title>
-        <Subtitle>
+        <H2 $color={COLORS.blueMid}>HOW YOU CAN HELP</H2>
+        <H4 $color={COLORS.greyMid}>
           The Immigration Justice Project seeks to promote due process and
           access to justice for indigent immigrants and asylum seekers.
-        </Subtitle>
+        </H4>
         <ServicesDiv>
           {services.map(Service => renderService(Service))}
         </ServicesDiv>
       </HowYouCanHelpContainer>
       <MissionValuesContainer>
-        <Image
-          alt="Mountains"
-          src="/HomePage.webp"
-          placeholder="blur"
-          blurDataURL="/HomePage.webp"
-          quality={100}
-          width={521}
-          height={338}
-        />
         <MissionStatement>
-          <Title>OUR MISSION VALUES</Title>
-          <Subtitle>
+          <H2 $color={COLORS.blueMid}>OUR MISSION VALUES</H2>
+          <H4 $fontWeight="400">
             The mission of the Immigration Justice Project (IJP) is to improve
             public awareness of the legal system, to promote the administration
             of justice, and to deliver high-quality legal services. IJP’s goals
@@ -141,16 +137,26 @@ export default function Home() {
             through the provision of high-quality legal services to individuals
             navigating immigration legal proceedings in the San Diego,
             California border region.
-          </Subtitle>
+          </H4>
           <ButtonDiv>
-            <Button
+            <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.blueDarker}
+              href="https://www.americanbar.org/groups/public_interest/immigration/"
             >
-              Volunteer Now
-            </Button>
+              Learn More
+            </LinkButton>
           </ButtonDiv>
         </MissionStatement>
+        <Image
+          alt="Lawyer Image"
+          src="/HomePage.webp"
+          placeholder="blur"
+          blurDataURL="/HomePage.webp"
+          quality={100}
+          width={521}
+          height={338}
+        />
       </MissionValuesContainer>
     </PageContainer>
   );
