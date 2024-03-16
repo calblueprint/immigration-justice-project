@@ -3,6 +3,7 @@
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllCases } from '@/api/supabase/queries/cases';
+import {timestampStringToDate} from '@/utils/helpers';
 import { useEffect, useState } from 'react';
 import {
   DocumentTranslation,
@@ -27,12 +28,12 @@ export default function Page() {
             getAllInterpretation(),
             getAllCases(),
           ]);
+        const sortedLS = [...docListings, ...intListings].sort((a, b) => timestampStringToDate(b.upload_date).getTime() - timestampStringToDate(a.upload_date).getTime())
         setAllLanguageSupport([
-          ...docListings,
-          ...intListings,
           ...casesInterpretationListings.filter(
             caseInterpretation => caseInterpretation.needs_interpreter === true,
           ),
+           ...sortedLS
         ]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
@@ -64,7 +65,7 @@ export default function Page() {
           <td>{getIsRemoteValue(ls.is_remote)}</td>
           <td>{ls.listing_type}</td>
           <td>N/A</td>
-          <td>N/A</td>
+          <td>{ls.upload_date}</td>
           <td>N/A</td>
           <td>N/A</td>
           <td>N/A</td>
@@ -82,7 +83,7 @@ export default function Page() {
           <td>Asynchronous</td>
           <td>{ls.listing_type}</td>
           <td>{ls.deadline}</td>
-          <td>N/A</td>
+          <td>{ls.upload_date}</td>
           <td>N/A</td>
           <td>N/A</td>
           <td>{ls.num_pages}</td>
