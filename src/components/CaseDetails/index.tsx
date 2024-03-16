@@ -45,9 +45,7 @@ const caseFields = [
   {
     label: 'Time Commitment',
     getValue: (data: CaseListing) =>
-      data.hours_per_week && data.num_weeks
-        ? parseTimeCommitment(data.hours_per_week, data.num_weeks)
-        : 'N/A',
+      parseTimeCommitment(data.hours_per_week, data.num_weeks),
   },
   {
     label: 'Remote/In Person',
