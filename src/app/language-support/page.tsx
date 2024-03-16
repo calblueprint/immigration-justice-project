@@ -3,7 +3,7 @@
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllCases } from '@/api/supabase/queries/cases';
-import {timestampStringToDate} from '@/utils/helpers';
+import { timestampStringToDate } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
 import {
   DocumentTranslation,
@@ -28,12 +28,16 @@ export default function Page() {
             getAllInterpretation(),
             getAllCases(),
           ]);
-        const sortedLS = [...docListings, ...intListings].sort((a, b) => timestampStringToDate(b.upload_date).getTime() - timestampStringToDate(a.upload_date).getTime())
+        const sortedLS = [...docListings, ...intListings].sort(
+          (a, b) =>
+            timestampStringToDate(b.upload_date).getTime() -
+            timestampStringToDate(a.upload_date).getTime(),
+        );
         setAllLanguageSupport([
           ...casesInterpretationListings.filter(
             caseInterpretation => caseInterpretation.needs_interpreter === true,
           ),
-           ...sortedLS
+          ...sortedLS,
         ]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
