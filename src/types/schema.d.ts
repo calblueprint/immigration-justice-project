@@ -29,7 +29,12 @@ export interface ProfileRole {
   role: RoleEnum;
 }
 
-export type ListingType = 'CASE' | 'CASE_INT' | 'LCA' | 'DOC' | 'INT';
+export type ListingType =
+  | 'CASE'
+  | 'CASE_INT' // case interpretation
+  | 'LCA'
+  | 'DOC'
+  | 'INT'; // interpretation
 
 export interface Interest {
   listing_id: UUID;
