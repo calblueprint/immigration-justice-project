@@ -1,85 +1,132 @@
+'use client';
+
 import { UUID } from 'crypto';
-import { CaseListing } from '@/types/schema';
-import {
-  timestampStringToDate,
-  parseDate,
-  parseAgency,
-  parseRolesNeeded,
-} from '@/utils/helpers';
+import { Listing } from '@/types/schema';
+import { useMemo } from 'react';
+import { parseAgency, formatTimestamp } from '@/utils/helpers';
 import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import Icon from '../../../assets/icons/Icon';
-import { CardBody, TagRow, CardTag, IconTextGroup } from './styles';
+import { Flex } from '@/styles/containers';
+import Icon from '../Icon';
+import * as Styles from './styles';
 
 export default function ListingCard({
-  caseData,
+  listing,
   isSelected = false,
   onClick,
+  interpretation = false,
 }: {
-  caseData: CaseListing;
+  listing: Listing;
   isSelected?: boolean;
   onClick?: (id: UUID) => void;
+  interpretation?: boolean;
 }) {
-  // Helper function to generate an array of strings for CardTag components
-  const generateCardTags = (): string[] => {
+  // list of tags to display
+  const cardTags = useMemo(() => {
     const tags = [];
 
-    tags.push(
-      parseRolesNeeded(
-        true,
-        caseData.needs_attorney,
-        caseData.needs_interpreter,
-      ),
-    );
+    if (listing.listing_type === 'CASE') {
+      if (
+        !interpretation &&
+        listing.relief_codes &&
+        listing.relief_codes.length > 0
+      ) {
+        tags.push(listing.relief_codes.join(', '));
+      }
 
-    if (caseData.relief_codes && caseData.relief_codes.length > 0) {
-      tags.push(caseData.relief_codes.join(', '));
+      if (listing.hours_per_week) {
+        tags.push(`${listing.hours_per_week} hrs/week`);
+      }
     }
 
-    // TODO: parse hrs/month if num weeks > 3
-    if (caseData.hours_per_week) {
-      tags.push(`${caseData.hours_per_week} hrs/week`);
+    // language tag
+    if (listing.languages && listing.languages.length > 0) {
+      let langTag = listing.languages.slice(0, 2).join(', ');
+      if (listing.languages.length > 2)
+        langTag += ` + ${listing.languages.length - 2}`;
+      tags.push(langTag);
     }
 
-    if (caseData.languages && caseData.languages.length > 0) {
-      tags.push(caseData.languages.join(', '));
+    // case interpretation
+    if (listing.listing_type === 'CASE' && interpretation) {
+      tags.push('Case Interpretation');
+    }
+
+    // limited case assignment
+    if (listing.listing_type === 'LCA') {
+      tags.push(listing.country);
+    }
+
+    // language support
+    if (listing.listing_type === 'DOC') {
+      const plural = listing.num_pages > 1 ? 's' : '';
+      tags.push(`${listing.num_pages} page${plural}`);
+      tags.push('Document Translation');
+    }
+
+    if (listing.listing_type === 'INT') {
+      tags.push('Interpretation');
     }
 
     return tags;
-  };
+  }, [listing, interpretation]);
 
-  const remoteInfo = `${caseData.is_remote ? 'Remote' : 'In Person'}${
-    caseData.adjudicating_agency
-      ? `, ${parseAgency(caseData.adjudicating_agency)}`
-      : ''
-  }`;
+  // remote info
+  const remoteInfo = useMemo(() => {
+    if (listing.listing_type === 'CASE' || listing.listing_type === 'INT')
+      return `${listing.is_remote ? 'Remote' : 'In Person'}`;
+    return 'Asynchronous';
+  }, [listing]);
 
   return (
-    <CardBody
+    <Styles.CardBody
       $selected={isSelected}
-      onClick={onClick ? () => onClick(caseData.id) : undefined}
+      onClick={() => onClick?.(listing.id)}
     >
-      <H4>{caseData.title || 'Migrant seeking representation'}</H4>
+      <H4>{listing.title || 'Migrant seeking representation'}</H4>
 
-      <TagRow>
-        {generateCardTags().map(s => (
-          <CardTag key={s} color={COLORS.blueLight}>
-            {s}
-          </CardTag>
-        ))}
-      </TagRow>
+      {cardTags.length > 0 && (
+        <Styles.TagRow>
+          {cardTags.map(s => (
+            <Styles.CardTag key={s} color={COLORS.blueLight}>
+              {s}
+            </Styles.CardTag>
+          ))}
+        </Styles.TagRow>
+      )}
 
-      <IconTextGroup>
-        <Icon type="location" />
-        <P>{remoteInfo}</P>
-      </IconTextGroup>
+      <Flex $gap="16px">
+        <Styles.IconTextGroup>
+          <Icon type="location" />
+          <P>{remoteInfo}</P>
+        </Styles.IconTextGroup>
 
-      <P>
-        <strong>Next Filing/Court Date: </strong>
-        {caseData.upcoming_date
-          ? parseDate(timestampStringToDate(caseData.upcoming_date))
-          : 'N/A'}
-      </P>
-    </CardBody>
+        {listing.listing_type === 'CASE' &&
+        !interpretation &&
+        listing.adjudicating_agency ? (
+          <Styles.IconTextGroup>
+            <Icon type="gavel" />
+            <P>{parseAgency(listing.adjudicating_agency)}</P>
+          </Styles.IconTextGroup>
+        ) : null}
+      </Flex>
+
+      {listing.listing_type !== 'INT' ? (
+        <Flex $align="center" $gap="8px">
+          <Icon type="calendar" />
+          <P>
+            <strong>
+              {listing.listing_type === 'CASE'
+                ? 'Next Filing/Court Date:'
+                : 'Assignment Deadline:'}
+            </strong>
+            &nbsp;
+            {listing.listing_type === 'CASE'
+              ? formatTimestamp(listing.upcoming_date)
+              : formatTimestamp(listing.deadline)}
+          </P>
+        </Flex>
+      ) : null}
+    </Styles.CardBody>
   );
 }

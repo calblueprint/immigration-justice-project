@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
@@ -43,8 +43,8 @@ const defaultFilterValues = {
 };
 
 export default function Page() {
-  const selectedCardRef = useRef<UUID>();
   const profile = useContext(ProfileContext);
+  const [selectedCard, setSelecatedCard] = useState<UUID | null>(null);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
   const [caseFilters, setCaseFilters] = useState<FilterType>({
@@ -117,7 +117,7 @@ export default function Page() {
     getNCases(20).then(casesData => {
       setCaseData(casesData as CaseListing[]);
       setCaseInfo(casesData[0] as CaseListing);
-      selectedCardRef.current = casesData[0]?.id;
+      setSelecatedCard(casesData[0]?.id);
     });
   }, []);
 
@@ -215,10 +215,10 @@ export default function Page() {
               {filteredCases.map(c => (
                 <ListingCard
                   key={c.id}
-                  caseData={c}
-                  isSelected={c.id === selectedCardRef.current}
+                  listing={c}
+                  isSelected={c.id === selectedCard}
                   onClick={() => {
-                    selectedCardRef.current = c.id;
+                    setSelecatedCard(c.id);
                     setCaseInfo(c);
                   }}
                 />
