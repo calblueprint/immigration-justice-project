@@ -7,7 +7,6 @@ import {
   ReactNode,
   SetStateAction,
   Dispatch,
-  useContext,
 } from 'react';
 
 import {
@@ -26,7 +25,7 @@ interface FlowData {
 }
 
 interface OnboardingContextType {
-  profile: Partial<Profile>;
+  userProfile: Partial<Profile>;
   canReads: Set<string>;
   canSpeaks: Set<string>;
   roles: Set<RoleEnum>;
@@ -53,7 +52,7 @@ export default function OnboardingProvider({
   children: ReactNode;
 }) {
   const auth = useAuth();
-  const profileCtx = useProfile();
+  const profile = useProfile();
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<FlowData[]>([
     { name: 'Roles', url: 'roles' },
@@ -62,7 +61,7 @@ export default function OnboardingProvider({
     { name: 'Legal Experience', url: 'legal-experience' },
     { name: 'Done', url: 'done' },
   ]);
-  const [profile, setProfile] = useState<Partial<Profile>>({});
+  const [userProfile, setUserProfile] = useState<Partial<Profile>>({});
   const [canReads, setCanReads] = useState<Set<string>>(new Set());
   const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
   const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
@@ -74,45 +73,44 @@ export default function OnboardingProvider({
      * Does not affect database.
      */
     const updateProfile = (updatedInfo: Partial<Profile>) => {
-      const newProfileData = { ...profile, ...updatedInfo };
-      setProfile(newProfileData);
+      const newUserProfile = { ...userProfile, ...updatedInfo };
+      setUserProfile(newUserProfile);
     };
 
     const flushData = async () => {
       if (!auth) throw new Error('Fatal: No auth context provided!');
-      if (!profileCtx) throw new Error('Fatal: No profile context provided!');
-      if (auth.userId === undefined)
-        throw new Error('Fatal: User is not logged in!');
+      if (!profile) throw new Error('Fatal: No profile context provided!');
+      if (!auth.userId) throw new Error('Fatal: User is not logged in!');
 
       const uid: UUID = auth.userId;
 
-      if (!profile.first_name)
+      if (!userProfile.first_name)
         throw new Error('Error flushing data: profile missing first name!');
 
-      if (!profile.last_name)
+      if (!userProfile.last_name)
         throw new Error('Error flushing data: profile missing last name!');
 
-      if (profile.hours_per_month === undefined)
+      if (userProfile.hours_per_month === undefined)
         throw new Error(
           'Error flushing data: profile missing hours per month!',
         );
 
-      if (!profile.location)
+      if (!userProfile.location)
         throw new Error('Error flushing data: profile missing location!');
 
-      if (!profile.start_date)
+      if (!userProfile.start_date)
         throw new Error('Error flushing data: profile missing start date!');
 
       if (roles.size === 0)
         throw new Error('Error flushing data: roles data is empty!');
 
       if (roles.has('ATTORNEY')) {
-        if (!profile.bar_number)
+        if (!userProfile.bar_number)
           throw new Error(
             'Error flushing data: attorney profile missing bar number!',
           );
 
-        if (profile.eoir_registered === undefined)
+        if (userProfile.eoir_registered === undefined)
           throw new Error(
             'Error flushing data: attorney profile missing EOIR registered!',
           );
@@ -130,14 +128,14 @@ export default function OnboardingProvider({
 
       // format data
       const profileToInsert: Profile = {
-        first_name: profile.first_name,
-        last_name: profile.last_name,
-        hours_per_month: profile.hours_per_month,
-        location: profile.location,
-        start_date: profile.start_date,
-        availability_description: profile.availability_description,
-        bar_number: profile.bar_number,
-        eoir_registered: profile.eoir_registered,
+        first_name: userProfile.first_name,
+        last_name: userProfile.last_name,
+        hours_per_month: userProfile.hours_per_month,
+        location: userProfile.location,
+        start_date: userProfile.start_date,
+        availability_description: userProfile.availability_description,
+        bar_number: userProfile.bar_number,
+        eoir_registered: userProfile.eoir_registered,
         user_id: uid,
         // TODO: update to get phone number
         phone_number: '000-000-0000',
@@ -158,7 +156,7 @@ export default function OnboardingProvider({
         role: r,
       }));
 
-      await profileCtx.createNewProfile(
+      await profile.createNewProfile(
         profileToInsert,
         langsToInsert,
         rolesToInsert,
@@ -167,7 +165,7 @@ export default function OnboardingProvider({
 
     return {
       progress,
-      profile,
+      userProfile,
       canReads,
       canSpeaks,
       roles,
@@ -184,13 +182,14 @@ export default function OnboardingProvider({
     };
   }, [
     progress,
-    profile,
+    userProfile,
     flow,
     canReads,
     canSpeaks,
     roles,
     canContinue,
-    profileCtx,
+    profile,
+    auth,
   ]);
 
   return (

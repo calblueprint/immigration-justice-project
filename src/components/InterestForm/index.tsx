@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import { Interest, CaseListing } from '@/types/schema';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
@@ -30,7 +30,6 @@ const radioOptions = [
 
 export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   const auth = useAuth();
-  const profile = useProfile();
   const [reason, setReason] = useState<string>('');
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -52,7 +51,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
       return;
     }
     if (isValidDate(startDate)) {
-      if (auth && auth.userId && profile) {
+      if (auth && auth.userId) {
         const newInterest: Interest = {
           listing_id: caseData.id,
           listing_type: 'CASE',

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
@@ -167,7 +167,7 @@ export default function Settings() {
       throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
     push('/login');
-  }, [push]);
+  }, [auth, push]);
 
   const handleUpdateBasicInformation = useCallback(
     (nd: SettingsSectionData) => {
