@@ -18,6 +18,7 @@ const COLORS = {
   redDark: '#B53839',
   redLight: '#F3B1B2',
   redLighter: '#FFE9E9',
+  green: '#2E9D1B',
 };
 
 export default COLORS;

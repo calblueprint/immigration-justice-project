@@ -10,6 +10,7 @@ import COLORS from '@/styles/colors';
 import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
+import PasswordComplexity from '@/components/PasswordComplexity';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [passwordComplexity, setPasswordComplexity] = useState(false);
   // const { push } = useRouter();
 
   const validEmail = (e: string) => e !== '' && isEmail(e);
@@ -27,6 +29,10 @@ export default function SignUp() {
     setPasswordError(password !== '' ? '' : 'Invalid Password');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
+      return;
+    }
+    if (!passwordComplexity) {
+      setPasswordError('Password must meet complexity requirements');
       return;
     }
     setEmailError('');
@@ -84,15 +90,21 @@ export default function SignUp() {
             value={email}
             setValue={setEmail}
           />
-          <TextInput
-            label="Password"
-            placeholder="Password"
-            errorText={passwordError}
-            type="password"
-            id="password"
-            value={password}
-            setValue={setPassword}
-          />
+          <SpacerDiv $gap={0.5}>
+            <TextInput
+              label="Password"
+              placeholder="Password"
+              errorText={passwordError}
+              type="password"
+              id="password"
+              value={password}
+              setValue={setPassword}
+            />
+            <PasswordComplexity
+              password={password}
+              setComplexity={setPasswordComplexity}
+            />
+          </SpacerDiv>
           <SpacerDiv>
             <BigButton type="button" onClick={handleSignUp}>
               Sign Up

@@ -7,6 +7,8 @@ import { H1, H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
+import PasswordComplexity from '@/components/PasswordComplexity';
+
 import supabase from '@/api/supabase/createClient';
 
 export default function ResetPassword() {
@@ -14,6 +16,7 @@ export default function ResetPassword() {
   const [newPassword2, setNewPassword2] = useState('');
   const [canReset, setCanReset] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [passwordComplexity, setPasswordComplexity] = useState(false);
   const { push } = useRouter();
 
   useEffect(() => {
@@ -25,6 +28,10 @@ export default function ResetPassword() {
   }, []);
 
   const resetPassword = async () => {
+    if (!passwordComplexity) {
+      setErrorMessage('Password must meet complexity requirements');
+      return;
+    }
     if (newPassword !== newPassword2) {
       setErrorMessage('Passwords do not match.');
       return;
@@ -52,15 +59,20 @@ export default function ResetPassword() {
           {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
         </SpacerDiv>
         <SpacerDiv>
-          <TextInput
-            label="New Password"
-            placeholder="Password"
-            errorText={newPassword.length < 6 ? 'Invalid Password' : ''}
-            type="password"
-            id="newpass"
-            value={newPassword}
-            setValue={setNewPassword}
-          />
+          <SpacerDiv $gap={0.5}>
+            <TextInput
+              label="New Password"
+              placeholder="Password"
+              type="password"
+              id="newpass"
+              value={newPassword}
+              setValue={setNewPassword}
+            />
+            <PasswordComplexity
+              password={newPassword}
+              setComplexity={setPasswordComplexity}
+            />
+          </SpacerDiv>
           <TextInput
             label="Confirm New Password"
             placeholder="Password"
