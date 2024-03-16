@@ -52,7 +52,7 @@ export default function Page() {
           <td>{ls.title}</td>
           <td>{ls.summary}</td>
           <td>{ls.languages.join(', ')}</td>
-          <td>{ls.is_remote}</td> 
+          <td>{getIsRemoteValue(ls.is_remote)}</td> 
           <td>{ls.listing_type}</td> 
           <td>N/A</td> 
           <td>N/A</td> 
