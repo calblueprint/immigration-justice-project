@@ -15,6 +15,7 @@ export interface Profile {
   state_barred?: string;
 }
 
+// only used for ProfileRoles
 export type RoleEnum = 'ATTORNEY' | 'INTERPRETER' | 'LEGAL_FELLOW';
 
 export interface ProfileLanguage {
@@ -98,6 +99,7 @@ export interface DocumentTranslation {
   listing_type: 'DOC';
 }
 
+// union of types, used for ListingCard and CaseDetail components etc.
 export type Listing =
   | CaseListing
   | Interpretation
