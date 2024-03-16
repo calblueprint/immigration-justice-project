@@ -37,7 +37,7 @@ export interface Interest {
   listing_type: ListingType;
   form_response: {
     needs_interpreter?: boolean; // for attorneys only
-    interest_reason?: string; // for everything but non-case language support
+    interest_reason?: string;
     start_date?: Date; // for cases and case interpretation
   };
 }
@@ -97,4 +97,4 @@ export type Listing =
   | CaseListing
   | Interpretation
   | LimitedCaseAssignment
-  | Document;
+  | DocumentTranslation;
