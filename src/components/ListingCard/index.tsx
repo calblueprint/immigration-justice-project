@@ -54,7 +54,6 @@ export default function ListingCard({
     // limited case assignment
     if (listing.listing_type === 'LCA') {
       tags.push(listing.country);
-      tags.push(listing.deliverable);
     }
 
     // language support
