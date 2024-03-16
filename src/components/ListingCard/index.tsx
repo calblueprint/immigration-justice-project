@@ -59,7 +59,8 @@ export default function ListingCard({
 
     // language support
     if (listing.listing_type === 'DOC') {
-      tags.push(`${listing.num_pages} pages`);
+      const plural = listing.num_pages > 1 ? 's' : '';
+      tags.push(`${listing.num_pages} page${plural}`);
       tags.push('Document Translation');
     }
 
