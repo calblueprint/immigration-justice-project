@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
-import image from '../../public/HomePage.webp';
 
 export const PageContainer = styled.div`
   width: 100%;
@@ -9,31 +8,21 @@ export const PageContainer = styled.div`
 `;
 
 export const TitleSection = styled.div`
+  position: relative;
   width: 100%;
   height: 100vh; // Use 100vh to make the div fill the entire viewport height
-  /* background: linear-gradient(
-      222deg,
-      rgba(40, 120, 194, 0.5) 14.2%,
-      rgba(0, 50, 96, 0.5) 76.27%
-    ),
-    url(${image.src}) no-repeat center / cover; */
   display: flex;
   flex-direction: column;
-  padding-top: 200px;
-  padding-right: 440px;
-  padding-left: 84px;
-  background: linear-gradient(
-    222deg,
-    rgba(40, 120, 194, 0.5) 14.2%,
-    rgba(0, 50, 96, 0.5) 76.27%
-  );
-  gap: 30px;
-  z-index: 1;
+  // padding-top: 200px;
+  // padding-right: 400px;
+  /* padding-left: 84px;
+  padding-bottom: 150px; */
 `;
 
 export const ButtonDiv = styled.div`
-  width: 244px;
-  height: 40px;
+  margin-top: 25px;
+  width: clamp(224px, 25%, 500px);
+  height: clamp(40px, 5vh, 60px);
 `;
 
 export const StatisticsSection = styled.div`
@@ -43,20 +32,15 @@ export const StatisticsSection = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
   padding-top: 33px;
   padding-bottom: 35px;
-`;
-export const StatNumber = styled.div`
-  font-size: 35px;
-  color: ${COLORS.blueMid};
-  font-weight: 500px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 // Label for each stat
 export const StatLabel = styled.div`
-  font-size: 22px;
+  font-size: 1.375rem;
   color: ${COLORS.greyDark};
 `;
 export const StatContainer = styled.div`
@@ -71,20 +55,6 @@ export const HowYouCanHelpContainer = styled.div`
   align-items: center;
   gap: 10px;
   padding-top: 70px;
-`;
-
-// Title and subtitle
-export const Title = styled.h1`
-  ${openSans.style}
-  font-size: 35px;
-  font-weight: 500px;
-  color: ${COLORS.blueMid};
-`;
-
-export const Subtitle = styled.p`
-  ${openSans.style}
-  font-size: 16px;
-  color: ${COLORS.greyDark};
 `;
 
 // Service container
@@ -111,12 +81,6 @@ export const ServiceIcon = styled.img`
   margin-bottom: 10px;
 `;
 
-// Service title
-export const ServiceTitle = styled.h2`
-  font-size: 20px;
-  color: ${COLORS.blueMid};
-`;
-
 export const MissionValuesContainer = styled.div`
   background-color: ${COLORS.blueLighter};
   width: 100%;
@@ -128,19 +92,50 @@ export const MissionValuesContainer = styled.div`
   padding-left: 160px;
   padding-right: 200px;
   gap: 53px;
+  position: relative;
 `;
 export const MissionStatement = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+  // position: relative;
 `;
 
-export const Test = styled.div`
+export const TextContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 100vh; */
+  padding-top: 200px;
+  //padding-right: 550px;
+  padding-left: 84px;
+  padding-bottom: 150px;
   z-index: 10;
-  background: linear-gradient(
-    222deg,
-    rgba(40, 120, 194, 0.5) 14.2%,
-    rgba(0, 50, 96, 0.5) 76.27%
-  );
+  padding-right: 600px;
+  gap: 50px;
+`;
+export const ImageBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(40, 120, 194, 0.5); // Red overlay with 50% opacity
+  z-index: 1;
+`;
+export const ImageContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+`;
+export const Title = styled.h5<{ $color?: string }>`
+  ${openSans.style}
+  font-size: 5.31rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
 `;
