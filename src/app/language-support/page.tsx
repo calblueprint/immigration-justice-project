@@ -9,15 +9,13 @@ import {
   DocumentTranslation,
   Interpretation,
   CaseListing,
+  AllLanguageSupport
 } from '@/types/schema';
 
 export default function Page() {
-  type AllLanguageSupport = DocumentTranslation | Interpretation | CaseListing;
   const [allLanguageSupport, setAllLanguageSupport] = useState<
     AllLanguageSupport[]
   >([]);
-  // const [docListings, setDocListings] = useState<DocumentTranslation[]>([]);
-  // const [intListings, setIntListings] = useState<Interpretation[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
