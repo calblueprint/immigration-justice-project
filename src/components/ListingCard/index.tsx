@@ -36,8 +36,9 @@ export default function ListingCard({
       tags.push(caseData.relief_codes.join(', '));
     }
 
-    if (caseData.hours_per_month) {
-      tags.push(`${caseData.hours_per_month} hrs/month`);
+    // TODO: parse hrs/month if num weeks > 3
+    if (caseData.hours_per_week) {
+      tags.push(`${caseData.hours_per_week} hrs/week`);
     }
 
     if (caseData.languages && caseData.languages.length > 0) {

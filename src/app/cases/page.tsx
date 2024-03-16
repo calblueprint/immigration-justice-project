@@ -57,13 +57,15 @@ export default function Page() {
 
   const remoteOptions = useMemo(() => new Set(['Remote', 'In Person']), []);
   const roleOptions = useMemo(() => new Set(['Attorney', 'Interpreter']), []);
-  const agencyOptions = useMemo(
+  const agencyOptions: Map<string, string> = useMemo(
     () =>
       new Map(
-        caseData.map(c => [
-          c.adjudicating_agency,
-          parseAgency(c.adjudicating_agency),
-        ]),
+        caseData
+          .filter(c => c.adjudicating_agency)
+          .map(c => [
+            c.adjudicating_agency ?? '',
+            c.adjudicating_agency ? parseAgency(c.adjudicating_agency) : '',
+          ]),
       ),
     [caseData],
   );
@@ -99,7 +101,8 @@ export default function Page() {
         .filter(
           c =>
             caseFilters.agency.size === 0 ||
-            caseFilters.agency.has(c.adjudicating_agency),
+            (c.adjudicating_agency &&
+              caseFilters.agency.has(c.adjudicating_agency)),
         )
         .filter(c =>
           caseFilters.countries.size > 0

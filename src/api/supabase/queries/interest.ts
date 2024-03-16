@@ -5,12 +5,13 @@ import supabase from '../createClient';
  * Fetches all interests from the database
  * @returns a Promise of all interests objects
  */
-export async function getAllInterests() {
+export async function getAllInterests(): Promise<Interest[]> {
   const { data, error } = await supabase.from('interests').select();
 
   if (error) {
     throw new Error(`Error reading interests: ${error.message}`);
   }
+
   return data;
 }
 

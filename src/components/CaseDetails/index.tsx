@@ -4,7 +4,6 @@ import {
   timestampStringToDate,
   parseDate,
   parseAgency,
-  parseExperience,
   parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
@@ -41,12 +40,12 @@ const caseFields = [
   {
     label: 'Adjudicating Agency',
     getValue: (data: CaseListing) =>
-      parseAgency(data.adjudicating_agency) || 'N/A',
+      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
   },
   {
     label: 'Time Commitment',
     getValue: (data: CaseListing) =>
-      parseTimeCommitment(data.hours_per_month, data.num_months),
+      parseTimeCommitment(data.hours_per_week, data.num_weeks),
   },
   {
     label: 'Remote/In Person',
@@ -68,11 +67,6 @@ const caseFields = [
   {
     label: 'Client Language',
     getValue: (data: CaseListing) => data.languages.join(', '),
-  },
-  {
-    label: 'Attorney Experience Level',
-    getValue: (data: CaseListing) =>
-      parseExperience(data.experience_needed) || 'N/A',
   },
   {
     label: 'Relief Sought',

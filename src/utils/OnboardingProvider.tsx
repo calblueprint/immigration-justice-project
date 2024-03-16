@@ -112,11 +112,6 @@ export default function OnboardingProvider({
           throw new Error(
             'Error flushing data: attorney profile missing EOIR registered!',
           );
-
-        if (!profile.immigration_law_experience)
-          throw new Error(
-            'Error flushing data: attorney profile missing immigration law experience!',
-          );
       }
 
       if (canReads.size === 0)
@@ -139,8 +134,9 @@ export default function OnboardingProvider({
         availability_description: profile.availability_description,
         bar_number: profile.bar_number,
         eoir_registered: profile.eoir_registered,
-        immigration_law_experience: profile.immigration_law_experience,
         user_id: uid,
+        // TODO: update to get phone number
+        phone_number: '000-000-0000',
       };
 
       const userLangs = new Set(
