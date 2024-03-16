@@ -1,5 +1,6 @@
 'use client';
 
+import { UUID } from 'crypto';
 import { Listing } from '@/types/schema';
 import { useMemo } from 'react';
 import { parseAgency, formatTimestamp } from '@/utils/helpers';
@@ -17,7 +18,7 @@ export default function ListingCard({
 }: {
   listing: Listing;
   isSelected?: boolean;
-  onClick?: (id: string) => void;
+  onClick?: (id: UUID) => void;
   interpretation?: boolean;
 }) {
   // list of tags to display
