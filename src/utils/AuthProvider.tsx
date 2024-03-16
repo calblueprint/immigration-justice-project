@@ -1,7 +1,14 @@
 'use client';
 
 import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import type { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
 
@@ -57,7 +64,7 @@ export default function AuthProvider({
   }, []);
 
   // sign in and set the session, userId, and userEmail
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     const value = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -66,10 +73,10 @@ export default function AuthProvider({
     setAll(value.data.session);
 
     return value;
-  };
+  }, []);
 
   // sign out and clear the session, userId, and userEmail
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
 
     if (!error) {
@@ -79,19 +86,22 @@ export default function AuthProvider({
     }
 
     return error;
-  };
+  }, []);
 
   // sign up and set the session, userId, and userEmail
-  const signUp = async (email: string, password: string, options: object) => {
-    const value = await supabase.auth.signUp({
-      email,
-      password,
-      options,
-    }); // will trigger onAuthStateChange to update the session
+  const signUp = useCallback(
+    async (email: string, password: string, options: object) => {
+      const value = await supabase.auth.signUp({
+        email,
+        password,
+        options,
+      }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session);
-    return value;
-  };
+      setAll(value.data.session);
+      return value;
+    },
+    [],
+  );
 
   const authContextValue = useMemo(
     () => ({
