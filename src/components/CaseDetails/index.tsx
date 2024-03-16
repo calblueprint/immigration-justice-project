@@ -134,7 +134,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
         </AuthButtons>
       </>
     );
-  }, [caseData, profile]);
+  }, [auth, caseData, profile]);
 
   return (
     <CaseDisplay>
