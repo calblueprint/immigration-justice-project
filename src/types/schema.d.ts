@@ -87,6 +87,7 @@ export interface Interpretation {
   is_remote: boolean;
   languages: string[];
   listing_type: 'INT';
+  upload_date: string; // timestamp
 }
 
 export interface DocumentTranslation {
@@ -97,6 +98,7 @@ export interface DocumentTranslation {
   languages: string[];
   num_pages: number;
   listing_type: 'DOC';
+  upload_date: string; // timestamp
 }
 
 // union of types, used for ListingCard and CaseDetail components etc.
@@ -105,3 +107,8 @@ export type Listing =
   | Interpretation
   | LimitedCaseAssignment
   | DocumentTranslation;
+
+export type AllLanguageSupport =
+  | DocumentTranslation
+  | Interpretation
+  | CaseListing;
