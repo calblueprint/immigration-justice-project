@@ -24,13 +24,13 @@ export default function Page() {
   useEffect(() => {
     if (!onboarding) return;
 
-    const barNumber = onboarding.profile.bar_number || '';
-    const experience = onboarding.profile.immigration_law_experience;
-    const isRegistered = onboarding.profile.eoir_registered;
+    const barNumber = onboarding.userProfile.bar_number || '';
+    const experience = onboarding.userProfile.immigration_law_experience;
+    const isRegistered = onboarding.userProfile.eoir_registered;
 
     setBarNum(barNumber);
     if (isRegistered !== undefined)
-      setRegistered(onboarding.profile.eoir_registered ? 'Yes' : 'No');
+      setRegistered(onboarding.userProfile.eoir_registered ? 'Yes' : 'No');
 
     if (
       isValidBarNumber(barNumber) &&
@@ -72,7 +72,7 @@ export default function Page() {
             immigration_law_experience: v as ImmigrationLawExperienceEnum,
           })
         }
-        defaultValue={onboarding?.profile.immigration_law_experience}
+        defaultValue={onboarding?.userProfile.immigration_law_experience}
         options={legalExperienceOptions}
         error="" // "Must select your level of immigration law experience"
       />
