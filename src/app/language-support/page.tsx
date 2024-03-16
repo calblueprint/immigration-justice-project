@@ -1,9 +1,9 @@
 'use client';
 
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
+import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { useEffect, useState } from 'react';
 import { DocumentTranslation, Interpretation } from '@/types/schema';
-import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 
 export default function Page() {
   const [docListings, setDocListings] = useState<DocumentTranslation[]>([]);
