@@ -74,8 +74,9 @@ export default function ListingCard({
 
   // remote info
   const remoteInfo = useMemo(() => {
-    if (listing.listing_type !== 'CASE') return '';
-    return `${listing.is_remote ? 'Remote' : 'In Person'}`;
+    if (listing.listing_type === 'CASE' || listing.listing_type === 'INT')
+      return `${listing.is_remote ? 'Remote' : 'In Person'}`;
+    return 'Asynchronous';
   }, [listing]);
 
   return (
@@ -95,21 +96,21 @@ export default function ListingCard({
         </Styles.TagRow>
       )}
 
-      {listing.listing_type === 'CASE' && (
-        <Flex $gap="1rem">
-          <Styles.IconTextGroup>
-            <Icon type="location" />
-            <P>{remoteInfo}</P>
-          </Styles.IconTextGroup>
+      <Flex $gap="1rem">
+        <Styles.IconTextGroup>
+          <Icon type="location" />
+          <P>{remoteInfo}</P>
+        </Styles.IconTextGroup>
 
-          {!interpretation && listing.adjudicating_agency ? (
-            <Styles.IconTextGroup>
-              <Icon type="gavel" />
-              <P>{parseAgency(listing.adjudicating_agency)}</P>
-            </Styles.IconTextGroup>
-          ) : null}
-        </Flex>
-      )}
+        {listing.listing_type === 'CASE' &&
+        !interpretation &&
+        listing.adjudicating_agency ? (
+          <Styles.IconTextGroup>
+            <Icon type="gavel" />
+            <P>{parseAgency(listing.adjudicating_agency)}</P>
+          </Styles.IconTextGroup>
+        ) : null}
+      </Flex>
 
       {listing.listing_type !== 'INT' ? (
         <Flex $align="center" $gap="8px">

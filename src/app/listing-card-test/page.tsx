@@ -1,6 +1,7 @@
 'use client';
 
 import ListingCard from '@/components/ListingCard';
+import COLORS from '@/styles/colors';
 import {
   CaseListing,
   Interpretation,
@@ -57,7 +58,7 @@ const listingInt: Interpretation = {
 const listingDoc: DocumentTranslation = {
   id: 'aaa-aaa-aaa-aaa-aaa',
   languages: ['English'],
-  title: 'Language Support - Interpretation',
+  title: 'Language Support - Document',
   summary: 'Lorem ipsum dolor sit amet',
   listing_type: 'DOC',
   deadline: '2024-01-18T11:22:40+00:00',
@@ -70,6 +71,7 @@ const Container = styled.div`
   display: grid;
   place-items: center;
   padding: 32px 0;
+  background-color: ${COLORS.background};
 `;
 
 const Box = styled.div`

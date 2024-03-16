@@ -51,6 +51,16 @@ export const CardColumn = styled.div`
   border-right: 1px solid ${COLORS.greyLight};
   padding: 0 3rem 0 2rem;
   padding-top: 1rem;
+  background-color: ${COLORS.background};
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    background: ${COLORS.greyLight};
+  }
 `;
 
 export const CaseDetailsContainer = styled.div`
