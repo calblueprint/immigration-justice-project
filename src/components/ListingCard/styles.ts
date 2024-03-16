@@ -14,6 +14,7 @@ export const CardBody = styled.div<{ $selected?: boolean }>`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05);
   border: 2px solid transparent;
   margin-bottom: 24px;
+  background: white;
 
   ${({ $selected }) =>
     $selected
