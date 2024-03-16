@@ -46,7 +46,6 @@ export const ProfileContext = createContext<ProfileContextType | undefined>(
   undefined,
 );
 
-// TODO: we might need error handling here?
 export const useProfile = () => useContext(ProfileContext);
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
@@ -68,7 +67,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     ]);
 
     setProfileReady(true);
-  }, [auth]); // TODO: should auth be a dependency here?
+  }, [auth]);
 
   useEffect(() => {
     loadProfile();
@@ -88,6 +87,8 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     ) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in!');
       if (profileData) throw new Error('Fatal: user already has a profile!');
+      if (auth.userId !== newProfile.user_id)
+        throw new Error('Fatal: user id does not match profile user id!');
 
       await insertProfile(newProfile).then(data => setProfileData(data));
 
@@ -104,6 +105,8 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
      */
     const updateProfile = async (updatedInfo: Partial<Profile>) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in');
+      if (auth.userId !== profileData?.user_id)
+        throw new Error('Fatal: user id does not match profile user id!');
 
       const newProfileData = { ...profileData, ...updatedInfo };
       await updateSupabaseProfile(auth.userId, newProfileData)

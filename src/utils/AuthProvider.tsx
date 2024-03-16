@@ -2,10 +2,9 @@
 
 import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
 
-// TODO: resolve inconsistent null/undefined types for empty values
 export interface AuthContextType {
   session: Session | undefined;
   userId: UUID | undefined;
@@ -23,7 +22,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 );
 
-// TODO: we might need error handling here?
 export const useAuth = () => useContext(AuthContext);
 
 export default function AuthProvider({
@@ -36,7 +34,7 @@ export default function AuthProvider({
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
   // set the session, userId, and userEmail
-  const setAll = (newSession: Session | undefined) => {
+  const setAll = (newSession: Session | null) => {
     if (!newSession) return;
     setSession(newSession);
     if (newSession?.user?.id) {
@@ -50,11 +48,11 @@ export default function AuthProvider({
   // on page load, check if there's a session and set it
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session: newSession } }) => {
-      setAll(newSession != null ? newSession : undefined);
+      setAll(newSession);
     });
 
     supabase.auth.onAuthStateChange((_event, newSession) => {
-      setAll(newSession != null ? newSession : undefined);
+      setAll(newSession);
     });
   }, []);
 
@@ -65,7 +63,7 @@ export default function AuthProvider({
       password,
     }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session ? value.data.session : undefined);
+    setAll(value.data.session);
 
     return value;
   };
@@ -74,25 +72,24 @@ export default function AuthProvider({
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
 
-    setSession(undefined);
-    setUserId(undefined);
-    setUserEmail(undefined);
+    if (!error) {
+      setSession(undefined);
+      setUserId(undefined);
+      setUserEmail(undefined);
+    }
 
     return error;
   };
 
   // sign up and set the session, userId, and userEmail
   const signUp = async (email: string, password: string, options: object) => {
-    console.log('signUp', email, password, options);
     const value = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        ...options,
-      },
+      options,
     }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session ? value.data.session : undefined);
+    setAll(value.data.session);
     return value;
   };
 
