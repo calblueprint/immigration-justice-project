@@ -25,6 +25,12 @@ export interface AuthContextType {
   ) => Promise<AuthResponse>;
 }
 
+export type SignUpOptions = {
+  emailRedirectTo?: string;
+  data?: object;
+  captchaToken?: string;
+};
+
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 );
@@ -90,7 +96,7 @@ export default function AuthProvider({
 
   // sign up and set the session, userId, and userEmail
   const signUp = useCallback(
-    async (email: string, password: string, options: object) => {
+    async (email: string, password: string, options: SignUpOptions) => {
       const value = await supabase.auth.signUp({
         email,
         password,
