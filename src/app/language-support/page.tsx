@@ -5,12 +5,7 @@ import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllCases } from '@/api/supabase/queries/cases';
 import { timestampStringToDate } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
-import {
-  DocumentTranslation,
-  Interpretation,
-  CaseListing,
-  AllLanguageSupport,
-} from '@/types/schema';
+import { AllLanguageSupport } from '@/types/schema';
 
 export default function Page() {
   const [allLanguageSupport, setAllLanguageSupport] = useState<
@@ -55,9 +50,8 @@ export default function Page() {
     return 'null';
   };
 
-  const allLangSupportRow = (langSupport: AllLanguageSupport) => {
-    if (langSupport.listing_type === 'INT') {
-      const ls = langSupport as Interpretation;
+  const allLangSupportRow = (ls: AllLanguageSupport) => {
+    if (ls.listing_type === 'INT') {
       return (
         <tr key={ls.id}>
           <td>{ls.id}</td>
@@ -74,8 +68,7 @@ export default function Page() {
         </tr>
       );
     }
-    if (langSupport.listing_type === 'DOC') {
-      const ls = langSupport as DocumentTranslation;
+    if (ls.listing_type === 'DOC') {
       return (
         <tr key={ls.id}>
           <td>{ls.id}</td>
@@ -92,19 +85,18 @@ export default function Page() {
         </tr>
       );
     }
-    const l = langSupport as CaseListing;
     return (
-      <tr key={l.id}>
-        <td>{l.id}</td>
-        <td>{l.title}</td>
-        <td>{l.summary}</td>
-        <td>{l.languages.join(', ')}</td>
-        <td>{getIsRemoteValue(l.is_remote)}</td>
+      <tr key={ls.id}>
+        <td>{ls.id}</td>
+        <td>{ls.title}</td>
+        <td>{ls.summary}</td>
+        <td>{ls.languages.join(', ')}</td>
+        <td>{getIsRemoteValue(ls.is_remote)}</td>
         <td>Case Interpretation</td>
         <td>N/A</td>
-        <td>{l.upcoming_date}</td>
-        <td>{l.num_weeks}</td>
-        <td>{l.hours_per_week}</td>
+        <td>{ls.upcoming_date}</td>
+        <td>{ls.num_weeks}</td>
+        <td>{ls.hours_per_week}</td>
         <td>N/A</td>
       </tr>
     );
