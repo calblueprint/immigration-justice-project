@@ -76,8 +76,6 @@ export default function AuthProvider({
       password,
     }); // will trigger onAuthStateChange to update the session
 
-    setAll(value.data.session);
-
     return value;
   }, []);
 
@@ -103,7 +101,6 @@ export default function AuthProvider({
         options,
       }); // will trigger onAuthStateChange to update the session
 
-      setAll(value.data.session);
       return value;
     },
     [],
