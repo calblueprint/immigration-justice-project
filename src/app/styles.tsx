@@ -10,13 +10,10 @@ export const PageContainer = styled.div`
 export const TitleSection = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh; // Use 100vh to make the div fill the entire viewport height
+  min-height: 100vh; // Use 100vh to make the div fill the entire viewport height
   display: flex;
   flex-direction: column;
-  // padding-top: 200px;
-  // padding-right: 400px;
-  /* padding-left: 84px;
-  padding-bottom: 150px; */
+  overflow-y: hidden;
 `;
 
 export const ButtonDiv = styled.div`
@@ -49,7 +46,7 @@ export const StatContainer = styled.div`
 export const HowYouCanHelpContainer = styled.div`
   background-color: ${COLORS.background};
   width: 100%;
-  height: 557px;
+  min-height: 557px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,39 +79,38 @@ export const ServiceIcon = styled.img`
 `;
 
 export const MissionValuesContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr; // Example adjustment
+  grid-template-rows: auto;
+  gap: 20px; // Adjust space between grid items
   background-color: ${COLORS.blueLighter};
   width: 100%;
-  height: 488px;
-  display: flex;
+  min-height: 488px;
   align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  padding-left: 160px;
-  padding-right: 200px;
-  gap: 53px;
-  position: relative;
+  justify-content: space-around;
+  gap: 50px;
 `;
 export const MissionStatement = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  max-width: 500px;
   gap: 10px;
-  // position: relative;
+  padding-left: 50px;
 `;
 
 export const TextContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  /* height: 100vh; */
+  max-width: 900px;
   padding-top: 200px;
-  //padding-right: 550px;
   padding-left: 84px;
   padding-bottom: 150px;
-  z-index: 10;
-  padding-right: 600px;
+  z-index: 1;
+  padding-right: 32px;
   gap: 50px;
+  flex-wrap: wrap;
 `;
 export const ImageBackground = styled.div`
   position: absolute;
@@ -122,13 +118,13 @@ export const ImageBackground = styled.div`
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(40, 120, 194, 0.5); // Red overlay with 50% opacity
+  background-color: rgba(40, 120, 194, 0.5);
   z-index: 1;
 `;
 export const ImageContainer = styled.div`
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   left: 0;
 `;
@@ -138,4 +134,12 @@ export const Title = styled.h5<{ $color?: string }>`
   font-weight: 600;
   color: white;
   margin: 0;
+`;
+export const ImageWrapper = styled.div`
+  grid-area: 1 / 2;
+  width: 100%; // Ensure it fills the grid area
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-self: end;
 `;

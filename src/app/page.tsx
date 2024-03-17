@@ -22,6 +22,7 @@ import {
   TextContainer,
   ImageBackground,
   ImageContainer,
+  ImageWrapper,
 } from './styles';
 
 type Stat = {
@@ -86,10 +87,12 @@ export default function Home() {
         <ImageContainer>
           <Image
             alt="background"
-            src="/HomePage.webp"
+            src="/HomePageImage.webp"
             placeholder="blur"
-            blurDataURL="/HomePage.webp"
+            blurDataURL="/HomePageImage.webp"
             quality={100}
+            layout="fill"
+            objectFit="cover"
             fill
           />
           <ImageBackground />
@@ -117,18 +120,16 @@ export default function Home() {
       </StatisticsSection>
       <HowYouCanHelpContainer>
         <H2 $color={COLORS.blueMid}>HOW YOU CAN HELP</H2>
-        <H4 $color={COLORS.greyMid}>
-          The Immigration Justice Project seeks to promote due process and
-          access to justice for indigent immigrants and asylum seekers.
-        </H4>
         <ServicesDiv>
           {services.map(Service => renderService(Service))}
         </ServicesDiv>
       </HowYouCanHelpContainer>
       <MissionValuesContainer>
         <MissionStatement>
-          <H2 $color={COLORS.blueMid}>OUR MISSION VALUES</H2>
-          <H4 $fontWeight="400">
+          <H2 $color={COLORS.blueMid} style={{ maxWidth: '500px' }}>
+            OUR MISSION VALUES
+          </H2>
+          <H4 $fontWeight="400" style={{ maxWidth: '500px' }}>
             The mission of the Immigration Justice Project (IJP) is to improve
             public awareness of the legal system, to promote the administration
             of justice, and to deliver high-quality legal services. IJP’s goals
@@ -148,15 +149,17 @@ export default function Home() {
             </LinkButton>
           </ButtonDiv>
         </MissionStatement>
-        <Image
-          alt="Lawyer Image"
-          src="/HomePage.webp"
-          placeholder="blur"
-          blurDataURL="/HomePage.webp"
-          quality={100}
-          width={521}
-          height={338}
-        />
+        <ImageWrapper>
+          <Image
+            alt="Lawyer Image"
+            src="/HomePage.webp"
+            placeholder="blur"
+            blurDataURL="/HomePage.webp"
+            quality={100}
+            layout="fill"
+            objectFit="contain"
+          />
+        </ImageWrapper>
       </MissionValuesContainer>
     </PageContainer>
   );
