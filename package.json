@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@calblueprint/prettier-config": "^0.0.1",
+    "@hookform/resolvers": "^3.3.4",
+    "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.36.0",
     "@types/node": "20.6.3",
     "@types/react": "18.2.22",
@@ -25,10 +27,12 @@
     "next": "^13.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.51.0",
     "react-select": "^5.8.0",
     "react-select-async-paginate": "^0.7.3",
     "styled-components": "^6.0.8",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@calblueprint/eslint-config-react": "^0.0.3",

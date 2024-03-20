@@ -73,6 +73,7 @@ export default function OnboardingManager({
 
   return (
     <>
+      {/* replace with navbar */}
       <BackLink
         href={
           onboarding && pageProgress > 0
