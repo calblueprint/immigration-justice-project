@@ -1,4 +1,3 @@
-import COLORS from '@/styles/colors';
 import styled from 'styled-components';
 
 export const OuterDiv = styled.div`
@@ -16,18 +15,18 @@ export const FormContainer = styled.div`
   display: grid;
   place-items: center;
   flex-grow: 2;
-  width: 39.25rem;
+  width: max(624px, 50%);
 `;
 
-export const FormDiv = styled.div`
+export const FormDiv = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; // 40 px
-  padding: 3rem;
-  border-radius: 0.625rem;
-  border: 2px solid ${COLORS.blueMid};
-  width: 39.25rem;
-  margin: auto;
+  gap: 40px;
+  padding: 48px;
+  border-radius: 10px;
+  margin: auto 0;
+  width: 100%;
+  box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);
 `;
 
 export const LineDiv = styled.div`

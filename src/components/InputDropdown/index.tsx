@@ -19,9 +19,9 @@ import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
   options: Set<string> | Map<string, string>;
-  label: string;
+  label?: string;
   placeholder?: string;
-  error?: string;
+  error?: boolean;
   disabled?: boolean;
   required?: boolean;
 }
@@ -59,7 +59,7 @@ export default function InputDropdown({
   label,
   options,
   placeholder = '',
-  error = '',
+  error,
   defaultValue,
   disabled,
   required,
@@ -142,7 +142,7 @@ export default function InputDropdown({
         unstyled
         required={required}
         isDisabled={disabled}
-        styles={DropdownStyles(multi, error !== '')}
+        styles={DropdownStyles(multi, error)}
         instanceId={useId()}
         options={optionsArray}
         placeholder={placeholder}

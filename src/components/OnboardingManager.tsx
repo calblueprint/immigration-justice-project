@@ -1,14 +1,13 @@
 'use client';
 
-import { FormContainer, FormDiv, OuterDiv } from '@/app/onboarding/styles';
+import { FormContainer, OuterDiv } from '@/app/onboarding/styles';
 import CONFIG from '@/lib/configs';
-import { BackLink, H4 } from '@/styles/text';
+import { BackLink } from '@/styles/text';
 import { AuthContext } from '@/utils/AuthProvider';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
-import BigButton from './BigButton';
 import ProgressBar from './ProgressBar';
 
 export default function OnboardingManager({
@@ -45,31 +44,31 @@ export default function OnboardingManager({
 
     if (pageProgress > onboarding.progress)
       router.push(`/onboarding/${onboarding.flow[onboarding.progress].url}`);
-  }, [onboarding, profile, router, pageProgress]);
+  }, [onboarding, profile, router, pageProgress, auth]);
 
-  const advanceProgress = () => {
-    // safeguard
-    if (!onboarding) return;
-    if (pageProgress > onboarding.progress) return;
+  // const advanceProgress = () => {
+  //   // safeguard
+  //   if (!onboarding) return;
+  //   if (pageProgress > onboarding.progress) return;
 
-    const newProgress = pageProgress + 1;
+  //   const newProgress = pageProgress + 1;
 
-    if (
-      newProgress > onboarding.progress &&
-      onboarding.progress < onboarding.flow.length - 1
-    ) {
-      onboarding.setCanContinue(false);
-      onboarding.setProgress(newProgress);
-    }
+  //   if (
+  //     newProgress > onboarding.progress &&
+  //     onboarding.progress < onboarding.flow.length - 1
+  //   ) {
+  //     onboarding.setCanContinue(false);
+  //     onboarding.setProgress(newProgress);
+  //   }
 
-    if (newProgress >= onboarding.flow.length) {
-      onboarding.flushData().then(() => {
-        router.push(CONFIG.homepage);
-      });
-    } else {
-      router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
-    }
-  };
+  //   if (newProgress >= onboarding.flow.length) {
+  //     onboarding.flushData().then(() => {
+  //       router.push(CONFIG.homepage);
+  //     });
+  //   } else {
+  //     router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
+  //   }
+  // };
 
   return (
     <>
@@ -90,25 +89,7 @@ export default function OnboardingManager({
           }
           progress={pageProgress}
         />
-        <FormContainer>
-          <FormDiv>
-            {children}
-            <BigButton
-              disabled={
-                onboarding &&
-                pageProgress >= onboarding.progress &&
-                !onboarding.canContinue
-              }
-              onClick={() => advanceProgress()}
-            >
-              <H4 $color="white">
-                {onboarding && pageProgress === onboarding.flow.length - 1
-                  ? 'Continue to Available Cases'
-                  : 'Continue'}
-              </H4>
-            </BigButton>
-          </FormDiv>
-        </FormContainer>
+        <FormContainer>{children}</FormContainer>
       </OuterDiv>
     </>
   );
