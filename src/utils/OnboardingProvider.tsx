@@ -16,12 +16,8 @@ import {
   useContext,
 } from 'react';
 import { UUID } from 'crypto';
+import { FlowData } from '@/types/misc';
 import { ProfileContext } from './ProfileProvider';
-
-interface FlowData {
-  url: string;
-  name: string;
-}
 
 interface OnboardingContextType {
   profile: Partial<Profile>;
