@@ -101,25 +101,17 @@ FormItem.displayName = 'FormItem';
 
 // form components (ui)
 
-const FormLabel = forwardRef<
+export const FormLabel = forwardRef<
   HTMLLabelElement,
   HTMLAttributes<HTMLLabelElement>
 >(({ ...props }, ref) => {
-  const { error, formItemId } = useFormField();
+  const { formItemId } = useFormField();
 
-  return (
-    <Styles.Label
-      as="label"
-      ref={ref}
-      $hasError={!!error}
-      htmlFor={formItemId}
-      {...props}
-    />
-  );
+  return <Styles.Label as="label" ref={ref} htmlFor={formItemId} {...props} />;
 });
 FormLabel.displayName = 'FormLabel';
 
-const FormControl = forwardRef<
+export const FormControl = forwardRef<
   ElementRef<typeof Slot>,
   ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
@@ -142,7 +134,7 @@ const FormControl = forwardRef<
 });
 FormControl.displayName = 'FormControl';
 
-const FormDescription = forwardRef<
+export const FormDescription = forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(({ ...props }, ref) => {
@@ -151,7 +143,7 @@ const FormDescription = forwardRef<
 });
 FormDescription.displayName = 'FormDescription';
 
-const FormMessage = forwardRef<
+export const FormMessage = forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(({ children, ...props }, ref) => {
@@ -163,7 +155,7 @@ const FormMessage = forwardRef<
   }
 
   return (
-    <Styles.Message ref={ref} id={formMessageId} {...props}>
+    <Styles.Message ref={ref} id={formMessageId} $hasError={!!error} {...props}>
       {body}
     </Styles.Message>
   );

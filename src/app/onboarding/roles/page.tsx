@@ -1,10 +1,31 @@
 'use client';
 
+import BigButton from '@/components/BigButton';
 import InputDropdown from '@/components/InputDropdown';
 import { H1 } from '@/styles/text';
 import { RoleEnum } from '@/types/schema';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { useContext } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/Form';
+import { useRouter } from 'next/navigation';
+import { FormDiv } from '../styles';
+
+type RoleOptionType =
+  | ''
+  | 'ATTORNEY'
+  | 'INTERPRETER'
+  | 'LEGAL_FELLOW'
+  | 'ATTORNEY,INTERPRETER'
+  | 'LEGAL_FELLOW,INTERPRETER';
 
 const roleOptions = new Map<string, string>([
   ['ATTORNEY', 'Attorney'],
@@ -14,42 +35,94 @@ const roleOptions = new Map<string, string>([
   ['LEGAL_FELLOW,INTERPRETER', 'Legal Fellow and Interpreter'],
 ]);
 
+const roleSchema = z.object({
+  roles: z
+    .enum([
+      'ATTORNEY',
+      'INTERPRETER',
+      'LEGAL_FELLOW',
+      'ATTORNEY,INTERPRETER',
+      'LEGAL_FELLOW,INTERPRETER',
+      '',
+    ])
+    .superRefine((input, ctx) => {
+      if (input === '')
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Must include at least one role',
+        });
+      return ctx;
+    }),
+});
+
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
+  const { push } = useRouter();
 
-  const setRoles = (role: string) => {
-    if (!onboarding) return;
+  const onSubmit = (values: z.infer<typeof roleSchema>) => {
+    if (!onboarding) throw new Error('Fatal: no onboarding layout detected');
 
-    const roles = new Set(role.split(',') as RoleEnum[]);
+    const roles = new Set(values.roles.split(',') as RoleEnum[]);
     onboarding.setRoles(new Set(roles));
 
-    if (roles.has('ATTORNEY') || roles.has('LEGAL_FELLOW')) {
-      onboarding.setFlow([
-        { name: 'Roles', url: 'roles' },
-        { name: 'Basic Info', url: 'basic-information' },
-        { name: 'Availability', url: 'availability' },
-        { name: 'Legal Experience', url: 'legal-experience' },
-        { name: 'Done', url: 'done' },
-      ]);
-    } else {
-      onboarding.setFlow([
-        { name: 'Roles', url: 'roles' },
-        { name: 'Basic Info', url: 'basic-information' },
-        { name: 'Availability', url: 'availability' },
-        { name: 'Done', url: 'done' },
-      ]);
-    }
+    const newFlow =
+      roles.has('ATTORNEY') || roles.has('LEGAL_FELLOW')
+        ? [
+            { name: 'Roles', url: 'roles' },
+            { name: 'Basic Info', url: 'basic-information' },
+            { name: 'Availability', url: 'availability' },
+            { name: 'Legal Experience', url: 'legal-experience' },
+            { name: 'Done', url: 'done' },
+          ]
+        : [
+            { name: 'Roles', url: 'roles' },
+            { name: 'Basic Info', url: 'basic-information' },
+            { name: 'Availability', url: 'availability' },
+            { name: 'Done', url: 'done' },
+          ];
+
+    onboarding.setFlow(newFlow);
+    onboarding.setProgress(1);
+    push(`/onboarding/${newFlow[1].url}`);
   };
 
-  return (
-    <>
-      <H1>Roles</H1>
+  const form = useForm<z.infer<typeof roleSchema>>({
+    resolver: zodResolver(roleSchema),
+    defaultValues: {
+      roles: (onboarding
+        ? Array.from(onboarding.roles.values() || []).join(',')
+        : '') as RoleOptionType,
+    },
+  });
 
-      <InputDropdown
-        label="What role(s) would you like to hold?"
-        onChange={v => setRoles(v ?? '')}
-        options={roleOptions}
-      />
-    </>
+  return (
+    <FormProvider {...form}>
+      <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
+        <H1>Role</H1>
+
+        <FormField
+          control={form.control}
+          name="roles"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>What role(s) would you like to add?</FormLabel>
+              <FormControl>
+                <InputDropdown
+                  error={!!fieldState.error}
+                  onChange={v => field.onChange(v ?? '')}
+                  options={roleOptions}
+                  defaultValue={field.value}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <BigButton type="submit" disabled={!form.formState.isValid}>
+          Continue
+        </BigButton>
+      </FormDiv>
+    </FormProvider>
   );
 }
