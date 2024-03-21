@@ -61,3 +61,10 @@ export const AuthButtons = styled.div`
   gap: 1.5625rem;
   margin-top: 1.25rem;
 `;
+
+export const IconTextGroup = styled.div`
+  display: flex;
+  direction: row; 
+  gap: 11px;
+  align-items: center;
+`;

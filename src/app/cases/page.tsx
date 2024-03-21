@@ -228,7 +228,7 @@ export default function Page() {
         </CardColumn>
         <CaseDetailsContainer>
           {caseInfo ? (
-            <CaseDetails caseData={caseInfo} />
+            <CaseDetails listingData={caseInfo} />
           ) : (
             <NoCasesContainer>
               <H1 $color={COLORS.greyMid}>No cases listed</H1>
