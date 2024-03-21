@@ -4,11 +4,10 @@ import {
   timestampStringToDate,
   parseDate,
   parseAgency,
-  parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
 import { H2, H3, P, StrongP } from '@/styles/text';
-import { CaseListing } from '@/types/schema';
+import { CaseListing, DocumentTranslation, Interpretation, LimitedCaseAssignment, Listing } from '@/types/schema';
 import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
@@ -24,72 +23,164 @@ import {
   AuthButtons,
 } from './styles';
 
-const renderField = (label: string, value: string | boolean) => (
+const renderField = (label: string, value: string | boolean | number) => (
   <FieldContainer>
     <P>{label}</P>
     <StrongP>{value}</StrongP>
   </FieldContainer>
 );
 
-// CLEANER IMPLEMENTATION
+function listingFields(listing: Listing) {
+  if (listing.listing_type === "CASE") {
+    if (listing.needs_interpreter) { 
+      return caseInterpretationFields; 
+    }
+    // will we ever need to render the case listing (instead of case interp) for a case that has needs_interpreter === true? 
+    return caseFields; 
+  }
+  if (listing.listing_type === "INT") {
+    return intepretationFields; 
+  }
+  if (listing.listing_type === "DOC") {
+    return docFields; 
+  }
+  return LCAFields; 
+}
+
 const caseFields = [
+  // Relief sought
   {
-    label: 'Needs',
-    getValue: (data: CaseListing) =>
-      parseRolesNeeded(false, data.needs_attorney, data.needs_interpreter),
+    label: 'Relief Sought',
+    getValue: (data: CaseListing) => data.relief_codes.join(', ') || 'N/A',
   },
-  {
-    label: 'Adjudicating Agency',
-    getValue: (data: CaseListing) =>
-      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
-  },
+  // Time Commitment
   {
     label: 'Time Commitment',
     getValue: (data: CaseListing) =>
       parseTimeCommitment(data.hours_per_week, data.num_weeks),
   },
+  // Remote/In Person
   {
     label: 'Remote/In Person',
     getValue: (data: CaseListing) => (data.is_remote ? 'Remote' : 'In Person'),
   },
+  // Adjudicating Agency
+  {
+    label: 'Adjudicating Agency',
+    getValue: (data: CaseListing) =>
+      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+  },
+  // Client Languages
+  {
+    label: 'Client Language(s)',
+    getValue: (data: CaseListing) => data.languages.join(', '),
+  },
+  // Client Country of Origin
   {
     label: 'Client Country of Origin',
     getValue: (data: CaseListing) => data.country || 'N/A',
   },
-  {
-    // Temporary
-    label: 'Custody Location',
-    getValue: () => 'San Diego, CA',
-  },
+  // Client Location
   {
     label: 'Client Location',
     getValue: (data: CaseListing) => data.client_location || 'N/A',
   },
+  // Custody Location
   {
-    label: 'Client Language',
-    getValue: (data: CaseListing) => data.languages.join(', '),
-  },
-  {
-    label: 'Relief Sought',
-    getValue: (data: CaseListing) => data.relief_codes.join(', ') || 'N/A',
-  },
-  {
-    label: 'Next Court/Filing Date',
-    getValue: (data: CaseListing) =>
-      data.upcoming_date
-        ? parseDate(timestampStringToDate(data.upcoming_date))
-        : 'N/A',
-  },
+    // Temporary
+    label: 'Custody Location',
+    getValue: () => 'San Diego, CA',
+  }
+  // {
+  //   label: 'Next Court/Filing Date',
+  //   getValue: (data: CaseListing) =>
+  //     data.upcoming_date
+  //       ? parseDate(timestampStringToDate(data.upcoming_date))
+  //       : 'N/A',
+  // },
 ];
 
-export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
-  const auth = useAuth();
-  const profile = useProfile();
+const caseInterpretationFields = [
+  // Time Commitment 
+  {
+    label: 'Time Commitment',
+    getValue: (data: CaseListing) =>
+      parseTimeCommitment(data.hours_per_week, data.num_weeks),
+  },
+  // Languages
+  {
+    label: 'Language(s)',
+    getValue: (data: CaseListing) => data.languages.join(', '),
+  },
+  // Remote/In Person
+  {
+    label: 'Remote/In Person',
+    getValue: (data: CaseListing) => (data.is_remote ? 'Remote' : 'In Person'),
+  },
+]
 
-  const Interest = useMemo(() => {
-    if (auth && auth.userId)
-      return profile?.profileData ? (
-        <InterestForm caseData={caseData} />
+const intepretationFields= [
+  // Languages
+  {
+    label: 'Language(s)',
+    getValue: (data: Interpretation) => data.languages.join(', '),
+  },
+  // Interpretation Type
+  {
+    label: 'Interpretation Type', // 'Language Support Type' for consistency w/ Doc? 
+    getValue: (data: Interpretation) => "One-Time Intepretation",
+  },
+  // Remote/In Person
+  {
+    label: 'Remote/In Person',
+    getValue: (data: Interpretation) => (data.is_remote ? 'Remote' : 'In Person'),
+  }
+]
+
+const docFields = [
+  // Languages 
+  {
+    label: 'Language(s)',
+    getValue: (data: Listing) => (data as DocumentTranslation).languages.join(', '),
+  },
+  // Language Support Type
+  {
+    label: 'Language Support Type', 
+    getValue: (data: Listing) => "Written",
+  },
+  // Number of Pages 
+  {
+    label: 'Number of Pages',
+    getValue: (data: Listing) => (data as DocumentTranslation).num_pages,
+  }
+]
+
+const LCAFields = [
+  // Country Field
+  {
+    label: 'Country Field',
+    getValue: (data: LimitedCaseAssignment) => data.country,
+  },
+  // Language(s)
+  {
+    label: 'Language(s)',
+    getValue: (data: LimitedCaseAssignment) => data.languages.join(', '),
+  },
+  // Expected Deliverable
+  {
+    label: 'Expected Deliverable',
+    getValue: (data: LimitedCaseAssignment) => data.deliverable,
+  }
+]
+
+export default function CaseDetails({ listingData }: { listingData: Listing }) {
+    const auth = useAuth();
+    const profile = useProfile();
+  
+    const Interest = useMemo(() => {
+      if (auth && auth.userId) {
+        return profile?.profileData ? (
+          <InterestForm caseData={listingData as CaseListing} />
       ) : (
         <>
           <H3>
@@ -106,7 +197,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
           </AuthButtons>
         </>
       );
-
+    }
     return (
       <>
         <H3>
@@ -128,19 +219,19 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
         </AuthButtons>
       </>
     );
-  }, [auth, caseData, profile]);
+  }, [auth, listingData, profile]);
 
   return (
     <CaseDisplay>
       <CaseInterestContainer>
         <InfoContainer>
-          <H2>{caseData.title || 'Migrant seeking representation'}</H2>
+          <H2>{listingData.title || 'Migrant seeking representation'}</H2>
           <InnerFieldContainer>
-            {caseFields.map(({ label, getValue }) => (
-              <div key={label}>{renderField(label, getValue(caseData))}</div>
+            {listingFields(listingData).map(({ label, getValue }) => (
+              <div key={label}>{renderField(label, getValue(listingData))}</div>
             ))}
           </InnerFieldContainer>
-          <P>{caseData.summary || 'No summary Found'}</P>
+          <P>{listingData.summary || 'No summary Found'}</P>
         </InfoContainer>
         <Line />
         {Interest}
