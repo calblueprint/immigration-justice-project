@@ -15,15 +15,16 @@ import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
 import { Flex } from '@/styles/containers';
 import Icon from '../Icon';
+import logo from '@/lib/dohs_logo.webp';
 import {
-  CaseInterestContainer,
   CaseDisplay,
   InfoContainer,
-  Line,
   FieldContainer,
   InnerFieldContainer,
   AuthButtons,
-  IconTextGroup
+  IconTextGroup,
+  BorderedSection,
+  Inline
 } from './styles';
 
 const renderField = (label: string, value: string | boolean | number) => (
@@ -70,8 +71,7 @@ const caseFields = [
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: (data: Listing) =>
-      (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+    getValue: (data: Listing) => (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
   },
   // Client Languages
   {
@@ -94,13 +94,6 @@ const caseFields = [
     label: 'Custody Location',
     getValue: () => 'San Diego, CA',
   }
-  // {
-  //   label: 'Next Court/Filing Date',
-  //   getValue: (data: CaseListing) =>
-  //     data.upcoming_date
-  //       ? parseDate(timestampStringToDate(data.upcoming_date))
-  //       : 'N/A',
-  // },
 ];
 
 const caseInterpretationFields = [
@@ -177,28 +170,31 @@ const LCAFields = [
 ]
 
 export default function CaseDetails({ listingData }: { listingData: Listing }) {
-    const auth = useAuth();
-    const profile = useProfile();
+  const auth = useAuth();
+  const profile = useProfile();
 
-    const dateComponent = () => {
-      if (listingData.listing_type === "INT") {
-        return; 
-      }
-      let dateHeader = "Assignment Deadline"
-      let dateData = ""
-      if (listingData.listing_type === "CASE") {
-        dateHeader = "Next Court/Filing Date"
-        dateData = listingData.upcoming_date ? listingData.upcoming_date : "N/A"
-      } else {
-        dateData = listingData.deadline
-      }
-      return (
-        <IconTextGroup>
-          <Icon type="calendar" />
-          <P>{dateHeader}: {dateData}</P> 
-        </IconTextGroup>
-      )
+  const dateComponent = () => {
+    if (listingData.listing_type === "INT") {
+      return; 
     }
+    let dateHeader = "Assignment Deadline"
+    let dateData = ""
+    if (listingData.listing_type === "CASE") {
+      dateHeader = "Next Court/Filing Date"
+      dateData = listingData.upcoming_date ? listingData.upcoming_date : "N/A"
+    } else {
+      dateData = listingData.deadline
+    }
+    return (
+      <IconTextGroup>
+        <Icon type="calendar" />
+        <Inline>
+          <StrongP>{dateHeader}:</StrongP>{' '}
+          <P>{dateData}</P>
+        </Inline>
+      </IconTextGroup>
+    )
+  }
   
     const Interest = useMemo(() => {
       if (auth && auth.userId) {
@@ -246,26 +242,45 @@ export default function CaseDetails({ listingData }: { listingData: Listing }) {
 
   return (
     <CaseDisplay>
-      <CaseInterestContainer>
         <InfoContainer>
-          {dateComponent()}
-          <H2>{listingData.title || 'Migrant seeking representation'}</H2>
-          <InnerFieldContainer>
-            {listingFields(listingData).map(({ label, getValue }) => (
-              <div key={label}>{renderField(label, getValue(listingData))}</div>
-            ))}
-          </InnerFieldContainer>
-          {(listingData.listing_type === "LCA") && 
+          <BorderedSection>
+            {dateComponent()}
+            <Flex $align='center' $gap='18px' $direction='row'>
+              <img src={logo.src} alt="DOHS Logo" width="77" height="77" />
+              <H2>{listingData.title || 'Migrant seeking representation'}</H2>
+            </Flex>
+          </BorderedSection>
+          <BorderedSection>
             <IconTextGroup>
-              <Icon type="tag" />
-              <P>Research Topic(s): {listingData.research_topic ? listingData.research_topic : "Not Available"}</P> 
+                <Icon type="tag" />
+                <H4>{listingData.listing_type === "LCA" ? "Assignment" : "Case"} Highlights</H4> 
             </IconTextGroup>
+            <InnerFieldContainer>
+              {listingFields(listingData).map(({ label, getValue }) => (
+                <div key={label}>{renderField(label, getValue(listingData))}</div>
+              ))}
+            </InnerFieldContainer>
+          </BorderedSection>
+          {(listingData.listing_type === "LCA") && 
+            <BorderedSection>
+              <IconTextGroup>
+                <Icon type="tag" />
+                <H4>Research Topic(s)</H4> 
+              </IconTextGroup>
+              <P>{listingData.research_topic ? listingData.research_topic : "Not Available"}</P>
+            </BorderedSection>
             }
-          <P>{listingData.summary || 'No summary found'}</P>
+          <BorderedSection>
+            <IconTextGroup>
+              <Icon type="briefcase" />
+              <H4>{listingData.listing_type === "LCA" ? "Assignment Description" : "Case Description"}</H4> 
+            </IconTextGroup>
+            <P>{listingData.summary ? listingData.summary : "Not Available"}</P>
+          </BorderedSection>
         </InfoContainer>
-        <Line />
-        {Interest}
-      </CaseInterestContainer>
+        <BorderedSection>
+         {Interest}
+        </BorderedSection>
     </CaseDisplay>
   );
 }
