@@ -6,13 +6,15 @@ import {
   parseAgency,
   parseTimeCommitment,
 } from '@/utils/helpers';
-import { H2, H3, P, StrongP } from '@/styles/text';
+import { H2, H3, H4, P, StrongP } from '@/styles/text';
 import { CaseListing, DocumentTranslation, Interpretation, LimitedCaseAssignment, Listing } from '@/types/schema';
 import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
+import { Flex } from '@/styles/containers';
+import Icon from '../Icon';
 import {
   CaseInterestContainer,
   CaseDisplay,
@@ -21,6 +23,7 @@ import {
   FieldContainer,
   InnerFieldContainer,
   AuthButtons,
+  IconTextGroup
 } from './styles';
 
 const renderField = (label: string, value: string | boolean | number) => (
@@ -51,24 +54,24 @@ const caseFields = [
   // Relief sought
   {
     label: 'Relief Sought',
-    getValue: (data: CaseListing) => data.relief_codes.join(', ') || 'N/A',
+    getValue: (data: Listing) => (data as CaseListing).relief_codes.join(', ') || 'N/A',
   },
   // Time Commitment
   {
     label: 'Time Commitment',
-    getValue: (data: CaseListing) =>
-      parseTimeCommitment(data.hours_per_week, data.num_weeks),
+    getValue: (data: Listing) =>
+      parseTimeCommitment((data as CaseListing).hours_per_week, (data as CaseListing).num_weeks),
   },
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: CaseListing) => (data.is_remote ? 'Remote' : 'In Person'),
+    getValue: (data: Listing) => ((data as CaseListing).is_remote ? 'Remote' : 'In Person'),
   },
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: (data: CaseListing) =>
-      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+    getValue: (data: Listing) =>
+      (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
   },
   // Client Languages
   {
@@ -104,18 +107,18 @@ const caseInterpretationFields = [
   // Time Commitment 
   {
     label: 'Time Commitment',
-    getValue: (data: CaseListing) =>
-      parseTimeCommitment(data.hours_per_week, data.num_weeks),
+    getValue: (data: Listing) =>
+      parseTimeCommitment((data as CaseListing).hours_per_week, (data as CaseListing).num_weeks),
   },
   // Languages
   {
     label: 'Language(s)',
-    getValue: (data: CaseListing) => data.languages.join(', '),
+    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
   },
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: CaseListing) => (data.is_remote ? 'Remote' : 'In Person'),
+    getValue: (data: Listing) => ((data as CaseListing).is_remote ? 'Remote' : 'In Person'),
   },
 ]
 
@@ -123,17 +126,17 @@ const intepretationFields= [
   // Languages
   {
     label: 'Language(s)',
-    getValue: (data: Interpretation) => data.languages.join(', '),
+    getValue: (data: Listing) => (data as Interpretation).languages.join(', '),
   },
   // Interpretation Type
   {
     label: 'Interpretation Type', // 'Language Support Type' for consistency w/ Doc? 
-    getValue: (data: Interpretation) => "One-Time Intepretation",
+    getValue: (data: Listing) => "One-Time Intepretation",
   },
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: Interpretation) => (data.is_remote ? 'Remote' : 'In Person'),
+    getValue: (data: Listing) => ((data as Interpretation).is_remote ? 'Remote' : 'In Person'),
   }
 ]
 
@@ -159,23 +162,43 @@ const LCAFields = [
   // Country Field
   {
     label: 'Country Field',
-    getValue: (data: LimitedCaseAssignment) => data.country,
+    getValue: (data: Listing) =>(data as LimitedCaseAssignment).country,
   },
   // Language(s)
   {
     label: 'Language(s)',
-    getValue: (data: LimitedCaseAssignment) => data.languages.join(', '),
+    getValue: (data: Listing) => (data as LimitedCaseAssignment).languages.join(', '),
   },
   // Expected Deliverable
   {
     label: 'Expected Deliverable',
-    getValue: (data: LimitedCaseAssignment) => data.deliverable,
+    getValue: (data: Listing) => (data as LimitedCaseAssignment).deliverable,
   }
 ]
 
 export default function CaseDetails({ listingData }: { listingData: Listing }) {
     const auth = useAuth();
     const profile = useProfile();
+
+    const dateComponent = () => {
+      if (listingData.listing_type === "INT") {
+        return; 
+      }
+      let dateHeader = "Assignment Deadline"
+      let dateData = ""
+      if (listingData.listing_type === "CASE") {
+        dateHeader = "Next Court/Filing Date"
+        dateData = listingData.upcoming_date ? listingData.upcoming_date : "N/A"
+      } else {
+        dateData = listingData.deadline
+      }
+      return (
+        <IconTextGroup>
+          <Icon type="calendar" />
+          <P>{dateHeader}: {dateData}</P> 
+        </IconTextGroup>
+      )
+    }
   
     const Interest = useMemo(() => {
       if (auth && auth.userId) {
@@ -225,13 +248,20 @@ export default function CaseDetails({ listingData }: { listingData: Listing }) {
     <CaseDisplay>
       <CaseInterestContainer>
         <InfoContainer>
+          {dateComponent()}
           <H2>{listingData.title || 'Migrant seeking representation'}</H2>
           <InnerFieldContainer>
             {listingFields(listingData).map(({ label, getValue }) => (
               <div key={label}>{renderField(label, getValue(listingData))}</div>
             ))}
           </InnerFieldContainer>
-          <P>{listingData.summary || 'No summary Found'}</P>
+          {(listingData.listing_type === "LCA") && 
+            <IconTextGroup>
+              <Icon type="tag" />
+              <P>Research Topic(s): {listingData.research_topic ? listingData.research_topic : "Not Available"}</P> 
+            </IconTextGroup>
+            }
+          <P>{listingData.summary || 'No summary found'}</P>
         </InfoContainer>
         <Line />
         {Interest}

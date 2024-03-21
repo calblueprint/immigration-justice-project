@@ -66,6 +66,22 @@ export const IconSvgs = {
       <path d="M7.8 10a2.2 2.2 0 0 0 4.4 0 2.2 2.2 0 0 0-4.4 0z" />
     </svg>
   ),
+  tag: (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.8957 21.968C12.365 21.9696 11.8557 21.7585 11.4817 21.382L3.64467 13.547C3.23114 13.1349 3.01914 12.5621 3.06467 11.98L3.56467 5.41401C3.63609 4.42569 4.42409 3.64068 5.41267 3.57301L11.9787 3.07301C12.0307 3.06201 12.0817 3.06201 12.1337 3.06201C12.6633 3.06138 13.1713 3.27234 13.5447 3.64801L21.3817 11.482C21.7569 11.8571 21.9677 12.3659 21.9677 12.8965C21.9677 13.4271 21.7569 13.9359 21.3817 14.311L14.3097 21.382C13.9355 21.7583 13.4263 21.9693 12.8957 21.968ZM8.65267 6.65401C7.74749 6.65427 6.95533 7.26245 6.72127 8.13684C6.4872 9.01123 6.86959 9.93383 7.65358 10.3863C8.43758 10.8387 9.42771 10.7082 10.0677 10.068L10.0747 10.062L10.0817 10.055L10.0737 10.062C10.6421 9.48857 10.81 8.62957 10.4992 7.88432C10.1885 7.13907 9.46011 6.65377 8.65267 6.65401Z" fill="#0069A9"/>
+    </svg>
+  ),
+  briefcase: (
+    <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <rect y="0.5" width="21" height="21" fill="url(#pattern0)"/>
+      <defs>
+      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlinkHref="#image0_3993_3642" transform="scale(0.0111111)"/>
+      </pattern>
+      <image id="image0_3993_3642" width="90" height="90" xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAACP0lEQVR4nO2cvU4bQRRGb5WfN0gAiUdKlTpdmLGzRGniPEfyAOnIfKu45RFCqDCvQReRJpWjWVJYAhTvGHzXO+dItwFhD0cf9856RpgBAAAAAABAT958fWaxfW8xnVvQb4ta3ln5e0E/LejYmtOnfd+mbpr5gQVd3iv3/lp0PwtrJrlM8opskv1/unZRLPlfpWaNd6qcmM43F60z719j+IR0vbHo/Bqjnf61VXjI3U759K+tFuW7nc2nf221KEv2g0z/2io1XtO/tjrzmf61VSjZ7XgvOu5oIVqINu8Ukmj5i6N1yF8qPVqINu/EkWj5S6J1yF8gPVrDKh5YhGjzTiGJlr84Wof8pdKjhWjzThyJlr8kWof8BdKjNazigUWINu8UkmitSEh/LKaPNj3Z6ypqdvO1AcgdWeuY3bHG2QDWNTLRb+cvb61x0r5wX9foRE9P9m6t8ajdd19XFa0jtJ8GsK6xiU558M3GNwy5e7fsLTnoV0GiuU1q27lNqmP3P8O4Y3XUvusvOt9ez7fYvRcfd6RCurDX7ZP+ojvZ8wNkaz3Jeau5EV2yU9P1HwbkckXutcX0o2sXxUkGAIBhEzTl3zH03DQU7aNvJuuVBX22ybdXNvl+aB/a5/1faKRkF9lJdhPTl85VdtYb7weAuKOFaCHavFNIouUvjtYhf6n0aCHavBNHouUvidahEfdoPnte9pbM4ay2lWgOZ20bojmc1eNL5nBW25HM4aweSy6HswAAAAAAAAAAAAC2Nn8BFZFz1QhPJNAAAAAASUVORK5CYII="/>
+      </defs>
+    </svg>
+  )
 };
 
 export type IconType = keyof typeof IconSvgs;
