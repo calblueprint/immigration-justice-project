@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useContext, useMemo } from 'react';
 import {
-  timestampStringToDate,
-  parseDate,
+  // timestampStringToDate,
+  // parseDate,
+  formatTimestamp,
   parseAgency,
   parseTimeCommitment,
 } from '@/utils/helpers';
@@ -10,7 +11,7 @@ import { H2, H3, H4, P, StrongP } from '@/styles/text';
 import { CaseListing, DocumentTranslation, Interpretation, LimitedCaseAssignment, Listing } from '@/types/schema';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import COLORS from '@/styles/colors';
-import InterestForm from '../InterestForm';
+// import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
 import { Flex } from '@/styles/containers';
 import Icon from '../Icon';
@@ -23,13 +24,14 @@ import {
   AuthButtons,
   IconTextGroup,
   BorderedSection,
-  Inline
+  // InlineP
+  DateText
 } from './styles';
 
 const renderField = (label: string, value: string | boolean | number) => (
   <FieldContainer>
-    <P>{label}</P>
-    <StrongP>{value}</StrongP>
+    <StrongP>{label}</StrongP>
+    <P>{value}</P>
   </FieldContainer>
 );
 
@@ -70,22 +72,26 @@ const caseFields = [
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: (data: Listing) => (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+    getValue: (data: Listing) => {
+      const d = data as CaseListing;
+      return d.adjudicating_agency ? parseAgency(d.adjudicating_agency) : 'N/A'
+      // (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+    },
   },
   // Client Languages
   {
     label: 'Client Language(s)',
-    getValue: (data: CaseListing) => data.languages.join(', '),
+    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
   },
   // Client Country of Origin
   {
     label: 'Client Country of Origin',
-    getValue: (data: CaseListing) => data.country || 'N/A',
+    getValue: (data: Listing) => (data as CaseListing).country || 'N/A',
   },
   // Client Location
   {
     label: 'Client Location',
-    getValue: (data: CaseListing) => data.client_location || 'N/A',
+    getValue: (data: Listing) => (data as CaseListing).client_location || 'N/A',
   },
   // Custody Location
   {
@@ -168,7 +174,7 @@ const LCAFields = [
   }
 ]
 
-export default function CaseDetails({ listingData }: { listingData: Listing }) {
+export default function ListingDetails({ listingData }: { listingData: Listing }) {
   const dateComponent = () => {
     if (listingData.listing_type === "INT") {
       return; 
@@ -177,17 +183,14 @@ export default function CaseDetails({ listingData }: { listingData: Listing }) {
     let dateData = ""
     if (listingData.listing_type === "CASE") {
       dateHeader = "Next Court/Filing Date"
-      dateData = listingData.upcoming_date ? listingData.upcoming_date : "N/A"
+      dateData = formatTimestamp(listingData.upcoming_date) // listingData.upcoming_date ? formatTimestamp(listingData.upcoming_date) : "N/A"
     } else {
-      dateData = listingData.deadline
+      dateData = formatTimestamp(listingData.deadline)
     }
     return (
       <IconTextGroup>
         <Icon type="calendar" />
-        <Inline>
-          <StrongP>{dateHeader}:</StrongP>{' '}
-          <P>{dateData}</P>
-        </Inline>
+        <DateText $bold>{dateHeader}: <DateText>{' '}{dateData}</DateText></DateText>
       </IconTextGroup>
     )
   }
