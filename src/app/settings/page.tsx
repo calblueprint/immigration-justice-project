@@ -188,9 +188,8 @@ export default function Settings() {
       const canReads = sections.find(
         sec => sec.label === 'Languages (read and write)',
       )?.value as string[];
-      const allSpeakRead = new Set(
-        Array.from(canReads).concat(Array.from(canSpeaks)),
-      );
+
+      const allSpeakRead = new Set(canReads.concat(canSpeaks));
 
       const langs: ProfileLanguage[] = Array.from(allSpeakRead).map(l => ({
         user_id: userId,
