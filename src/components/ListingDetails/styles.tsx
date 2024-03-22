@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H1 } from '@/styles/text';
+import { H1, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
 
 export const CaseDisplay = styled.aside`
@@ -72,7 +72,12 @@ export const BorderedSection = styled.div`
   border: 1px solid ${COLORS.greyLighter}; 
 `;
 
-export const Inline = styled.div`
-  display: flex;
-  direction: row; 
-`
+export const InlineP = styled(P)`
+   display: inline;
+`; 
+
+export const DateText = styled(P)<{$bold?: true}>`
+  display: inline;
+  font-size: 1rem; 
+  font-weight: ${props => props.$bold ? 500: 400} ;
+`;
