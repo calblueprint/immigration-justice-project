@@ -55,7 +55,9 @@ export default function Page() {
     resolver: zodResolver(availabilitySchema),
     defaultValues: {
       hoursPerMonth: onboarding.profile.hours_per_month,
-      startDate: new Date(`${onboarding.profile.start_date}T00:00` ?? ''),
+      startDate: onboarding.profile.start_date
+        ? new Date(`${onboarding.profile.start_date}T00:00`)
+        : undefined,
       availability: onboarding.profile.availability_description,
     },
   });
