@@ -59,25 +59,25 @@ export const AuthButtons = styled.div`
 
 export const IconTextGroup = styled.div`
   display: flex;
-  direction: row; 
+  direction: row;
   gap: 11px;
   align-items: center;
 `;
 
 export const BorderedSection = styled.div`
-  display: flex; 
-  flex-direction: column; 
-  gap: 20px; 
-  padding: 30px 55px; 
-  border: 1px solid ${COLORS.greyLighter}; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 55px;
+  border: 1px solid ${COLORS.greyLighter};
 `;
 
 export const InlineP = styled(P)`
-   display: inline;
-`; 
-
-export const DateText = styled(P)<{$bold?: true}>`
   display: inline;
-  font-size: 1rem; 
-  font-weight: ${props => props.$bold ? 500: 400} ;
+`;
+
+export const DateText = styled(P)<{ $bold?: true }>`
+  display: inline;
+  font-size: 1rem;
+  font-weight: ${props => (props.$bold ? 500 : 400)};
 `;
