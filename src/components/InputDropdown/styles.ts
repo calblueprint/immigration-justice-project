@@ -36,7 +36,7 @@ const getControlBorderColor = (
 ) => {
   if (error) return COLORS.redMid;
   if (inFocus) return COLORS.blueMid;
-  return hasValue ? COLORS.greyDarker : COLORS.greyLight;
+  return hasValue ? COLORS.greyMid : COLORS.greyLight;
 };
 
 const determineOptionColor = (focused: boolean, selected: boolean) => {

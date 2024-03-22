@@ -69,6 +69,7 @@ const ButtonStyles = css<ButtonProps>`
     border-color: ${COLORS.greyLight};
     background: ${COLORS.greyLight};
     color: ${COLORS.greyMid};
+    cursor: default;
 
     &:hover {
       color: ${COLORS.greyMid};

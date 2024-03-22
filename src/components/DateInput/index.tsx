@@ -5,8 +5,8 @@ import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputDate } from './styles';
 
 type DateInputProps = {
-  label: string;
   required?: boolean;
+  label?: string;
   error?: string;
   name?: string;
   value: string;
@@ -37,12 +37,14 @@ export default function DateInput({
 
   return (
     <Flex $direction="column" $gap="10px">
-      <InputLabel as="label" htmlFor={id} $required={required}>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel as="label" htmlFor={id} $required={required}>
+          {label}
+        </InputLabel>
+      )}
       <InputDate
         id={id}
-        required
+        required={required}
         type="date"
         $error={error}
         $filled={value !== ''}
@@ -51,7 +53,7 @@ export default function DateInput({
         min={min}
         onChange={e => handleChange(e.target.value)}
       />
-      {!!error && <P $color={COLORS.redMid}>{error}</P>}
+      {error && <P $color={COLORS.redMid}>{error}</P>}
     </Flex>
   );
 }

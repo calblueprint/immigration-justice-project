@@ -1,26 +1,7 @@
-/**
- * inspiration from https://stackoverflow.com/a/57941711/22063638
- * example timestamp format: 2024-01-18T11:22:40+00:00
- * WARNING: assumes +00:00 (which should be the case for timestamptz)
- * @param ts
- * @returns Date
- */
-export function timestampStringToDate(ts: string): Date {
-  const digits = ts.split(/\D/).map(s => parseInt(s, 10));
-  digits[1] -= 1; // ground month to 0-index
-
-  const ms = Date.UTC(
-    digits[0], // year
-    digits[1], // month
-    digits[2], // day
-    digits[3], // hour
-    digits[4], // minute
-    digits[5], // second
-    0,
-  );
-
-  return new Date(ms);
-}
+// given timestamp of format: 2024-01-18T11:22:40+00:00
+// return JS date
+// native JS Date constructor should already support this parsing
+export const timestampStringToDate = (ts: string): Date => new Date(ts);
 
 // parse js date to mm/dd/yyyy
 export const parseDate = (d: Date): string =>
@@ -51,6 +32,7 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+
 /**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise
@@ -110,4 +92,11 @@ export const parseTimeCommitment = (
 
   const rate = numWeeks > 4 ? hoursPerWeek * 4 : hoursPerWeek;
   return `${rate} hours/${unit} for ${numUnit} ${unit}${plural}`;
+};
+
+// return JS date object with current date at 00:00:00
+export const getCurrentDate = () => {
+  const now = new Date();
+  const nowDate = parseDateAlt(now);
+  return new Date(`${nowDate}T00:00`);
 };

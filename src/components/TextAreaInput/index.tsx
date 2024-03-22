@@ -14,8 +14,8 @@ export default function TextAreaInput({
   setValue,
   onChange,
 }: {
-  label: string;
   required?: boolean;
+  label?: string;
   placeholder?: string;
   error?: string;
   id?: string;
@@ -33,14 +33,16 @@ export default function TextAreaInput({
 
   return (
     <Flex $direction="column" $gap="10px">
-      <InputLabel
-        as="label"
-        htmlFor={id}
-        $color={COLORS.greyDark}
-        $required={required}
-      >
-        {label}
-      </InputLabel>
+      {required && (
+        <InputLabel
+          as="label"
+          htmlFor={id}
+          $color={COLORS.greyDark}
+          $required={required}
+        >
+          {label}
+        </InputLabel>
+      )}
       <TextArea
         id={id}
         placeholder={placeholder}
