@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const FormContainer = styled.div`
   width: max(624px, 50%);
 `;
 
-export const FormDiv = styled.form`
+const FormDivStyle = css`
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -27,6 +27,14 @@ export const FormDiv = styled.form`
   margin: auto 0;
   width: 100%;
   box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);
+`;
+
+export const FormDiv = styled.form`
+  ${FormDivStyle}
+`;
+
+export const NormalFormDiv = styled.div`
+  ${FormDivStyle}
 `;
 
 export const LineDiv = styled.div`
