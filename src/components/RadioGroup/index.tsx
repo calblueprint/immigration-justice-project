@@ -20,7 +20,7 @@ export default function RadioGroup({
   onChange?: (s: string) => void;
   name: string;
   options: string[];
-  label: string;
+  label?: string;
   error?: string;
 }) {
   const handleChange = useCallback(
@@ -33,9 +33,11 @@ export default function RadioGroup({
 
   return (
     <ComponentContainer>
-      <InputLabel $color={COLORS.greyDark} $required={required}>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel $color={COLORS.greyDark} $required={required}>
+          {label}
+        </InputLabel>
+      )}
       <GroupContainer>
         {options.map(o => (
           <RadioLabel key={o} htmlFor={o}>

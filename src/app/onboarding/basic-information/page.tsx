@@ -10,7 +10,8 @@ import {
   FormMessage,
 } from '@/components/Form';
 import TextInput from '@/components/TextInput';
-import { cities, languages } from '@/lib/bigData';
+import { cities } from '@/data/citiesAndStates';
+import { languages } from '@/data/languages';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H1 } from '@/styles/text';
@@ -149,7 +150,7 @@ export default function Page() {
                     field.onChange(v ?? '');
                   }}
                   defaultValue={onboarding?.profile.location}
-                  placeholder="Select a city"
+                  placeholder="Start typing to filter cities..."
                 />
               </FormControl>
               <FormMessage />
@@ -198,7 +199,7 @@ export default function Page() {
                   }}
                   multi
                   defaultValue={onboarding?.canSpeaks}
-                  placeholder="Select a language"
+                  placeholder="Start typing to filter languages..."
                 />
               </FormControl>
               <FormMessage />
@@ -222,7 +223,7 @@ export default function Page() {
                     field.onChange(v);
                   }}
                   defaultValue={onboarding?.canReads}
-                  placeholder="Select a language"
+                  placeholder="Start typing to filter languages..."
                   multi
                 />
               </FormControl>

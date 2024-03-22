@@ -100,3 +100,14 @@ export const getCurrentDate = () => {
   const nowDate = parseDateAlt(now);
   return new Date(`${nowDate}T00:00`);
 };
+
+// parse bool to string, with optional undefined parameter
+export const boolToString = (
+  bool?: boolean,
+  trueMessage?: string,
+  falseMessage?: string,
+  nullMessage?: string,
+) => {
+  if (bool === undefined) return nullMessage ?? '';
+  return (bool ? trueMessage : falseMessage) ?? '';
+};

@@ -81,7 +81,6 @@ export default function Page() {
               <FormControl>
                 <TextInput
                   placeholder="hours/month"
-                  id="hours"
                   value={hours}
                   setValue={setHours}
                   inputMode="numeric"
@@ -111,7 +110,6 @@ export default function Page() {
               </FormLabel>
               <FormControl>
                 <DateInput
-                  id="start_date"
                   value={startDate}
                   min={parseDateAlt(new Date())}
                   setValue={setStartDate}
@@ -140,7 +138,6 @@ export default function Page() {
               <FormControl>
                 <TextAreaInput
                   placeholder="I won't be available from..."
-                  id="periods"
                   value={periods}
                   setValue={setPeriods}
                   onChange={newValue => {

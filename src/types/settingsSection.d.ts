@@ -23,7 +23,7 @@ export interface RadioSectionData extends CommonSectionData {
 
 interface SingleDropdownSectionData extends CommonSectionData {
   type: 'single-select';
-  options: Set<string> | Map<string, string>;
+  options: string[] | Map<string, string>;
   pageSize?: number;
   value: string | null;
   format?: (s: string | null) => string;
@@ -32,11 +32,11 @@ interface SingleDropdownSectionData extends CommonSectionData {
 
 interface MultiDropdownSectionData extends CommonSectionData {
   type: 'multi-select';
-  options: Set<string> | Map<string, string>;
+  options: string[] | Map<string, string>;
   pageSize?: number;
-  value: Set<string>;
-  format?: (s: Set<string>) => string;
-  validate?: (s: Set<string>) => string;
+  value: string[];
+  format?: (s: string[]) => string;
+  validate?: (s: string[]) => string;
 }
 
 export type SectionData =
