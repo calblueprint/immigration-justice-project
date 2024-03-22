@@ -7,7 +7,7 @@ export const ProgressBarContainer = styled.div<{ $show: boolean }>`
   visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
   place-items: center;
   width: 100%;
-  padding-bottom: 2.5rem;
+  padding-bottom: 50px;
 `;
 
 export const ProgressBarBody = styled.div`

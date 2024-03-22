@@ -17,6 +17,7 @@ import {
 } from 'react-hook-form';
 import { Slot } from '@radix-ui/react-slot';
 
+import { Fill } from '@/styles/containers';
 import * as Styles from './styles';
 
 // types
@@ -93,7 +94,7 @@ export const FormItem = forwardRef<
 
   return (
     <FormItemContext.Provider value={contextValue}>
-      <div ref={ref} {...props} />
+      <Fill ref={ref} {...props} />
     </FormItemContext.Provider>
   );
 });
@@ -103,11 +104,19 @@ FormItem.displayName = 'FormItem';
 
 export const FormLabel = forwardRef<
   HTMLLabelElement,
-  HTMLAttributes<HTMLLabelElement>
->(({ ...props }, ref) => {
+  HTMLAttributes<HTMLLabelElement> & { $required?: boolean }
+>(({ $required = true, ...props }, ref) => {
   const { formItemId } = useFormField();
 
-  return <Styles.Label as="label" ref={ref} htmlFor={formItemId} {...props} />;
+  return (
+    <Styles.Label
+      as="label"
+      ref={ref}
+      htmlFor={formItemId}
+      $required={$required}
+      {...props}
+    />
+  );
 });
 FormLabel.displayName = 'FormLabel';
 

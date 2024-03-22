@@ -21,9 +21,9 @@ import { ProfileContext } from './ProfileProvider';
 
 interface OnboardingContextType {
   profile: Partial<Profile>;
-  canReads: Set<string>;
-  canSpeaks: Set<string>;
-  roles: Set<RoleEnum>;
+  canReads: string[];
+  canSpeaks: string[];
+  roles: RoleEnum[];
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
@@ -32,9 +32,9 @@ interface OnboardingContextType {
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
-  setCanReads: Dispatch<SetStateAction<Set<string>>>;
-  setCanSpeaks: Dispatch<SetStateAction<Set<string>>>;
-  setRoles: Dispatch<SetStateAction<Set<RoleEnum>>>;
+  setCanReads: Dispatch<SetStateAction<string[]>>;
+  setCanSpeaks: Dispatch<SetStateAction<string[]>>;
+  setRoles: Dispatch<SetStateAction<RoleEnum[]>>;
 }
 
 export const OnboardingContext = createContext<
@@ -56,9 +56,9 @@ export default function OnboardingProvider({
     { name: 'Done', url: 'done' },
   ]);
   const [profile, setProfile] = useState<Partial<Profile>>({});
-  const [canReads, setCanReads] = useState<Set<string>>(new Set());
-  const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
-  const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
+  const [canReads, setCanReads] = useState<string[]>([]);
+  const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
+  const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
 
   const providerValue = useMemo(() => {
@@ -95,10 +95,10 @@ export default function OnboardingProvider({
       if (!profile.start_date)
         throw new Error('Error flushing data: profile missing start date!');
 
-      if (roles.size === 0)
+      if (roles.length === 0)
         throw new Error('Error flushing data: roles data is empty!');
 
-      if (roles.has('ATTORNEY')) {
+      if (roles.includes('ATTORNEY')) {
         if (!profile.bar_number)
           throw new Error(
             'Error flushing data: attorney profile missing bar number!',
@@ -110,12 +110,12 @@ export default function OnboardingProvider({
           );
       }
 
-      if (canReads.size === 0)
+      if (canReads.length === 0)
         throw new Error(
           'Error flushing data: can read languages data is empty!',
         );
 
-      if (canSpeaks.size === 0)
+      if (canSpeaks.length === 0)
         throw new Error(
           'Error flushing data: can write languages data is empty!',
         );
@@ -140,8 +140,8 @@ export default function OnboardingProvider({
       );
       const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
         user_id: uid,
-        can_read: canReads.has(l),
-        can_speak: canSpeaks.has(l),
+        can_read: canReads.includes(l),
+        can_speak: canSpeaks.includes(l),
         language_name: l,
       }));
 
