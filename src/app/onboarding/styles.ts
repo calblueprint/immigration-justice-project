@@ -7,8 +7,8 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  padding-top: 2.5rem;
-  padding-bottom: 7.5rem;
+  padding-top: 40px;
+  padding-bottom: 100px;
 `;
 
 export const FormContainer = styled.div`
@@ -23,7 +23,7 @@ export const FormDiv = styled.form`
   flex-direction: column;
   gap: 40px;
   padding: 48px;
-  border-radius: 10px;
+  border-radius: 15px;
   margin: auto 0;
   width: 100%;
   box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);

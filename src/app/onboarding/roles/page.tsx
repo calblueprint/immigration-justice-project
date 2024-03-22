@@ -1,6 +1,6 @@
 'use client';
 
-import BigButton from '@/components/BigButton';
+import { BigButton } from '@/components/Button';
 import InputDropdown from '@/components/InputDropdown';
 import { H1 } from '@/styles/text';
 import { RoleEnum } from '@/types/schema';
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/Form';
 import { useRouter } from 'next/navigation';
+import COLORS from '@/styles/colors';
 import { FormDiv } from '../styles';
 
 type RoleOptionType =
@@ -62,11 +63,11 @@ export default function Page() {
   const onSubmit = (values: z.infer<typeof roleSchema>) => {
     if (!onboarding) throw new Error('Fatal: no onboarding layout detected');
 
-    const roles = new Set(values.roles.split(',') as RoleEnum[]);
-    onboarding.setRoles(new Set(roles));
+    const roles = values.roles.split(',') as RoleEnum[];
+    onboarding.setRoles(roles);
 
     const newFlow =
-      roles.has('ATTORNEY') || roles.has('LEGAL_FELLOW')
+      roles.includes('ATTORNEY') || roles.includes('LEGAL_FELLOW')
         ? [
             { name: 'Roles', url: 'roles' },
             { name: 'Basic Info', url: 'basic-information' },
@@ -119,7 +120,13 @@ export default function Page() {
           )}
         />
 
-        <BigButton type="submit" disabled={!form.formState.isValid}>
+        <BigButton
+          type="submit"
+          disabled={!form.formState.isValid}
+          $primaryColor={COLORS.blueMid}
+          $secondaryColor={COLORS.blueDark}
+          $tertiaryColor={COLORS.blueDarker}
+        >
           Continue
         </BigButton>
       </FormDiv>

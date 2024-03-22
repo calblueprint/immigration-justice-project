@@ -16,8 +16,8 @@ import { ErrorText, InputLabel } from '../TextInput/styles';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
-  options: Set<string> | Map<string, string>;
-  label: string;
+  options: string[] | Map<string, string>;
+  label?: string;
   placeholder?: string;
   error?: string;
   disabled?: boolean;
@@ -27,8 +27,8 @@ interface CommonProps {
 
 interface MultiSelectProps extends CommonProps {
   multi: true;
-  defaultValue?: Set<string>;
-  onChange?: (value: Set<string>) => void;
+  defaultValue?: string[];
+  onChange?: (value: string[]) => void;
 }
 
 interface SingleSelectProps extends CommonProps {
@@ -64,8 +64,8 @@ export default function BigDataDropdown({
   const defaultDropdownVal = useMemo(() => {
     if (!defaultValue) return undefined;
 
-    if (defaultValue instanceof Set)
-      return Array.from(defaultValue).map(dv => {
+    if (defaultValue instanceof Array)
+      return defaultValue.map(dv => {
         const v = options instanceof Map ? options.get(dv) : dv;
         if (!v) throw new Error(`Value ${dv} not found in options`);
         return {
@@ -85,8 +85,8 @@ export default function BigDataDropdown({
 
   const optionsArray = useMemo(
     () =>
-      options instanceof Set
-        ? Array.from(options).map(v => ({ label: v, value: v }))
+      options instanceof Array
+        ? options.map(v => ({ label: v, value: v }))
         : Array.from(options.entries()).map(([k, v]) => ({
             value: k,
             label: v,
@@ -97,7 +97,7 @@ export default function BigDataDropdown({
   const handleChange = useCallback(
     (newValue: MultiValue<DropdownOption> | SingleValue<DropdownOption>) => {
       if (multi && newValue instanceof Array) {
-        onChange?.(new Set(newValue.map(v => v.value)));
+        onChange?.(newValue.map(v => v.value));
       } else if (!multi && !(newValue instanceof Array)) {
         onChange?.(newValue ? newValue.value : null);
       } else {
@@ -142,7 +142,7 @@ export default function BigDataDropdown({
 
   return (
     <DropdownWrapper>
-      <InputLabel>{label}</InputLabel>
+      {label && <InputLabel>{label}</InputLabel>}
       <AsyncPaginate
         selectRef={ref}
         components={{ Menu: AnimatedMenu }}

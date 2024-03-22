@@ -38,3 +38,7 @@ export const Flex = styled.div<{
     $justify === 'center' ? $justify : `flex-${$justify}`};
   flex-wrap: ${({ $wrap }) => ($wrap ? 'wrap' : null)};
 `;
+
+export const Fill = styled.div`
+  width: 100%;
+`;
