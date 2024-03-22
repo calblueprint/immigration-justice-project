@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { cities, languages } from '@/lib/bigData';
+import { cities } from '@/data/citiesAndStates';
 import BigDataDropdown from '@/components/BigDataDropdown';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
@@ -20,6 +20,7 @@ import {
 import { BigButton, BigLinkButton } from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import COLORS from '@/styles/colors';
+import { languages } from '@/data/languages';
 import { FormDiv } from '../styles';
 
 const basicInformationSchema = z
@@ -149,7 +150,7 @@ export default function Page() {
                     field.onChange(v ?? '');
                   }}
                   defaultValue={onboarding?.profile.location}
-                  placeholder="Select a city"
+                  placeholder="Start typing to filter cities..."
                 />
               </FormControl>
               <FormMessage />
@@ -198,7 +199,7 @@ export default function Page() {
                   }}
                   multi
                   defaultValue={onboarding?.canSpeaks}
-                  placeholder="Select a language"
+                  placeholder="Start typing to filter languages..."
                 />
               </FormControl>
               <FormMessage />
@@ -222,7 +223,7 @@ export default function Page() {
                     field.onChange(v);
                   }}
                   defaultValue={onboarding?.canReads}
-                  placeholder="Select a language"
+                  placeholder="Start typing to filter languages..."
                   multi
                 />
               </FormControl>

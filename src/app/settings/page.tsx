@@ -12,7 +12,7 @@ import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
-import { cities, languages } from '@/lib/bigData';
+import { cities, languages } from '@/data/citiesAndStates';
 import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
