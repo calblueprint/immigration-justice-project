@@ -18,6 +18,12 @@ import {
 } from '@/components/Form';
 import { useRouter } from 'next/navigation';
 import COLORS from '@/styles/colors';
+import { FlowData } from '@/types/misc';
+import {
+  ATTORNEY_FLOW,
+  INTERPRETER_FLOW,
+  LEGAL_FELLOW_FLOW,
+} from '@/data/onboardingFlows';
 import { FormDiv } from '../styles';
 
 type RoleOptionType =
@@ -66,21 +72,15 @@ export default function Page() {
     const roles = values.roles.split(',') as RoleEnum[];
     onboarding.setRoles(roles);
 
-    const newFlow =
-      roles.includes('ATTORNEY') || roles.includes('LEGAL_FELLOW')
-        ? [
-            { name: 'Roles', url: 'roles' },
-            { name: 'Basic Info', url: 'basic-information' },
-            { name: 'Availability', url: 'availability' },
-            { name: 'Legal Experience', url: 'legal-experience' },
-            { name: 'Done', url: 'done' },
-          ]
-        : [
-            { name: 'Roles', url: 'roles' },
-            { name: 'Basic Info', url: 'basic-information' },
-            { name: 'Availability', url: 'availability' },
-            { name: 'Done', url: 'done' },
-          ];
+    let newFlow: FlowData[];
+
+    if (roles.includes('ATTORNEY')) {
+      newFlow = ATTORNEY_FLOW;
+    } else if (roles.includes('LEGAL_FELLOW')) {
+      newFlow = LEGAL_FELLOW_FLOW;
+    } else {
+      newFlow = INTERPRETER_FLOW;
+    }
 
     onboarding.setFlow(newFlow);
     onboarding.setProgress(1);
