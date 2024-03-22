@@ -1,7 +1,6 @@
 'use client';
 
 import { OuterDiv, FormContainer } from '@/app/onboarding/styles';
-import { BackLink } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
@@ -18,6 +17,12 @@ export default function OnboardingManager({
   const onboarding = useContext(OnboardingContext);
   const router = useRouter();
   const pathname = usePathname();
+
+  if (!onboarding)
+    throw new Error(
+      'Fatal: onboarding manager should be wrapped inside onboarding context',
+    );
+
   const pageProgress = useMemo(() => {
     if (!onboarding) return -1;
     const find = onboarding.flow.findIndex(
@@ -44,51 +49,10 @@ export default function OnboardingManager({
       router.push(`/onboarding/${onboarding.flow[onboarding.progress].url}`);
   }, [onboarding, profile, router, pageProgress]);
 
-  // const advanceProgress = () => {
-  //   // safeguard
-  //   if (!onboarding) return;
-  //   if (pageProgress > onboarding.progress) return;
-
-  //   const newProgress = pageProgress + 1;
-
-  //   if (
-  //     newProgress > onboarding.progress &&
-  //     onboarding.progress < onboarding.flow.length - 1
-  //   ) {
-  //     onboarding.setCanContinue(false);
-  //     onboarding.setProgress(newProgress);
-  //   }
-
-  //   if (newProgress >= onboarding.flow.length) {
-  //     onboarding.flushData().then(() => {
-  //       router.push(CONFIG.homepage);
-  //     });
-  //   } else {
-  //     router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
-  //   }
-  // };
-
   return (
-    <>
-      {/* replace with navbar */}
-      <BackLink
-        href={
-          onboarding && pageProgress > 0
-            ? `/onboarding/${onboarding.flow[pageProgress - 1].url}`
-            : CONFIG.homepage
-        }
-      >
-        Back
-      </BackLink>
-      <OuterDiv>
-        <ProgressBar
-          steps={
-            new Set(onboarding ? onboarding.flow.slice(1).map(f => f.name) : [])
-          }
-          progress={pageProgress}
-        />
-        <FormContainer>{children}</FormContainer>
-      </OuterDiv>
-    </>
+    <OuterDiv>
+      <ProgressBar steps={onboarding.flow.slice(1)} progress={pageProgress} />
+      <FormContainer>{children}</FormContainer>
+    </OuterDiv>
   );
 }
