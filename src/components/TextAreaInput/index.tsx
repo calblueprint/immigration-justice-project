@@ -12,7 +12,7 @@ export default function TextAreaInput({
   setValue,
   onChange,
 }: {
-  label: string;
+  label?: string;
   placeholder?: string;
   error?: string;
   id?: string;
@@ -30,9 +30,11 @@ export default function TextAreaInput({
 
   return (
     <TextAreaContainer>
-      <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
-        {label}
-      </H4>
+      {label && (
+        <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
+          {label}
+        </H4>
+      )}
       <TextArea
         id={id}
         placeholder={placeholder}

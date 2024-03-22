@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputLabel, ErrorText, InputDiv, InputDate } from './styles';
 
 type DateInputProps = {
-  label: string;
+  label?: string;
   error?: string;
   name?: string;
   value: string;
@@ -32,9 +32,11 @@ export default function DateInput({
 
   return (
     <InputDiv>
-      <InputLabel as="label" htmlFor={id}>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel as="label" htmlFor={id}>
+          {label}
+        </InputLabel>
+      )}
       <InputDate
         id={id}
         required

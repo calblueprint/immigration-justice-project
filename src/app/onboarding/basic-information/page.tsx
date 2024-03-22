@@ -95,7 +95,7 @@ export default function Page() {
                     placeholder="Jane"
                     value={firstName ?? ''}
                     onChange={v => {
-                      onboarding?.updateProfile({
+                      onboarding.updateProfile({
                         first_name: v,
                       });
                       field.onChange(v);
@@ -119,7 +119,7 @@ export default function Page() {
                     placeholder="Doe"
                     value={lastName ?? ''}
                     onChange={v => {
-                      onboarding?.updateProfile({
+                      onboarding.updateProfile({
                         last_name: v,
                       });
                       field.onChange(v);
@@ -218,7 +218,7 @@ export default function Page() {
                 <BigDataDropdown
                   options={languages}
                   onChange={v => {
-                    onboarding?.setCanReads(v || new Set<string>());
+                    onboarding.setCanReads(v || new Set<string>());
                     field.onChange(v);
                   }}
                   defaultValue={onboarding?.canReads}
@@ -232,10 +232,7 @@ export default function Page() {
         />
 
         <Flex $gap="40px">
-          <BigLinkButton
-            href={`/onboarding/${onboarding.flow[0].url}`}
-            type="button"
-          >
+          <BigLinkButton href={`/onboarding/${onboarding.flow[0].url}`}>
             Back
           </BigLinkButton>
           <BigButton
