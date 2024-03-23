@@ -6,17 +6,17 @@ const FLOW_PROLOGUE: FlowData[] = [
   { name: 'Availability', url: 'availability' },
 ];
 
-const FLOW_EPILOGUE: FlowData[] = [{ name: 'Review', url: 'review' }];
+const FLOW_EPILOGUE: FlowData[] = [{ name: 'Review & Submit', url: 'review' }];
 
 export const ATTORNEY_FLOW: FlowData[] = [
   ...FLOW_PROLOGUE,
-  { name: 'Legal Experience', url: 'legal-experience' },
+  { name: 'Attorney Details', url: 'legal-experience' },
   ...FLOW_EPILOGUE,
 ];
 
 export const LEGAL_FELLOW_FLOW: FlowData[] = [
   ...FLOW_PROLOGUE,
-  { name: 'Legal Experience', url: 'legal-fellow-experience' },
+  { name: 'Attorney Details', url: 'legal-fellow-experience' },
   ...FLOW_EPILOGUE,
 ];
 

@@ -14,7 +14,7 @@ import { cities } from '@/data/citiesAndStates';
 import { languages } from '@/data/languages';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -82,7 +82,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Basic Information</H1>
+        <H1Centered>Basic Information</H1Centered>
 
         <Flex $gap="20px" $w="100%">
           <FormField

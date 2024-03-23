@@ -14,7 +14,7 @@ import TextInput from '@/components/TextInput';
 import { states } from '@/data/citiesAndStates';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { boolToString } from '@/utils/helpers';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -62,7 +62,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Legal Experience</H1>
+        <H1Centered>Legal Experience</H1Centered>
 
         <FormField
           control={form.control}

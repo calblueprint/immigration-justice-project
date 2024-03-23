@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled, { css } from 'styled-components';
 
 export const OuterDiv = styled.div`
@@ -7,7 +8,7 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  padding-top: 40px;
+  padding-top: 20px;
   padding-bottom: 100px;
 `;
 
@@ -27,6 +28,7 @@ const FormDivStyle = css`
   margin: auto 0;
   width: 100%;
   box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);
+  background: white;
 `;
 
 export const FormDiv = styled.form`
@@ -42,4 +44,9 @@ export const LineDiv = styled.div`
   flex-direction: row;
   gap: 1.25rem;
   width: 100%;
+`;
+
+export const LogoImage = styled(Image)<{ $show: boolean }>`
+  display: ${({ $show }) => ($show ? 'unset' : 'none')};
+  cursor: pointer;
 `;

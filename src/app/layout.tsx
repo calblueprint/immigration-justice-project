@@ -1,5 +1,6 @@
 import StyledComponentsRegistry from '@/lib/registry';
 import './globals.css';
+import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 import AuthProvider from '@/utils/AuthProvider';
 import ProfileProvider from '@/utils/ProfileProvider';
@@ -17,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={openSans.className}>
+      <body
+        className={openSans.className}
+        style={{ background: COLORS.background }}
+      >
         <AuthProvider>
           <ProfileProvider>
             <StyledComponentsRegistry>{children}</StyledComponentsRegistry>

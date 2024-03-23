@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import RadioGroup from '@/components/RadioGroup';
 import { z } from 'zod';
@@ -62,7 +62,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Legal Experience</H1>
+        <H1Centered>Legal Experience</H1Centered>
 
         <FormField
           control={form.control}

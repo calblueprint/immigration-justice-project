@@ -1,7 +1,6 @@
 import { H4 } from '@/styles/text';
 import { FlowData } from '@/types/misc';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
 import * as Styles from './styles';
 
@@ -9,11 +8,11 @@ import * as Styles from './styles';
 function ProgressCircle({
   step,
   idx,
-  onboardingURL,
+  progress,
 }: {
   step: FlowData;
   idx: number;
-  onboardingURL: string;
+  progress: number;
 }) {
   const onboarding = useContext(OnboardingContext);
   if (!onboarding)
@@ -23,15 +22,15 @@ function ProgressCircle({
 
   return (
     <Styles.ProgressCircleContainer
-      $disabled={onboarding.progress < idx + 1}
-      $active={step.url === onboardingURL}
+      $disabled={onboarding.progress < idx}
+      $active={idx === progress}
     >
       <Styles.ProgressCircleCircle
-        href={`/onboarding/${onboarding.flow[idx + 1].url}`}
-        $clickable={onboarding.progress > idx && onboardingURL !== step.url}
-        $filled={onboarding.progress > idx + 1}
-        $disabled={onboarding.progress < idx + 1}
-        $current={step.url === onboardingURL}
+        href={`/onboarding/${onboarding.flow[idx].url}`}
+        $clickable={onboarding.progress > idx - 1 && idx !== progress}
+        $filled={onboarding.progress > idx}
+        $disabled={onboarding.progress < idx}
+        $current={idx === progress}
       >
         {idx}
       </Styles.ProgressCircleCircle>
@@ -50,20 +49,15 @@ export default function ProgressBar({
   steps: FlowData[];
   progress: number;
 }) {
-  const pathname = usePathname();
-
-  // get the part after "onboarding/"
-  const onboardingURL = pathname.match(/onboarding\/([\w-]+)$/)?.[1] ?? '';
-
   return (
     <Styles.ProgressBarContainer $show={progress > 0}>
       <Styles.ProgressBarBody>
         {Array.from(steps).map((s, i) => (
           <ProgressCircle
             key={s.url}
-            onboardingURL={onboardingURL}
+            progress={progress}
             step={s}
-            idx={i}
+            idx={i + 1}
           />
         ))}
       </Styles.ProgressBarBody>

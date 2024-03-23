@@ -13,7 +13,7 @@ import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -70,7 +70,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Availability</H1>
+        <H1Centered>Availability</H1Centered>
 
         <FormField
           control={form.control}
