@@ -1,3 +1,4 @@
+import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import styled, { css } from 'styled-components';
 
@@ -16,7 +17,7 @@ export const FormContainer = styled.div`
   display: grid;
   place-items: center;
   flex-grow: 2;
-  width: max(624px, 50%);
+  width: min(792px, 90%);
 `;
 
 const FormDivStyle = css`
@@ -49,4 +50,21 @@ export const LineDiv = styled.div`
 export const LogoImage = styled(Image)<{ $show: boolean }>`
   display: ${({ $show }) => ($show ? 'unset' : 'none')};
   cursor: pointer;
+`;
+
+export const SectionBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 50px;
+  gap: 40px;
+  border: 1px solid ${COLORS.greyLight};
+  border-radius: 10px;
+`;
+
+export const SectionField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 `;
