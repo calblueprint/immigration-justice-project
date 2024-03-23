@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
@@ -70,7 +70,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Availability</H1>
+        <H1Centered>Availability</H1Centered>
 
         <FormField
           control={form.control}

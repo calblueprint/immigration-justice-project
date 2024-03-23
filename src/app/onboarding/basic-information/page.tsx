@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import { cities } from '@/data/citiesAndStates';
 import BigDataDropdown from '@/components/BigDataDropdown';
-import { H1 } from '@/styles/text';
+import { H1Centered } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import TextInput from '@/components/TextInput';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -82,7 +82,7 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
-        <H1>Basic Information</H1>
+        <H1Centered>Basic Information</H1Centered>
 
         <Flex $gap="20px" $w="100%">
           <FormField
