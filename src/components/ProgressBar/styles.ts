@@ -4,8 +4,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
-  display: grid;
-  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
+  display: ${({ $show }) => ($show ? 'grid' : 'none')};
   place-items: center;
   width: 100%;
   padding-top: 60px;
