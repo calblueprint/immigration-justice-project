@@ -8,6 +8,7 @@ import CONFIG from '@/lib/configs';
 import IJPLogoBlue from '@/assets/images/ijp_logo_blue.webp';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import ProgressBar from './ProgressBar';
+import { UnstyledButton } from './Buttons';
 
 export default function OnboardingManager({
   children,
@@ -53,13 +54,14 @@ export default function OnboardingManager({
 
   return (
     <OuterDiv>
-      <LogoImage
-        $show={pageProgress !== 0}
-        onClick={goToHomepage}
-        width="205"
-        src={IJPLogoBlue}
-        alt="IJP Logo"
-      />
+      <UnstyledButton onClick={goToHomepage}>
+        <LogoImage
+          $show={pageProgress !== 0}
+          width="205"
+          src={IJPLogoBlue}
+          alt="IJP Logo"
+        />
+      </UnstyledButton>
       <ProgressBar steps={onboarding.flow.slice(1)} progress={pageProgress} />
       <FormContainer>{children}</FormContainer>
     </OuterDiv>
