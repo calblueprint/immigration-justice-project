@@ -135,3 +135,12 @@ export const BigBlueButton = forwardRef<
   </BigButton>
 ));
 BigBlueButton.displayName = 'BigBlueButton';
+
+export const UnstyledButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+`;

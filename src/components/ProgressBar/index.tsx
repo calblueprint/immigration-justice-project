@@ -20,17 +20,20 @@ function ProgressCircle({
       'Fatal: onboarding progress should be placed inside onboarding context provider',
     );
 
+  const clickable = onboarding.progress > idx - 1 && idx !== progress;
+
   return (
     <Styles.ProgressCircleContainer
       $disabled={onboarding.progress < idx}
       $active={idx === progress}
+      $dottedLine={idx === onboarding.progress && idx !== progress}
     >
       <Styles.ProgressCircleCircle
-        href={`/onboarding/${onboarding.flow[idx].url}`}
-        $clickable={onboarding.progress > idx - 1 && idx !== progress}
-        $filled={onboarding.progress > idx}
-        $disabled={onboarding.progress < idx}
-        $current={idx === progress}
+        href={clickable ? `/onboarding/${onboarding.flow[idx].url}` : ''}
+        aria-disabled={!clickable}
+        $clickable={clickable}
+        $filled={onboarding.progress > idx && idx !== progress}
+        $disabled={onboarding.progress - 1 < idx && idx !== progress}
       >
         {idx}
       </Styles.ProgressCircleCircle>
