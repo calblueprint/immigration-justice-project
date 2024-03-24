@@ -9,7 +9,7 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { CardForm, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import { useMemo, useState } from 'react';
@@ -26,7 +26,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(2);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(

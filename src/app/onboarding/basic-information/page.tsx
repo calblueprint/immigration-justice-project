@@ -9,7 +9,7 @@ import { cities } from '@/data/citiesAndStates';
 import { languages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -54,7 +54,7 @@ const basicInformationSchema = z
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(0);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize react hook form with current data from onboarding context

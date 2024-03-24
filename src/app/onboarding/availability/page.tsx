@@ -9,7 +9,7 @@ import TextInput from '@/components/TextInput';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -36,7 +36,7 @@ const availabilitySchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(1);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   const [startDate, setStartDate] = useState<string>(

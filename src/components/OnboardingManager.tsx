@@ -4,10 +4,10 @@ import { FormContainer, LogoImage, OuterDiv } from '@/app/onboarding/styles';
 import IJPLogoBlue from '@/assets/images/ijp_logo_blue.webp';
 import CONFIG from '@/lib/configs';
 import { useAuth } from '@/utils/AuthProvider';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
-import { usePathname, useRouter } from 'next/navigation';
-import { ReactNode, useContext, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useEffect } from 'react';
 import ProgressBar from './ProgressBar';
 
 export default function OnboardingManager({
@@ -17,14 +17,10 @@ export default function OnboardingManager({
 }) {
   const auth = useAuth();
   const profile = useProfile();
-  const onboarding = useContext(OnboardingContext);
-  const { push } = useRouter();
-  const pathname = usePathname();
+  const onboarding = useGuardedOnboarding();
 
-  if (!onboarding || !profile)
-    throw new Error(
-      'Fatal: onboarding manager should be wrapped inside onboarding context and profile context',
-    );
+  const { pageProgress } = useOnboardingNavigation();
+  const { push } = useRouter();
 
   if (!profile)
     throw new Error(
@@ -39,11 +35,6 @@ export default function OnboardingManager({
   const { flow: onboardingFlow, progress: onboardingProgress } = onboarding;
   const { profileReady, profileData } = profile;
   const { userId } = auth;
-
-  const pageProgress = useMemo(
-    () => onboardingFlow.findIndex(f => `/onboarding/${f.url}` === pathname),
-    [pathname, onboardingFlow],
-  );
 
   useEffect(() => {
     // out of bounds redirect

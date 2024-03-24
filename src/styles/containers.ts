@@ -60,13 +60,21 @@ export const Box = styled.div<BoxProps>`
   ${BoxStyles}
 `;
 
+type Justify = 'center' | 'start' | 'end' | 'between' | 'evenly';
+
 interface FlexProps extends BoxProps {
   $gap?: string;
   $direction?: 'column' | 'row';
   $align?: 'center' | 'start' | 'end';
-  $justify?: 'center' | 'start' | 'end';
+  $justify?: Justify;
   $wrap?: boolean;
 }
+
+const parseJustify = (justify: Justify) => {
+  if (justify === 'center') return 'center';
+  if (justify === 'start' || justify === 'end') return `flex-${justify}`;
+  return `space-${justify}`;
+};
 
 export const Flex = styled.div<FlexProps>`
   ${BoxStyles}
@@ -78,7 +86,7 @@ export const Flex = styled.div<FlexProps>`
     $align === 'center' ? $align : `flex-${$align}`};
 
   justify-content: ${({ $justify }) =>
-    $justify === 'center' ? $justify : `flex-${$justify}`};
+    $justify ? parseJustify($justify) : null};
 
   flex-wrap: ${({ $wrap }) => ($wrap ? 'wrap' : null)};
 `;

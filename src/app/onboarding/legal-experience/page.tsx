@@ -10,7 +10,7 @@ import { states } from '@/data/citiesAndStates';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy } from '@/utils/helpers';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -27,7 +27,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(2);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize form with data from onboarding context

@@ -55,9 +55,10 @@ export const BackLink = styled(Link)`
   position: absolute;
   top: 0;
   left: 0;
-  margin-top: 40px;
-  margin-left: 40px;
+  margin-top: 30px;
+  margin-left: 30px;
   transition: 100ms;
+  padding: 10px;
 
   &:hover {
     transform: translateX(-2px);
