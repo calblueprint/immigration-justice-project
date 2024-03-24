@@ -3,18 +3,19 @@
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import DateInput from '@/components/DateInput';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
+import Icon from '@/components/Icon';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
-import { Flex } from '@/styles/containers';
+import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import { useGuardedOnboarding } from '@/utils/hooks';
+import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { FormDiv } from '../styles';
+import * as Styles from '../styles';
 
 // define form schema to automate form validation
 const availabilitySchema = z.object({
@@ -35,6 +36,7 @@ const availabilitySchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
+  const backlinkHref = useSafeOnboardingLink(1);
   const { push } = useRouter();
 
   const [startDate, setStartDate] = useState<string>(
@@ -72,118 +74,120 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       {/* noValidate to prevent default HTML invalid input pop-up */}
-      <FormDiv onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+      <CardForm onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+        <Styles.BackLink href={backlinkHref}>
+          <Icon type="leftArrow" />
+        </Styles.BackLink>
+
         <H1Centered>Availability</H1Centered>
 
-        <FormField
-          control={form.control}
-          name="hoursPerMonth"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>
-                How much time do you have to commit per month?
-              </FormLabel>
-              <FormControl>
-                <TextInput
-                  errorText={fieldState.error?.message}
-                  placeholder="hours/month"
-                  inputMode="numeric"
-                  defaultValue={
-                    field.value !== undefined ? field.value.toString() : ''
-                  }
-                  onChange={newValue => {
-                    if (!newValue) {
-                      field.onChange(undefined);
-                      onboarding.updateProfile({
-                        hours_per_month: undefined,
-                      });
-                      return;
+        <Styles.FormFieldsContainer>
+          <FormField
+            control={form.control}
+            name="hoursPerMonth"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  How much time do you have to commit per month?
+                </FormLabel>
+                <FormControl>
+                  <TextInput
+                    errorText={fieldState.error?.message}
+                    placeholder="hours/month"
+                    inputMode="numeric"
+                    defaultValue={
+                      field.value !== undefined ? field.value.toString() : ''
                     }
+                    onChange={newValue => {
+                      if (!newValue) {
+                        field.onChange(undefined);
+                        onboarding.updateProfile({
+                          hours_per_month: undefined,
+                        });
+                        return;
+                      }
 
-                    const toNum = z.coerce.number().safeParse(newValue);
-                    const num = toNum.success ? toNum.data : undefined;
+                      const toNum = z.coerce.number().safeParse(newValue);
+                      const num = toNum.success ? toNum.data : undefined;
 
-                    field.onChange(num);
-                    onboarding.updateProfile({
-                      hours_per_month: num,
-                    });
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="startDate"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>
-                What is the earliest you are available to volunteer?
-              </FormLabel>
-              <FormControl>
-                <DateInput
-                  error={fieldState.error?.message}
-                  min={parseDateAlt(getCurrentDate())}
-                  value={startDate}
-                  setValue={setStartDate}
-                  onChange={newValue => {
-                    if (!newValue) {
-                      field.onChange(undefined);
+                      field.onChange(num);
                       onboarding.updateProfile({
-                        start_date: undefined,
+                        hours_per_month: num,
                       });
-                      return;
-                    }
-                    field.onChange(new Date(`${newValue}T00:00`));
-                    onboarding.updateProfile({
-                      start_date: newValue,
-                    });
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="availability"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel $required={false}>
-                Are there specific time periods you will not be available?
-                (optional)
-              </FormLabel>
-              <FormControl>
-                <TextAreaInput
-                  placeholder="I won't be available from..."
-                  defaultValue={field.value}
-                  error={fieldState.error?.message}
-                  onChange={newValue => {
-                    onboarding.updateProfile({
-                      availability_description: newValue,
-                    });
-                    field.onChange(newValue);
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  What is the earliest you are available to volunteer?
+                </FormLabel>
+                <FormControl>
+                  <DateInput
+                    error={fieldState.error?.message}
+                    min={parseDateAlt(getCurrentDate())}
+                    value={startDate}
+                    setValue={setStartDate}
+                    onChange={newValue => {
+                      if (!newValue) {
+                        field.onChange(undefined);
+                        onboarding.updateProfile({
+                          start_date: undefined,
+                        });
+                        return;
+                      }
+                      field.onChange(new Date(`${newValue}T00:00`));
+                      onboarding.updateProfile({
+                        start_date: newValue,
+                      });
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <Flex $gap="40px">
-          {onboarding.flow.length > 0 && (
-            <BigLinkButton href={`/onboarding/${onboarding.flow[1].url}`}>
-              Back
-            </BigLinkButton>
-          )}
-          <BigBlueButton type="submit" disabled={isEmpty}>
-            Continue
-          </BigBlueButton>
-        </Flex>
-      </FormDiv>
+          <FormField
+            control={form.control}
+            name="availability"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel $required={false}>
+                  Are there specific time periods you will not be available?
+                  (optional)
+                </FormLabel>
+                <FormControl>
+                  <TextAreaInput
+                    placeholder="I won't be available from..."
+                    defaultValue={field.value}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      onboarding.updateProfile({
+                        availability_description: newValue,
+                      });
+                      field.onChange(newValue);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <Flex $gap="40px">
+            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigBlueButton type="submit" disabled={isEmpty}>
+              Continue
+            </BigBlueButton>
+          </Flex>
+        </Styles.FormFieldsContainer>
+      </CardForm>
     </FormProvider>
   );
 }

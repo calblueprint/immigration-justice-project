@@ -69,6 +69,7 @@ export default function OnboardingManager({
   ]);
 
   const goToHomepage = () => {
+    // TODO: add form dirty bool to context to conditionally show dialog
     // eslint-disable-next-line no-alert
     const ans = window.confirm(
       'Are you sure you want to continue? Your changes will not be saved after you leave.',

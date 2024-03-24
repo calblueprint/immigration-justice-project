@@ -56,6 +56,23 @@ export const IconSvgs = {
       />
     </svg>
   ),
+  leftArrow: (
+    <svg
+      width="30"
+      height="23"
+      viewBox="0 0 30 23"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M28 11.5L2 11.5M2 11.5L11.75 2M2 11.5L11.75 21"
+        stroke="#0069A9"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
   green_check: (
     <svg
       width="17"
