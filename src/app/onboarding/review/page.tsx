@@ -1,18 +1,24 @@
 'use client';
 
 import { H1Centered, H2, H4, P } from '@/styles/text';
-import { Flex } from '@/styles/containers';
+import { Card, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { formatTruthy, parseDate } from '@/utils/helpers';
-import { useGuardedOnboarding } from '@/utils/hooks';
+import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import Icon from '@/components/Icon';
 import * as Styles from '../styles';
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
+  const backlinkHref = useSafeOnboardingLink(onboarding.progress - 1);
 
   return (
-    <Styles.NormalFormDiv>
+    <Card>
       <Flex $direction="column" $gap="30px">
+        <Styles.BackLink href={backlinkHref}>
+          <Icon type="leftArrow" />
+        </Styles.BackLink>
+
         <H1Centered>Review & Submit</H1Centered>
 
         <Styles.SectionBox>
@@ -161,15 +167,9 @@ export default function Page() {
       </Flex>
 
       <Flex $gap="40px">
-        {onboarding.flow.length > 0 && (
-          <BigLinkButton
-            href={`/onboarding/${onboarding.flow[onboarding.progress - 1].url}`}
-          >
-            Back
-          </BigLinkButton>
-        )}
+        <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
         <BigBlueButton>Submit</BigBlueButton>
       </Flex>
-    </Styles.NormalFormDiv>
+    </Card>
   );
 }

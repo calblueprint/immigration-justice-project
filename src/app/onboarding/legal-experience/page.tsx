@@ -7,15 +7,16 @@ import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
-import { Flex } from '@/styles/containers';
+import { CardForm, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import BigDataDropdown from '@/components/BigDataDropdown';
 import { states } from '@/data/citiesAndStates';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding } from '@/utils/hooks';
+import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
 import { useMemo } from 'react';
 import { formatTruthy } from '@/utils/helpers';
-import { FormDiv } from '../styles';
+import Icon from '@/components/Icon';
+import * as Styles from '../styles';
 
 // zod schema to automate form validation
 const legalExperienceSchema = z.object({
@@ -26,6 +27,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
+  const backlinkHref = useSafeOnboardingLink(2);
   const { push } = useRouter();
 
   // initialize form with data from onboarding context
@@ -53,99 +55,101 @@ export default function Page() {
 
   return (
     <FormProvider {...form}>
-      <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
+      <CardForm onSubmit={form.handleSubmit(onSubmit)}>
+        <Styles.BackLink href={backlinkHref}>
+          <Icon type="leftArrow" />
+        </Styles.BackLink>
+
         <H1Centered>Legal Experience</H1Centered>
 
-        <FormField
-          control={form.control}
-          name="stateBarred"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Which state are you barred in?</FormLabel>
-              <FormControl>
-                <BigDataDropdown
-                  options={states}
-                  error={fieldState.error?.message}
-                  onChange={newValue => {
-                    field.onChange(newValue);
-                    onboarding.updateProfile({
-                      state_barred: newValue ?? undefined,
-                    });
-                  }}
-                  defaultValue={onboarding.profile.state_barred}
-                  placeholder="Start typing to filter states..."
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <Styles.FormFieldsContainer>
+          <FormField
+            control={form.control}
+            name="stateBarred"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Which state are you barred in?</FormLabel>
+                <FormControl>
+                  <BigDataDropdown
+                    options={states}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      field.onChange(newValue);
+                      onboarding.updateProfile({
+                        state_barred: newValue ?? undefined,
+                      });
+                    }}
+                    defaultValue={onboarding.profile.state_barred}
+                    placeholder="Start typing to filter states..."
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="barNumber"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>What is your attorney bar number?</FormLabel>
-              <FormControl>
-                <TextInput
-                  errorText={fieldState.error?.message}
-                  placeholder="123456"
-                  type="text"
-                  defaultValue={field.value}
-                  onChange={newValue => {
-                    onboarding.updateProfile({
-                      bar_number: newValue,
-                    });
-                    field.onChange(newValue);
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="barNumber"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>What is your attorney bar number?</FormLabel>
+                <FormControl>
+                  <TextInput
+                    errorText={fieldState.error?.message}
+                    placeholder="123456"
+                    type="text"
+                    defaultValue={field.value}
+                    onChange={newValue => {
+                      onboarding.updateProfile({
+                        bar_number: newValue,
+                      });
+                      field.onChange(newValue);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="eoirRegistered"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>
-                Are you registered by the Executive Office of Immigration
-                Review?
-              </FormLabel>
-              <FormControl>
-                <RadioGroup
-                  name="registered"
-                  defaultValue={formatTruthy(
-                    field.value,
-                    'Yes',
-                    'No',
-                    undefined,
-                  )}
-                  options={['Yes', 'No']}
-                  error={fieldState.error?.message}
-                  onChange={newValue => {
-                    const bool = newValue === 'Yes';
-                    onboarding.updateProfile({ eoir_registered: bool });
-                    field.onChange(bool);
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="eoirRegistered"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  Are you registered by the Executive Office of Immigration
+                  Review?
+                </FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    name="registered"
+                    defaultValue={formatTruthy(
+                      field.value,
+                      'Yes',
+                      'No',
+                      undefined,
+                    )}
+                    options={['Yes', 'No']}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      const bool = newValue === 'Yes';
+                      onboarding.updateProfile({ eoir_registered: bool });
+                      field.onChange(bool);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <Flex $gap="40px">
-          {onboarding.flow.length > 0 && (
-            <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
-              Back
-            </BigLinkButton>
-          )}
-          <BigBlueButton type="submit" disabled={isEmpty}>
-            Continue
-          </BigBlueButton>
-        </Flex>
-      </FormDiv>
+          <Flex $gap="40px">
+            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigBlueButton type="submit" disabled={isEmpty}>
+              Continue
+            </BigBlueButton>
+          </Flex>
+        </Styles.FormFieldsContainer>
+      </CardForm>
     </FormProvider>
   );
 }

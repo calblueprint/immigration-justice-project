@@ -86,3 +86,29 @@ export const Flex = styled.div<FlexProps>`
 export const Fill = styled.div`
   width: 100%;
 `;
+
+const CardStyles = css`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: 40px;
+  padding: 48px;
+  border-radius: 15px;
+  margin: auto 0;
+  width: 100%;
+  box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);
+  background: white;
+  width: min(792px, 90%);
+`;
+
+export const Card = styled.div`
+  ${CardStyles}
+`;
+
+export const CardForm = styled.form`
+  ${CardStyles}
+`;
+
+export const SmallCardForm = styled(CardForm)`
+  width: min(624px, 90%);
+`;

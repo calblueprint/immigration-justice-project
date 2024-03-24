@@ -1,6 +1,7 @@
 import COLORS from '@/styles/colors';
 import Image from 'next/image';
-import styled, { css } from 'styled-components';
+import Link from 'next/link';
+import styled from 'styled-components';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -17,34 +18,15 @@ export const FormContainer = styled.div`
   display: grid;
   place-items: center;
   flex-grow: 2;
-  width: min(792px, 90%);
+  width: 100%;
 `;
 
-const FormDivStyle = css`
+export const FormFieldsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: min(528px, 100%);
+  margin: auto;
   gap: 40px;
-  padding: 48px;
-  border-radius: 15px;
-  margin: auto 0;
-  width: 100%;
-  box-shadow: 3px 3px 13px 8px rgba(0, 0, 0, 0.05);
-  background: white;
-`;
-
-export const FormDiv = styled.form`
-  ${FormDivStyle}
-`;
-
-export const NormalFormDiv = styled.div`
-  ${FormDivStyle}
-`;
-
-export const LineDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1.25rem;
-  width: 100%;
 `;
 
 export const LogoImage = styled(Image)<{ $show: boolean }>`
@@ -67,4 +49,17 @@ export const SectionField = styled.div`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+`;
+
+export const BackLink = styled(Link)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 40px;
+  margin-left: 40px;
+  transition: 100ms;
+
+  &:hover {
+    transform: translateX(-2px);
+  }
 `;

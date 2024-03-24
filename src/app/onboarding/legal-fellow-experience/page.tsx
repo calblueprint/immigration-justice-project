@@ -6,14 +6,15 @@ import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
-import { Flex } from '@/styles/containers';
+import { CardForm, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding } from '@/utils/hooks';
+import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
 import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import { useMemo, useState } from 'react';
-import { FormDiv } from '../styles';
+import Icon from '@/components/Icon';
+import * as Styles from '../styles';
 
 // zod schema to automate form validation
 const legalExperienceSchema = z.object({
@@ -25,6 +26,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
+  const backlinkHref = useSafeOnboardingLink(2);
   const { push } = useRouter();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
@@ -58,83 +60,85 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       {/* noValidate to prevent default HTML invalid input pop-up */}
-      <FormDiv onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+      <CardForm onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+        <Styles.BackLink href={backlinkHref}>
+          <Icon type="leftArrow" />
+        </Styles.BackLink>
+
         <H1Centered>Legal Experience</H1Centered>
 
-        <FormField
-          control={form.control}
-          name="expectedBarDate"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>When are you expected to be barred?</FormLabel>
-              <FormControl>
-                <DateInput
-                  error={fieldState.error?.message}
-                  min={parseDateAlt(getCurrentDate())}
-                  value={expectedBarDate}
-                  setValue={setExpectedBarDate}
-                  onChange={newValue => {
-                    // turn "" into undefined (cannot be parsed to date)
-                    if (!newValue) {
-                      field.onChange(undefined);
+        <Styles.FormFieldsContainer>
+          <FormField
+            control={form.control}
+            name="expectedBarDate"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>When are you expected to be barred?</FormLabel>
+                <FormControl>
+                  <DateInput
+                    error={fieldState.error?.message}
+                    min={parseDateAlt(getCurrentDate())}
+                    value={expectedBarDate}
+                    setValue={setExpectedBarDate}
+                    onChange={newValue => {
+                      // turn "" into undefined (cannot be parsed to date)
+                      if (!newValue) {
+                        field.onChange(undefined);
+                        onboarding.updateProfile({
+                          expected_bar_date: undefined,
+                        });
+                        return;
+                      }
+                      field.onChange(new Date(`${newValue}T00:00`));
                       onboarding.updateProfile({
-                        expected_bar_date: undefined,
+                        expected_bar_date: newValue,
                       });
-                      return;
-                    }
-                    field.onChange(new Date(`${newValue}T00:00`));
-                    onboarding.updateProfile({
-                      expected_bar_date: newValue,
-                    });
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="eoirRegistered"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>
-                Are you registered by the Executive Office of Immigration
-                Review?
-              </FormLabel>
-              <FormControl>
-                <RadioGroup
-                  name="registered"
-                  defaultValue={formatTruthy(
-                    field.value,
-                    'Yes',
-                    'No',
-                    undefined,
-                  )}
-                  options={['Yes', 'No']}
-                  error={fieldState.error ? undefined : ''}
-                  onChange={newValue => {
-                    const bool = newValue === 'Yes';
-                    onboarding.updateProfile({ eoir_registered: bool });
-                    field.onChange(bool);
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="eoirRegistered"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  Are you registered by the Executive Office of Immigration
+                  Review?
+                </FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    name="registered"
+                    defaultValue={formatTruthy(
+                      field.value,
+                      'Yes',
+                      'No',
+                      undefined,
+                    )}
+                    options={['Yes', 'No']}
+                    error={fieldState.error ? undefined : ''}
+                    onChange={newValue => {
+                      const bool = newValue === 'Yes';
+                      onboarding.updateProfile({ eoir_registered: bool });
+                      field.onChange(bool);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <Flex $gap="40px">
-          {onboarding.flow.length > 0 && (
-            <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
-              Back
-            </BigLinkButton>
-          )}
-          <BigBlueButton type="submit" disabled={isEmpty}>
-            Continue
-          </BigBlueButton>
-        </Flex>
-      </FormDiv>
+          <Flex $gap="40px">
+            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigBlueButton type="submit" disabled={isEmpty}>
+              Continue
+            </BigBlueButton>
+          </Flex>
+        </Styles.FormFieldsContainer>
+      </CardForm>
     </FormProvider>
   );
 }

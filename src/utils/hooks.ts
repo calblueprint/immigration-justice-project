@@ -20,3 +20,13 @@ export const useGuardedOnboarding = () => {
 
   return { flow, ...rest };
 };
+
+// checks if flow has been set first
+// used to prevent error in the
+// edge case of clicking a link to onboarding (when flow is not set)
+export const useSafeOnboardingLink = (to: number) => {
+  const onboarding = useGuardedOnboarding();
+  return onboarding.flow.length > 0
+    ? `/onboarding/${onboarding.flow[to].url}`
+    : '/onboarding/';
+};

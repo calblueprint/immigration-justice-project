@@ -23,7 +23,7 @@ import {
   INTERPRETER_FLOW,
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
-import { FormDiv } from '../styles';
+import { SmallCardForm } from '@/styles/containers';
 
 type RoleOptionType =
   | ''
@@ -99,7 +99,7 @@ export default function Page() {
     <FormProvider {...form}>
       {/* div to fill top space, delete after nav bar is added */}
       <div />
-      <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
+      <SmallCardForm onSubmit={form.handleSubmit(onSubmit)}>
         <H1>Role</H1>
 
         <FormField
@@ -124,7 +124,7 @@ export default function Page() {
         <BigBlueButton type="submit" disabled={!form.formState.isValid}>
           Continue
         </BigBlueButton>
-      </FormDiv>
+      </SmallCardForm>
     </FormProvider>
   );
 }
