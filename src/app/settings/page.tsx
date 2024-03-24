@@ -1,6 +1,6 @@
 'use client';
 
-import Button, { LinkButton } from '@/components/Button';
+import { Button, LinkButton } from '@/components/Buttons';
 import SettingsSection from '@/components/SettingsSection';
 import { cities } from '@/data/citiesAndStates';
 import { languages } from '@/data/languages';

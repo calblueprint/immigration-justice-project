@@ -2,7 +2,7 @@
 
 import { UUID } from 'crypto';
 import { getNCases } from '@/api/supabase/queries/cases';
-import { LinkButton } from '@/components/Button';
+import { LinkButton } from '@/components/Buttons';
 import FilterDropdown from '@/components/FilterDropdown';
 import ListingCard from '@/components/ListingCard';
 import ListingDetails from '@/components/ListingDetails';

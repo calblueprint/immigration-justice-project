@@ -6,7 +6,7 @@ import {
   SubSectionData,
 } from '@/types/settingsSection';
 import React, { useCallback, useEffect, useState } from 'react';
-import Button from '../Button';
+import { Button } from '../Buttons';
 import SectionPartial from './SectionPartial';
 import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
 

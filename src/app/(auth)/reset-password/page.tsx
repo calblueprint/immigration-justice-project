@@ -2,7 +2,7 @@
 
 import supabase from '@/api/supabase/createClient';
 import { SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
+import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
@@ -83,9 +83,9 @@ export default function ResetPassword() {
             setValue={setNewPassword2}
           />
         </SpacerDiv>
-        <BigButton type="button" onClick={resetPassword}>
+        <BigBlueButton type="button" onClick={resetPassword}>
           <H4 $color="white">Set Password</H4>
-        </BigButton>
+        </BigBlueButton>
       </>
     )
   );

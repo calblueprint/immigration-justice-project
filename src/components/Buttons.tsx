@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import Link from 'next/link';
 import { openSans } from '@/styles/fonts';
 import COLORS from '@/styles/colors';
+import { ComponentProps, forwardRef } from 'react';
 
 /* 
   FOR PRIMARY BUTTON USAGE:
@@ -86,7 +87,7 @@ const ButtonStyles = css<ButtonProps>`
       : null};
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   ${ButtonStyles}
 `;
 
@@ -95,7 +96,7 @@ export const LinkButton = styled(Link)`
   text-decoration: none;
 `;
 
-const BigButtonStyles = css<{ disabled?: boolean } & ButtonProps>`
+const BigButtonStyles = css<ButtonProps>`
   ${ButtonStyles}
 
   padding: 15px 0;
@@ -116,4 +117,21 @@ export const BigLinkButton = styled(Link)<ButtonProps>`
   text-align: center;
 `;
 
-export default Button;
+export const BigBlueButton = forwardRef<
+  HTMLButtonElement,
+  Omit<
+    ComponentProps<typeof BigButton>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, ...props }, ref) => (
+  <BigButton
+    ref={ref}
+    {...props}
+    $primaryColor={COLORS.blueMid}
+    $secondaryColor={COLORS.blueDark}
+    $tertiaryColor={COLORS.blueDarker}
+  >
+    {children}
+  </BigButton>
+));
+BigBlueButton.displayName = 'BigBlueButton';

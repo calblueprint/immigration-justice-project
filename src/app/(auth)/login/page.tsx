@@ -1,7 +1,7 @@
 'use client';
 
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
+import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
 import { H1, LinkColored, P } from '@/styles/text';
@@ -82,9 +82,9 @@ export default function Login() {
         </P>
       </SpacerDiv>
       <SpacerDiv>
-        <BigButton type="button" onClick={handleSignIn}>
+        <BigBlueButton type="button" onClick={handleSignIn}>
           Log in
-        </BigButton>
+        </BigBlueButton>
         <H4Centered>
           Don’t have an account yet?{' '}
           <LinkColored $color={COLORS.greyDark} href="/signup">

@@ -1,11 +1,10 @@
 'use client';
 
-import { BigButton, BigLinkButton } from '@/components/Button';
+import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import DateInput from '@/components/DateInput';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
-import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
@@ -180,15 +179,9 @@ export default function Page() {
               Back
             </BigLinkButton>
           )}
-          <BigButton
-            type="submit"
-            disabled={isEmpty}
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-            $tertiaryColor={COLORS.blueDarker}
-          >
+          <BigBlueButton type="submit" disabled={isEmpty}>
             Continue
-          </BigButton>
+          </BigBlueButton>
         </Flex>
       </FormDiv>
     </FormProvider>

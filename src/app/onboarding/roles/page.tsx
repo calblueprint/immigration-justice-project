@@ -1,6 +1,6 @@
 'use client';
 
-import { BigButton } from '@/components/Button';
+import { BigBlueButton } from '@/components/Buttons';
 import InputDropdown from '@/components/InputDropdown';
 import { H1 } from '@/styles/text';
 import { RoleEnum } from '@/types/schema';
@@ -17,7 +17,6 @@ import {
   FormMessage,
 } from '@/components/Form';
 import { useRouter } from 'next/navigation';
-import COLORS from '@/styles/colors';
 import { FlowData } from '@/types/misc';
 import {
   ATTORNEY_FLOW,
@@ -122,15 +121,9 @@ export default function Page() {
           )}
         />
 
-        <BigButton
-          type="submit"
-          disabled={!form.formState.isValid}
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          $tertiaryColor={COLORS.blueDarker}
-        >
+        <BigBlueButton type="submit" disabled={!form.formState.isValid}>
           Continue
-        </BigButton>
+        </BigBlueButton>
       </FormDiv>
     </FormProvider>
   );

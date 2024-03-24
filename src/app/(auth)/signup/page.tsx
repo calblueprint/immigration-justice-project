@@ -2,8 +2,7 @@
 
 import supabase from '@/api/supabase/createClient';
 import { H4Centered, HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
-import Button from '@/components/Button';
+import { BigBlueButton, Button } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
@@ -102,9 +101,9 @@ export default function SignUp() {
             />
           </SpacerDiv>
           <SpacerDiv>
-            <BigButton type="button" onClick={handleSignUp}>
+            <BigBlueButton type="button" onClick={handleSignUp}>
               Sign Up
-            </BigButton>
+            </BigBlueButton>
             <H4Centered>
               Have an account already?{' '}
               <LinkColored $color={COLORS.greyDark} href="/login">
