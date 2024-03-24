@@ -11,17 +11,31 @@ type InputModeTypes =
   | 'url'
   | 'none';
 
-type TextInputProps = {
+interface DefaultTextInputProps {
   label?: string;
   placeholder?: string;
   errorText?: string;
   inputMode?: InputModeTypes;
   type?: string;
   id?: string;
+  defaultValue?: string;
+  onChange?: (s: string) => void;
+}
+
+// TODO: refactor away from setValue
+// -- reasoning: it's redundant, use onChange instead
+interface ControlledTextInputProps extends DefaultTextInputProps {
   value: string;
   setValue?: Dispatch<SetStateAction<string>>;
-  onChange?: (s: string) => void;
-};
+}
+
+interface UncontrolledTextInputProps extends DefaultTextInputProps {
+  value?: never;
+  // setValue defined here to stay consistent with the controlled props
+  setValue?: never;
+}
+
+type TextInputProps = ControlledTextInputProps | UncontrolledTextInputProps;
 
 export default function TextInput({
   label,
@@ -31,6 +45,7 @@ export default function TextInput({
   id,
   value,
   inputMode,
+  defaultValue,
   setValue,
   onChange,
 }: TextInputProps) {
@@ -56,6 +71,7 @@ export default function TextInput({
         id={id}
         type={type}
         value={value}
+        defaultValue={defaultValue}
         inputMode={inputMode}
         onChange={e => handleChange(e.target.value)}
       />

@@ -66,8 +66,10 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       !sessionData.session ||
       !sessionData.session.user ||
       !sessionData.session.user.id
-    )
+    ) {
+      setProfileReady(true);
       return;
+    }
 
     const sessionUserEmail = sessionData.session.user.email;
     setUserEmail(sessionUserEmail);

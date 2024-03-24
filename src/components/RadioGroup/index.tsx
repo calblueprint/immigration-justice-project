@@ -4,26 +4,40 @@ import COLORS from '@/styles/colors';
 import { ComponentContainer, GroupContainer } from './styles';
 import { RadioInput, RadioLabel } from '../InterestForm/styles';
 
+interface DefaultRadioGroupProps {
+  name: string;
+  options: string[];
+  label?: string;
+  error?: string;
+  defaultValue?: string;
+  onChange?: (s: string) => void;
+}
+
+interface ControlledRadioGroupProps extends DefaultRadioGroupProps {
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+}
+
+interface UncontrolledRadioGroupProps extends DefaultRadioGroupProps {
+  value?: never;
+  setValue?: never;
+}
+
+type RadioGroupProps = ControlledRadioGroupProps | UncontrolledRadioGroupProps;
+
 export default function RadioGroup({
   value,
   name,
   setValue,
   options,
   label,
+  defaultValue,
   error = '',
   onChange,
-}: {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
-  onChange?: (s: string) => void;
-  name: string;
-  options: string[];
-  label?: string;
-  error?: string;
-}) {
+}: RadioGroupProps) {
   const handleChange = useCallback(
     (s: string) => {
-      setValue(s);
+      setValue?.(s);
       onChange?.(s);
     },
     [setValue, onChange],
@@ -40,7 +54,8 @@ export default function RadioGroup({
               id={o}
               name={name}
               value={value}
-              checked={value === o}
+              checked={value ? value === o : undefined}
+              defaultChecked={defaultValue === o}
               onChange={() => handleChange(o)}
             />
             {o}
