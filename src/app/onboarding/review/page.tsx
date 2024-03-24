@@ -4,13 +4,14 @@ import { H1Centered, H2, H4, P } from '@/styles/text';
 import { Card, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { formatTruthy, parseDate } from '@/utils/helpers';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import Icon from '@/components/Icon';
+import Link from 'next/link';
 import * as Styles from '../styles';
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(onboarding.progress - 1);
+  const { flowAt, backlinkHref } = useOnboardingNavigation();
 
   return (
     <Card>
@@ -21,8 +22,14 @@ export default function Page() {
 
         <H1Centered>Review & Submit</H1Centered>
 
+        {/* basic information section */}
         <Styles.SectionBox>
-          <H2>Basic Information</H2>
+          <Flex $justify="between" $align="center">
+            <H2>Basic Information</H2>
+            <Link href={flowAt(1)}>
+              <Icon type="edit" />
+            </Link>
+          </Flex>
           <Flex>
             <Styles.SectionField>
               <H4>First Name</H4>
@@ -65,9 +72,14 @@ export default function Page() {
           </Flex>
         </Styles.SectionBox>
 
+        {/* availability section */}
         <Styles.SectionBox>
-          <H2>Availability</H2>
-
+          <Flex $justify="between" $align="center">
+            <H2>Availability</H2>
+            <Link href={flowAt(2)}>
+              <Icon type="edit" />
+            </Link>
+          </Flex>
           <Flex>
             <Styles.SectionField>
               <H4>How much time do you have to commit per month?</H4>
@@ -95,11 +107,15 @@ export default function Page() {
           </Flex>
         </Styles.SectionBox>
 
-        {/* attorney details for attorneys */}
+        {/* legal information for attorneys */}
         {onboarding.roles.includes('ATTORNEY') && (
           <Styles.SectionBox>
-            <H2>Legal Experience</H2>
-
+            <Flex $justify="between" $align="center">
+              <H2>Legal Experience</H2>
+              <Link href={flowAt(3)}>
+                <Icon type="edit" />
+              </Link>
+            </Flex>
             <Flex>
               <Styles.SectionField>
                 <H4>Which state are you barred in?</H4>
@@ -131,11 +147,15 @@ export default function Page() {
           </Styles.SectionBox>
         )}
 
-        {/* attorney details for legal fellows */}
+        {/* legal experience for legal fellows */}
         {onboarding.roles.includes('LEGAL_FELLOW') && (
           <Styles.SectionBox>
-            <H2>Legal Experience</H2>
-
+            <Flex $justify="between" $align="center">
+              <H2>Legal Experience</H2>
+              <Link href={flowAt(3)}>
+                <Icon type="edit" />
+              </Link>
+            </Flex>
             <Flex>
               <Styles.SectionField>
                 <H4>When do you expect to be barred?</H4>

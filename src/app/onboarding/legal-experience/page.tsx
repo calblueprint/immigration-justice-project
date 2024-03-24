@@ -12,7 +12,7 @@ import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import BigDataDropdown from '@/components/BigDataDropdown';
 import { states } from '@/data/citiesAndStates';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useMemo } from 'react';
 import { formatTruthy } from '@/utils/helpers';
 import Icon from '@/components/Icon';
@@ -27,7 +27,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(2);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize form with data from onboarding context

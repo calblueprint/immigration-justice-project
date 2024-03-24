@@ -12,7 +12,7 @@ import { CardForm, Flex } from '@/styles/containers';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { languages } from '@/data/languages';
-import { useGuardedOnboarding, useSafeOnboardingLink } from '@/utils/hooks';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useRouter } from 'next/navigation';
 import Icon from '@/components/Icon';
 import * as Styles from '../styles';
@@ -54,7 +54,7 @@ const basicInformationSchema = z
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const backlinkHref = useSafeOnboardingLink(0);
+  const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize react hook form with current data from onboarding context

@@ -1,7 +1,7 @@
 'use client';
 
-import { useContext, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { OnboardingContext } from './OnboardingProvider';
 
 export const useGuardedOnboarding = () => {
@@ -24,9 +24,30 @@ export const useGuardedOnboarding = () => {
 // checks if flow has been set first
 // used to prevent error in the
 // edge case of clicking a link to onboarding (when flow is not set)
-export const useSafeOnboardingLink = (to: number) => {
+export const useOnboardingNavigation = () => {
   const onboarding = useGuardedOnboarding();
-  return onboarding.flow.length > 0
-    ? `/onboarding/${onboarding.flow[to].url}`
-    : '/onboarding/';
+  const pathname = usePathname();
+
+  const { flow } = onboarding;
+
+  const pageProgress = useMemo(
+    () => flow.findIndex(f => `/onboarding/${f.url}` === pathname),
+    [pathname, flow],
+  );
+
+  const flowAt = useCallback(
+    (at: number) => {
+      if (flow.length === 0 || at < 0 || at >= flow.length)
+        return '/onboarding/';
+      return `/onboarding/${flow[at].url}`;
+    },
+    [flow],
+  );
+
+  const backlinkHref = useMemo(
+    () => flowAt(pageProgress - 1),
+    [flowAt, pageProgress],
+  );
+
+  return { flowAt, backlinkHref, pageProgress };
 };
