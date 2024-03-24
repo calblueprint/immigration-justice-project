@@ -8,8 +8,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   color: ${COLORS.greyDarker};
   padding: 0.625rem;
   border-radius: 0.313rem; // 5px
-  border: 2px solid
-    ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyLight)};
+  border: 2px solid ${COLORS.greyLight};
   outline: none;
   width: 100%;
 
@@ -25,6 +24,9 @@ export const InputText = styled(P)<{ $error: boolean }>`
     border: 2px solid
       ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
   }
+
+  ${({ $error }) =>
+    $error ? `border-color: ${COLORS.redMid} !important` : null};
 `;
 
 export const InputLabel = styled(H4)`

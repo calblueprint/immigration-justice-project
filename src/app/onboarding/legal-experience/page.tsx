@@ -2,28 +2,23 @@
 
 import BigDataDropdown from '@/components/BigDataDropdown';
 import { BigButton, BigLinkButton } from '@/components/Button';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/Form';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import RadioGroup from '@/components/RadioGroup';
 import TextInput from '@/components/TextInput';
 import { states } from '@/data/citiesAndStates';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { boolToString } from '@/utils/helpers';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { formatTruthy } from '@/utils/helpers';
+import { useGuardedOnboarding } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormDiv } from '../styles';
 
+// zod schema to automate form validation
 const legalExperienceSchema = z.object({
   stateBarred: z.string({ required_error: 'Required' }),
   barNumber: z.string({ required_error: 'Must include attorney bar number' }),
@@ -31,20 +26,10 @@ const legalExperienceSchema = z.object({
 });
 
 export default function Page() {
-  const onboarding = useContext(OnboardingContext);
-  if (!onboarding)
-    throw new Error(
-      'Fatal: legal experience onboarding should be wrapped in the onboarding context',
-    );
-
-  const [barNum, setBarNum] = useState<string>(
-    onboarding.profile.bar_number ?? '',
-  );
-  const [registered, setRegistered] = useState<string>(
-    boolToString(onboarding.profile.eoir_registered, 'Yes', 'No'),
-  );
+  const onboarding = useGuardedOnboarding();
   const { push } = useRouter();
 
+  // initialize form with data from onboarding context
   const form = useForm<z.infer<typeof legalExperienceSchema>>({
     resolver: zodResolver(legalExperienceSchema),
     defaultValues: {
@@ -59,6 +44,14 @@ export default function Page() {
     push(`/onboarding/${onboarding.flow[4].url}`);
   };
 
+  const formValues = form.watch();
+  const isEmpty = useMemo(
+    () =>
+      !(formValues.stateBarred && formValues.barNumber) ||
+      formValues.eoirRegistered === undefined,
+    [formValues],
+  );
+
   return (
     <FormProvider {...form}>
       <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
@@ -67,12 +60,13 @@ export default function Page() {
         <FormField
           control={form.control}
           name="stateBarred"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Which state are you barred in?</FormLabel>
               <FormControl>
                 <BigDataDropdown
                   options={states}
+                  error={fieldState.error?.message}
                   onChange={newValue => {
                     field.onChange(newValue);
                     onboarding.updateProfile({
@@ -83,7 +77,6 @@ export default function Page() {
                   placeholder="Start typing to filter states..."
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -91,15 +84,15 @@ export default function Page() {
         <FormField
           control={form.control}
           name="barNumber"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>What is your attorney bar number?</FormLabel>
               <FormControl>
                 <TextInput
+                  errorText={fieldState.error?.message}
                   placeholder="123456"
                   type="text"
-                  value={barNum}
-                  setValue={setBarNum}
+                  defaultValue={field.value}
                   onChange={newValue => {
                     onboarding.updateProfile({
                       bar_number: newValue,
@@ -108,7 +101,6 @@ export default function Page() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -116,7 +108,7 @@ export default function Page() {
         <FormField
           control={form.control}
           name="eoirRegistered"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>
                 Are you registered by the Executive Office of Immigration
@@ -125,10 +117,14 @@ export default function Page() {
               <FormControl>
                 <RadioGroup
                   name="registered"
-                  value={registered}
-                  setValue={setRegistered}
+                  defaultValue={formatTruthy(
+                    field.value,
+                    'Yes',
+                    'No',
+                    undefined,
+                  )}
                   options={['Yes', 'No']}
-                  error=""
+                  error={fieldState.error?.message}
                   onChange={newValue => {
                     const bool = newValue === 'Yes';
                     onboarding.updateProfile({ eoir_registered: bool });
@@ -136,18 +132,19 @@ export default function Page() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
         <Flex $gap="40px">
-          <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
-            Back
-          </BigLinkButton>
+          {onboarding.flow.length > 0 && (
+            <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
+              Back
+            </BigLinkButton>
+          )}
           <BigButton
             type="submit"
-            disabled={!form.formState.isValid}
+            disabled={isEmpty}
             $primaryColor={COLORS.blueMid}
             $secondaryColor={COLORS.blueDark}
             $tertiaryColor={COLORS.blueDarker}

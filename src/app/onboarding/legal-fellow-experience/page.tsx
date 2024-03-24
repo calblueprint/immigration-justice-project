@@ -1,27 +1,22 @@
 'use client';
 
-import { useContext, useState } from 'react';
 import { H1Centered } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
 import RadioGroup from '@/components/RadioGroup';
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/Form';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { Flex } from '@/styles/containers';
 import { BigButton, BigLinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
 import { useRouter } from 'next/navigation';
-import { boolToString, getCurrentDate, parseDateAlt } from '@/utils/helpers';
+import { useGuardedOnboarding } from '@/utils/hooks';
+import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
+import { useMemo, useState } from 'react';
 import { FormDiv } from '../styles';
 
+// zod schema to automate form validation
 const legalExperienceSchema = z.object({
   expectedBarDate: z
     .date({ required_error: 'Must include expected barred date' })
@@ -30,20 +25,14 @@ const legalExperienceSchema = z.object({
 });
 
 export default function Page() {
-  const onboarding = useContext(OnboardingContext);
-  if (!onboarding)
-    throw new Error(
-      'Fatal: legal experience onboarding should be wrapped in the onboarding context',
-    );
+  const onboarding = useGuardedOnboarding();
+  const { push } = useRouter();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
     onboarding.profile.expected_bar_date ?? '',
   );
-  const [registered, setRegistered] = useState<string>(
-    boolToString(onboarding.profile.eoir_registered, 'Yes', 'No'),
-  );
-  const { push } = useRouter();
 
+  // initialize form with values from onboarding context
   const form = useForm<z.infer<typeof legalExperienceSchema>>({
     resolver: zodResolver(legalExperienceSchema),
     defaultValues: {
@@ -54,36 +43,53 @@ export default function Page() {
     },
   });
 
-  const onSubmit = () => {
+  const onValidSubmit = () => {
     onboarding.setProgress(4);
     push(`/onboarding/${onboarding.flow[4].url}`);
   };
 
+  const formValues = form.watch();
+  const isEmpty = useMemo(
+    () =>
+      formValues.expectedBarDate === undefined ||
+      formValues.eoirRegistered === undefined,
+    [formValues],
+  );
+
   return (
     <FormProvider {...form}>
-      <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
+      {/* noValidate to prevent default HTML invalid input pop-up */}
+      <FormDiv onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
         <H1Centered>Legal Experience</H1Centered>
 
         <FormField
           control={form.control}
           name="expectedBarDate"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>When are you expected to be barred?</FormLabel>
               <FormControl>
                 <DateInput
+                  error={fieldState.error?.message}
+                  min={parseDateAlt(getCurrentDate())}
                   value={expectedBarDate}
-                  min={parseDateAlt(new Date())}
                   setValue={setExpectedBarDate}
                   onChange={newValue => {
+                    // turn "" into undefined (cannot be parsed to date)
+                    if (!newValue) {
+                      field.onChange(undefined);
+                      onboarding.updateProfile({
+                        expected_bar_date: undefined,
+                      });
+                      return;
+                    }
                     field.onChange(new Date(`${newValue}T00:00`));
                     onboarding.updateProfile({
-                      start_date: newValue,
+                      expected_bar_date: newValue,
                     });
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -91,7 +97,7 @@ export default function Page() {
         <FormField
           control={form.control}
           name="eoirRegistered"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>
                 Are you registered by the Executive Office of Immigration
@@ -100,10 +106,14 @@ export default function Page() {
               <FormControl>
                 <RadioGroup
                   name="registered"
-                  value={registered}
-                  setValue={setRegistered}
+                  defaultValue={formatTruthy(
+                    field.value,
+                    'Yes',
+                    'No',
+                    undefined,
+                  )}
                   options={['Yes', 'No']}
-                  error=""
+                  error={fieldState.error ? undefined : ''}
                   onChange={newValue => {
                     const bool = newValue === 'Yes';
                     onboarding.updateProfile({ eoir_registered: bool });
@@ -111,18 +121,19 @@ export default function Page() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
         <Flex $gap="40px">
-          <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
-            Back
-          </BigLinkButton>
+          {onboarding.flow.length > 0 && (
+            <BigLinkButton href={`/onboarding/${onboarding.flow[2].url}`}>
+              Back
+            </BigLinkButton>
+          )}
           <BigButton
             type="submit"
-            disabled={!form.formState.isValid}
+            disabled={isEmpty}
             $primaryColor={COLORS.blueMid}
             $secondaryColor={COLORS.blueDark}
             $tertiaryColor={COLORS.blueDarker}

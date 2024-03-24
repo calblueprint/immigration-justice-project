@@ -108,7 +108,7 @@ export default function Page() {
           name="roles"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>What role(s) would you like to add?</FormLabel>
+              <FormLabel>What role(s) would you like to hold?</FormLabel>
               <FormControl>
                 <InputDropdown
                   error={!!fieldState.error}

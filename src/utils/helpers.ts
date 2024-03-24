@@ -101,13 +101,26 @@ export const getCurrentDate = () => {
   return new Date(`${nowDate}T00:00`);
 };
 
-// parse bool to string, with optional undefined parameter
-export const boolToString = (
-  bool?: boolean,
-  trueMessage?: string,
-  falseMessage?: string,
-  nullMessage?: string,
+// parse value to three strings depending on truthy, falsy, and nullish
+export const formatTruthy = <
+  T extends string | undefined,
+  F extends string | undefined,
+  N extends string | undefined,
+>(
+  obj: unknown,
+  truthyMessage: T,
+  falsyMessage: F,
+  nullishMessage: N,
 ) => {
-  if (bool === undefined) return nullMessage ?? '';
-  return (bool ? trueMessage : falseMessage) ?? '';
+  if (obj === null || obj === undefined) return nullishMessage;
+  return obj ? truthyMessage : falsyMessage;
+};
+
+// count number of truthy values
+export const countTruthy = (arr: unknown[]) => {
+  let sum = 0;
+  arr.forEach(val => {
+    sum += !val ? 0 : 1;
+  });
+  return sum;
 };

@@ -2,55 +2,47 @@
 
 import { BigButton, BigLinkButton } from '@/components/Button';
 import DateInput from '@/components/DateInput';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/Form';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { useGuardedOnboarding } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormDiv } from '../styles';
 
+// define form schema to automate form validation
 const availabilitySchema = z.object({
   hoursPerMonth: z
-    .number()
+    .number({
+      required_error:
+        'Please include your estimated availability in hours per month',
+    })
     .nonnegative({ message: 'This value must be nonnegative' }),
   startDate: z
-    .date()
+    .date({
+      required_error:
+        'Please include your estimated starting date of availability',
+    })
     .min(getCurrentDate(), { message: 'Must select a current or future date' }),
   availability: z.string().optional(),
 });
 
 export default function Page() {
-  const onboarding = useContext(OnboardingContext);
-  if (!onboarding)
-    throw new Error(
-      'Fatal: availability onboarding should be wrapped in the onboarding context',
-    );
+  const onboarding = useGuardedOnboarding();
+  const { push } = useRouter();
 
-  const [hours, setHours] = useState<string>(
-    onboarding.profile.hours_per_month?.toString() ?? '',
-  );
   const [startDate, setStartDate] = useState<string>(
     onboarding.profile.start_date ?? '',
   );
-  const [periods, setPeriods] = useState<string>(
-    onboarding.profile.availability_description ?? '',
-  );
-  const { push } = useRouter();
 
+  // initialize react-hook-form with default values from onboarding context
   const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
     defaultValues: {
@@ -62,31 +54,53 @@ export default function Page() {
     },
   });
 
-  const onSubmit = () => {
+  // handle valid form submission
+  // validity should have already been handled by Zod
+  const onValidSubmit = () => {
     onboarding.setProgress(3);
     push(`/onboarding/${onboarding.flow[3].url}`);
   };
 
+  // used to determine whether to disable the continue button
+  const formValues = form.watch();
+  const isEmpty = useMemo(
+    () =>
+      formValues.hoursPerMonth === undefined ||
+      formValues.startDate === undefined,
+    [formValues],
+  );
+
   return (
     <FormProvider {...form}>
-      <FormDiv onSubmit={form.handleSubmit(onSubmit)}>
+      {/* noValidate to prevent default HTML invalid input pop-up */}
+      <FormDiv onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
         <H1Centered>Availability</H1Centered>
 
         <FormField
           control={form.control}
           name="hoursPerMonth"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>
                 How much time do you have to commit per month?
               </FormLabel>
               <FormControl>
                 <TextInput
+                  errorText={fieldState.error?.message}
                   placeholder="hours/month"
-                  value={hours}
-                  setValue={setHours}
                   inputMode="numeric"
+                  defaultValue={
+                    field.value !== undefined ? field.value.toString() : ''
+                  }
                   onChange={newValue => {
+                    if (!newValue) {
+                      field.onChange(undefined);
+                      onboarding.updateProfile({
+                        hours_per_month: undefined,
+                      });
+                      return;
+                    }
+
                     const toNum = z.coerce.number().safeParse(newValue);
                     const num = toNum.success ? toNum.data : undefined;
 
@@ -97,7 +111,6 @@ export default function Page() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -105,17 +118,25 @@ export default function Page() {
         <FormField
           control={form.control}
           name="startDate"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>
                 What is the earliest you are available to volunteer?
               </FormLabel>
               <FormControl>
                 <DateInput
+                  error={fieldState.error?.message}
+                  min={parseDateAlt(getCurrentDate())}
                   value={startDate}
-                  min={parseDateAlt(new Date())}
                   setValue={setStartDate}
                   onChange={newValue => {
+                    if (!newValue) {
+                      field.onChange(undefined);
+                      onboarding.updateProfile({
+                        start_date: undefined,
+                      });
+                      return;
+                    }
                     field.onChange(new Date(`${newValue}T00:00`));
                     onboarding.updateProfile({
                       start_date: newValue,
@@ -123,7 +144,6 @@ export default function Page() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -131,7 +151,7 @@ export default function Page() {
         <FormField
           control={form.control}
           name="availability"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel $required={false}>
                 Are there specific time periods you will not be available?
@@ -140,8 +160,8 @@ export default function Page() {
               <FormControl>
                 <TextAreaInput
                   placeholder="I won't be available from..."
-                  value={periods}
-                  setValue={setPeriods}
+                  defaultValue={field.value}
+                  error={fieldState.error?.message}
                   onChange={newValue => {
                     onboarding.updateProfile({
                       availability_description: newValue,
@@ -155,12 +175,14 @@ export default function Page() {
         />
 
         <Flex $gap="40px">
-          <BigLinkButton href={`/onboarding/${onboarding.flow[1].url}`}>
-            Back
-          </BigLinkButton>
+          {onboarding.flow.length > 0 && (
+            <BigLinkButton href={`/onboarding/${onboarding.flow[1].url}`}>
+              Back
+            </BigLinkButton>
+          )}
           <BigButton
             type="submit"
-            disabled={!form.formState.isValid}
+            disabled={isEmpty}
             $primaryColor={COLORS.blueMid}
             $secondaryColor={COLORS.blueDark}
             $tertiaryColor={COLORS.blueDarker}

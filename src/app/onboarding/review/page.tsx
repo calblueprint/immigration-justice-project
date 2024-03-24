@@ -1,20 +1,15 @@
 'use client';
 
 import { H1Centered, H2, H4, P } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { useContext } from 'react';
 import { Flex } from '@/styles/containers';
 import { BigButton, BigLinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
-import { boolToString, parseDate } from '@/utils/helpers';
+import { formatTruthy, parseDate } from '@/utils/helpers';
+import { useGuardedOnboarding } from '@/utils/hooks';
 import * as Styles from '../styles';
 
 export default function Page() {
-  const onboarding = useContext(OnboardingContext);
-  if (!onboarding)
-    throw new Error(
-      'Fatal: onboarding review should be wrapped in the onboarding context',
-    );
+  const onboarding = useGuardedOnboarding();
 
   return (
     <Styles.NormalFormDiv>
@@ -98,7 +93,7 @@ export default function Page() {
         {/* attorney details for attorneys */}
         {onboarding.roles.includes('ATTORNEY') && (
           <Styles.SectionBox>
-            <H2>Attorney Details</H2>
+            <H2>Legal Experience</H2>
 
             <Flex>
               <Styles.SectionField>
@@ -119,7 +114,7 @@ export default function Page() {
                   Review?
                 </H4>
                 <P>
-                  {boolToString(
+                  {formatTruthy(
                     onboarding.profile.eoir_registered,
                     'Yes',
                     'No',
@@ -134,7 +129,7 @@ export default function Page() {
         {/* attorney details for legal fellows */}
         {onboarding.roles.includes('LEGAL_FELLOW') && (
           <Styles.SectionBox>
-            <H2>Attorney Details</H2>
+            <H2>Legal Experience</H2>
 
             <Flex>
               <Styles.SectionField>
@@ -153,7 +148,7 @@ export default function Page() {
                   Review?
                 </H4>
                 <P>
-                  {boolToString(
+                  {formatTruthy(
                     onboarding.profile.eoir_registered,
                     'Yes',
                     'No',
@@ -167,11 +162,13 @@ export default function Page() {
       </Flex>
 
       <Flex $gap="40px">
-        <BigLinkButton
-          href={`/onboarding/${onboarding.flow[onboarding.progress - 1].url}`}
-        >
-          Back
-        </BigLinkButton>
+        {onboarding.flow.length > 0 && (
+          <BigLinkButton
+            href={`/onboarding/${onboarding.flow[onboarding.progress - 1].url}`}
+          >
+            Back
+          </BigLinkButton>
+        )}
         <BigButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}

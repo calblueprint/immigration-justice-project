@@ -21,9 +21,9 @@ export default function OnboardingManager({
   const { push } = useRouter();
   const pathname = usePathname();
 
-  if (!onboarding)
+  if (!onboarding || !profile)
     throw new Error(
-      'Fatal: onboarding manager should be wrapped inside onboarding context',
+      'Fatal: onboarding manager should be wrapped inside onboarding context and profile context',
     );
 
   if (!profile)
@@ -48,10 +48,9 @@ export default function OnboardingManager({
   useEffect(() => {
     // out of bounds redirect
     if (
-      onboardingProgress < 0 ||
-      onboardingProgress >= onboardingFlow.length ||
-      !userId ||
-      (profileReady && profileData)
+      (onboardingFlow.length !== 0 &&
+        onboardingProgress >= onboardingFlow.length) ||
+      (profileReady && (profileData || !userId))
     ) {
       push(CONFIG.homepage);
       return;
