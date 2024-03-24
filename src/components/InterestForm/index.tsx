@@ -8,7 +8,7 @@ import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import DateInput from '../DateInput';
-import Button from '../Button';
+import { Button } from '../Buttons';
 import {
   FormContainer,
   FormTextArea,

@@ -10,8 +10,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Flex } from '@/styles/containers';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
-import { BigButton, BigLinkButton } from '@/components/Button';
-import COLORS from '@/styles/colors';
+import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { languages } from '@/data/languages';
 import { useGuardedOnboarding } from '@/utils/hooks';
 import { useRouter } from 'next/navigation';
@@ -260,15 +259,9 @@ export default function Page() {
               Back
             </BigLinkButton>
           )}
-          <BigButton
-            type="submit"
-            disabled={isEmpty}
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-            $tertiaryColor={COLORS.blueDarker}
-          >
+          <BigBlueButton type="submit" disabled={isEmpty}>
             Continue
-          </BigButton>
+          </BigBlueButton>
         </Flex>
       </FormDiv>
     </FormProvider>

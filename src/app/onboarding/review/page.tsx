@@ -2,8 +2,7 @@
 
 import { H1Centered, H2, H4, P } from '@/styles/text';
 import { Flex } from '@/styles/containers';
-import { BigButton, BigLinkButton } from '@/components/Button';
-import COLORS from '@/styles/colors';
+import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { formatTruthy, parseDate } from '@/utils/helpers';
 import { useGuardedOnboarding } from '@/utils/hooks';
 import * as Styles from '../styles';
@@ -169,13 +168,7 @@ export default function Page() {
             Back
           </BigLinkButton>
         )}
-        <BigButton
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          $tertiaryColor={COLORS.blueDarker}
-        >
-          Submit
-        </BigButton>
+        <BigBlueButton>Submit</BigBlueButton>
       </Flex>
     </Styles.NormalFormDiv>
   );

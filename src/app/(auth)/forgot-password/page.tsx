@@ -7,8 +7,7 @@ import { H1, H2, H4, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { SpacerDiv, HorizontalDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
-import Button from '@/components/Button';
+import { Button, BigBlueButton } from '@/components/Buttons';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -41,9 +40,9 @@ export default function ForgotPassword() {
             value={email}
             setValue={setEmail}
           />
-          <BigButton type="button" onClick={sendPasswordResetLink}>
+          <BigBlueButton type="button" onClick={sendPasswordResetLink}>
             <H4 $color="white">Send link to email</H4>
-          </BigButton>
+          </BigBlueButton>
         </>
       )}
       {emailSentCount > 0 && (

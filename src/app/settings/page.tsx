@@ -10,7 +10,7 @@ import React, {
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
-import Button, { LinkButton } from '@/components/Button';
+import { Button, LinkButton } from '@/components/Buttons';
 import COLORS from '@/styles/colors';
 import { cities } from '@/data/citiesAndStates';
 import { languages } from '@/data/languages';

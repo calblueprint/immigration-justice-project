@@ -8,8 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { Flex } from '@/styles/containers';
-import { BigButton, BigLinkButton } from '@/components/Button';
-import COLORS from '@/styles/colors';
+import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import BigDataDropdown from '@/components/BigDataDropdown';
 import { states } from '@/data/citiesAndStates';
 import { useRouter } from 'next/navigation';
@@ -142,15 +141,9 @@ export default function Page() {
               Back
             </BigLinkButton>
           )}
-          <BigButton
-            type="submit"
-            disabled={isEmpty}
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-            $tertiaryColor={COLORS.blueDarker}
-          >
+          <BigBlueButton type="submit" disabled={isEmpty}>
             Continue
-          </BigButton>
+          </BigBlueButton>
         </Flex>
       </FormDiv>
     </FormProvider>

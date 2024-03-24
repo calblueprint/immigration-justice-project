@@ -7,7 +7,7 @@ import {
   SubSectionData,
 } from '@/types/settingsSection';
 import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
-import Button from '../Button';
+import { Button } from '../Buttons';
 import SectionPartial from './SectionPartial';
 
 interface SettingsSectionProps {

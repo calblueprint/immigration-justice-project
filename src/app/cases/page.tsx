@@ -9,7 +9,7 @@ import CaseDetails from '@/components/CaseDetails';
 import { H1, H2, CenteredH3 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
-import { LinkButton } from '@/components/Button';
+import { LinkButton } from '@/components/Buttons';
 import COLORS from '@/styles/colors';
 import FilterDropdown from '@/components/FilterDropdown';
 import { parseAgency } from '@/utils/helpers';
