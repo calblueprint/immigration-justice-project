@@ -17,9 +17,6 @@ import { useRouter } from 'next/navigation';
 import Icon from '@/components/Icon';
 import * as Styles from '../styles';
 
-// TODO: update big data dropdown to use async loadOptions
-// to run more resource-intensive search/filter computations on the sever side
-
 // define form schema using Zod to automate form validation
 const basicInformationSchema = z
   .object({
