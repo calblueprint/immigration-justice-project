@@ -6,7 +6,7 @@ import { CenteringDiv, Flex, SmallCard } from '@/styles/containers';
 import { H2Centered } from '@/styles/text';
 import Link from 'next/link';
 import CONFIG from '@/lib/configs';
-import IJPLogo from '@/assets/images/ijp_logo_blue.webp';
+import IJPLogo from '../../../public/images/ijp_logo_blue.webp';
 import { LogoImage, OuterDiv } from '../onboarding/styles';
 
 export default function Page() {
