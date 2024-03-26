@@ -58,8 +58,8 @@ export default function Page() {
   // handle valid form submission
   // validity should have already been handled by Zod
   const onValidSubmit = () => {
-    onboarding.setProgress(3);
     push(`/onboarding/${onboarding.flow[3].url}`);
+    // onboarding.setProgress(3);
   };
 
   // used to determine whether to disable the continue button

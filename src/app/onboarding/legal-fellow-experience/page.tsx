@@ -45,8 +45,8 @@ export default function Page() {
   });
 
   const onValidSubmit = () => {
-    onboarding.setProgress(4);
     push(`/onboarding/${onboarding.flow[4].url}`);
+    // onboarding.setProgress(4);
   };
 
   const formValues = form.watch();

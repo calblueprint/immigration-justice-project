@@ -86,8 +86,8 @@ export default function Page() {
   // handle valid form submission
   // - validity should be handled by Zod
   const onSubmit = () => {
-    onboarding.setProgress(2);
     push(`/onboarding/${onboarding.flow[2].url}`);
+    // onboarding.setProgress(2);
   };
 
   return (

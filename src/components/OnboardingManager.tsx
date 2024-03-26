@@ -33,22 +33,32 @@ export default function OnboardingManager({
       'Fatal: onboarding manager should be wrapped inside auth context',
     );
 
-  const { flow: onboardingFlow, progress: onboardingProgress } = onboarding;
+  const {
+    flow: onboardingFlow,
+    progress: onboardingProgress,
+    setProgress,
+  } = onboarding;
   const { profileReady, profileData } = profile;
   const { userId } = auth;
 
   useEffect(() => {
-    // out of bounds redirect
     if (
+      // edge case (realistically shouldn't happen)
+      onboardingProgress < 0 ||
+      // progress beyond length of flow
       (onboardingFlow.length !== 0 &&
         onboardingProgress >= onboardingFlow.length) ||
+      // already onboarded or not signed in
       (profileReady && (profileData || !userId))
     ) {
       push(CONFIG.homepage);
       return;
     }
 
-    if (pageProgress > onboardingProgress)
+    // advance progress if exactly 1 more
+    if (pageProgress === onboardingProgress + 1) setProgress(pageProgress);
+    // otherwise, rebound to current progress
+    else if (pageProgress > onboardingProgress)
       push(`/onboarding/${onboardingFlow[onboardingProgress].url}`);
   }, [
     onboardingProgress,
@@ -58,6 +68,7 @@ export default function OnboardingManager({
     push,
     pageProgress,
     userId,
+    setProgress,
   ]);
 
   const goToHomepage = () => {

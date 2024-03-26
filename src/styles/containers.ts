@@ -120,3 +120,15 @@ export const CardForm = styled.form`
 export const SmallCardForm = styled(CardForm)`
   width: min(624px, 90%);
 `;
+
+export const SmallCard = styled(Card)`
+  width: min(624px, 90%);
+`;
+
+export const CenteringDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  flex-grow: 1;
+`;
