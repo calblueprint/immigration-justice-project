@@ -67,8 +67,7 @@ export default function OnboardingProvider({
 
     const flushData = async () => {
       if (!profileCtx) throw new Error('Fatal: No profile context provided!');
-      if (profileCtx.userId === undefined)
-        throw new Error('Fatal: User is not logged in!');
+      if (!profileCtx.userId) throw new Error('Fatal: User is not logged in!');
 
       const uid: UUID = profileCtx.userId;
 
@@ -119,7 +118,7 @@ export default function OnboardingProvider({
         eoir_registered: profile.eoir_registered,
         user_id: uid,
         // TODO: update to get phone number
-        phone_number: '000-000-0000',
+        phone_number: profile.phone_number,
       };
 
       const userLangs = new Set(

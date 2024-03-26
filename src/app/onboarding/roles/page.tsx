@@ -83,7 +83,6 @@ export default function Page() {
 
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);
-    // onboarding.setProgress(1);
   };
 
   const form = useForm<z.infer<typeof roleSchema>>({
@@ -121,6 +120,7 @@ export default function Page() {
           )}
         />
 
+        {/* TODO: could consider using async button to display loading state */}
         <BigBlueButton type="submit" disabled={!form.formState.isValid}>
           Continue
         </BigBlueButton>
