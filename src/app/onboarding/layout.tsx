@@ -1,5 +1,3 @@
-'use client';
-
 import OnboardingProvider from '@/utils/OnboardingProvider';
 import { ReactNode } from 'react';
 import OnboardingManager from '@/components/OnboardingManager';

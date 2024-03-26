@@ -12,7 +12,7 @@ import { CaseListing } from '@/types/schema';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
-import { LinkButton } from '../Button';
+import { LinkButton } from '../Buttons';
 import {
   CaseInterestContainer,
   CaseDisplay,

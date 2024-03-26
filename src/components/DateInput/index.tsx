@@ -1,16 +1,18 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputLabel, ErrorText, InputDiv, InputDate } from './styles';
 
-type DateInputProps = {
-  label: string;
+interface DateInputProps {
+  label?: string;
   error?: string;
   name?: string;
-  value: string;
   id?: string;
   min?: string | number;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string;
+  // TODO: refactor away from set value to use onChange instead
+  setValue?: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
-};
+  required?: boolean;
+}
 
 export default function DateInput({
   label,
@@ -20,11 +22,12 @@ export default function DateInput({
   setValue,
   id,
   min,
+  required = true,
   onChange,
 }: DateInputProps) {
   const handleChange = useCallback(
     (val: string) => {
-      setValue(val);
+      setValue?.(val);
       onChange?.(val);
     },
     [onChange, setValue],
@@ -32,21 +35,24 @@ export default function DateInput({
 
   return (
     <InputDiv>
-      <InputLabel as="label" htmlFor={id}>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel as="label" htmlFor={id}>
+          {label}
+        </InputLabel>
+      )}
       <InputDate
         id={id}
-        required
+        required={required}
         type="date"
-        $error={error}
+        $error={error !== ''}
         $filled={value !== ''}
         name={name}
         value={value}
+        pattern=".*\s*"
         min={min}
         onChange={e => handleChange(e.target.value)}
       />
-      {error !== '' && <ErrorText>{error}</ErrorText>}
+      {error && <ErrorText>{error}</ErrorText>}
     </InputDiv>
   );
 }

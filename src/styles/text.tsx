@@ -14,12 +14,20 @@ export const H1 = styled.h1<{ $color?: string }>`
   margin: 0;
 `;
 
+export const H1Centered = styled(H1)`
+  text-align: center;
+`;
+
 export const H2 = styled.h2<{ $color?: string }>`
   ${openSans.style}
   font-size: 2.25rem;
   font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
+`;
+
+export const H2Centered = styled(H2)`
+  text-align: center;
 `;
 
 export const H3 = styled.h3<{ $color?: string }>`

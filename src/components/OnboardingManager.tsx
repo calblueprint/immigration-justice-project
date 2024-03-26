@@ -1,14 +1,14 @@
 'use client';
 
-import { FormDiv, OuterDiv, FormContainer } from '@/app/onboarding/styles';
-import { BackLink, H4 } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { usePathname, useRouter } from 'next/navigation';
-import { ReactNode, useContext, useEffect, useMemo } from 'react';
+import { OuterDiv, FormContainer, LogoImage } from '@/app/onboarding/styles';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useContext, useEffect } from 'react';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import CONFIG from '@/lib/configs';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import IJPLogoBlue from '../../public/images/ijp_logo_blue.webp';
 import ProgressBar from './ProgressBar';
-import BigButton from './BigButton';
+import { UnstyledButton } from './Buttons';
 
 export default function OnboardingManager({
   children,
@@ -16,97 +16,70 @@ export default function OnboardingManager({
   children: ReactNode;
 }) {
   const profile = useContext(ProfileContext);
-  const onboarding = useContext(OnboardingContext);
-  const router = useRouter();
-  const pathname = usePathname();
-  const pageProgress = useMemo(() => {
-    if (!onboarding) return -1;
-    const find = onboarding.flow.findIndex(
-      f => `/onboarding/${f.url}` === pathname,
+  if (!profile)
+    throw new Error(
+      'Fatal: onboarding manager should be wrapped inside onboarding context and profile context',
     );
-    return find;
-  }, [pathname, onboarding]);
+
+  const onboarding = useGuardedOnboarding();
+  const { pageProgress } = useOnboardingNavigation();
+  const { push } = useRouter();
+
+  const {
+    flow: onboardingFlow,
+    progress: onboardingProgress,
+    setProgress,
+  } = onboarding;
 
   useEffect(() => {
-    if (!onboarding) return;
-
-    // out of bounds redirect
     if (
-      onboarding.progress < 0 ||
-      onboarding.progress >= onboarding.flow.length ||
-      !profile?.userId ||
-      (profile?.profileReady && profile?.profileData)
+      // edge case (realistically shouldn't happen)
+      onboardingProgress < 0 ||
+      // progress beyond length of flow
+      (onboardingFlow.length !== 0 &&
+        onboardingProgress >= onboardingFlow.length) ||
+      // already onboarded or not signed in
+      (profile.profileReady && (profile.profileData || !profile.userId))
     ) {
-      router.push(CONFIG.homepage);
+      push(CONFIG.homepage);
       return;
     }
 
-    if (pageProgress > onboarding.progress)
-      router.push(`/onboarding/${onboarding.flow[onboarding.progress].url}`);
-  }, [onboarding, profile, router, pageProgress]);
+    // advance progress if exactly 1 more
+    if (pageProgress === onboardingProgress + 1) setProgress(pageProgress);
+    // otherwise, rebound to current progress
+    else if (pageProgress > onboardingProgress)
+      push(`/onboarding/${onboardingFlow[onboardingProgress].url}`);
+  }, [
+    onboardingProgress,
+    onboardingFlow,
+    profile,
+    push,
+    pageProgress,
+    setProgress,
+  ]);
 
-  const advanceProgress = () => {
-    // safeguard
-    if (!onboarding) return;
-    if (pageProgress > onboarding.progress) return;
-
-    const newProgress = pageProgress + 1;
-
-    if (
-      newProgress > onboarding.progress &&
-      onboarding.progress < onboarding.flow.length - 1
-    ) {
-      onboarding.setCanContinue(false);
-      onboarding.setProgress(newProgress);
-    }
-
-    if (newProgress >= onboarding.flow.length) {
-      onboarding.flushData().then(() => {
-        router.push(CONFIG.homepage);
-      });
-    } else {
-      router.push(`/onboarding/${onboarding.flow[newProgress].url}`);
-    }
+  const goToHomepage = () => {
+    // TODO: add form dirty bool to context to conditionally show dialog
+    // eslint-disable-next-line no-alert
+    const ans = window.confirm(
+      'Are you sure you want to continue? Your changes will not be saved after you leave.',
+    );
+    if (ans) push(CONFIG.homepage);
   };
 
   return (
-    <>
-      <BackLink
-        href={
-          onboarding && pageProgress > 0
-            ? `/onboarding/${onboarding.flow[pageProgress - 1].url}`
-            : CONFIG.homepage
-        }
-      >
-        Back
-      </BackLink>
-      <OuterDiv>
-        <ProgressBar
-          steps={
-            new Set(onboarding ? onboarding.flow.slice(1).map(f => f.name) : [])
-          }
-          progress={pageProgress}
+    <OuterDiv>
+      <UnstyledButton onClick={goToHomepage}>
+        <LogoImage
+          $show={pageProgress !== 0}
+          width="205"
+          src={IJPLogoBlue}
+          alt="IJP Logo"
         />
-        <FormContainer>
-          <FormDiv>
-            {children}
-            <BigButton
-              disabled={
-                onboarding &&
-                pageProgress >= onboarding.progress &&
-                !onboarding.canContinue
-              }
-              onClick={() => advanceProgress()}
-            >
-              <H4 $color="white">
-                {onboarding && pageProgress === onboarding.flow.length - 1
-                  ? 'Continue to Available Cases'
-                  : 'Continue'}
-              </H4>
-            </BigButton>
-          </FormDiv>
-        </FormContainer>
-      </OuterDiv>
-    </>
+      </UnstyledButton>
+      <ProgressBar steps={onboarding.flow.slice(1)} progress={pageProgress} />
+      <FormContainer>{children}</FormContainer>
+    </OuterDiv>
   );
 }

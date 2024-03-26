@@ -16,18 +16,14 @@ import {
   useContext,
 } from 'react';
 import { UUID } from 'crypto';
+import { FlowData } from '@/types/misc';
 import { ProfileContext } from './ProfileProvider';
-
-interface FlowData {
-  url: string;
-  name: string;
-}
 
 interface OnboardingContextType {
   profile: Partial<Profile>;
-  canReads: Set<string>;
-  canSpeaks: Set<string>;
-  roles: Set<RoleEnum>;
+  canReads: string[];
+  canSpeaks: string[];
+  roles: RoleEnum[];
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
@@ -36,9 +32,9 @@ interface OnboardingContextType {
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
-  setCanReads: Dispatch<SetStateAction<Set<string>>>;
-  setCanSpeaks: Dispatch<SetStateAction<Set<string>>>;
-  setRoles: Dispatch<SetStateAction<Set<RoleEnum>>>;
+  setCanReads: Dispatch<SetStateAction<string[]>>;
+  setCanSpeaks: Dispatch<SetStateAction<string[]>>;
+  setRoles: Dispatch<SetStateAction<RoleEnum[]>>;
 }
 
 export const OnboardingContext = createContext<
@@ -52,17 +48,11 @@ export default function OnboardingProvider({
 }) {
   const profileCtx = useContext(ProfileContext);
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([
-    { name: 'Roles', url: 'roles' },
-    { name: 'Basic Info', url: 'basic-information' },
-    { name: 'Availability', url: 'availability' },
-    { name: 'Legal Experience', url: 'legal-experience' },
-    { name: 'Done', url: 'done' },
-  ]);
+  const [flow, setFlow] = useState<FlowData[]>([]);
   const [profile, setProfile] = useState<Partial<Profile>>({});
-  const [canReads, setCanReads] = useState<Set<string>>(new Set());
-  const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
-  const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
+  const [canReads, setCanReads] = useState<string[]>([]);
+  const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
+  const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
 
   const providerValue = useMemo(() => {
@@ -77,8 +67,7 @@ export default function OnboardingProvider({
 
     const flushData = async () => {
       if (!profileCtx) throw new Error('Fatal: No profile context provided!');
-      if (profileCtx.userId === undefined)
-        throw new Error('Fatal: User is not logged in!');
+      if (!profileCtx.userId) throw new Error('Fatal: User is not logged in!');
 
       const uid: UUID = profileCtx.userId;
 
@@ -99,10 +88,10 @@ export default function OnboardingProvider({
       if (!profile.start_date)
         throw new Error('Error flushing data: profile missing start date!');
 
-      if (roles.size === 0)
+      if (roles.length === 0)
         throw new Error('Error flushing data: roles data is empty!');
 
-      if (roles.has('ATTORNEY')) {
+      if (roles.includes('ATTORNEY')) {
         if (!profile.bar_number)
           throw new Error(
             'Error flushing data: attorney profile missing bar number!',
@@ -114,15 +103,8 @@ export default function OnboardingProvider({
           );
       }
 
-      if (canReads.size === 0)
-        throw new Error(
-          'Error flushing data: can read languages data is empty!',
-        );
-
-      if (canSpeaks.size === 0)
-        throw new Error(
-          'Error flushing data: can write languages data is empty!',
-        );
+      if (canReads.length + canSpeaks.length === 0)
+        throw new Error('Error flushing data: no languages entered!');
 
       // format data
       const profileToInsert: Profile = {
@@ -135,8 +117,7 @@ export default function OnboardingProvider({
         bar_number: profile.bar_number,
         eoir_registered: profile.eoir_registered,
         user_id: uid,
-        // TODO: update to get phone number
-        phone_number: '000-000-0000',
+        phone_number: profile.phone_number,
       };
 
       const userLangs = new Set(
@@ -144,8 +125,8 @@ export default function OnboardingProvider({
       );
       const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
         user_id: uid,
-        can_read: canReads.has(l),
-        can_speak: canSpeaks.has(l),
+        can_read: canReads.includes(l),
+        can_speak: canSpeaks.includes(l),
         language_name: l,
       }));
 

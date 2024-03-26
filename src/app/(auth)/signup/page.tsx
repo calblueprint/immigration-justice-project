@@ -8,8 +8,7 @@ import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
 import COLORS from '@/styles/colors';
 import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
-import Button from '@/components/Button';
+import { Button, BigBlueButton } from '@/components/Buttons';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -94,9 +93,9 @@ export default function SignUp() {
             setValue={setPassword}
           />
           <SpacerDiv>
-            <BigButton type="button" onClick={handleSignUp}>
+            <BigBlueButton type="button" onClick={handleSignUp}>
               Sign Up
-            </BigButton>
+            </BigBlueButton>
             <H4Centered>
               Have an account already?{' '}
               <LinkColored $color={COLORS.greyDark} href="/login">

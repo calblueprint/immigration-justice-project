@@ -1,109 +1,192 @@
 'use client';
 
-import { useContext, useMemo, useState, useEffect } from 'react';
-import { H1 } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { useMemo, useState } from 'react';
+import { H1Centered } from '@/styles/text';
 import TextInput from '@/components/TextInput';
-import { isValidDate, parseDateAlt } from '@/utils/helpers';
+import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import TextAreaInput from '@/components/TextAreaInput';
+import { z } from 'zod';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
+import { CardForm, Flex } from '@/styles/containers';
+import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
+import { useRouter } from 'next/navigation';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import Icon from '@/components/Icon';
+import * as Styles from '../styles';
+
+// define form schema to automate form validation
+const availabilitySchema = z.object({
+  hoursPerMonth: z
+    .number({
+      required_error:
+        'Please include your estimated availability in hours per month',
+    })
+    .nonnegative({ message: 'This value must be nonnegative' }),
+  startDate: z
+    .date({
+      required_error:
+        'Please include your estimated starting date of availability',
+    })
+    .min(getCurrentDate(), { message: 'Must select a current or future date' }),
+  availability: z.string().optional(),
+});
 
 export default function Page() {
-  const onboarding = useContext(OnboardingContext);
-  const [hours, setHours] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [periods, setPeriods] = useState<string>('');
+  const onboarding = useGuardedOnboarding();
+  const { backlinkHref } = useOnboardingNavigation();
+  const { push } = useRouter();
 
-  const getHoursErrorText = useMemo(
-    () =>
-      hours && Number.isNaN(parseInt(hours, 10)) ? 'Must be a number' : '',
-    [hours],
+  const [startDate, setStartDate] = useState<string>(
+    onboarding.profile.start_date ?? '',
   );
 
-  const getStartDateErrorText = useMemo(
+  // initialize react-hook-form with default values from onboarding context
+  const form = useForm<z.infer<typeof availabilitySchema>>({
+    resolver: zodResolver(availabilitySchema),
+    defaultValues: {
+      hoursPerMonth: onboarding.profile.hours_per_month,
+      startDate: onboarding.profile.start_date
+        ? new Date(`${onboarding.profile.start_date}T00:00`)
+        : undefined,
+      availability: onboarding.profile.availability_description,
+    },
+  });
+
+  // handle valid form submission
+  // validity should have already been handled by Zod
+  const onValidSubmit = () => {
+    push(`/onboarding/${onboarding.flow[3].url}`);
+  };
+
+  // used to determine whether to disable the continue button
+  const formValues = form.watch();
+  const isEmpty = useMemo(
     () =>
-      startDate && !isValidDate(startDate)
-        ? 'Must select a current or future date'
-        : '',
-    [startDate],
+      formValues.hoursPerMonth === undefined ||
+      formValues.startDate === undefined,
+    [formValues],
   );
-
-  useEffect(() => {
-    const hpm = onboarding?.profile.hours_per_month;
-    setHours(hpm !== undefined && hpm >= 0 ? hpm.toString() : '');
-    setStartDate(onboarding?.profile.start_date || '');
-    setPeriods(onboarding?.profile.availability_description || '');
-
-    if (
-      hpm !== undefined &&
-      hpm >= 0 &&
-      onboarding?.profile.start_date &&
-      isValidDate(onboarding?.profile.start_date)
-    ) {
-      onboarding?.setCanContinue(true);
-    } else {
-      onboarding?.setProgress(2);
-      onboarding?.setCanContinue(false);
-    }
-  }, [onboarding]);
-
-  const handleHours = (v: string) => {
-    const n = parseInt(v, 10);
-    if (Number.isNaN(n)) {
-      onboarding?.updateProfile({
-        hours_per_month: undefined,
-      });
-    } else {
-      onboarding?.updateProfile({
-        hours_per_month: n,
-      });
-    }
-  };
-
-  const handleStartDate = (v: string) => {
-    if (v === '' || isValidDate(v)) {
-      onboarding?.updateProfile({
-        start_date: v,
-      });
-    }
-  };
-
-  const handleAvailability = (v: string) => {
-    onboarding?.updateProfile({
-      availability_description: v,
-    });
-  };
 
   return (
-    <>
-      <H1>Availability</H1>
-      <TextInput
-        label="How much time do you have to commit? (hrs/month)"
-        placeholder="hours/month"
-        errorText={getHoursErrorText}
-        type="number"
-        id="hours"
-        value={hours}
-        setValue={setHours}
-        onChange={handleHours}
-      />
-      <DateInput
-        label="What is the earliest you are available to volunteer?"
-        id="start_date"
-        error={getStartDateErrorText}
-        value={startDate}
-        min={parseDateAlt(new Date())}
-        setValue={setStartDate}
-        onChange={handleStartDate}
-      />
-      <TextAreaInput
-        label="Are there specific time periods you will not be available? (Optional)"
-        placeholder="I won't be available from..."
-        id="periods"
-        value={periods}
-        setValue={setPeriods}
-        onChange={handleAvailability}
-      />
-    </>
+    <FormProvider {...form}>
+      {/* noValidate to prevent default HTML invalid input pop-up */}
+      <CardForm onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+        <Styles.BackLink href={backlinkHref}>
+          <Icon type="leftArrow" />
+        </Styles.BackLink>
+
+        <H1Centered>Availability</H1Centered>
+
+        <Styles.FormFieldsContainer>
+          <FormField
+            control={form.control}
+            name="hoursPerMonth"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  How much time do you have to commit per month?
+                </FormLabel>
+                <FormControl>
+                  <TextInput
+                    errorText={fieldState.error?.message}
+                    placeholder="hours/month"
+                    inputMode="numeric"
+                    defaultValue={
+                      field.value !== undefined ? field.value.toString() : ''
+                    }
+                    onChange={newValue => {
+                      if (!newValue) {
+                        field.onChange(undefined);
+                        onboarding.updateProfile({
+                          hours_per_month: undefined,
+                        });
+                        return;
+                      }
+
+                      const toNum = z.coerce.number().safeParse(newValue);
+                      const num = toNum.success ? toNum.data : undefined;
+
+                      field.onChange(num);
+                      onboarding.updateProfile({
+                        hours_per_month: num,
+                      });
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>
+                  What is the earliest you are available to volunteer?
+                </FormLabel>
+                <FormControl>
+                  <DateInput
+                    error={fieldState.error?.message}
+                    min={parseDateAlt(getCurrentDate())}
+                    value={startDate}
+                    setValue={setStartDate}
+                    onChange={newValue => {
+                      if (!newValue) {
+                        field.onChange(undefined);
+                        onboarding.updateProfile({
+                          start_date: undefined,
+                        });
+                        return;
+                      }
+                      field.onChange(new Date(`${newValue}T00:00`));
+                      onboarding.updateProfile({
+                        start_date: newValue,
+                      });
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="availability"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel $required={false}>
+                  Are there specific time periods you will not be available?
+                  (optional)
+                </FormLabel>
+                <FormControl>
+                  <TextAreaInput
+                    placeholder="I won't be available from..."
+                    defaultValue={field.value}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      onboarding.updateProfile({
+                        availability_description: newValue,
+                      });
+                      field.onChange(newValue);
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <Flex $gap="40px">
+            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigBlueButton type="submit" disabled={isEmpty}>
+              Continue
+            </BigBlueButton>
+          </Flex>
+        </Styles.FormFieldsContainer>
+      </CardForm>
+    </FormProvider>
   );
 }

@@ -18,10 +18,10 @@ import { ErrorText, InputLabel } from '../TextInput/styles';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
-  options: Set<string> | Map<string, string>;
-  label: string;
+  options: string[] | Map<string, string>;
+  label?: string;
   placeholder?: string;
-  error?: string;
+  error?: boolean;
   disabled?: boolean;
   required?: boolean;
 }
@@ -29,8 +29,8 @@ interface CommonProps {
 // if using map, default value should store the keys
 interface MultiSelectProps extends CommonProps {
   multi: true;
-  defaultValue?: Set<string>;
-  onChange?: (value: Set<string>) => void;
+  defaultValue?: string[];
+  onChange?: (value: string[]) => void;
 }
 
 interface SingleSelectProps extends CommonProps {
@@ -59,7 +59,7 @@ export default function InputDropdown({
   label,
   options,
   placeholder = '',
-  error = '',
+  error,
   defaultValue,
   disabled,
   required,
@@ -74,7 +74,7 @@ export default function InputDropdown({
   const defaultDropdownVal = useMemo(() => {
     if (!defaultValue) return undefined;
 
-    if (defaultValue instanceof Set)
+    if (defaultValue instanceof Array)
       return Array.from(defaultValue).map(dv => {
         const v = options instanceof Map ? options.get(dv) : dv;
         if (!v) throw new Error(`Value ${dv} not found in options`);
@@ -95,7 +95,7 @@ export default function InputDropdown({
 
   const optionsArray = useMemo(
     () =>
-      options instanceof Set
+      options instanceof Array
         ? Array.from(options).map(v => ({ label: v, value: v }))
         : Array.from(options.entries()).map(([k, v]) => ({
             value: k,
@@ -107,7 +107,7 @@ export default function InputDropdown({
   const handleChange = useCallback(
     (newValue: MultiValue<DropdownOption> | SingleValue<DropdownOption>) => {
       if (multi && newValue instanceof Array) {
-        onChange?.(new Set(newValue.map(v => v.value)));
+        onChange?.(newValue.map(v => v.value));
       } else if (!multi && !(newValue instanceof Array)) {
         onChange?.(newValue ? newValue.value : null);
       } else {
@@ -142,7 +142,7 @@ export default function InputDropdown({
         unstyled
         required={required}
         isDisabled={disabled}
-        styles={DropdownStyles(multi, error !== '')}
+        styles={DropdownStyles(multi, error)}
         instanceId={useId()}
         options={optionsArray}
         placeholder={placeholder}

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { H2 } from '@/styles/text';
 import { SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
+import { BigBlueButton } from '@/components/Buttons';
 
 export default function EmailVerified() {
   const { push } = useRouter();
@@ -11,9 +11,9 @@ export default function EmailVerified() {
   return (
     <SpacerDiv>
       <H2>Your email has been verified!</H2>
-      <BigButton type="button" onClick={() => push('/onboarding/roles')}>
+      <BigBlueButton type="button" onClick={() => push('/onboarding/roles')}>
         Go to Onboarding
-      </BigButton>
+      </BigBlueButton>
     </SpacerDiv>
   );
 }

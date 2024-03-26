@@ -3,31 +3,35 @@ import COLORS from '@/styles/colors';
 import { H4 } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
 
-const getBorderColor = (error: string, filled: boolean): string => {
-  if (error !== '') return COLORS.redMid;
-  return filled ? COLORS.greyMid : COLORS.greyLight;
-};
-
 export const InputLabel = styled(H4)`
   color: ${COLORS.greyDark};
-  margin-bottom: 0.625rem; //10px
+  margin-bottom: 10px;
 `;
 
-export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
+export const InputDate = styled.input<{ $error: boolean; $filled: boolean }>`
   ${openSans.style}
-  font-size: 0.875rem; //14px
+  font-size: 0.875rem; // 14px
   font-weight: 400;
   cursor: text;
-  color: ${({ $filled }) =>
-    $filled ? COLORS.greyDarker : COLORS.placeholderText};
-  border-radius: 0.313rem; // 5px
-  border: 2px solid ${({ $error, $filled }) => getBorderColor($error, $filled)};
+  border-radius: 5px;
+  color: ${COLORS.placeholderText};
+  border: 2px solid ${COLORS.greyLight};
   padding: 0.625rem;
   text-transform: uppercase;
+
+  ${({ $filled }) =>
+    $filled
+      ? `color: ${COLORS.greyDarker};
+    border-color: ${COLORS.greyMid};`
+      : null}
+
   &:focus {
     border-color: ${COLORS.blueMid};
     outline: none;
   }
+
+  ${({ $error }) =>
+    $error ? `border-color: ${COLORS.redMid} !important` : null};
 `;
 
 export const ErrorText = styled.p`
