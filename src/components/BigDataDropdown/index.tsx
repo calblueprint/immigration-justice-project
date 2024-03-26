@@ -14,6 +14,13 @@ import { AnimatedMenu, NoOptionsMessage } from '../InputDropdown';
 import { DropdownStyles, DropdownWrapper } from '../InputDropdown/styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';
 
+// TODO 1: update big data dropdown to use async loadOptions
+// to run more resource-intensive search/filter computations on the sever side
+
+// TODO 2: change type of options from string[] | Map
+// to DropdownOption[] - more compatible with the JSON format
+// commonly found in libraries like country-state-city and react-select
+
 // for map: key is actual data stored, value is displayed
 interface CommonProps {
   options: string[] | Map<string, string>;

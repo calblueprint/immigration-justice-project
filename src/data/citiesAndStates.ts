@@ -1,5 +1,9 @@
 import { City, Country, State } from 'country-state-city';
 
+export const countries = Country.getAllCountries()
+  .map(c => c.name)
+  .sort((c1, c2) => c1.localeCompare(c2));
+
 export const cities = City.getAllCities()
   .map(c => ({
     cityName: c.name,
