@@ -17,8 +17,8 @@ export default function Page() {
 
   // triggers on clicking submit
   const onSubmit = () => {
-    onboarding.flushData();
     push('/onboarding-complete');
+    onboarding.flushData();
   };
 
   return (

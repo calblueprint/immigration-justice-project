@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect } from 'react';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import CONFIG from '@/lib/configs';
-import IJPLogoBlue from '@/assets/images/ijp_logo_blue.webp';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import IJPLogoBlue from '../../public/images/ijp_logo_blue.webp';
 import ProgressBar from './ProgressBar';
 import { UnstyledButton } from './Buttons';
 
