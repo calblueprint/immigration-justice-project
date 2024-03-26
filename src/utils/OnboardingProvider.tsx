@@ -117,7 +117,6 @@ export default function OnboardingProvider({
         bar_number: profile.bar_number,
         eoir_registered: profile.eoir_registered,
         user_id: uid,
-        // TODO: update to get phone number
         phone_number: profile.phone_number,
       };
 

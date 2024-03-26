@@ -10,13 +10,13 @@ const FLOW_EPILOGUE: FlowData[] = [{ name: 'Review & Submit', url: 'review' }];
 
 export const ATTORNEY_FLOW: FlowData[] = [
   ...FLOW_PROLOGUE,
-  { name: 'Legal Experience', url: 'legal-experience' },
+  { name: 'Legal Credentials', url: 'legal-credentials' },
   ...FLOW_EPILOGUE,
 ];
 
 export const LEGAL_FELLOW_FLOW: FlowData[] = [
   ...FLOW_PROLOGUE,
-  { name: 'Legal Experience', url: 'legal-fellow-experience' },
+  { name: 'Legal Credentials', url: 'legal-fellow-credentials' },
   ...FLOW_EPILOGUE,
 ];
 

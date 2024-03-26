@@ -59,7 +59,7 @@ export default function Page() {
           <Icon type="leftArrow" />
         </Styles.BackLink>
 
-        <H1Centered>Legal Experience</H1Centered>
+        <H1Centered>Legal Credentials</H1Centered>
 
         <Styles.FormFieldsContainer>
           <FormField
