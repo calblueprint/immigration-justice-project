@@ -25,23 +25,39 @@ export default function OnboardingManager({
   const { pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
 
-  const { flow: onboardingFlow, progress: onboardingProgress } = onboarding;
+  const {
+    flow: onboardingFlow,
+    progress: onboardingProgress,
+    setProgress,
+  } = onboarding;
 
   useEffect(() => {
-    // out of bounds redirect
     if (
+      // edge case (realistically shouldn't happen)
       onboardingProgress < 0 ||
+      // progress beyond length of flow
       (onboardingFlow.length !== 0 &&
         onboardingProgress >= onboardingFlow.length) ||
+      // already onboarded or not signed in
       (profile.profileReady && (profile.profileData || !profile.userId))
     ) {
       push(CONFIG.homepage);
       return;
     }
 
-    if (pageProgress > onboardingProgress)
+    // advance progress if exactly 1 more
+    if (pageProgress === onboardingProgress + 1) setProgress(pageProgress);
+    // otherwise, rebound to current progress
+    else if (pageProgress > onboardingProgress)
       push(`/onboarding/${onboardingFlow[onboardingProgress].url}`);
-  }, [onboardingProgress, onboardingFlow, profile, push, pageProgress]);
+  }, [
+    onboardingProgress,
+    onboardingFlow,
+    profile,
+    push,
+    pageProgress,
+    setProgress,
+  ]);
 
   const goToHomepage = () => {
     // TODO: add form dirty bool to context to conditionally show dialog

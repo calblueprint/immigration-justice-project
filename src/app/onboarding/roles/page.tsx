@@ -82,8 +82,8 @@ export default function Page() {
     }
 
     onboarding.setFlow(newFlow);
-    onboarding.setProgress(1);
     push(`/onboarding/${newFlow[1].url}`);
+    // onboarding.setProgress(1);
   };
 
   const form = useForm<z.infer<typeof roleSchema>>({

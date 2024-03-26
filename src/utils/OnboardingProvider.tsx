@@ -104,15 +104,8 @@ export default function OnboardingProvider({
           );
       }
 
-      if (canReads.length === 0)
-        throw new Error(
-          'Error flushing data: can read languages data is empty!',
-        );
-
-      if (canSpeaks.length === 0)
-        throw new Error(
-          'Error flushing data: can write languages data is empty!',
-        );
+      if (canReads.length + canSpeaks.length === 0)
+        throw new Error('Error flushing data: no languages entered!');
 
       // format data
       const profileToInsert: Profile = {

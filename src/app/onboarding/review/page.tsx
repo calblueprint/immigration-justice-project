@@ -7,11 +7,19 @@ import { formatTruthy, parseDate } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as Styles from '../styles';
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { flowAt, backlinkHref } = useOnboardingNavigation();
+  const { push } = useRouter();
+
+  // triggers on clicking submit
+  const onSubmit = () => {
+    push('/onboarding-complete');
+    onboarding.flushData();
+  };
 
   return (
     <Card>
@@ -188,7 +196,7 @@ export default function Page() {
 
       <Flex $gap="40px">
         <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
-        <BigBlueButton>Submit</BigBlueButton>
+        <BigBlueButton onClick={onSubmit}>Submit</BigBlueButton>
       </Flex>
     </Card>
   );
