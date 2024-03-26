@@ -1,26 +1,27 @@
 'use client';
 
-import { H1Centered } from '@/styles/text';
-import RadioGroup from '@/components/RadioGroup';
-import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
-import { CardForm, Flex } from '@/styles/containers';
+import BigDataDropdown from '@/components/BigDataDropdown';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
-import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
-import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import DateInput from '@/components/DateInput';
-import { useMemo, useState } from 'react';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
+import RadioGroup from '@/components/RadioGroup';
+import TextInput from '@/components/TextInput';
+import { states } from '@/data/citiesAndStates';
+import { CardForm, Flex } from '@/styles/containers';
+import { H1Centered } from '@/styles/text';
+import { formatTruthy } from '@/utils/helpers';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation
 const legalExperienceSchema = z.object({
-  expectedBarDate: z
-    .date({ required_error: 'Must include expected barred date' })
-    .min(getCurrentDate(), { message: 'Must select a current or future date' }),
+  stateBarred: z.string({ required_error: 'Required' }),
+  barNumber: z.string({ required_error: 'Must include attorney bar number' }),
   eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
 });
 
@@ -29,69 +30,79 @@ export default function Page() {
   const { backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
-  const [expectedBarDate, setExpectedBarDate] = useState<string>(
-    onboarding.profile.expected_bar_date ?? '',
-  );
-
-  // initialize form with values from onboarding context
+  // initialize form with data from onboarding context
   const form = useForm<z.infer<typeof legalExperienceSchema>>({
     resolver: zodResolver(legalExperienceSchema),
     defaultValues: {
-      expectedBarDate: onboarding.profile.expected_bar_date
-        ? new Date(`${onboarding.profile.expected_bar_date}T00:00`)
-        : undefined,
+      stateBarred: onboarding.profile.state_barred,
+      barNumber: onboarding.profile.bar_number,
       eoirRegistered: onboarding.profile.eoir_registered,
     },
   });
 
-  const onValidSubmit = () => {
+  const onSubmit = () => {
     push(`/onboarding/${onboarding.flow[4].url}`);
   };
 
   const formValues = form.watch();
   const isEmpty = useMemo(
     () =>
-      formValues.expectedBarDate === undefined ||
+      !(formValues.stateBarred && formValues.barNumber) ||
       formValues.eoirRegistered === undefined,
     [formValues],
   );
 
   return (
     <FormProvider {...form}>
-      {/* noValidate to prevent default HTML invalid input pop-up */}
-      <CardForm onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
+      <CardForm onSubmit={form.handleSubmit(onSubmit)}>
         <Styles.BackLink href={backlinkHref}>
           <Icon type="leftArrow" />
         </Styles.BackLink>
 
-        <H1Centered>Legal Experience</H1Centered>
+        <H1Centered>Legal Credentials</H1Centered>
 
         <Styles.FormFieldsContainer>
           <FormField
             control={form.control}
-            name="expectedBarDate"
+            name="stateBarred"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>When are you expected to be barred?</FormLabel>
+                <FormLabel>Which state are you barred in?</FormLabel>
                 <FormControl>
-                  <DateInput
+                  <BigDataDropdown
+                    options={states}
                     error={fieldState.error?.message}
-                    min={parseDateAlt(getCurrentDate())}
-                    value={expectedBarDate}
-                    setValue={setExpectedBarDate}
                     onChange={newValue => {
-                      // turn "" into undefined (cannot be parsed to date)
-                      if (!newValue) {
-                        field.onChange(undefined);
-                        onboarding.updateProfile({
-                          expected_bar_date: undefined,
-                        });
-                        return;
-                      }
-                      field.onChange(new Date(`${newValue}T00:00`));
+                      field.onChange(newValue);
                       onboarding.updateProfile({
-                        expected_bar_date: newValue,
+                        state_barred: newValue ?? undefined,
                       });
+                    }}
+                    defaultValue={onboarding.profile.state_barred}
+                    placeholder="Start typing to filter states..."
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="barNumber"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>What is your attorney bar number?</FormLabel>
+                <FormControl>
+                  <TextInput
+                    errorText={fieldState.error?.message}
+                    placeholder="123456"
+                    type="text"
+                    defaultValue={field.value}
+                    onChange={newValue => {
+                      onboarding.updateProfile({
+                        bar_number: newValue,
+                      });
+                      field.onChange(newValue);
                     }}
                   />
                 </FormControl>
@@ -118,7 +129,7 @@ export default function Page() {
                       undefined,
                     )}
                     options={['Yes', 'No']}
-                    error={fieldState.error ? undefined : ''}
+                    error={fieldState.error?.message}
                     onChange={newValue => {
                       const bool = newValue === 'Yes';
                       onboarding.updateProfile({ eoir_registered: bool });
