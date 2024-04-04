@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import { LimitedCaseAssignment } from '@/types/schema';
 import { getAllLCAListings } from '../../api/supabase/queries/limited-case-assignments';
 
+/**
+ * Fetches all LCA listings from the database
+ * @returns HTML (unstyled) presenting all LCA objects
+ */
+
 export default function Page() {
   const [data, setData] = useState<LimitedCaseAssignment[]>([]);
 
