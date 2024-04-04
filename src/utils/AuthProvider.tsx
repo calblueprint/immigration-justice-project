@@ -14,8 +14,8 @@ import supabase from '@/api/supabase/createClient';
 
 export interface AuthContextType {
   session?: Session;
-  userId: UUID | undefined;
-  userEmail: string | undefined;
+  userId?: UUID;
+  userEmail?: string;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
   signOut: () => Promise<AuthError | null>;
   signUp: (

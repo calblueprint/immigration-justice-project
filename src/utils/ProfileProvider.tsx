@@ -61,9 +61,9 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     if (!auth?.userId) return;
 
     await Promise.all([
-      fetchProfileById(auth?.userId).then(data => setProfileData(data)),
-      fetchLanguagesById(auth?.userId).then(data => setProfileLangs(data)),
-      fetchRolesById(auth?.userId).then(data => setProfileRoles(data)),
+      fetchProfileById(auth.userId).then(data => setProfileData(data)),
+      fetchLanguagesById(auth.userId).then(data => setProfileLangs(data)),
+      fetchRolesById(auth.userId).then(data => setProfileRoles(data)),
     ]);
 
     setProfileReady(true);
@@ -73,14 +73,14 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
     loadProfile();
   }, [loadProfile]);
 
-  const providerValue = useMemo(() => {
-    /**
-     * Creates a new profile associated with the currently
-     * logged in user. Errors if user is not logged in or
-     * already has a profile. Requires RLS insert access on
-     * profiles, profiles-languages, and profiles-roles tables.
-     */
-    const createNewProfile = async (
+  /**
+   * Creates a new profile associated with the currently
+   * logged in user. Errors if user is not logged in or
+   * already has a profile. Requires RLS insert access on
+   * profiles, profiles-languages, and profiles-roles tables.
+   */
+  const createNewProfile = useCallback(
+    async (
       newProfile: Profile,
       newLanguages: ProfileLanguage[],
       newRoles: ProfileRole[],
@@ -96,14 +96,17 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
         insertLanguages(newLanguages).then(data => setProfileLangs(data)),
         insertRoles(newRoles).then(data => setProfileRoles(data)),
       ]);
-    };
+    },
+    [auth, profileData],
+  );
 
-    /**
-     * Takes partial info to update the current
-     * user's profile. Requires RLS update access
-     * setup for the profiles table.
-     */
-    const updateProfile = async (updatedInfo: Partial<Profile>) => {
+  /**
+   * Takes partial info to update the current
+   * user's profile. Requires RLS update access
+   * setup for the profiles table.
+   */
+  const updateProfile = useCallback(
+    async (updatedInfo: Partial<Profile>) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in');
       if (auth.userId !== profileData?.user_id)
         throw new Error('Fatal: user id does not match profile user id!');
@@ -114,15 +117,18 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
         .catch((err: Error) => {
           throw new Error(`Error updating profile data: ${err.message}`);
         });
-    };
+    },
+    [auth, profileData],
+  );
 
-    /**
-     * Takes in a new ProfileLanguage data (user_id, language_name, can_read, can_write)
-     * list and replaces the user's associated languages entirely.
-     * Requires RLS delete, update, and insert access
-     * on the profiles-languages table.
-     */
-    const setLanguages = async (languages: ProfileLanguage[]) => {
+  /**
+   * Takes in a new ProfileLanguage data (user_id, language_name, can_read, can_write)
+   * list and replaces the user's associated languages entirely.
+   * Requires RLS delete, update, and insert access
+   * on the profiles-languages table.
+   */
+  const setLanguages = useCallback(
+    async (languages: ProfileLanguage[]) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in');
 
       // find removed languages
@@ -134,15 +140,18 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
         deleteLanguages(auth.userId, toDelete),
         upsertLanguages(languages).then(data => setProfileLangs(data)),
       ]);
-    };
+    },
+    [auth, profileLangs],
+  );
 
-    /**
-     * Takes in a ProfileRole (user_id, role) list
-     * and replaces the user's associated roles entirely.
-     * Requires RLS delete, insert, and update policy
-     * setup on the profiles-roles table.
-     */
-    const setRoles = async (roles: ProfileRole[]) => {
+  /**
+   * Takes in a ProfileRole (user_id, role) list
+   * and replaces the user's associated roles entirely.
+   * Requires RLS delete, insert, and update policy
+   * setup on the profiles-roles table.
+   */
+  const setRoles = useCallback(
+    async (roles: ProfileRole[]) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in');
 
       // find removed roles
@@ -154,9 +163,12 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
         deleteRoles(auth.userId, toDelete),
         upsertRoles(roles).then(data => setProfileRoles(data)),
       ]);
-    };
+    },
+    [auth, profileRoles],
+  );
 
-    return {
+  const providerValue = useMemo(
+    () => ({
       profileData,
       languages: profileLangs,
       roles: profileRoles,
@@ -166,15 +178,19 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
       setLanguages,
       setRoles,
       loadProfile,
-    };
-  }, [
-    profileData,
-    profileLangs,
-    profileRoles,
-    profileReady,
-    loadProfile,
-    auth,
-  ]);
+    }),
+    [
+      profileData,
+      profileLangs,
+      profileRoles,
+      profileReady,
+      createNewProfile,
+      updateProfile,
+      setLanguages,
+      setRoles,
+      loadProfile,
+    ],
+  );
 
   return (
     <ProfileContext.Provider value={providerValue}>
