@@ -4,7 +4,6 @@ import {
   timestampStringToDate,
   parseDate,
   parseAgency,
-  parseExperience,
   parseRolesNeeded,
   parseTimeCommitment,
 } from '@/utils/helpers';
@@ -71,11 +70,6 @@ const caseFields = [
     getValue: (data: CaseListing) => data.languages.join(', '),
   },
   {
-    label: 'Attorney Experience Level',
-    getValue: (data: CaseListing) =>
-      parseExperience(data.experience_needed) || 'N/A',
-  },
-  {
     label: 'Relief Sought',
     getValue: (data: CaseListing) => data.relief_codes.join(', ') || 'N/A',
   },
@@ -93,8 +87,8 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
   const profile = useProfile();
 
   const Interest = useMemo(() => {
-    if (auth && auth.userId && profile && profile.profileData)
-      return profile.profileData ? (
+    if (auth && auth.userId)
+      return profile?.profileData ? (
         <InterestForm caseData={caseData} />
       ) : (
         <>
