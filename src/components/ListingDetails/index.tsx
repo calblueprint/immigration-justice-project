@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useMemo } from 'react';
 import {
-  // timestampStringToDate,
-  // parseDate,
   formatTimestamp,
   parseAgency,
   parseTimeCommitment,
@@ -17,9 +15,9 @@ import {
 } from '@/types/schema';import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
-// import InterestForm from '../InterestForm';
 import { Flex } from '@/styles/containers';
 import logo from '@/lib/dohs_logo.webp';
+import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
 import Icon from '../Icon';
 import {
@@ -30,7 +28,6 @@ import {
   AuthButtons,
   IconTextGroup,
   BorderedSection,
-  // InlineP
   DateText,
 } from './styles';
 
@@ -82,20 +79,20 @@ const caseFields = [
     label: 'Client Country of Origin',
     getValue: (data: Listing) => (data as CaseListing).country || 'N/A',
   },
-  // Client Location
-  {
-    label: 'Client Location',
-    getValue: (data: Listing) => (data as CaseListing).client_location || 'N/A',
-  },
-  // Custody Location
-  {
-    // Temporary
-    label: 'Custody Location',
-    getValue: () => 'San Diego, CA',
-  },
+  // Client vs. Custody Location handled in Component
 ];
 
 const caseInterpretationFields = [
+  // Languages
+  {
+    label: 'Language(s)',
+    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
+  },
+  // Language Support Type
+  {
+    label: 'Language Support Type',
+    getValue: () => 'One-Time Intepretation',
+  },
   // Time Commitment
   {
     label: 'Time Commitment',
@@ -104,11 +101,6 @@ const caseInterpretationFields = [
         (data as CaseListing).hours_per_week,
         (data as CaseListing).num_weeks,
       ),
-  },
-  // Languages
-  {
-    label: 'Language(s)',
-    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
   },
   // Remote/In Person
   {
@@ -124,10 +116,10 @@ const intepretationFields = [
     label: 'Language(s)',
     getValue: (data: Listing) => (data as Interpretation).languages.join(', '),
   },
-  // Interpretation Type
+  // Language Support Type
   {
-    label: 'Interpretation Type', // 'Language Support Type' for consistency w/ Doc?
-    getValue: (data: Listing) => 'One-Time Intepretation',
+    label: 'Language Support Type',
+    getValue: () => 'One-Time Intepretation',
   },
   // Remote/In Person
   {
@@ -147,7 +139,7 @@ const docFields = [
   // Language Support Type
   {
     label: 'Language Support Type',
-    getValue: (data: Listing) => 'Written',
+    getValue: () => 'Document Translation', // check if this crashes
   },
   // Number of Pages
   {
@@ -177,19 +169,38 @@ const LCAFields = [
 
 export default function ListingDetails({
   listingData,
+  interpretation = false,
 }: {
   listingData: Listing;
+  interpretation?: boolean;
 }) {
   const auth = useAuth();
-  const profile = useProfile();
+  const profile = useProfile();  
   
-  const listingFields = () => {
+  const listingFields = useMemo(() => {
     if (listingData.listing_type === 'CASE') {
-      if (listingData.needs_interpreter) {
+      if (interpretation && listingData.needs_interpreter) {
         return caseInterpretationFields;
       }
       // will we ever need to render the case listing (instead of case interp) for a case that has needs_interpreter === true?
-      return caseFields;
+      if (listingData.is_detained) {
+        return [
+          ...caseFields,
+          {
+            label: 'Custody Location',
+            getValue: (data: Listing) =>
+              (data as CaseListing).client_location || 'N/A',
+          },
+        ];
+      }
+      return [
+        ...caseFields,
+        {
+          label: 'Client Location',
+          getValue: (data: Listing) =>
+            (data as CaseListing).client_location || 'N/A',
+        },
+      ];
     }
     if (listingData.listing_type === 'INT') {
       return intepretationFields;
@@ -198,7 +209,8 @@ export default function ListingDetails({
       return docFields;
     }
     return LCAFields;
-  }
+  }, [listingData, interpretation]);
+
   const dateComponent = () => {
     if (listingData.listing_type !== 'INT') {
       let dateHeader = 'Assignment Deadline';
@@ -217,7 +229,8 @@ export default function ListingDetails({
           </DateText>
         </IconTextGroup>
       );
-    } 
+    }
+    return null;
   };
   
   const Interest = useMemo(() => {
@@ -225,6 +238,7 @@ export default function ListingDetails({
       return profile?.profileData ? (
         <InterestForm caseData={listingData as CaseListing} />
       ) : (
+        // <H3>Updated Interest Form Coming Soon!</H3> // remove after refactoring InterestForm
         <>
           <H3>
             Please finish submitting your profile before submitting interest.
@@ -283,7 +297,7 @@ export default function ListingDetails({
             </H4>
           </IconTextGroup>
           <InnerFieldContainer>
-            {listingFields().map(({ label, getValue }) => (
+            {listingFields.map(({ label, getValue }) => (
               <div key={label}>{renderField(label, getValue(listingData))}</div>
             ))}
           </InnerFieldContainer>

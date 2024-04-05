@@ -72,10 +72,6 @@ export const BorderedSection = styled.div`
   border: 1px solid ${COLORS.greyLighter};
 `;
 
-export const InlineP = styled(P)`
-  display: inline;
-`;
-
 export const DateText = styled(P)<{ $bold?: true }>`
   display: inline;
   font-size: 1rem;

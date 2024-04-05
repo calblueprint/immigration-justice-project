@@ -70,8 +70,25 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={InterpInfo} />
+        <ListingDetails listingData={CaseInterpInfo} interpretation />
       </CaseDetailsContainer>
     </Body>
   );
 }
+
+/* Edit Line 73 with the lines below corresponding to the desired ListingType 
+LCA: 
+<ListingDetails listingData={LCAInfo} />
+
+1-Time Interpretation:
+<ListingDetails listingData={InterpInfo} />
+
+Document Translation: 
+<ListingDetails listingData={DocInfo} />
+
+Case Interpretation:
+<ListingDetails listingData={CaseInterpInfo} interpretation />
+
+Case: 
+<ListingDetails listingData={CaseInterpInfo} /> 
+*/

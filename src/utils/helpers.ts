@@ -94,13 +94,19 @@ export const parseTimeCommitment = (
   hoursPerWeek?: number,
   numWeeks?: number,
 ) => {
-  if (hoursPerWeek === undefined && numWeeks === undefined) return 'N/A';
-  if (numWeeks === undefined) return `${hoursPerWeek} hours/week`;
+  if (
+    (hoursPerWeek === undefined || hoursPerWeek === null) &&
+    (numWeeks === undefined || numWeeks === null)
+  )
+    return 'N/A';
+  if (numWeeks === undefined || numWeeks === null)
+    return `${hoursPerWeek} hours/week`;
 
   const unit = numWeeks > 4 ? 'month' : 'week';
   const numUnit = numWeeks > 4 ? numWeeks / 4 : numWeeks;
   const plural = numUnit > 1 ? 's' : '';
-  if (hoursPerWeek === undefined) return `${numWeeks} ${unit}${plural}`;
+  if (hoursPerWeek === undefined || hoursPerWeek === null)
+    return `${numWeeks} ${unit}${plural}`;
 
   const rate = numWeeks > 4 ? hoursPerWeek / 4 : hoursPerWeek;
   return `${rate} hours/${unit} for ${numUnit} ${unit}${plural}`;
