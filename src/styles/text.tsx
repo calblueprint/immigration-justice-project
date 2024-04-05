@@ -9,7 +9,7 @@ export const H1 = styled.h1<{ $color?: string }>`
   ${openSans.style}
   display: block;
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
 `;
