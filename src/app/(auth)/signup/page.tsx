@@ -73,7 +73,7 @@ export default function SignUp() {
     <>
       {!emailSentCount && (
         <>
-          <SpacerDiv $gap={0.625}>
+          <SpacerDiv $gap={10}>
             <H1>Sign Up</H1>
             {errorMessage !== '' && (
               <P $color={COLORS.redMid}>{errorMessage}</P>
@@ -88,7 +88,7 @@ export default function SignUp() {
             value={email}
             setValue={setEmail}
           />
-          <SpacerDiv $gap={0.5}>
+          <SpacerDiv $gap={8}>
             <TextInput
               label="Password"
               placeholder="Password"
