@@ -78,6 +78,7 @@ export interface LimitedCaseAssignment {
   deliverable: string; // expected deliverable
   languages: string[];
   listing_type: 'LCA';
+  upload_date: string;
 }
 
 export interface Interpretation {

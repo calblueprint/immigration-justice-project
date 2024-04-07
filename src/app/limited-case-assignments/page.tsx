@@ -31,14 +31,24 @@ export default function Page() {
         <thead>
           <tr>
             <th>Listing ID</th>
-            <th>Language Name</th>
+            <th>Title</th>
+            <th>Languages</th>
+            <th>Deadline</th>
+            <th>Reserch Topic</th>
+            <th>Summary</th>
+            <th>Deliverable</th>
           </tr>
         </thead>
         <tbody>
           {data.map(assignment => (
             <tr key={assignment.id}>
               <td>{assignment.id}</td>
+              <td>{assignment.title}</td>
               <td>{assignment.languages}</td>
+              <td>{assignment.deadline}</td>
+              <td>{assignment.research_topic}</td>
+              <td>{assignment.summary}</td>
+              <td>{assignment.deliverable}</td>
             </tr>
           ))}
         </tbody>
