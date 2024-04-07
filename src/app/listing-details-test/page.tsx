@@ -59,7 +59,7 @@ const CaseInterpInfo = {
   is_remote: true,
   adjudicating_agency: 'Agency',
   upcoming_date: '2024-03-16 19:47:39.385578+00',
-  is_detained: false, // are we even using this?
+  is_detained: false, 
   languages: ['English', 'French'],
   relief_codes: ['ABA', 'IJP'],
   listing_type: 'CASE',

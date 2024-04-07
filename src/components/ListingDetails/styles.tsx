@@ -10,27 +10,11 @@ export const CaseDisplay = styled.aside`
 export const CaseTitle = styled(H1)`
   margin: 0.4rem 4rem;
 `;
-
-// export const CaseInterestContainer = styled.div`
-//   position: sticky;
-//   top: 4rem;
-//   width: 100%;
-//   border-radius: 10px;
-//   padding: 3rem;
-//   border: 2px solid ${COLORS.blueMid};
-//   justify-content: space-between;
-//   flex-direction: column;
-//   display: block;
-//   overflow-y: auto;
-// `;
-
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 50%;
-  /* gap: 1.35rem;
-  padding: 0.2rem; */
 `;
 
 export const InnerInfoContainer = styled.div`
@@ -75,5 +59,5 @@ export const BorderedSection = styled.div`
 export const DateText = styled(P)<{ $bold?: true }>`
   display: inline;
   font-size: 1rem;
-  font-weight: ${props => (props.$bold ? 500 : 400)};
+  font-weight: ${({ $bold }) => ($bold ? 500 : 400)};
 `;

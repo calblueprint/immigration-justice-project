@@ -38,55 +38,51 @@ const renderField = (label: string, value: string | boolean | number) => (
   </FieldContainer>
 );
 
-const caseFields = [
+interface ListingField<T extends Listing> {
+  label: string;
+  getValue: (data: T) => string;
+}
+
+const caseFields: ListingField<CaseListing>[] = [
   // Relief sought
   {
     label: 'Relief Sought',
-    getValue: (data: Listing) =>
-      (data as CaseListing).relief_codes.join(', ') || 'N/A',
+    getValue: data => data.relief_codes.join(', ') || 'N/A',
   },
   // Time Commitment
   {
     label: 'Time Commitment',
-    getValue: (data: Listing) =>
-      parseTimeCommitment(
-        (data as CaseListing).hours_per_week,
-        (data as CaseListing).num_weeks,
-      ),
+    getValue: data => parseTimeCommitment(data.hours_per_week, data.num_weeks),
   },
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: Listing) =>
-      (data as CaseListing).is_remote ? 'Remote' : 'In Person',
+    getValue: data => (data.is_remote ? 'Remote' : 'In Person'),
   },
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: (data: Listing) => {
-      const d = data as CaseListing;
-      return d.adjudicating_agency ? parseAgency(d.adjudicating_agency) : 'N/A';
-      // (data as CaseListing).adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
-    },
+    getValue: data =>
+      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
   },
   // Client Languages
   {
     label: 'Client Language(s)',
-    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
+    getValue: data => data.languages.join(', '),
   },
   // Client Country of Origin
   {
     label: 'Client Country of Origin',
-    getValue: (data: Listing) => (data as CaseListing).country || 'N/A',
+    getValue: data => data.country || 'N/A',
   },
   // Client vs. Custody Location handled in Component
 ];
 
-const caseInterpretationFields = [
+const caseInterpretationFields: ListingField<CaseListing>[] = [
   // Languages
   {
     label: 'Language(s)',
-    getValue: (data: Listing) => (data as CaseListing).languages.join(', '),
+    getValue: data => data.languages.join(', '),
   },
   // Language Support Type
   {
@@ -96,25 +92,20 @@ const caseInterpretationFields = [
   // Time Commitment
   {
     label: 'Time Commitment',
-    getValue: (data: Listing) =>
-      parseTimeCommitment(
-        (data as CaseListing).hours_per_week,
-        (data as CaseListing).num_weeks,
-      ),
+    getValue: data => parseTimeCommitment(data.hours_per_week, data.num_weeks),
   },
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: Listing) =>
-      (data as CaseListing).is_remote ? 'Remote' : 'In Person',
+    getValue: data => (data.is_remote ? 'Remote' : 'In Person'),
   },
 ];
 
-const intepretationFields = [
+const intepretationFields: ListingField<Interpretation>[] = [
   // Languages
   {
     label: 'Language(s)',
-    getValue: (data: Listing) => (data as Interpretation).languages.join(', '),
+    getValue: data => data.languages.join(', '),
   },
   // Language Support Type
   {
@@ -124,17 +115,15 @@ const intepretationFields = [
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: (data: Listing) =>
-      (data as Interpretation).is_remote ? 'Remote' : 'In Person',
+    getValue: data => (data.is_remote ? 'Remote' : 'In Person'),
   },
 ];
 
-const docFields = [
+const docFields: ListingField<DocumentTranslation>[] = [
   // Languages
   {
     label: 'Language(s)',
-    getValue: (data: Listing) =>
-      (data as DocumentTranslation).languages.join(', '),
+    getValue: data => data.languages.join(', '),
   },
   // Language Support Type
   {
@@ -144,26 +133,25 @@ const docFields = [
   // Number of Pages
   {
     label: 'Number of Pages',
-    getValue: (data: Listing) => (data as DocumentTranslation).num_pages,
+    getValue: data => data.num_pages.toString(),
   },
 ];
 
-const LCAFields = [
+const lcaFields: ListingField<LimitedCaseAssignment>[] = [
   // Country Field
   {
     label: 'Country Field',
-    getValue: (data: Listing) => (data as LimitedCaseAssignment).country,
+    getValue: data => data.country,
   },
   // Language(s)
   {
     label: 'Language(s)',
-    getValue: (data: Listing) =>
-      (data as LimitedCaseAssignment).languages.join(', '),
+    getValue: data => data.languages.join(', '),
   },
   // Expected Deliverable
   {
     label: 'Expected Deliverable',
-    getValue: (data: Listing) => (data as LimitedCaseAssignment).deliverable,
+    getValue: data => data.deliverable,
   },
 ];
 
@@ -178,37 +166,45 @@ export default function ListingDetails({
   const profile = useProfile();  
   
   const listingFields = useMemo(() => {
+    let fields: ListingField<any>[];
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
-        return caseInterpretationFields;
+        fields = caseInterpretationFields;
       }
-      // will we ever need to render the case listing (instead of case interp) for a case that has needs_interpreter === true?
-      if (listingData.is_detained) {
-        return [
+      else if (listingData.is_detained) {
+        fields = [
           ...caseFields,
           {
             label: 'Custody Location',
-            getValue: (data: Listing) =>
-              (data as CaseListing).client_location || 'N/A',
+            getValue: (data) =>
+              data.client_location || 'N/A',
+          },
+        ];
+      } else {
+        fields = [
+          ...caseFields,
+          {
+            label: 'Client Location',
+            getValue: (data) =>
+              data.client_location || 'N/A',
           },
         ];
       }
-      return [
-        ...caseFields,
-        {
-          label: 'Client Location',
-          getValue: (data: Listing) =>
-            (data as CaseListing).client_location || 'N/A',
-        },
-      ];
+    } else if (listingData.listing_type === 'INT') {
+      fields = intepretationFields;
+    } else if (listingData.listing_type === 'DOC') {
+      fields = docFields;
+    } else {
+      fields = lcaFields;
     }
-    if (listingData.listing_type === 'INT') {
-      return intepretationFields;
-    }
-    if (listingData.listing_type === 'DOC') {
-      return docFields;
-    }
-    return LCAFields;
+
+    return (
+      <InnerFieldContainer>
+        {fields.map(({ label, getValue }) => (
+          <div key={label}>{renderField(label, getValue(listingData))}</div>
+        ))}
+      </InnerFieldContainer>
+    );
   }, [listingData, interpretation]);
 
   const dateComponent = () => {
@@ -238,7 +234,6 @@ export default function ListingDetails({
       return profile?.profileData ? (
         <InterestForm caseData={listingData as CaseListing} />
       ) : (
-        // <H3>Updated Interest Form Coming Soon!</H3> // remove after refactoring InterestForm
         <>
           <H3>
             Please finish submitting your profile before submitting interest.
@@ -296,11 +291,7 @@ export default function ListingDetails({
               Highlights
             </H4>
           </IconTextGroup>
-          <InnerFieldContainer>
-            {listingFields.map(({ label, getValue }) => (
-              <div key={label}>{renderField(label, getValue(listingData))}</div>
-            ))}
-          </InnerFieldContainer>
+          {listingFields}
         </BorderedSection>
         {listingData.listing_type === 'LCA' && (
           <BorderedSection>
