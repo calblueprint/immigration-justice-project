@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useState,
   useMemo,
   ReactNode,
@@ -67,103 +68,102 @@ export default function OnboardingProvider({
   const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
   const [canContinue, setCanContinue] = useState<boolean>(false);
 
-  const providerValue = useMemo(() => {
-    /**
-     * Updates stored profile state with the partial data.
-     * Does not affect database.
-     */
-    const updateProfile = (updatedInfo: Partial<Profile>) => {
+  /**
+   * Updates stored profile state with the partial data.
+   * Does not affect database.
+   */
+  const updateProfile = useCallback(
+    (updatedInfo: Partial<Profile>) => {
       const newUserProfile = { ...userProfile, ...updatedInfo };
       setUserProfile(newUserProfile);
+    },
+    [userProfile],
+  );
+
+  const flushData = useCallback(async () => {
+    if (!auth) throw new Error('Fatal: No auth context provided!');
+    if (!profile) throw new Error('Fatal: No profile context provided!');
+    if (!auth.userId) throw new Error('Fatal: User is not logged in!');
+
+    const uid: UUID = auth.userId;
+
+    if (!userProfile.first_name)
+      throw new Error('Error flushing data: profile missing first name!');
+
+    if (!userProfile.last_name)
+      throw new Error('Error flushing data: profile missing last name!');
+
+    if (userProfile.hours_per_month === undefined)
+      throw new Error('Error flushing data: profile missing hours per month!');
+
+    if (!userProfile.location)
+      throw new Error('Error flushing data: profile missing location!');
+
+    if (!userProfile.start_date)
+      throw new Error('Error flushing data: profile missing start date!');
+
+    if (roles.size === 0)
+      throw new Error('Error flushing data: roles data is empty!');
+
+    if (roles.has('ATTORNEY')) {
+      if (!userProfile.bar_number)
+        throw new Error(
+          'Error flushing data: attorney profile missing bar number!',
+        );
+
+      if (userProfile.eoir_registered === undefined)
+        throw new Error(
+          'Error flushing data: attorney profile missing EOIR registered!',
+        );
+    }
+
+    if (canReads.size === 0)
+      throw new Error('Error flushing data: can read languages data is empty!');
+
+    if (canSpeaks.size === 0)
+      throw new Error(
+        'Error flushing data: can write languages data is empty!',
+      );
+
+    // format data
+    const profileToInsert: Profile = {
+      first_name: userProfile.first_name,
+      last_name: userProfile.last_name,
+      hours_per_month: userProfile.hours_per_month,
+      location: userProfile.location,
+      start_date: userProfile.start_date,
+      availability_description: userProfile.availability_description,
+      bar_number: userProfile.bar_number,
+      eoir_registered: userProfile.eoir_registered,
+      user_id: uid,
+      // TODO: update to get phone number
+      phone_number: '000-000-0000',
     };
 
-    const flushData = async () => {
-      if (!auth) throw new Error('Fatal: No auth context provided!');
-      if (!profile) throw new Error('Fatal: No profile context provided!');
-      if (!auth.userId) throw new Error('Fatal: User is not logged in!');
+    const userLangs = new Set(
+      Array.from(canReads).concat(Array.from(canSpeaks)),
+    );
+    const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
+      user_id: uid,
+      can_read: canReads.has(l),
+      can_speak: canSpeaks.has(l),
+      language_name: l,
+    }));
 
-      const uid: UUID = auth.userId;
+    const rolesToInsert: ProfileRole[] = Array.from(roles).map(r => ({
+      user_id: uid,
+      role: r,
+    }));
 
-      if (!userProfile.first_name)
-        throw new Error('Error flushing data: profile missing first name!');
+    await profile.createNewProfile(
+      profileToInsert,
+      langsToInsert,
+      rolesToInsert,
+    );
+  }, [auth, profile, userProfile, canReads, canSpeaks, roles]);
 
-      if (!userProfile.last_name)
-        throw new Error('Error flushing data: profile missing last name!');
-
-      if (userProfile.hours_per_month === undefined)
-        throw new Error(
-          'Error flushing data: profile missing hours per month!',
-        );
-
-      if (!userProfile.location)
-        throw new Error('Error flushing data: profile missing location!');
-
-      if (!userProfile.start_date)
-        throw new Error('Error flushing data: profile missing start date!');
-
-      if (roles.size === 0)
-        throw new Error('Error flushing data: roles data is empty!');
-
-      if (roles.has('ATTORNEY')) {
-        if (!userProfile.bar_number)
-          throw new Error(
-            'Error flushing data: attorney profile missing bar number!',
-          );
-
-        if (userProfile.eoir_registered === undefined)
-          throw new Error(
-            'Error flushing data: attorney profile missing EOIR registered!',
-          );
-      }
-
-      if (canReads.size === 0)
-        throw new Error(
-          'Error flushing data: can read languages data is empty!',
-        );
-
-      if (canSpeaks.size === 0)
-        throw new Error(
-          'Error flushing data: can write languages data is empty!',
-        );
-
-      // format data
-      const profileToInsert: Profile = {
-        first_name: userProfile.first_name,
-        last_name: userProfile.last_name,
-        hours_per_month: userProfile.hours_per_month,
-        location: userProfile.location,
-        start_date: userProfile.start_date,
-        availability_description: userProfile.availability_description,
-        bar_number: userProfile.bar_number,
-        eoir_registered: userProfile.eoir_registered,
-        user_id: uid,
-        // TODO: update to get phone number
-        phone_number: '000-000-0000',
-      };
-
-      const userLangs = new Set(
-        Array.from(canReads).concat(Array.from(canSpeaks)),
-      );
-      const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
-        user_id: uid,
-        can_read: canReads.has(l),
-        can_speak: canSpeaks.has(l),
-        language_name: l,
-      }));
-
-      const rolesToInsert: ProfileRole[] = Array.from(roles).map(r => ({
-        user_id: uid,
-        role: r,
-      }));
-
-      await profile.createNewProfile(
-        profileToInsert,
-        langsToInsert,
-        rolesToInsert,
-      );
-    };
-
-    return {
+  const providerValue = useMemo(
+    () => ({
       progress,
       userProfile,
       canReads,
@@ -179,18 +179,19 @@ export default function OnboardingProvider({
       setCanSpeaks,
       setRoles,
       setCanContinue,
-    };
-  }, [
-    progress,
-    userProfile,
-    flow,
-    canReads,
-    canSpeaks,
-    roles,
-    canContinue,
-    profile,
-    auth,
-  ]);
+    }),
+    [
+      progress,
+      userProfile,
+      canReads,
+      canSpeaks,
+      roles,
+      flow,
+      canContinue,
+      flushData,
+      updateProfile,
+    ],
+  );
 
   return (
     <OnboardingContext.Provider value={providerValue}>
