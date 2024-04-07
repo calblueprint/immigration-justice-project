@@ -15,6 +15,7 @@ export default function SignUp() {
   const auth = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -33,6 +34,10 @@ export default function SignUp() {
     }
     if (!passwordComplexity) {
       setPasswordError('Password must meet complexity requirements');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
       return;
     }
     setEmailError('');
@@ -100,6 +105,14 @@ export default function SignUp() {
               setComplexity={setPasswordComplexity}
             />
           </SpacerDiv>
+          <TextInput
+            label="Confirm Password"
+            placeholder="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+          />
           <SpacerDiv>
             <BigBlueButton type="button" onClick={handleSignUp}>
               Sign Up
