@@ -66,7 +66,7 @@ export const IconSvgs = {
     >
       <path
         d="M28 11.5L2 11.5M2 11.5L11.75 2M2 11.5L11.75 21"
-        stroke="#0069A9"
+        stroke="#003453"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"

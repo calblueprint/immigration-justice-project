@@ -135,6 +135,7 @@ export default function Page() {
                     value={startDate}
                     setValue={setStartDate}
                     onChange={newValue => {
+                      // turn "" into undefined (cannot be parsed to date)
                       if (!newValue) {
                         field.onChange(undefined);
                         onboarding.updateProfile({

@@ -21,8 +21,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
   }
 
   &:focus {
-    border: 2px solid
-      ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
+    border-color: ${COLORS.blueMid};
   }
 
   ${({ $error }) =>

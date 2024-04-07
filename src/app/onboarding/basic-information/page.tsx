@@ -27,12 +27,10 @@ const basicInformationSchema = z
     }),
     phoneNumber: z
       .string()
-      // uncomment to enable regex checking for phone numbers
-      // currently disabled since it's optional anyways, and complicated regex is bad for performance
-      // .regex(
-      //   /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
-      //   { message: 'Invalid phone number' },
-      // )
+      .regex(
+        /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
+        { message: 'Invalid phone number' },
+      )
       .optional(),
     canSpeaks: z.array(z.string()),
     canReads: z.array(z.string()),
@@ -239,7 +237,7 @@ export default function Page() {
                     error={fieldState.error?.message}
                     options={languages}
                     onChange={v => {
-                      onboarding.setCanReads(v || new Set<string>());
+                      onboarding.setCanReads(v);
                       field.onChange(v);
                     }}
                     defaultValue={onboarding?.canReads}
@@ -252,14 +250,7 @@ export default function Page() {
           />
 
           <Flex $gap="40px">
-            <BigLinkButton
-              // technically redundant - can fix to '/onboarding/roles'
-              // will leave here for consistency with other pages
-              // in case the flow order ever changes
-              href={backlinkHref}
-            >
-              Back
-            </BigLinkButton>
+            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
             <BigBlueButton type="submit" disabled={isEmpty}>
               Continue
             </BigBlueButton>
