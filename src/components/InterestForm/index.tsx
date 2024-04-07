@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import { Interest, Listing} from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
@@ -28,13 +28,20 @@ const radioOptions = [
   'Either Attorney or Interpreter',
 ];
 
-export default function InterestForm({ caseData }: { caseData: CaseListing }) {
-  const auth = useAuth();
+// need to pass interpretation on ListingDetails
+export default function InterestForm({ listingData, interpretation = false }: { listingData: Listing, interpretation?: boolean }) {
+  const auth = useAuth();  
   const [reason, setReason] = useState<string>('');
   const [rolesInterested, setRolesInterested] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);
+
+  // const interestQuestions = useMemo(() => {
+  //   if (listingData.listing_type === 'CASE') {
+
+  //   } 
+  // }, [])
 
   useEffect(() => {
     // Reset form fields when caseData changes
@@ -43,7 +50,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     setRolesInterested('');
     setSubmitted(false);
     setMissingInfo(false);
-  }, [caseData]);
+  }, [listingData]);
 
   const handleInsert = async () => {
     if (startDate === '' || rolesInterested === '') {
@@ -53,7 +60,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     if (isValidDate(startDate)) {
       if (auth && auth.userId) {
         const newInterest: Interest = {
-          listing_id: caseData.id,
+          listing_id: listingData.id,
           listing_type: 'CASE',
           user_id: auth.userId,
           form_response: {
@@ -86,7 +93,7 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
     <FormContainer>
       <H3>Submit Interest</H3>
       {submitted ? (
-        <P>We have received your submission!</P>
+        <P>Your submission has been received!</P>
       ) : (
         <>
           <FormQuestion $color={COLORS.greyDark}>
