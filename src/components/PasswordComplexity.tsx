@@ -31,17 +31,24 @@ function PasswordRequirement({ met, text }: { met: boolean; text: string }) {
   );
 }
 
+function isExistingPassword(password: string) {
+  return password.length > 0; // TODO: replace with a check to see if the password allows the user to log in once we have auth context
+}
+
 export default function PasswordComplexity({
   password,
   setComplexity,
+  isReset = false,
 }: {
   password: string;
   setComplexity: Dispatch<SetStateAction<boolean>>;
+  isReset?: boolean;
 }) {
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /\d/.test(password);
   const longEnough = password.length >= 8;
+  const existingPassword = isReset ? isExistingPassword(password) : true;
 
   if (hasUpperCase && hasLowerCase && hasNumber && longEnough) {
     setComplexity(true);
@@ -62,6 +69,10 @@ export default function PasswordComplexity({
         />
         <PasswordRequirement met={hasNumber} text="At least 1 number" />
         <PasswordRequirement met={longEnough} text="At least 8 characters" />
+        <PasswordRequirement
+          met={existingPassword}
+          text="New password must be different from previous password"
+        />
       </PasswordComplexityDiv>
     );
   }
