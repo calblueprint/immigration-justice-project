@@ -47,7 +47,7 @@ export default function AuthProvider({
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
   // set the session, userId, and userEmail
-  const setAll = (newSession: Session | null) => {
+  const setAll = useCallback((newSession: Session | null) => {
     if (!newSession) return;
     setSession(newSession);
     if (newSession?.user?.id) {
@@ -56,7 +56,7 @@ export default function AuthProvider({
       setUserId(sessionUserId);
       setUserEmail(sessionUserEmail);
     }
-  };
+  }, []);
 
   // on page load, check if there's a session and set it
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function AuthProvider({
     supabase.auth.onAuthStateChange((_event, newSession) => {
       setAll(newSession);
     });
-  }, []);
+  }, [setAll]);
 
   // sign in and set the session, userId, and userEmail
   const signIn = useCallback(async (email: string, password: string) => {
