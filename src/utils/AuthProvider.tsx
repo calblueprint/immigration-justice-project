@@ -48,7 +48,6 @@ export default function AuthProvider({
 
   // set the session, userId, and userEmail
   const setAll = (newSession: Session | null) => {
-    console.log(newSession);
     if (!newSession) return;
     setSession(newSession);
     if (newSession?.user?.id) {
@@ -72,7 +71,6 @@ export default function AuthProvider({
 
   // sign in and set the session, userId, and userEmail
   const signIn = useCallback(async (email: string, password: string) => {
-    console.log('signIn function');
     const value = await supabase.auth.signInWithPassword({
       email,
       password,
