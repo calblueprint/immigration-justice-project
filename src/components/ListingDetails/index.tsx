@@ -209,7 +209,7 @@ export default function ListingDetails({
 
   const dateComponent = () => {
     if (listingData.listing_type !== 'INT') {
-      let dateHeader = 'Assignment Deadline';
+      let dateHeader = 'Deadline';
       let dateData = '';
       if (listingData.listing_type === 'CASE') {
         dateHeader = 'Next Court/Filing Date';
