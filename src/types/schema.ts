@@ -1,20 +1,23 @@
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
 
-// table field types
-export type ImmigrationLawExperienceEnum = 'LOW' | 'MEDIUM' | 'HIGH';
+export interface Profile {
+  user_id: UUID;
+  first_name: string;
+  last_name: string;
+  eoir_registered?: boolean;
+  hours_per_month: number;
+  bar_number?: string;
+  start_date: string; // timestamp
+  availability_description?: string;
+  expected_bar_date?: string; // timestamp
+  location: string; // city, ST
+  phone_number: string;
+  state_barred?: string;
+}
 
-export type RoleEnum =
-  | 'ATTORNEY'
-  | 'INTERPRETER'
-  | 'LEGAL_FELLOW'
-  | 'TRANSLATOR';
+// only used for ProfileRoles
+export type RoleEnum = 'ATTORNEY' | 'INTERPRETER' | 'LEGAL_FELLOW';
 
-export type ListingTypeEnum =
-  | 'CASE'
-  | 'LIMITED_ASSISTANCE'
-  | 'TRANSLATION_REQUEST';
-
-// join table rows
 export interface ProfileLanguage {
   user_id: UUID;
   language_name: string;
@@ -27,48 +30,42 @@ export interface ProfileRole {
   role: RoleEnum;
 }
 
-// sql table rows
-export interface CaseListing {
-  id: UUID;
-  title?: string;
-  summary?: string;
-  country?: string;
-  client_location?: string;
-  legal_server_id: number;
-  hours_per_month?: number;
-  num_months?: number;
-  is_remote?: boolean;
-  needs_attorney?: boolean;
-  needs_interpreter?: boolean;
-  upcoming_date?: string;
-  experience_needed: ImmigrationLawExperienceEnum;
-  adjudicating_agency: string;
-  languages: string[];
-  relief_codes: string[];
-}
-
-export interface Profile {
-  user_id: UUID;
-  first_name: string;
-  last_name: string;
-  location: string;
-  hours_per_month: number;
-  immigration_law_experience?: ImmigrationLawExperienceEnum;
-  bar_number?: string;
-  start_date: string;
-  availability_description?: string;
-  eoir_registered?: boolean;
-}
+export type ListingType =
+  | 'CASE'
+  | 'CASE_INT' // case interpretation
+  | 'LCA'
+  | 'DOC'
+  | 'INT'; // interpretation
 
 export interface Interest {
   listing_id: UUID;
   user_id: UUID;
-  listing_type: ListingTypeEnum;
+  listing_type: ListingType;
   form_response: {
-    rolesInterested: RoleEnum[];
-    interestReason: string;
-    start_date: Date;
+    needs_interpreter?: boolean; // for attorneys only
+    interest_reason?: string;
+    start_date?: Date; // for cases and case interpretation
   };
+}
+
+export interface CaseListing {
+  id: UUID;
+  legal_server_id: string;
+  title?: string;
+  needs_attorney?: boolean;
+  needs_interpreter?: boolean;
+  summary?: string;
+  country?: string;
+  client_location?: string;
+  hours_per_week?: number;
+  num_weeks?: number;
+  is_remote?: boolean;
+  adjudicating_agency?: string;
+  upcoming_date?: string; // timestamp
+  is_detained?: boolean;
+  languages: string[];
+  relief_codes: string[];
+  listing_type: 'CASE';
 }
 
 export interface LimitedCaseAssignment {
@@ -76,26 +73,42 @@ export interface LimitedCaseAssignment {
   title: string;
   summary: string;
   country: string;
-  deadline: string;
-  research_topic: Text;
-  languages: string;
-  listing_type: 'LimitedCaseAssignment';
-}
-
-export interface TranslationRequest {
-  id: UUID;
-  summary: string;
+  deadline: string; // timestamp (deadline to submit assignment)
+  research_topic: string;
+  deliverable: string; // expected deliverable
   languages: string[];
-  interest_ids: UUID[];
+  listing_type: 'LCA';
 }
 
-export interface LanguageSupport {
+export interface Interpretation {
   id: UUID;
   title: string;
   summary: string;
-  is_remote?: boolean;
-  deadline: string;
-  language: string;
-  num_pages?: number;
-  listing_type: string;
+  is_remote: boolean;
+  languages: string[];
+  listing_type: 'INT';
+  upload_date: string; // timestamp
 }
+
+export interface DocumentTranslation {
+  id: UUID;
+  title: string;
+  summary: string;
+  deadline: string;
+  languages: string[];
+  num_pages: number;
+  listing_type: 'DOC';
+  upload_date: string; // timestamp
+}
+
+// union of types, used for ListingCard and CaseDetail components etc.
+export type Listing =
+  | CaseListing
+  | Interpretation
+  | LimitedCaseAssignment
+  | DocumentTranslation;
+
+export type AllLanguageSupport =
+  | DocumentTranslation
+  | Interpretation
+  | CaseListing;

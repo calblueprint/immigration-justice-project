@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { LimitedCaseAssignment } from '@/types/schema';
-import { getAllLCAListings } from '../../api/supabase/queries/limited-case-assignments';
+import { getAllLCA } from '@/api/supabase/queries/limitedCaseAssignments';
 
 /**
  * Fetches all LCA listings from the database
@@ -15,7 +15,7 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const LCAData = await getAllLCAListings();
+        const LCAData = await getAllLCA();
         setData(LCAData);
       } catch (error) {
         console.error('(useEffect)[LCA]', error);
@@ -38,7 +38,7 @@ export default function Page() {
           {data.map(assignment => (
             <tr key={assignment.id}>
               <td>{assignment.id}</td>
-              <td>{assignment.language}</td>
+              <td>{assignment.languages}</td>
             </tr>
           ))}
         </tbody>
