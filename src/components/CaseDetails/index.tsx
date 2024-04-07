@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   timestampStringToDate,
   parseDate,
