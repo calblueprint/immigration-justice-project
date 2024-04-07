@@ -9,7 +9,7 @@ import {
 } from '@/types/schema';
 import { Body, CardColumn, CaseDetailsContainer } from '../cases/styles';
 
-const LCAinfo = {
+const LCAInfo = {
   id: '099644df-c7ef-4eef-bd3b-76196da69886',
   title: 'LCA',
   summary:
@@ -70,7 +70,7 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={CaseInterpInfo} interpretation />
+        <ListingDetails listingData={DocInfo} />
       </CaseDetailsContainer>
     </Body>
   );

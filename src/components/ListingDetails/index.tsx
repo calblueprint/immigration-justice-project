@@ -128,7 +128,7 @@ const docFields: ListingField<DocumentTranslation>[] = [
   // Language Support Type
   {
     label: 'Language Support Type',
-    getValue: () => 'Document Translation', // check if this crashes
+    getValue: () => 'Document Translation',
   },
   // Number of Pages
   {
@@ -213,7 +213,7 @@ export default function ListingDetails({
       let dateData = '';
       if (listingData.listing_type === 'CASE') {
         dateHeader = 'Next Court/Filing Date';
-        dateData = formatTimestamp(listingData.upcoming_date); // listingData.upcoming_date ? formatTimestamp(listingData.upcoming_date) : "N/A"
+        dateData = formatTimestamp(listingData.upcoming_date); 
       } else {
         dateData = formatTimestamp(listingData.deadline);
       }
@@ -278,7 +278,7 @@ export default function ListingDetails({
       <InfoContainer>
         <BorderedSection>
           {dateComponent()}
-          <Flex $align="center" $gap="18px" $direction="row">
+          <Flex $align="center" $gap="18px">
             <img src={logo.src} alt="DOHS Logo" width="77" height="77" />
             <H2>{listingData.title || 'Migrant seeking representation'}</H2>
           </Flex>
@@ -286,10 +286,7 @@ export default function ListingDetails({
         <BorderedSection>
           <IconTextGroup>
             <Icon type="tag" />
-            <H4>
-              {listingData.listing_type === 'LCA' ? 'Assignment' : 'Case'}{' '}
-              Highlights
-            </H4>
+            <H4>Highlights</H4>
           </IconTextGroup>
           {listingFields}
         </BorderedSection>
@@ -309,11 +306,7 @@ export default function ListingDetails({
         <BorderedSection>
           <IconTextGroup>
             <Icon type="briefcase" />
-            <H4>
-              {listingData.listing_type === 'LCA'
-                ? 'Assignment Description'
-                : 'Case Description'}
-            </H4>
+            <H4>Description</H4>
           </IconTextGroup>
           <P>{listingData.summary ? listingData.summary : 'Not Available'}</P>
         </BorderedSection>
