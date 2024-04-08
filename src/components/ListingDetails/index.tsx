@@ -26,7 +26,7 @@ import {
   AuthButtons,
   IconTextGroup,
   BorderedSection,
-  DateText,
+  Subheading,
 } from './styles';
 
 const renderField = (label: string, value: string | boolean | number) => (
@@ -202,7 +202,7 @@ export default function ListingDetails({
     );
   }, [listingData, interpretation]);
 
-  const dateComponent = () => {
+  const dateComponent = useMemo(() => {
     if (listingData.listing_type !== 'INT') {
       let dateHeader = 'Deadline';
       let dateData = '';
@@ -215,15 +215,29 @@ export default function ListingDetails({
       return (
         <IconTextGroup>
           <Icon type="calendar" />
-          <DateText $bold>
-            {dateHeader}: <DateText> {dateData}</DateText>
-          </DateText>
+          <Subheading $bold>
+            {dateHeader}: <Subheading> {dateData}</Subheading>
+          </Subheading>
         </IconTextGroup>
       );
     }
     return null;
-  };
-  
+  }, [listingData]);
+
+  const langSupportLabel = useMemo(() => {
+    let label = '';
+    if (listingData.listing_type === 'INT') {
+      label = 'One-time Interpretation'
+    } else if (listingData.listing_type === 'DOC') {
+      label = 'Document Translation'
+    } else if (interpretation && listingData.listing_type === 'CASE') {
+      label = 'Case Interpretation'
+    } else {
+      return null;
+    }
+    return <Subheading $color={COLORS.blueMid} $bold>{label}</Subheading>
+  }, [listingData])
+
   const Interest = useMemo(() => {
     if (auth && auth.userId) {
       return profile?.profileData ? (
@@ -272,8 +286,9 @@ export default function ListingDetails({
     <CaseDisplay>
       <InfoContainer>
         <BorderedSection>
-          {dateComponent()}
+          {langSupportLabel}
           <H2>{listingData.title || 'Migrant seeking representation'}</H2>
+          {dateComponent}
         </BorderedSection>
         <BorderedSection>
           <IconTextGroup>

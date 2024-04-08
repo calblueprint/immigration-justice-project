@@ -56,8 +56,9 @@ export const BorderedSection = styled.div`
   border: 1px solid ${COLORS.greyLighter};
 `;
 
-export const DateText = styled(P)<{ $bold?: true }>`
+export const Subheading = styled(P)<{ $bold?: true, $color?: string }>`
   display: inline;
   font-size: 1rem;
   font-weight: ${({ $bold }) => ($bold ? 500 : 400)};
+  color: ${({ $color }) => ($color || COLORS.greyDarker)};
 `;
