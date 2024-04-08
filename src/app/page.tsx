@@ -4,26 +4,7 @@ import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import { H2, H3, H4 } from '../styles/text';
 import { LinkButton } from '../components/Button';
-
-import {
-  TitleSection,
-  PageContainer,
-  ButtonDiv,
-  StatisticsSection,
-  StatLabel,
-  StatContainer,
-  HowYouCanHelpContainer,
-  Title,
-  ServiceContainer,
-  ServiceIcon,
-  ServicesDiv,
-  MissionValuesContainer,
-  MissionStatement,
-  TextContainer,
-  ImageBackground,
-  ImageContainer,
-  ImageWrapper,
-} from './styles';
+import * as Styles from './styles';
 
 type Stat = {
   number: string;
@@ -38,11 +19,12 @@ const stats: Stat[] = [
 ];
 
 const renderStat = (stat: Stat) => (
-  <StatContainer key={stat.label}>
+  <Styles.StatContainer key={stat.label}>
     <H2 $color={COLORS.blueDark}>{stat.number}</H2>
-    <StatLabel>{stat.label}</StatLabel>
-  </StatContainer>
+    <Styles.StatLabel>{stat.label}</Styles.StatLabel>
+  </Styles.StatContainer>
 );
+
 type Service = {
   iconSrc: string;
   title: string;
@@ -54,37 +36,39 @@ const services: Service[] = [
     iconSrc: 'An Icon will be Here',
     title: 'Case Assistance',
     description:
-      'Attorneys licensed in any state with or without immigration law experience can represent immigrants and asylum-seekers in removal proceeding before the Immigration Court, the Board of Immigration Appeals and the U.S. Court of Appeals for the Ninth Circuit.',
+      '<b>Attorneys</b> licensed in any state with or without immigration law experience can represent immigrants and asylum-seekers in removal proceeding before the Immigration Court, the Board of Immigration Appeals and the U.S. Court of Appeals for the Ninth Circuit.',
   },
   {
     iconSrc: 'An Icon will be Here',
-    title: 'Limited Case Assistance',
+    title: 'Limited Case Assignment',
     description:
-      'Law students and recent graduates awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
+      '<b>Law students</b> and <b>recent graduates</b> awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
   },
   {
     iconSrc: 'An Icon will be Here',
-    title: 'Translation Assignment',
+    title: 'Language Support',
     description:
-      'Interpreters and translators can conduct volunteer translation and live interpertation. We have frequent need for individuals who speak Creole, Portuguese, Spanish, French, Arabic, and Russian',
+      '<b>Interpreters</b> and <b>translators</b> can conduct volunteer translation and live interpertation. We have frequent need for individuals who speak Creole, Portuguese, Spanish, French, Arabic, and Russian',
   },
 ];
 
 const renderService = (service: Service) => (
-  <ServiceContainer key={service.title}>
-    <ServiceIcon src={service.iconSrc} alt={service.title} />
+  <Styles.ServiceContainer key={service.title}>
+    <Styles.ServiceIcon src={service.iconSrc} alt={service.title} />
     <H3 $color={COLORS.blueMid}>{service.title}</H3>
-    <H4 $color={COLORS.greyDark} $fontWeight="400">
-      {service.description}
-    </H4>
-  </ServiceContainer>
+    <H4
+      $color={COLORS.greyDark}
+      $fontWeight="400"
+      dangerouslySetInnerHTML={{ __html: service.description }}
+    />
+  </Styles.ServiceContainer>
 );
 
 export default function Home() {
   return (
-    <PageContainer>
-      <TitleSection>
-        <ImageContainer>
+    <Styles.PageContainer>
+      <Styles.TitleSection>
+        <Styles.ImageContainer>
           <Image
             alt="background"
             src="/HomePageImage.webp"
@@ -95,37 +79,40 @@ export default function Home() {
             objectFit="cover"
             fill
           />
-          <ImageBackground />
-        </ImageContainer>
-        <TextContainer>
-          <Title>IMMIGRATION JUSTICE PROJECT</Title>
-          <H3 $color="white" $fontWeight="400">
+          <Styles.ImageBackground />
+        </Styles.ImageContainer>
+        <Styles.TextContainer>
+          <Styles.Title>IMMIGRATION JUSTICE PROJECT</Styles.Title>
+          <Styles.Subtitle>
             The Immigration Justice Project (IJP) seeks to promote due process
             and access to justice through the provision of high quality legal
             services on behalf of indigent immigrants and asylum seekers.
-          </H3>
-          <ButtonDiv>
+          </Styles.Subtitle>
+          <Styles.ButtonDiv>
             <LinkButton
               $primaryColor={COLORS.goldMid}
-              $secondaryColor={COLORS.blueDarker}
+              $secondaryColor={COLORS.goldDark}
               href="../signup"
+              style={{ fontSize: '1.5rem' }}
             >
               Learn More
             </LinkButton>
-          </ButtonDiv>
-        </TextContainer>
-      </TitleSection>
-      <StatisticsSection>
+          </Styles.ButtonDiv>
+        </Styles.TextContainer>
+      </Styles.TitleSection>
+      <Styles.StatisticsSection>
         {stats.map(stat => renderStat(stat))}
-      </StatisticsSection>
-      <HowYouCanHelpContainer>
-        <H2 $color={COLORS.blueMid}>HOW YOU CAN HELP</H2>
-        <ServicesDiv>
+      </Styles.StatisticsSection>
+      <Styles.HowYouCanHelpContainer style={{ background: COLORS.background }}>
+        <H2 $color={COLORS.blueMid}>
+          HOW <span style={{ color: COLORS.goldMid }}>YOU</span> CAN HELP
+        </H2>
+        <Styles.ServicesDiv>
           {services.map(Service => renderService(Service))}
-        </ServicesDiv>
-      </HowYouCanHelpContainer>
-      <MissionValuesContainer>
-        <MissionStatement>
+        </Styles.ServicesDiv>
+      </Styles.HowYouCanHelpContainer>
+      <Styles.MissionValuesContainer>
+        <Styles.MissionStatement>
           <H2 $color={COLORS.blueMid} style={{ maxWidth: '500px' }}>
             OUR MISSION VALUES
           </H2>
@@ -139,17 +126,17 @@ export default function Home() {
             navigating immigration legal proceedings in the San Diego,
             California border region.
           </H4>
-          <ButtonDiv>
+          <Styles.ButtonDiv>
             <LinkButton
               $primaryColor={COLORS.goldMid}
-              $secondaryColor={COLORS.blueDarker}
+              $secondaryColor={COLORS.goldDark}
               href="https://www.americanbar.org/groups/public_interest/immigration/"
             >
               Learn More
             </LinkButton>
-          </ButtonDiv>
-        </MissionStatement>
-        <ImageWrapper>
+          </Styles.ButtonDiv>
+        </Styles.MissionStatement>
+        <Styles.ImageWrapper>
           <Image
             alt="Lawyer Image"
             src="/HomePage.webp"
@@ -159,8 +146,8 @@ export default function Home() {
             layout="fill"
             objectFit="contain"
           />
-        </ImageWrapper>
-      </MissionValuesContainer>
-    </PageContainer>
+        </Styles.ImageWrapper>
+      </Styles.MissionValuesContainer>
+    </Styles.PageContainer>
   );
 }
