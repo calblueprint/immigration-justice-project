@@ -18,7 +18,9 @@ const COLORS = {
   redDark: '#B53839',
   redLight: '#F3B1B2',
   redLighter: '#FFE9E9',
+  // Golds
   goldMid: '#CA9B30',
+  goldDark: '#B38212',
 };
 
 export default COLORS;
