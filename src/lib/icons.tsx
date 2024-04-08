@@ -80,33 +80,18 @@ export const IconSvgs = {
       />
     </svg>
   ),
-  briefcase: (
-    <svg
-      width="21"
-      height="22"
-      viewBox="0 0 21 22"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-    >
-      <rect y="0.5" width="21" height="21" fill="url(#pattern0)" />
-      <defs>
-        <pattern
-          id="pattern0"
-          patternContentUnits="objectBoundingBox"
-          width="1"
-          height="1"
-        >
-          <use xlinkHref="#image0_3993_3642" transform="scale(0.0111111)" />
-        </pattern>
-        <image
-          id="image0_3993_3642"
-          width="90"
-          height="90"
-          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAACP0lEQVR4nO2cvU4bQRRGb5WfN0gAiUdKlTpdmLGzRGniPEfyAOnIfKu45RFCqDCvQReRJpWjWVJYAhTvGHzXO+dItwFhD0cf9856RpgBAAAAAABAT958fWaxfW8xnVvQb4ta3ln5e0E/LejYmtOnfd+mbpr5gQVd3iv3/lp0PwtrJrlM8opskv1/unZRLPlfpWaNd6qcmM43F60z719j+IR0vbHo/Bqjnf61VXjI3U759K+tFuW7nc2nf221KEv2g0z/2io1XtO/tjrzmf61VSjZ7XgvOu5oIVqINu8Ukmj5i6N1yF8qPVqINu/EkWj5S6J1yF8gPVrDKh5YhGjzTiGJlr84Wof8pdKjhWjzThyJlr8kWof8BdKjNazigUWINu8UkmitSEh/LKaPNj3Z6ypqdvO1AcgdWeuY3bHG2QDWNTLRb+cvb61x0r5wX9foRE9P9m6t8ajdd19XFa0jtJ8GsK6xiU558M3GNwy5e7fsLTnoV0GiuU1q27lNqmP3P8O4Y3XUvusvOt9ez7fYvRcfd6RCurDX7ZP+ojvZ8wNkaz3Jeau5EV2yU9P1HwbkckXutcX0o2sXxUkGAIBhEzTl3zH03DQU7aNvJuuVBX22ybdXNvl+aB/a5/1faKRkF9lJdhPTl85VdtYb7weAuKOFaCHavFNIouUvjtYhf6n0aCHavBNHouUvidahEfdoPnte9pbM4ay2lWgOZ20bojmc1eNL5nBW25HM4aweSy6HswAAAAAAAAAAAAC2Nn8BFZFz1QhPJNAAAAAASUVORK5CYII="
-        />
-      </defs>
+  description: (
+    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Group 353">
+    <g id="Group 352">
+    <rect id="Rectangle 137" y="0.206543" width="19" height="17.8621" rx="2" fill="#0069A9"/>
+    <g id="Group 349">
+    <path id="Vector" d="M3 6.28752C3 6.09588 3.06748 5.91209 3.1876 5.77658C3.30772 5.64107 3.47063 5.56494 3.64051 5.56494H15.1696C15.3395 5.56494 15.5024 5.64107 15.6225 5.77658C15.7427 5.91209 15.8101 6.09588 15.8101 6.28752C15.8101 6.47916 15.7427 6.66295 15.6225 6.79845C15.5024 6.93396 15.3395 7.01009 15.1696 7.01009H3.64051C3.47063 7.01009 3.30772 6.93396 3.1876 6.79845C3.06748 6.66295 3 6.47916 3 6.28752ZM3 9.17782C3 8.98618 3.06748 8.80239 3.1876 8.66688C3.30772 8.53137 3.47063 8.45524 3.64051 8.45524H15.1696C15.3395 8.45524 15.5024 8.53137 15.6225 8.66688C15.7427 8.80239 15.8101 8.98618 15.8101 9.17782C15.8101 9.36946 15.7427 9.55325 15.6225 9.68876C15.5024 9.82426 15.3395 9.90039 15.1696 9.90039H3.64051C3.47063 9.90039 3.30772 9.82426 3.1876 9.68876C3.06748 9.55325 3 9.36946 3 9.17782ZM3.64051 11.3455C3.47063 11.3455 3.30772 11.4217 3.1876 11.5572C3.06748 11.6927 3 11.8765 3 12.0681C3 12.2598 3.06748 12.4435 3.1876 12.5791C3.30772 12.7146 3.47063 12.7907 3.64051 12.7907H11.3266C11.4965 12.7907 11.6594 12.7146 11.7795 12.5791C11.8996 12.4435 11.9671 12.2598 11.9671 12.0681C11.9671 11.8765 11.8996 11.6927 11.7795 11.5572C11.6594 11.4217 11.4965 11.3455 11.3266 11.3455H3.64051Z" fill="white"/>
+    </g>
+    </g>
+    </g>
     </svg>
+
   ),
 };
 

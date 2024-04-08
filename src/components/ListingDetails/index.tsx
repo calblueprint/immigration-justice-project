@@ -278,10 +278,7 @@ export default function ListingDetails({
       <InfoContainer>
         <BorderedSection>
           {dateComponent()}
-          <Flex $align="center" $gap="18px">
-            <img src={logo.src} alt="DOHS Logo" width="77" height="77" />
-            <H2>{listingData.title || 'Migrant seeking representation'}</H2>
-          </Flex>
+          <H2>{listingData.title || 'Migrant seeking representation'}</H2>
         </BorderedSection>
         <BorderedSection>
           <IconTextGroup>
@@ -305,7 +302,7 @@ export default function ListingDetails({
         )}
         <BorderedSection>
           <IconTextGroup>
-            <Icon type="briefcase" />
+            <Icon type="description" />
             <H4>Description</H4>
           </IconTextGroup>
           <P>{listingData.summary ? listingData.summary : 'Not Available'}</P>
