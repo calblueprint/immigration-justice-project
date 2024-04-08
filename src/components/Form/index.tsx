@@ -143,15 +143,6 @@ export const FormControl = forwardRef<
 });
 FormControl.displayName = 'FormControl';
 
-export const FormDescription = forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(({ ...props }, ref) => {
-  const { formDescriptionId } = useFormField();
-  return <Styles.Description ref={ref} id={formDescriptionId} {...props} />;
-});
-FormDescription.displayName = 'FormDescription';
-
 export const FormMessage = forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>

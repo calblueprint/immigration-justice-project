@@ -17,8 +17,6 @@ export const Label = styled(H4)<{ $required?: boolean }>`
       : null};
 `;
 
-export const Description = styled(P)``;
-
 export const Message = styled(P)<{ $hasError?: boolean }>`
   color: ${({ $hasError }) => ($hasError ? COLORS.redMid : COLORS.greyDark)};
 `;
