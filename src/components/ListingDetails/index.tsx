@@ -15,8 +15,6 @@ import {
 } from '@/types/schema';import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
-import logo from '@/lib/dohs_logo.webp';
 import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
 import Icon from '../Icon';
@@ -170,14 +168,12 @@ export default function ListingDetails({
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
         fields = caseInterpretationFields;
-      }
-      else if (listingData.is_detained) {
+      } else if (listingData.is_detained) {
         fields = [
           ...caseFields,
           {
             label: 'Custody Location',
-            getValue: (data) =>
-              data.client_location || 'N/A',
+            getValue: data => data.client_location || 'N/A',
           },
         ];
       } else {
@@ -185,8 +181,7 @@ export default function ListingDetails({
           ...caseFields,
           {
             label: 'Client Location',
-            getValue: (data) =>
-              data.client_location || 'N/A',
+            getValue: data => data.client_location || 'N/A',
           },
         ];
       }
@@ -213,7 +208,7 @@ export default function ListingDetails({
       let dateData = '';
       if (listingData.listing_type === 'CASE') {
         dateHeader = 'Next Court/Filing Date';
-        dateData = formatTimestamp(listingData.upcoming_date); 
+        dateData = formatTimestamp(listingData.upcoming_date);
       } else {
         dateData = formatTimestamp(listingData.deadline);
       }
