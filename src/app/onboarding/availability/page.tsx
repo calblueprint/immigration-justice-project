@@ -29,16 +29,16 @@ export default function Page() {
   );
 
   useEffect(() => {
-    const hpm = onboarding?.profile.hours_per_month;
+    const hpm = onboarding?.userProfile.hours_per_month;
     setHours(hpm !== undefined && hpm >= 0 ? hpm.toString() : '');
-    setStartDate(onboarding?.profile.start_date || '');
-    setPeriods(onboarding?.profile.availability_description || '');
+    setStartDate(onboarding?.userProfile.start_date || '');
+    setPeriods(onboarding?.userProfile.availability_description || '');
 
     if (
       hpm !== undefined &&
       hpm >= 0 &&
-      onboarding?.profile.start_date &&
-      isValidDate(onboarding?.profile.start_date)
+      onboarding?.userProfile.start_date &&
+      isValidDate(onboarding?.userProfile.start_date)
     ) {
       onboarding?.setCanContinue(true);
     } else {

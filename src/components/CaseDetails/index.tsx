@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   timestampStringToDate,
   parseDate,
@@ -9,7 +9,8 @@ import {
 } from '@/utils/helpers';
 import { H2, H3, P, StrongP } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { useProfile } from '@/utils/ProfileProvider';
+import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
@@ -82,11 +83,12 @@ const caseFields = [
 ];
 
 export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
-  const profile = useContext(ProfileContext);
+  const auth = useAuth();
+  const profile = useProfile();
 
   const Interest = useMemo(() => {
-    if (profile && profile.userId)
-      return profile.profileData ? (
+    if (auth && auth.userId)
+      return profile?.profileData ? (
         <InterestForm caseData={caseData} />
       ) : (
         <>
@@ -126,7 +128,7 @@ export default function CaseDetails({ caseData }: { caseData: CaseListing }) {
         </AuthButtons>
       </>
     );
-  }, [caseData, profile]);
+  }, [auth, caseData, profile]);
 
   return (
     <CaseDisplay>

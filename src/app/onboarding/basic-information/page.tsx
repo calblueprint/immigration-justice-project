@@ -14,12 +14,12 @@ export default function Page() {
   const [lastName, setLastName] = useState('');
 
   useEffect(() => {
-    setFirstName(onboarding?.profile.first_name || '');
-    setLastName(onboarding?.profile.last_name || '');
+    setFirstName(onboarding?.userProfile.first_name || '');
+    setLastName(onboarding?.userProfile.last_name || '');
     if (
-      onboarding?.profile.first_name !== '' &&
-      onboarding?.profile.last_name !== '' &&
-      onboarding?.profile.location !== '' &&
+      onboarding?.userProfile.first_name !== '' &&
+      onboarding?.userProfile.last_name !== '' &&
+      onboarding?.userProfile.location !== '' &&
       onboarding?.canReads.size !== 0 &&
       onboarding?.canSpeaks.size !== 0
     ) {
@@ -67,7 +67,7 @@ export default function Page() {
             location: v || '',
           });
         }}
-        defaultValue={onboarding?.profile.location}
+        defaultValue={onboarding?.userProfile.location}
         placeholder="Select a city"
       />
       <BigDataDropdown

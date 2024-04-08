@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
 import TextInput from '@/components/TextInput/index';
 import { H1, H2, H4, LinkColored, P } from '@/styles/text';
@@ -10,19 +9,21 @@ import COLORS from '@/styles/colors';
 import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
+import { useAuth } from '@/utils/AuthProvider';
 
 export default function SignUp() {
+  const auth = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailSentCount, setEmailSentCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  // const { push } = useRouter();
 
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   const handleSignUp = async () => {
+    if (!auth) return;
     setEmailError(validEmail(email) ? '' : 'Invalid Email');
     setPasswordError(password !== '' ? '' : 'Invalid Password');
     if (!validEmail(email) || password === '') {
@@ -31,13 +32,9 @@ export default function SignUp() {
     }
     setEmailError('');
     setPasswordError('');
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo:
-          'https://immigration-justice-project.vercel.app/email-verified',
-      },
+    const { error } = await auth.signUp(email, password, {
+      emailRedirectTo:
+        'https://immigration-justice-project.vercel.app/email-verified',
     });
 
     if (error) {

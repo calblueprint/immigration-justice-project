@@ -16,12 +16,12 @@ export default function Page() {
   useEffect(() => {
     if (!onboarding) return;
 
-    const barNumber = onboarding.profile.bar_number || '';
-    const isRegistered = onboarding.profile.eoir_registered;
+    const barNumber = onboarding.userProfile.bar_number || '';
+    const isRegistered = onboarding.userProfile.eoir_registered;
 
     setBarNum(barNumber);
     if (isRegistered !== undefined)
-      setRegistered(onboarding.profile.eoir_registered ? 'Yes' : 'No');
+      setRegistered(onboarding.userProfile.eoir_registered ? 'Yes' : 'No');
 
     if (isValidBarNumber(barNumber) && isRegistered !== undefined) {
       onboarding.setCanContinue(true);

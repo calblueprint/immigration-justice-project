@@ -1,14 +1,7 @@
 'use client';
 
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '@/api/supabase/createClient';
 import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
@@ -16,8 +9,9 @@ import { cities, languages } from '@/lib/bigData';
 import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import SettingsSection from '@/components/SettingsSection';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { useProfile } from '@/utils/ProfileProvider';
 import { isValidBarNumber } from '@/utils/helpers';
+import { useAuth } from '@/utils/AuthProvider';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -28,11 +22,12 @@ const rolesOptions = new Map<RoleEnum, string>([
 const eoirRegisteredOptions = ['Yes', 'No'];
 
 export default function Settings() {
+  const auth = useAuth();
   const { push } = useRouter();
-  const profile = useContext(ProfileContext);
+  const profile = useProfile();
 
-  const userId = useMemo(() => profile?.userId, [profile]);
-  const userEmail = useMemo(() => profile?.userEmail, [profile]);
+  const userId = useMemo(() => auth?.userId, [auth]);
+  const userEmail = useMemo(() => auth?.userEmail, [auth]);
 
   const [basicInformation, setBasicInformation] = useState<SettingsSectionData>(
     [],
@@ -167,12 +162,12 @@ export default function Settings() {
   }, [profile]);
 
   const handleSignOut = useCallback(async () => {
-    const { error } = await supabase.auth.signOut();
+    const error = await auth?.signOut();
     if (error) {
       throw new Error(`An error occurred trying to sign out: ${error.message}`);
     }
     push('/login');
-  }, [push]);
+  }, [auth, push]);
 
   const handleUpdateBasicInformation = useCallback(
     (nd: SettingsSectionData) => {

@@ -6,6 +6,7 @@ import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
 import { ProfileContext } from '@/utils/ProfileProvider';
+import { AuthContext } from '@/utils/AuthProvider';
 import CONFIG from '@/lib/configs';
 import ProgressBar from './ProgressBar';
 import BigButton from './BigButton';
@@ -15,6 +16,7 @@ export default function OnboardingManager({
 }: {
   children: ReactNode;
 }) {
+  const auth = useContext(AuthContext);
   const profile = useContext(ProfileContext);
   const onboarding = useContext(OnboardingContext);
   const router = useRouter();
@@ -34,7 +36,7 @@ export default function OnboardingManager({
     if (
       onboarding.progress < 0 ||
       onboarding.progress >= onboarding.flow.length ||
-      !profile?.userId ||
+      !auth?.userId ||
       (profile?.profileReady && profile?.profileData)
     ) {
       router.push(CONFIG.homepage);
