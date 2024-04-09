@@ -43,7 +43,7 @@ export const StatContainer = styled.div`
   text-align: center;
 `;
 export const HowYouCanHelpContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,7 +80,7 @@ export const ServiceIcon = styled.img`
 
 export const MissionValuesContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr; // Example adjustment
+  grid-template-columns: 45fr 55fr;
   grid-template-rows: auto;
   background-color: ${COLORS.blueLighter};
   width: 100%;
@@ -98,12 +98,15 @@ export const MissionStatement = styled.div`
 `;
 
 export const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   max-width: 900px;
   max-height: 395px;
   padding-top: clamp(5px, 25vh, 200px);
   padding-left: clamp(40px, 10%, 84px);
   z-index: 1;
-  gap: 50px;
+  gap:30px;
+  gap: clamp(10px, 5vh,30px);
 `;
 export const ImageBackground = styled.div`
   position: absolute;
@@ -126,6 +129,7 @@ export const Title = styled.h5<{ $color?: string }>`
   font-size: 5.31rem;
   font-weight: 600;
   color: white;
+  line-height: 5.5rem;
   font-size: clamp(1rem, 11vh, 5.31rem);
   margin: 0;
 `;
