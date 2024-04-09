@@ -105,8 +105,8 @@ export const TextContainer = styled.div`
   padding-top: clamp(5px, 25vh, 200px);
   padding-left: clamp(40px, 10%, 84px);
   z-index: 1;
-  gap:30px;
-  gap: clamp(10px, 5vh,30px);
+  gap: 30px;
+  gap: clamp(10px, 5vh, 30px);
 `;
 export const ImageBackground = styled.div`
   position: absolute;
