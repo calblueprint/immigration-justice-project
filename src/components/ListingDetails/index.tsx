@@ -83,11 +83,6 @@ const caseInterpretationFields: ListingField<CaseListing>[] = [
     label: 'Language(s)',
     getValue: data => data.languages.join(', '),
   },
-  // Language Support Type
-  {
-    label: 'Language Support Type',
-    getValue: () => 'One-Time Intepretation',
-  },
   // Time Commitment
   {
     label: 'Time Commitment',
@@ -106,11 +101,6 @@ const intepretationFields: ListingField<Interpretation>[] = [
     label: 'Language(s)',
     getValue: data => data.languages.join(', '),
   },
-  // Language Support Type
-  {
-    label: 'Language Support Type',
-    getValue: () => 'One-Time Intepretation',
-  },
   // Remote/In Person
   {
     label: 'Remote/In Person',
@@ -123,11 +113,6 @@ const docFields: ListingField<DocumentTranslation>[] = [
   {
     label: 'Language(s)',
     getValue: data => data.languages.join(', '),
-  },
-  // Language Support Type
-  {
-    label: 'Language Support Type',
-    getValue: () => 'Document Translation',
   },
   // Number of Pages
   {
