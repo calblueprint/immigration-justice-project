@@ -4,6 +4,7 @@ import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import { H2, H3, H4 } from '../styles/text';
 import { LinkButton } from '../components/Button';
+import homepageImage from '../../public/images/HomePageImage.webp';
 import * as Styles from './styles';
 
 type Stat = {
@@ -12,10 +13,10 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { number: '100+', label: 'Matched Cases' },
-  { number: '50+', label: 'Attorneys' },
-  { number: '100+', label: 'Translation Support' },
-  { number: '100+', label: 'Successful Outcomes' },
+  { number: '181+', label: 'Matched Cases' },
+  { number: '181+', label: 'Attorneys' },
+  { number: '65+', label: 'Interpreters & Translators' },
+  { number: '46+', label: 'Successful Outcomes' },
 ];
 
 const renderStat = (stat: Stat) => (
@@ -71,9 +72,9 @@ export default function Home() {
         <Styles.ImageContainer>
           <Image
             alt="background"
-            src="/HomePageImage.webp"
+            src={homepageImage.src}
             placeholder="blur"
-            blurDataURL="/HomePageImage.webp"
+            blurDataURL={homepageImage.src}
             quality={100}
             layout="fill"
             objectFit="cover"
@@ -139,9 +140,9 @@ export default function Home() {
         <Styles.ImageWrapper>
           <Image
             alt="Lawyer Image"
-            src="/HomePage.webp"
+            src={homepageImage.src}
             placeholder="blur"
-            blurDataURL="/HomePage.webp"
+            blurDataURL={homepageImage.src}
             quality={100}
             layout="fill"
             objectFit="contain"
