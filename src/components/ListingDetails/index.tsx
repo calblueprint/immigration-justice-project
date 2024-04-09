@@ -12,7 +12,8 @@ import {
   Interpretation,
   LimitedCaseAssignment,
   Listing,
-} from '@/types/schema';import { useProfile } from '@/utils/ProfileProvider';
+} from '@/types/schema';
+import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
 import InterestForm from '../InterestForm';
@@ -161,8 +162,8 @@ export default function ListingDetails({
   interpretation?: boolean;
 }) {
   const auth = useAuth();
-  const profile = useProfile();  
-  
+  const profile = useProfile();
+
   const listingFields = useMemo(() => {
     let fields: ListingField<any>[];
     if (listingData.listing_type === 'CASE') {
@@ -214,7 +215,7 @@ export default function ListingDetails({
       }
       return (
         <IconTextGroup>
-          <Icon type="calendar" />
+          <Icon type="calendarBig" />
           <Subheading $bold>
             {dateHeader}: <Subheading> {dateData}</Subheading>
           </Subheading>
@@ -304,7 +305,7 @@ export default function ListingDetails({
         {listingData.listing_type === 'LCA' && (
           <BorderedSection>
             <IconTextGroup>
-              <Icon type="tag" />
+              <Icon type="research" />
               <H4>Research Topic(s)</H4>
             </IconTextGroup>
             <P>
