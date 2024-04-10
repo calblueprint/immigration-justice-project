@@ -6,14 +6,6 @@ import ListingPage from '@/components/ListingPage';
 import { CaseListing, Listing } from '@/types/schema';
 import { parseAgency } from '@/utils/helpers';
 
-const defaultFilterValues = {
-  remote: 'Remote/In Person',
-  role: 'Roles needed',
-  languages: 'Languages',
-  agency: 'Adjudicating Agency',
-  countries: 'Country of Origin',
-};
-
 const remoteOptions = new Set(['Remote', 'In Person']);
 
 export default function Page() {
@@ -109,28 +101,28 @@ export default function Page() {
           options: remoteOptions,
           value: remoteFilters,
           onChange: newValue => setRemoteFilters(newValue),
-          placeholder: defaultFilterValues.remote,
+          placeholder: 'Remote/In Person',
         },
         {
           id: 'languages',
           options: languageOptions,
           value: languagesFilters,
           onChange: newValue => setLanguagesFilters(newValue),
-          placeholder: defaultFilterValues.languages,
+          placeholder: 'Languages',
         },
         {
           id: 'adjudicating-agency',
           options: agencyOptions,
           value: agencyFilters,
           onChange: newValue => setAgencyFilters(newValue),
-          placeholder: defaultFilterValues.agency,
+          placeholder: 'Adjudicating Agency',
         },
         {
           id: 'countries',
           options: countryOptions,
           value: countriesFilters,
           onChange: newValue => setCountriesFilters(newValue),
-          placeholder: defaultFilterValues.countries,
+          placeholder: 'Country of Origin',
         },
       ]}
       filteredListings={filteredCases}
