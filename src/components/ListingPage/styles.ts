@@ -34,9 +34,11 @@ export const PageContainer = styled.div`
     position: relative;
     width: 100%;
     background: rgba(204, 204, 204, 0.75);
+    border: 5px solid white;
     border-radius: 20px;
 
     &:hover {
+      border: 4px solid white;
       background: rgba(204, 204, 204, 0.9);
     }
   }
@@ -78,14 +80,6 @@ export const ListingDetailsContainer = styled.div`
   flex-grow: 1;
   flex-direction: column;
   background: white;
-
-  ::-webkit-scrollbar-thumb {
-    border: 5px solid white;
-
-    &:hover {
-      border: 4px solid white;
-    }
-  }
 `;
 
 export const Header = styled.header`
