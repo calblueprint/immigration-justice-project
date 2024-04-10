@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingPage from '@/components/ListingPage';
 import { CaseListing } from '@/types/schema';
@@ -23,6 +23,18 @@ export default function Page() {
   const [languagesFilters, setLanguagesFilters] = useState(new Set<string>());
   const [countriesFilters, setCountriesFilters] = useState(new Set<string>());
 
+  // load cases on first render
+  useEffect(() => {
+    (async () => {
+      try {
+        const cases = await getNCases(20);
+        setCaseData(cases);
+      } catch (error) {
+        console.error(error instanceof Error ? error.message : String(error));
+      }
+    })();
+  }, []);
+
   const agencyOptions: Map<string, string> = useMemo(
     () =>
       new Map(
@@ -35,12 +47,14 @@ export default function Page() {
       ),
     [caseData],
   );
+
   const languageOptions = useMemo(
     () => new Set(caseData.flatMap(c => c.languages)),
     [caseData],
   );
+
   const countryOptions = useMemo(
-    () => new Set(caseData.map(c => c.country).filter(c => c)) as Set<string>,
+    () => new Set(caseData.map(c => c.country || '').filter(c => c)),
     [caseData],
   );
 
@@ -77,19 +91,12 @@ export default function Page() {
     ],
   );
 
-  // load cases on render
-  useEffect(() => {
-    getNCases(20).then(casesData => {
-      setCaseData(casesData as CaseListing[]);
-    });
-  }, []);
-
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setRemoteFilters(new Set());
     setAgencyFilters(new Set());
     setLanguagesFilters(new Set());
     setCountriesFilters(new Set());
-  };
+  }, []);
 
   return (
     <ListingPage

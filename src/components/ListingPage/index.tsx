@@ -22,11 +22,13 @@ export default function ListingPage({
   resetFilters,
   filteredListings,
   defaultListing,
+  interpretation,
 }: {
   filters: Filter[];
   resetFilters: () => void;
   filteredListings: Listing[];
   defaultListing?: Listing;
+  interpretation?: boolean;
 }) {
   const [selectedCard, setSelectedCard] = useState<string | null>(
     defaultListing ? defaultListing.id : null,
@@ -73,6 +75,7 @@ export default function ListingPage({
                     setSelectedCard(listing.id);
                     setListingInfo(listing);
                   }}
+                  interpretation={interpretation}
                 />
               ))}
             </>
