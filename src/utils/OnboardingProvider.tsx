@@ -95,6 +95,9 @@ export default function OnboardingProvider({
     if (!userProfile.start_date)
       throw new Error('Error flushing data: profile missing start date!');
 
+    if (!userProfile.phone_number)
+      throw new Error('Error flushing data: profile missing phone number!');
+
     if (roles.length === 0)
       throw new Error('Error flushing data: roles data is empty!');
 

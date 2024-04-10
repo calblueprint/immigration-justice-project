@@ -9,7 +9,8 @@
     "lint:check": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
     "prettier:check": "npx prettier --check .",
-    "prettier:fix": "npx prettier --write ."
+    "prettier:fix": "npx prettier --write .",
+    "tsc": "npx tsc --noEmit"
   },
   "dependencies": {
     "@calblueprint/prettier-config": "^0.0.1",
