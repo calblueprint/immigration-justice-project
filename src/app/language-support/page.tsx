@@ -5,7 +5,7 @@ import { getAllCases } from '@/api/supabase/queries/cases';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
 import ListingPage from '@/components/ListingPage';
-import { LanguageSupport } from '@/types/schema';
+import { LanguageSupport, Listing } from '@/types/schema';
 import { timestampStringToDate } from '@/utils/helpers';
 
 const typeOptions = new Map([
@@ -18,6 +18,7 @@ export default function Page() {
   const [lsData, setLSData] = useState<LanguageSupport[]>([]);
   const [typeFilters, setTypeFilters] = useState(new Set<string>());
   const [languageFilters, setLanguageFilters] = useState(new Set<string>());
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
 
   // load language support on first render
   useEffect(() => {
@@ -36,12 +37,15 @@ export default function Page() {
             timestampStringToDate(a.upload_date).getTime(),
         );
 
-        setLSData([
+        const lsDataToSet = [
           ...casesInterpretationListings.filter(
             caseInterpretation => caseInterpretation.needs_interpreter === true,
           ),
           ...sortedLS,
-        ]);
+        ];
+
+        setLSData(lsDataToSet);
+        setSelectedListing(lsDataToSet[0]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }
@@ -92,7 +96,8 @@ export default function Page() {
       ]}
       filteredListings={filteredLS}
       resetFilters={resetFilters}
-      defaultListing={lsData[0]}
+      selectedListing={selectedListing}
+      setSelectedListing={listing => setSelectedListing(listing)}
       interpretation
     />
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo } from 'react';
 import type { Listing } from '@/types/schema';
 import COLORS from '@/styles/colors';
 import { CenteredH3, H1 } from '@/styles/text';
@@ -21,21 +21,18 @@ export default function ListingPage({
   filters,
   resetFilters,
   filteredListings,
-  defaultListing,
+  selectedListing,
+  setSelectedListing,
   interpretation,
 }: {
   filters: Filter[];
   resetFilters: () => void;
   filteredListings: Listing[];
-  defaultListing?: Listing;
+  selectedListing: Listing | null;
+  setSelectedListing: (listing: Listing | null) => void;
   interpretation?: boolean;
 }) {
-  const [selectedCard, setSelectedCard] = useState<string | null>(
-    defaultListing ? defaultListing.id : null,
-  );
-  const [listingInfo, setListingInfo] = useState<Listing | null>(
-    defaultListing ?? null,
-  );
+  const selectedCard = useMemo(() => selectedListing?.id, [selectedListing]);
 
   return (
     <Styles.PageContainer>
@@ -73,8 +70,7 @@ export default function ListingPage({
                     listing={listing}
                     isSelected={listing.id === selectedCard}
                     onClick={() => {
-                      setSelectedCard(listing.id);
-                      setListingInfo(listing);
+                      setSelectedListing(listing);
                     }}
                     interpretation={interpretation}
                   />
@@ -84,7 +80,7 @@ export default function ListingPage({
           </Styles.CardColumn>
         </Styles.CardColumnWrapper>
         <Styles.ListingDetailsContainer>
-          {listingInfo ? (
+          {selectedListing ? (
             <>Listing Details</>
           ) : (
             <Styles.NoListingsContainer>

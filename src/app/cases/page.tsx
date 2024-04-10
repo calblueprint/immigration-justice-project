@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingPage from '@/components/ListingPage';
-import { CaseListing } from '@/types/schema';
+import { CaseListing, Listing } from '@/types/schema';
 import { parseAgency } from '@/utils/helpers';
 
 const defaultFilterValues = {
@@ -22,6 +22,7 @@ export default function Page() {
   const [agencyFilters, setAgencyFilters] = useState(new Set<string>());
   const [languagesFilters, setLanguagesFilters] = useState(new Set<string>());
   const [countriesFilters, setCountriesFilters] = useState(new Set<string>());
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
 
   // load cases on first render
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function Page() {
       try {
         const cases = await getNCases(20);
         setCaseData(cases);
+        setSelectedListing(cases[0]);
       } catch (error) {
         console.error(error instanceof Error ? error.message : String(error));
       }
@@ -133,7 +135,8 @@ export default function Page() {
       ]}
       filteredListings={filteredCases}
       resetFilters={resetFilters}
-      defaultListing={caseData[0]}
+      selectedListing={selectedListing}
+      setSelectedListing={listing => setSelectedListing(listing)}
     />
   );
 }

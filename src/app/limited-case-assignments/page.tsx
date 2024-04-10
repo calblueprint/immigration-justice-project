@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getNLCA } from '@/api/supabase/queries/limitedCaseAssignments';
 import ListingPage from '@/components/ListingPage';
-import { LimitedCaseAssignment } from '@/types/schema';
+import { LimitedCaseAssignment, Listing } from '@/types/schema';
 
 export default function Page() {
   const [lcaData, setLCAData] = useState<LimitedCaseAssignment[]>([]);
   const [countryFilters, setCountryFilters] = useState(new Set<string>());
   const [languageFilters, setLanguageFilters] = useState(new Set<string>());
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
 
   // load LCA on first render
   useEffect(() => {
@@ -16,6 +17,7 @@ export default function Page() {
       try {
         const lcas = await getNLCA(20);
         setLCAData(lcas);
+        setSelectedListing(lcas[0]);
       } catch (error) {
         console.error(error instanceof Error ? error.message : String(error));
       }
@@ -70,7 +72,8 @@ export default function Page() {
       ]}
       filteredListings={filteredLCA}
       resetFilters={resetFilters}
-      defaultListing={lcaData[0]}
+      selectedListing={selectedListing}
+      setSelectedListing={listing => setSelectedListing(listing)}
     />
   );
 }
