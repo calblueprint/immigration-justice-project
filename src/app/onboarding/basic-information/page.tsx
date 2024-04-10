@@ -26,12 +26,11 @@ const basicInformationSchema = z
       required_error: 'Please include the city of your primary residence',
     }),
     phoneNumber: z
-      .string()
+      .string({ required_error: 'Please include a phone number' })
       .regex(
         /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
         { message: 'Invalid phone number' },
-      )
-      .optional(),
+      ),
     canSpeaks: z.array(z.string()),
     canReads: z.array(z.string()),
   })
@@ -73,6 +72,7 @@ export default function Page() {
         formValues.firstName &&
         formValues.lastName &&
         formValues.city &&
+        formValues.phoneNumber &&
         (formValues.canReads.length > 0 || formValues.canSpeaks.length > 0)
       ),
     [formValues],
@@ -171,7 +171,7 @@ export default function Page() {
             name="phoneNumber"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel $required={false}>Phone Number</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <TextInput
                     errorText={fieldState.error?.message}

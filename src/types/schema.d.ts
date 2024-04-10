@@ -11,7 +11,7 @@ export interface Profile {
   availability_description?: string;
   expected_bar_date?: string; // timestamp
   location: string; // city, ST
-  phone_number?: string;
+  phone_number: string;
   state_barred?: string;
 }
 
