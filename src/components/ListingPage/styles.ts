@@ -3,22 +3,10 @@ import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { H4 } from '@/styles/text';
 
-export const AuthButtons = styled.div`
-  display: flex;
-  gap: 1.5625rem;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 2.1875rem;
-  margin-right: 3.375rem;
-`;
-
 export const FiltersContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin-top: 1rem;
   gap: 1rem;
 
   & > a {
@@ -36,7 +24,6 @@ export const PageContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 1rem;
 `;
 
 export const ListingCount = styled(H4)`
@@ -52,30 +39,20 @@ export const CardColumn = styled.div`
   padding: 0 3rem 0 2rem;
   padding-top: 1rem;
   background-color: ${COLORS.background};
-
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    width: 10px;
-    background: ${COLORS.greyLight};
-  }
 `;
 
-export const CaseDetailsContainer = styled.div`
+export const ListingDetailsContainer = styled.div`
   overflow-y: scroll;
   position: relative;
 `;
 
 export const Header = styled.header`
-  padding: 0 2rem;
-  padding-bottom: 1rem;
+  padding: 20px 30px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   z-index: 10;
 `;
 
-export const Body = styled.div`
+export const ListingDisplay = styled.div`
   display: grid;
   grid-template-columns: 4.5fr 10fr;
   height: 100%;
@@ -98,7 +75,7 @@ export const ResetFilters = styled.button`
   }
 `;
 
-export const NoCasesContainer = styled.div`
+export const NoListingsContainer = styled.div`
   position: relative;
   text-align: center;
   top: 35%;

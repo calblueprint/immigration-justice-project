@@ -1,39 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { UUID } from 'crypto';
 import { getNCases } from '@/api/supabase/queries/cases';
-import { LinkButton } from '@/components/Buttons';
-import FilterDropdown from '@/components/FilterDropdown';
-import ListingCard from '@/components/ListingCard';
-import ListingDetails from '@/components/ListingDetails';
-import ProfileButton from '@/components/ProfileButton';
-import COLORS from '@/styles/colors';
-import { CenteredH3, H1, H2 } from '@/styles/text';
+import ListingPage from '@/components/ListingPage';
 import { CaseListing } from '@/types/schema';
-import { useAuth } from '@/utils/AuthProvider';
 import { parseAgency } from '@/utils/helpers';
-import { useProfile } from '@/utils/ProfileProvider';
-import {
-  AuthButtons,
-  Body,
-  CardColumn,
-  CaseDetailsContainer,
-  FiltersContainer,
-  Header,
-  ListingCount,
-  NoCasesContainer,
-  PageContainer,
-  ResetFilters,
-} from './styles';
-
-type FilterType = {
-  remote: Set<string>;
-  role: Set<string>;
-  agency: Set<string>;
-  languages: Set<string>;
-  countries: Set<string>;
-};
 
 const defaultFilterValues = {
   remote: 'Remote/In Person',
@@ -43,22 +14,15 @@ const defaultFilterValues = {
   countries: 'Country of Origin',
 };
 
-export default function Page() {
-  const profile = useProfile();
-  const auth = useAuth();
-  const [selectedCard, setSelecatedCard] = useState<UUID | null>(null);
-  const [caseData, setCaseData] = useState<CaseListing[]>([]);
-  const [caseInfo, setCaseInfo] = useState<CaseListing>();
-  const [caseFilters, setCaseFilters] = useState<FilterType>({
-    remote: new Set(),
-    role: new Set(),
-    agency: new Set(),
-    languages: new Set(),
-    countries: new Set(),
-  });
+const remoteOptions = new Set(['Remote', 'In Person']);
 
-  const remoteOptions = useMemo(() => new Set(['Remote', 'In Person']), []);
-  const roleOptions = useMemo(() => new Set(['Attorney', 'Interpreter']), []);
+export default function Page() {
+  const [caseData, setCaseData] = useState<CaseListing[]>([]);
+  const [remoteFilters, setRemoteFilters] = useState(new Set<string>());
+  const [agencyFilters, setAgencyFilters] = useState(new Set<string>());
+  const [languagesFilters, setLanguagesFilters] = useState(new Set<string>());
+  const [countriesFilters, setCountriesFilters] = useState(new Set<string>());
+
   const agencyOptions: Map<string, string> = useMemo(
     () =>
       new Map(
@@ -85,162 +49,84 @@ export default function Page() {
       caseData
         .filter(
           c =>
-            caseFilters.remote.size === 0 ||
-            (caseFilters.remote.has('Remote') && c.is_remote) ||
-            (caseFilters.remote.has('In Person') && !c.is_remote),
+            remoteFilters.size === 0 ||
+            (remoteFilters.has('Remote') && c.is_remote) ||
+            (remoteFilters.has('In Person') && !c.is_remote),
         )
         .filter(
           c =>
-            caseFilters.role.size === 0 ||
-            (caseFilters.role.has('Interpreter') && c.needs_interpreter) ||
-            (caseFilters.role.has('Attorney') && c.needs_attorney),
+            languagesFilters.size === 0 ||
+            c.languages.find(l => languagesFilters.has(l)),
         )
         .filter(
           c =>
-            caseFilters.languages.size === 0 ||
-            c.languages.find(l => caseFilters.languages.has(l)),
-        )
-        .filter(
-          c =>
-            caseFilters.agency.size === 0 ||
-            (c.adjudicating_agency &&
-              caseFilters.agency.has(c.adjudicating_agency)),
+            agencyFilters.size === 0 ||
+            (c.adjudicating_agency && agencyFilters.has(c.adjudicating_agency)),
         )
         .filter(c =>
-          caseFilters.countries.size > 0
-            ? c.country && caseFilters.countries.has(c.country)
+          countriesFilters.size > 0
+            ? c.country && countriesFilters.has(c.country)
             : true,
         ),
-    [caseData, caseFilters],
+    [
+      caseData,
+      remoteFilters,
+      languagesFilters,
+      agencyFilters,
+      countriesFilters,
+    ],
   );
 
   // load cases on render
   useEffect(() => {
     getNCases(20).then(casesData => {
       setCaseData(casesData as CaseListing[]);
-      setCaseInfo(casesData[0] as CaseListing);
-      setSelecatedCard(casesData[0]?.id);
     });
   }, []);
 
-  const AuthButtonView = useMemo(() => {
-    if (profile?.profileReady && auth?.userId)
-      return (
-        <ProfileButton href="/settings">
-          {profile.profileData?.first_name || 'Profile'}
-        </ProfileButton>
-      );
-
-    return (
-      <>
-        <LinkButton $secondaryColor={COLORS.blueMid} href="/signup">
-          Sign Up
-        </LinkButton>
-        <LinkButton
-          $primaryColor={COLORS.blueMid}
-          $secondaryColor={COLORS.blueDark}
-          href="/login"
-        >
-          Log In
-        </LinkButton>
-      </>
-    );
-  }, [profile, auth]);
-
   const resetFilters = () => {
-    setCaseFilters({
-      remote: new Set(),
-      role: new Set(),
-      agency: new Set(),
-      languages: new Set(),
-      countries: new Set(),
-    });
+    setRemoteFilters(new Set());
+    setAgencyFilters(new Set());
+    setLanguagesFilters(new Set());
+    setCountriesFilters(new Set());
   };
 
   return (
-    <PageContainer>
-      <Header>
-        <H2>Browse Available Cases</H2>
-        <FiltersContainer>
-          <FilterDropdown
-            placeholder={defaultFilterValues.remote}
-            multi
-            options={remoteOptions}
-            value={caseFilters.remote}
-            fullText="Remote, In Person"
-            onChange={v => setCaseFilters({ ...caseFilters, remote: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.role}
-            multi
-            options={roleOptions}
-            value={caseFilters.role}
-            fullText="Attorney, Interpreter"
-            onChange={v => setCaseFilters({ ...caseFilters, role: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.languages}
-            multi
-            options={languageOptions}
-            value={caseFilters.languages}
-            onChange={v => setCaseFilters({ ...caseFilters, languages: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.agency}
-            multi
-            options={agencyOptions}
-            value={caseFilters.agency}
-            onChange={v => setCaseFilters({ ...caseFilters, agency: v })}
-          />
-          <FilterDropdown
-            placeholder={defaultFilterValues.countries}
-            multi
-            options={countryOptions}
-            value={caseFilters.countries}
-            onChange={v => setCaseFilters({ ...caseFilters, countries: v })}
-          />
-          <ResetFilters onClick={() => resetFilters()}>
-            Reset Filters
-          </ResetFilters>
-          <AuthButtons>{AuthButtonView}</AuthButtons>
-        </FiltersContainer>
-      </Header>
-      <Body>
-        <CardColumn>
-          <ListingCount $color={COLORS.greyMid}>
-            {filteredCases.length} listings found
-          </ListingCount>
-          {filteredCases.length === 0 ? (
-            <CenteredH3 $color={COLORS.greyMid}>No cases listed</CenteredH3>
-          ) : (
-            <>
-              {filteredCases.map(c => (
-                <ListingCard
-                  key={c.id}
-                  listing={c}
-                  isSelected={c.id === selectedCard}
-                  onClick={() => {
-                    setSelecatedCard(c.id);
-                    setCaseInfo(c);
-                  }}
-                />
-              ))}
-            </>
-          )}
-        </CardColumn>
-        <CaseDetailsContainer>
-          {caseInfo ? (
-            <ListingDetails listingData={caseInfo} />
-          ) : (
-            <NoCasesContainer>
-              <H1 $color={COLORS.greyMid}>No cases listed</H1>
-              <CenteredH3 $color={COLORS.greyMid}>
-                Check back later for more cases
-              </CenteredH3>
-            </NoCasesContainer>
-          )}
-        </CaseDetailsContainer>
-      </Body>
-    </PageContainer>
+    <ListingPage
+      filters={[
+        {
+          id: 'remote/in-person',
+          fullText: 'Remote, In Person',
+          options: remoteOptions,
+          value: remoteFilters,
+          onChange: newValue => setRemoteFilters(newValue),
+          placeholder: defaultFilterValues.remote,
+        },
+        {
+          id: 'languages',
+          options: languageOptions,
+          value: languagesFilters,
+          onChange: newValue => setLanguagesFilters(newValue),
+          placeholder: defaultFilterValues.languages,
+        },
+        {
+          id: 'adjudicating-agency',
+          options: agencyOptions,
+          value: agencyFilters,
+          onChange: newValue => setAgencyFilters(newValue),
+          placeholder: defaultFilterValues.agency,
+        },
+        {
+          id: 'countries',
+          options: countryOptions,
+          value: countriesFilters,
+          onChange: newValue => setCountriesFilters(newValue),
+          placeholder: defaultFilterValues.countries,
+        },
+      ]}
+      filteredListings={filteredCases}
+      resetFilters={resetFilters}
+      defaultListing={caseData[0]}
+    />
   );
 }
