@@ -58,29 +58,31 @@ export default function ListingPage({
         </Styles.FiltersContainer>
       </Styles.Header>
       <Styles.ListingDisplay>
-        <Styles.CardColumn>
-          <Styles.ListingCount $color={COLORS.greyMid}>
-            {filteredListings.length} listings found
-          </Styles.ListingCount>
-          {filteredListings.length === 0 ? (
-            <CenteredH3 $color={COLORS.greyMid}>No listings found</CenteredH3>
-          ) : (
-            <>
-              {filteredListings.map(listing => (
-                <ListingCard
-                  key={listing.id}
-                  listing={listing}
-                  isSelected={listing.id === selectedCard}
-                  onClick={() => {
-                    setSelectedCard(listing.id);
-                    setListingInfo(listing);
-                  }}
-                  interpretation={interpretation}
-                />
-              ))}
-            </>
-          )}
-        </Styles.CardColumn>
+        <Styles.CardColumnWrapper>
+          <Styles.CardColumn>
+            <Styles.ListingCount $color={COLORS.greyMid}>
+              {filteredListings.length} listings found
+            </Styles.ListingCount>
+            {filteredListings.length === 0 ? (
+              <CenteredH3 $color={COLORS.greyMid}>No listings found</CenteredH3>
+            ) : (
+              <>
+                {filteredListings.map(listing => (
+                  <ListingCard
+                    key={listing.id}
+                    listing={listing}
+                    isSelected={listing.id === selectedCard}
+                    onClick={() => {
+                      setSelectedCard(listing.id);
+                      setListingInfo(listing);
+                    }}
+                    interpretation={interpretation}
+                  />
+                ))}
+              </>
+            )}
+          </Styles.CardColumn>
+        </Styles.CardColumnWrapper>
         <Styles.ListingDetailsContainer>
           {listingInfo ? (
             <>Listing Details</>

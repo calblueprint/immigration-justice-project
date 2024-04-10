@@ -24,7 +24,18 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ProfileProvider>
-            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            <StyledComponentsRegistry>
+              <div
+                style={{
+                  height: '100svh',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {/* nav bar */}
+                {children}
+              </div>
+            </StyledComponentsRegistry>
           </ProfileProvider>
         </AuthProvider>
       </body>
