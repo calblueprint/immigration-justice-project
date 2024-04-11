@@ -21,7 +21,6 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordComplexity, setPasswordComplexity] = useState(false);
-  // const { push } = useRouter();
 
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
@@ -49,7 +48,6 @@ export default function SignUp() {
     } else {
       setEmailSentCount(1);
       setErrorMessage('');
-      // push('/verify-email');
     }
   };
   const handleResendEmail = async () => {
