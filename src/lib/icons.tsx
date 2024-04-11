@@ -41,6 +41,31 @@ export const IconSvgs = {
       />
     </svg>
   ),
+  green_check: (
+    <svg
+      width="17"
+      height="12"
+      viewBox="0 0 17 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.58471 9.46756L1.79164 5.73602L0.5 6.99776L5.58471 12L16.5 1.26174L15.2175 0L5.58471 9.46756Z"
+        fill="#2E9D1B"
+      />
+    </svg>
+  ),
+  gray_dot: (
+    <svg
+      fill="#818181"
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M7.8 10a2.2 2.2 0 0 0 4.4 0 2.2 2.2 0 0 0-4.4 0z" />
+    </svg>
+  ),
 };
 
 export type IconType = keyof typeof IconSvgs;
