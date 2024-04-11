@@ -51,7 +51,6 @@ export default function DateInput({
         $filled={value !== ''}
         name={name}
         value={value}
-        pattern=".*\s*"
         min={min}
         onChange={e => handleChange(e.target.value)}
       />
