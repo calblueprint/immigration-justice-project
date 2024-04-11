@@ -6,8 +6,8 @@ import styled from 'styled-components';
 export const InputText = styled(P)<{ $error: boolean }>`
   ${openSans.style}
   color: ${COLORS.greyDarker};
-  padding: 0.625rem;
-  border-radius: 0.313rem; // 5px
+  padding: 10px;
+  border-radius: 5px;
   border: 2px solid ${COLORS.greyLight};
   outline: none;
   width: 100%;
@@ -30,12 +30,12 @@ export const InputText = styled(P)<{ $error: boolean }>`
 
 export const InputLabel = styled(H4)`
   color: ${COLORS.greyDark};
-  margin-bottom: 0.625rem; //10px
+  margin-bottom: 10px;
 `;
 
 export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
-  margin-top: 0.625rem;
+  margin-top: 10px;
   ${openSans.style}
 `;
 
