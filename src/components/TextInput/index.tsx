@@ -1,21 +1,20 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import {
+  DetailedHTMLProps,
+  Dispatch,
+  InputHTMLAttributes,
+  SetStateAction,
+  useCallback,
+} from 'react';
 import { ErrorText, InputDiv, InputLabel, InputText } from './styles';
 
-type InputModeTypes =
-  | 'decimal'
-  | 'email'
-  | 'numeric'
-  | 'search'
-  | 'tel'
-  | 'text'
-  | 'url'
-  | 'none';
-
-interface DefaultTextInputProps {
+interface DefaultTextInputProps
+  extends Omit<
+    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'onChange' | 'ref'
+  > {
   label?: string;
   placeholder?: string;
   errorText?: string;
-  inputMode?: InputModeTypes;
   type?: string;
   id?: string;
   defaultValue?: string;
@@ -44,10 +43,10 @@ export default function TextInput({
   type = 'text',
   id,
   value,
-  inputMode,
   defaultValue,
   setValue,
   onChange,
+  ...props
 }: TextInputProps) {
   const handleChange = useCallback(
     (newValue: string) => {
@@ -72,8 +71,8 @@ export default function TextInput({
         type={type}
         value={value}
         defaultValue={defaultValue}
-        inputMode={inputMode}
         onChange={e => handleChange(e.target.value)}
+        {...props}
       />
       {errorText && <ErrorText>{errorText}</ErrorText>}
     </InputDiv>
