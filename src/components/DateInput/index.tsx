@@ -1,8 +1,11 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import { Flex } from '@/styles/containers';
+import COLORS from '@/styles/colors';
 import { InputLabel, ErrorText, InputDiv, InputDate } from './styles';
 
 type DateInputProps = {
   label: string;
+  required?: boolean;
   error?: string;
   name?: string;
   value: string;
@@ -14,6 +17,7 @@ type DateInputProps = {
 
 export default function DateInput({
   label,
+  required = false,
   error = '',
   name,
   value,
@@ -32,9 +36,12 @@ export default function DateInput({
 
   return (
     <InputDiv>
-      <InputLabel as="label" htmlFor={id}>
-        {label}
-      </InputLabel>
+      <Flex $direction="row">
+        <InputLabel as="label" htmlFor={id}>
+          {label}
+        </InputLabel>
+        {required && <InputLabel $color={COLORS.redMid}> *</InputLabel>}
+      </Flex>
       <InputDate
         id={id}
         required

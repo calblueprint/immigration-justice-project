@@ -1,72 +1,92 @@
 'use client';
 
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
 import { Interest, Listing} from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
+import RadioGroup from '@/components/RadioGroup';
 import DateInput from '../DateInput';
 import Button from '../Button';
 import {
   FormContainer,
   FormTextArea,
   FormQuestion,
-  RadioGroup,
-  Radio,
-  RadioInput,
+  // RadioGroup as RG,
+  // Radio,
+  // RadioInput,
+  // RadioLabel,
+  // ErrorText,
   FormFooter,
   FormWarning,
-  ErrorText,
-  RadioLabel,
 } from './styles';
 
-const radioOptions = [
-  'Attorney',
-  'Interpreter',
-  'Either Attorney or Interpreter',
-];
+const formQuestion = (label: string, required = false) => {
+  <Flex $direction="row">
+    <FormQuestion>{label}</FormQuestion>
+    {required ? (
+      <FormQuestion $color={COLORS.redMid}> *</FormQuestion>
+    ) : (
+      <FormQuestion> (optional)</FormQuestion>
+    )}
+  </Flex>;
+};
 
 // need to pass interpretation on ListingDetails
-export default function InterestForm({ listingData, interpretation = false }: { listingData: Listing, interpretation?: boolean }) {
+export default function InterestForm({
+  listingData,
+  interpretation = false,
+}: {
+  listingData: Listing;
+  interpretation?: boolean;
+}) {
   const auth = useAuth();  
   const [reason, setReason] = useState<string>('');
-  const [rolesInterested, setRolesInterested] = useState<string>('');
+  const [needsInterpreter, setNeedsInterpreter] = useState<string>(''); // useState<boolean | null>(null);
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);
 
-  // const interestQuestions = useMemo(() => {
-  //   if (listingData.listing_type === 'CASE') {
-
-  //   } 
-  // }, [])
-
   useEffect(() => {
     // Reset form fields when caseData changes
     setReason('');
+    setNeedsInterpreter('');
     setStartDate('');
-    setRolesInterested('');
     setSubmitted(false);
     setMissingInfo(false);
   }, [listingData]);
 
   const handleInsert = async () => {
-    if (startDate === '' || rolesInterested === '') {
+    // Error handling
+    if (startDate === '' || needsInterpreter === '') {
       setMissingInfo(true);
       return;
     }
+    let responses = {};
     if (isValidDate(startDate)) {
       if (auth && auth.userId) {
+        if (
+          listingData.listing_type === 'CASE' ||
+          listingData.listing_type === 'INT'
+        ) {
+          responses = { ...responses, start_date: new Date(startDate) };
+          if (listingData.listing_type === 'CASE' && !interpretation) {
+            responses = {
+              ...responses,
+              needs_interpreter: needsInterpreter === 'Yes',
+            };
+          }
+        }
+        responses = { ...responses, interest_reason: reason };
         const newInterest: Interest = {
           listing_id: listingData.id,
-          listing_type: 'CASE',
+          listing_type: listingData.listing_type,
           user_id: auth.userId,
           form_response: {
-            start_date: new Date(startDate),
-            interest_reason: reason,
-            // TODO: add needs_interpreter field
+            ...responses,
           },
         };
         await upsertInterest(newInterest);
@@ -74,7 +94,7 @@ export default function InterestForm({ listingData, interpretation = false }: { 
 
       setReason('');
       setStartDate('');
-      setRolesInterested('');
+      setNeedsInterpreter('');
       setSubmitted(true);
     }
   };
@@ -96,10 +116,32 @@ export default function InterestForm({ listingData, interpretation = false }: { 
         <P>Your submission has been received!</P>
       ) : (
         <>
-          <FormQuestion $color={COLORS.greyDark}>
-            What role(s) are you applying for?
-          </FormQuestion>
-          <RadioGroup>
+          {(listingData.listing_type === 'CASE' ||
+            listingData.listing_type === 'INT') && (
+            <DateInput
+              label="What is the earliest date you can contact the client?"
+              required
+              error={getErrorText()}
+              name="startDate"
+              value={startDate}
+              setValue={setStartDate}
+            />
+          )}
+          {formQuestion(
+            'Do you need language interpretation help for the client?',
+            true,
+          )}
+          <RadioGroup
+            name="reason"
+            value={needsInterpreter}
+            setValue={setNeedsInterpreter}
+            options={['Yes', 'No']}
+            label="Do you need language interpretation help for the client? *"
+            error={
+              missingInfo ? 'Must select whether you need language support' : ''
+            }
+          />
+          {/* <RG>
             {radioOptions.map(option => (
               <Radio key={option}>
                 <RadioInput
@@ -107,26 +149,23 @@ export default function InterestForm({ listingData, interpretation = false }: { 
                   type="radio"
                   name="radioOptions"
                   value={option}
-                  checked={rolesInterested === option}
-                  onChange={event => setRolesInterested(event.target.value)}
+                  // checked={rolesInterested === option}
+                  onChange={event => event.target.value}
                 />
                 <RadioLabel htmlFor={`radio${option}`}>{option}</RadioLabel>
               </Radio>
             ))}
-            {missingInfo && rolesInterested === '' && (
-              <ErrorText>Must select your preferred role</ErrorText>
+            {missingInfo && (
+              <ErrorText>
+                Must select whether you need language support
+              </ErrorText>
             )}
-          </RadioGroup>
-          <DateInput
-            label="What is the earliest date you can contact the client?"
-            error={getErrorText()}
-            name="startDate"
-            value={startDate}
-            setValue={setStartDate}
-          />
-          <FormQuestion $color={COLORS.greyDark}>
-            Why are you interested in this case?
-          </FormQuestion>
+          </RG> */}
+          {formQuestion(
+            'Why are you interested in this case?',
+            listingData.listing_type === 'LCA' ||
+              listingData.listing_type === 'DOC',
+          )}
           <FormTextArea
             id="reason"
             placeholder="I want to work on this case because..."
