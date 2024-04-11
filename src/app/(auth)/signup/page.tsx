@@ -49,6 +49,7 @@ export default function SignUp() {
 
     if (error) {
       setErrorMessage(error.message);
+      await auth.signOut();
     } else {
       setEmailSentCount(1);
       setErrorMessage('');
