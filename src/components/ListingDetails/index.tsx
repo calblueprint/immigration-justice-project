@@ -154,23 +154,15 @@ export default function ListingDetails({
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
         fields = caseInterpretationFields;
-      } else if (listingData.is_detained) {
+      } else { 
         fields = [
           ...caseFields,
           {
-            label: 'Custody Location',
+            label: (listingData.is_detained) ? 'Custody Location': 'Client Location',
             getValue: data => data.client_location || 'N/A',
           },
         ];
-      } else {
-        fields = [
-          ...caseFields,
-          {
-            label: 'Client Location',
-            getValue: data => data.client_location || 'N/A',
-          },
-        ];
-      }
+      } 
     } else if (listingData.listing_type === 'INT') {
       fields = intepretationFields;
     } else if (listingData.listing_type === 'DOC') {
@@ -294,9 +286,7 @@ export default function ListingDetails({
               <H4>Research Topic(s)</H4>
             </IconTextGroup>
             <P>
-              {listingData.research_topic
-                ? listingData.research_topic
-                : 'Not Available'}
+              {listingData.research_topic || 'Not Available'}
             </P>
           </BorderedSection>
         )}
@@ -305,7 +295,7 @@ export default function ListingDetails({
             <Icon type="description" />
             <H4>Description</H4>
           </IconTextGroup>
-          <P>{listingData.summary ? listingData.summary : 'Not Available'}</P>
+          <P>{listingData.summary || 'Not Available'}</P>
         </BorderedSection>
       </InfoContainer>
       <BorderedSection>{Interest}</BorderedSection>
