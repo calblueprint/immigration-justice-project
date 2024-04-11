@@ -115,12 +115,3 @@ export const formatTruthy = <
   if (obj === null || obj === undefined) return nullishMessage;
   return obj ? truthyMessage : falsyMessage;
 };
-
-// count number of truthy values
-export const countTruthy = (arr: unknown[]) => {
-  let sum = 0;
-  arr.forEach(val => {
-    sum += !val ? 0 : 1;
-  });
-  return sum;
-};

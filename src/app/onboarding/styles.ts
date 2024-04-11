@@ -10,7 +10,7 @@ export const OuterDiv = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  padding-top: 20px;
+  padding-top: 40px;
   padding-bottom: 100px;
 `;
 
