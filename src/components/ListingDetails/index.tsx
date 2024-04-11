@@ -195,9 +195,8 @@ export default function ListingDetails({
       return (
         <IconTextGroup>
           <Icon type="calendarBig" />
-          <Subheading $bold>
-            {dateHeader}: <Subheading> {dateData}</Subheading>
-          </Subheading>
+          <Subheading $bold>{dateHeader}: </Subheading>
+          <Subheading> {dateData}</Subheading>
         </IconTextGroup>
       );
     }
