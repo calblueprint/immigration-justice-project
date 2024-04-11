@@ -154,15 +154,17 @@ export default function ListingDetails({
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
         fields = caseInterpretationFields;
-      } else { 
+      } else {
         fields = [
           ...caseFields,
           {
-            label: (listingData.is_detained) ? 'Custody Location': 'Client Location',
+            label: listingData.is_detained
+              ? 'Custody Location'
+              : 'Client Location',
             getValue: data => data.client_location || 'N/A',
           },
         ];
-      } 
+      }
     } else if (listingData.listing_type === 'INT') {
       fields = intepretationFields;
     } else if (listingData.listing_type === 'DOC') {
@@ -285,9 +287,7 @@ export default function ListingDetails({
               <Icon type="research" />
               <H4>Research Topic(s)</H4>
             </IconTextGroup>
-            <P>
-              {listingData.research_topic || 'Not Available'}
-            </P>
+            <P>{listingData.research_topic || 'Not Available'}</P>
           </BorderedSection>
         )}
         <BorderedSection>
