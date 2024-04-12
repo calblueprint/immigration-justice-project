@@ -139,6 +139,22 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
   },
 ];
 
+function ListingFields<T extends Listing>({
+  fields,
+  listingData,
+}: {
+  fields: ListingField<T>[];
+  listingData: T;
+}) {
+  return (
+    <InnerFieldContainer>
+      {fields.map(({ label, getValue }) => (
+        <div key={label}>{renderField(label, getValue(listingData))}</div>
+      ))}
+    </InnerFieldContainer>
+  );
+}
+
 export default function ListingDetails({
   listingData,
   interpretation = false,
@@ -150,12 +166,15 @@ export default function ListingDetails({
   const profile = useProfile();
 
   const listingFields = useMemo(() => {
-    let fields: ListingField<any>[];
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
-        fields = caseInterpretationFields;
-      } else {
-        fields = [
+        return ListingFields<CaseListing>({
+          fields: caseInterpretationFields,
+          listingData,
+        });
+      }
+      return ListingFields<CaseListing>({
+        fields: [
           ...caseFields,
           {
             label: listingData.is_detained
@@ -163,23 +182,26 @@ export default function ListingDetails({
               : 'Client Location',
             getValue: data => data.client_location || 'N/A',
           },
-        ];
-      }
-    } else if (listingData.listing_type === 'INT') {
-      fields = interpretationFields;
-    } else if (listingData.listing_type === 'DOC') {
-      fields = docFields;
-    } else {
-      fields = lcaFields;
+        ],
+        listingData,
+      });
     }
-
-    return (
-      <InnerFieldContainer>
-        {fields.map(({ label, getValue }) => (
-          <div key={label}>{renderField(label, getValue(listingData))}</div>
-        ))}
-      </InnerFieldContainer>
-    );
+    if (listingData.listing_type === 'INT') {
+      return ListingFields<Interpretation>({
+        fields: interpretationFields,
+        listingData,
+      });
+    }
+    if (listingData.listing_type === 'DOC') {
+      return ListingFields<DocumentTranslation>({
+        fields: docFields,
+        listingData,
+      });
+    }
+    return ListingFields<LimitedCaseAssignment>({
+      fields: lcaFields,
+      listingData,
+    });
   }, [listingData, interpretation]);
 
   const dateComponent = useMemo(() => {
