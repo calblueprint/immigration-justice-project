@@ -22,7 +22,7 @@ export interface AuthContextType {
     email: string,
     password: string,
     options: object,
-  ) => { name: string; message: string } | null;
+  ) => Promise<{ name: string; message: string } | null>;
 }
 
 export type SignUpOptions = {
@@ -110,7 +110,7 @@ export default function AuthProvider({
         data.user.identities.length === 0
       ) {
         authError = {
-          name: 'AuthApiError',
+          name: 'auth api error',
           message: 'User already exists',
         };
       } else if (error) {
