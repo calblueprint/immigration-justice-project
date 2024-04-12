@@ -26,18 +26,18 @@ export default function SignUp() {
 
   const handleSignUp = async () => {
     if (!auth) return;
-    setEmailError(validEmail(email) ? '' : 'Invalid Email');
-    setPasswordError(password !== '' ? '' : 'Invalid Password');
+    setEmailError(validEmail(email) ? '' : 'Invalid email.');
+    setPasswordError(password !== '' ? '' : 'Invalid password.');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
     }
     if (!passwordComplexity) {
-      setPasswordError('Password must meet complexity requirements');
+      setPasswordError('Password must meet complexity requirements.');
       return;
     }
     if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
+      setErrorMessage('Passwords do not match.');
       return;
     }
     setEmailError('');

@@ -103,6 +103,8 @@ export default function AuthProvider({
 
       let authError = null;
 
+      // This code is largely taken from https://github.com/orgs/supabase/discussions/1282#discussioncomment-5230475
+
       // User exists, but is fake. See https://supabase.com/docs/reference/javascript/auth-signup
       if (
         data.user &&
@@ -111,7 +113,7 @@ export default function AuthProvider({
       ) {
         authError = {
           name: 'auth api error',
-          message: 'User already exists',
+          message: 'A user account with this email already exists',
         };
       } else if (error) {
         authError = {

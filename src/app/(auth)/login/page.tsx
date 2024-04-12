@@ -34,8 +34,13 @@ export default function Login() {
   }, [auth, profile, push, isLoggingIn]);
 
   const handleSignIn = async () => {
-    setEmailError(validEmail(email) ? '' : 'Invalid Email');
-    setPasswordError(password !== '' ? '' : 'Invalid Password');
+    if (!auth) {
+      setErrorMessage('');
+      return;
+    }
+
+    setEmailError(validEmail(email) ? '' : 'Invalid email.');
+    setPasswordError(password !== '' ? '' : 'Invalid password.');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;

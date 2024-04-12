@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
+import { verifyUserPassword } from '@/api/supabase/queries/password';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
@@ -30,11 +31,17 @@ export default function ResetPassword() {
 
   const resetPassword = async () => {
     if (!passwordComplexity) {
-      setErrorMessage('Password must meet complexity requirements');
+      setErrorMessage('Password must meet complexity requirements.');
       return;
     }
     if (newPassword !== newPassword2) {
       setErrorMessage('Passwords do not match.');
+      return;
+    }
+    if (!verifyUserPassword(newPassword)) {
+      setErrorMessage(
+        'Password cannot be the same as your previous password. Please choose a different password.',
+      );
       return;
     }
     setErrorMessage('');
@@ -55,12 +62,12 @@ export default function ResetPassword() {
   return (
     canReset && (
       <>
-        <SpacerDiv $gap={0.625}>
+        <SpacerDiv $gap={10}>
           <H1>Set New Password</H1>
           {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
         </SpacerDiv>
         <SpacerDiv>
-          <SpacerDiv $gap={0.5}>
+          <SpacerDiv $gap={8}>
             <TextInput
               label="New Password"
               placeholder="Password"

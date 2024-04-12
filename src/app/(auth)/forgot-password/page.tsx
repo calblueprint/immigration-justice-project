@@ -16,13 +16,16 @@ export default function ForgotPassword() {
 
   const sendPasswordResetLink = async () => {
     if (!isEmail(email)) {
-      setEmailError('Could not find email');
+      setEmailError('Invalid email.');
       return;
     }
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo:
-        'https://immigration-justice-project.vercel.app/reset-password',
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://localhost:3000/reset-password', // TEMPORARY SWITCH BACK FOR TESTING
     });
+    if (error) {
+      setEmailError(error.message);
+      return;
+    }
     setEmailSentCount(emailSentCount + 1);
   };
 
