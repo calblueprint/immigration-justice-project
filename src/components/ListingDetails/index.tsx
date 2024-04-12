@@ -168,40 +168,40 @@ export default function ListingDetails({
   const listingFields = useMemo(() => {
     if (listingData.listing_type === 'CASE') {
       if (interpretation && listingData.needs_interpreter) {
-        return ListingFields<CaseListing>({
-          fields: caseInterpretationFields,
-          listingData,
-        });
+        return (
+          <ListingFields
+            fields={caseInterpretationFields}
+            listingData={listingData}
+          />
+        );
       }
-      return ListingFields<CaseListing>({
-        fields: [
-          ...caseFields,
-          {
-            label: listingData.is_detained
-              ? 'Custody Location'
-              : 'Client Location',
-            getValue: data => data.client_location || 'N/A',
-          },
-        ],
-        listingData,
-      });
+      return (
+        <ListingFields
+          fields={[
+            ...caseFields,
+            {
+              label: listingData.is_detained
+                ? 'Custody Location'
+                : 'Client Location',
+              getValue: data => data.client_location || 'N/A',
+            },
+          ]}
+          listingData={listingData}
+        />
+      );
     }
     if (listingData.listing_type === 'INT') {
-      return ListingFields<Interpretation>({
-        fields: interpretationFields,
-        listingData,
-      });
+      return (
+        <ListingFields
+          fields={interpretationFields}
+          listingData={listingData}
+        />
+      );
     }
     if (listingData.listing_type === 'DOC') {
-      return ListingFields<DocumentTranslation>({
-        fields: docFields,
-        listingData,
-      });
+      return <ListingFields fields={docFields} listingData={listingData} />;
     }
-    return ListingFields<LimitedCaseAssignment>({
-      fields: lcaFields,
-      listingData,
-    });
+    return <ListingFields fields={lcaFields} listingData={listingData} />;
   }, [listingData, interpretation]);
 
   const dateComponent = useMemo(() => {
