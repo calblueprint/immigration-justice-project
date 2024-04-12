@@ -77,7 +77,7 @@ export default function Home() {
             blurDataURL={homepageImage.src}
             quality={100}
             layout="fill"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             fill
           />
           <Styles.ImageBackground />
@@ -93,7 +93,7 @@ export default function Home() {
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
-              href="../signup"
+              href="https://www.americanbar.org/groups/public_interest/immigration/"
               style={{ fontSize: '1.5rem' }}
             >
               Learn More
@@ -145,7 +145,7 @@ export default function Home() {
             blurDataURL={homepageImage.src}
             quality={100}
             layout="fill"
-            objectFit="contain"
+            style={{ objectFit: 'contain' }}
           />
         </Styles.ImageWrapper>
       </Styles.MissionValuesContainer>
