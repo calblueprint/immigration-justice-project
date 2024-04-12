@@ -92,7 +92,7 @@ export default function Page() {
                 <FormControl>
                   <TextInput
                     errorText={fieldState.error?.message}
-                    placeholder="hours/month"
+                    placeholder="X hours per month"
                     type="number"
                     min="0"
                     defaultValue={
