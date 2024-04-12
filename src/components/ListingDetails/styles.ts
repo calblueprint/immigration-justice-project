@@ -8,7 +8,7 @@ export const CaseDisplay = styled.aside`
 `;
 
 export const CaseTitle = styled(H1)`
-  margin: 0.4rem 4rem;
+  margin: 6.4px 6.4px;
 `;
 export const InfoContainer = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const InnerInfoContainer = styled.div`
 `;
 
 export const InnerFieldContainer = styled.div`
-  gap: 1.25rem;
+  gap: 30px;
   justify-content: space-between;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -31,20 +31,20 @@ export const InnerFieldContainer = styled.div`
 
 export const FieldContainer = styled.div`
   display: flex;
-  gap: 0.188rem;
+  gap: 3px;
   flex-direction: column;
 `;
 
 export const AuthButtons = styled.div`
   display: flex;
-  gap: 1.5625rem;
-  margin-top: 1.25rem;
+  gap: 25px;
+  margin-top: 20px;
 `;
 
 export const IconTextGroup = styled.div`
   display: flex;
   direction: row;
-  gap: 11px;
+  gap: 10px;
   align-items: center;
 `;
 

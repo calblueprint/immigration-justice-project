@@ -95,7 +95,7 @@ const caseInterpretationFields: ListingField<CaseListing>[] = [
   },
 ];
 
-const intepretationFields: ListingField<Interpretation>[] = [
+const interpretationFields: ListingField<Interpretation>[] = [
   // Languages
   {
     label: 'Language(s)',
@@ -166,7 +166,7 @@ export default function ListingDetails({
         ];
       }
     } else if (listingData.listing_type === 'INT') {
-      fields = intepretationFields;
+      fields = interpretationFields;
     } else if (listingData.listing_type === 'DOC') {
       fields = docFields;
     } else {
