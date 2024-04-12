@@ -22,7 +22,7 @@ export interface AuthContextType {
     email: string,
     password: string,
     options: object,
-  ) => Promise<AuthResponse>;
+  ) => { name: string; message: string } | null;
 }
 
 export type SignUpOptions = {
@@ -100,8 +100,6 @@ export default function AuthProvider({
         password,
         options,
       }); // will trigger onAuthStateChange to update the session
-
-      console.log('HELP', data, error);
 
       let authError = null;
 

@@ -42,7 +42,7 @@ export default function SignUp() {
     }
     setEmailError('');
     setPasswordError('');
-    const { error } = await auth.signUp(email, password, {
+    const error = await auth.signUp(email, password, {
       emailRedirectTo:
         'https://immigration-justice-project.vercel.app/email-verified',
     });
