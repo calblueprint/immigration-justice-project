@@ -249,7 +249,7 @@ export default function ListingDetails({
       ) : (
         <>
           <H3>
-            Please finish submitting your profile before submitting interest.
+            Please complete your profile before submitting interest.
           </H3>
           <AuthButtons>
             <LinkButton
