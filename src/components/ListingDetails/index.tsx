@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useMemo } from 'react';
 import {
   formatTimestamp,
@@ -243,7 +242,7 @@ export default function ListingDetails({
     );
   }, [listingData, interpretation]);
 
-  const Interest = useMemo(() => {
+  const interestSection = useMemo(() => {
     if (auth && auth.userId) {
       return profile?.profileData ? (
         <InterestForm caseData={listingData as CaseListing} />
@@ -319,7 +318,7 @@ export default function ListingDetails({
           <P>{listingData.summary || 'Not Available'}</P>
         </BorderedSection>
       </InfoContainer>
-      <BorderedSection>{Interest}</BorderedSection>
+      <BorderedSection>{interestSection}</BorderedSection>
     </CaseDisplay>
   );
 }
