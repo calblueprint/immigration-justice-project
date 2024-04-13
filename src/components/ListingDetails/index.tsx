@@ -248,9 +248,7 @@ export default function ListingDetails({
         <InterestForm caseData={listingData as CaseListing} />
       ) : (
         <>
-          <H3>
-            Please complete your profile before submitting interest.
-          </H3>
+          <H3>Please complete your profile before submitting interest.</H3>
           <AuthButtons>
             <LinkButton
               $primaryColor={COLORS.blueMid}
