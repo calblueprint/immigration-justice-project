@@ -17,6 +17,7 @@ import {
   FormQuestion,
   FormFooter,
   FormWarning,
+  ErrorText,
 } from './styles';
 
 const formQuestion = (label: string, required = false) => (
@@ -56,12 +57,26 @@ export default function InterestForm({
 
   const handleInsert = async () => {
     // Error handling
-    if (startDate === '' || needsInterpreter === '') {
+    if (
+      (listingData.listing_type === 'CASE' &&
+        !interpretation &&
+        (startDate === '' || needsInterpreter === '')) ||
+      (((listingData.listing_type === 'CASE' && interpretation) ||
+        listingData.listing_type === 'INT') &&
+        startDate === '') ||
+      ((listingData.listing_type === 'LCA' ||
+        listingData.listing_type === 'DOC') &&
+        reason === '')
+    ) {
       setMissingInfo(true);
       return;
     }
     let responses = {};
-    if (isValidDate(startDate)) {
+    if (
+      isValidDate(startDate) ||
+      listingData.listing_type === 'DOC' ||
+      listingData.listing_type === 'LCA'
+    ) {
       if (auth && auth.userId) {
         if (
           listingData.listing_type === 'CASE' ||
@@ -152,6 +167,9 @@ export default function InterestForm({
               value={reason}
               onChange={event => setReason(event.target.value)}
             />
+            {missingInfo && reason === '' && (
+              <ErrorText>Must include a reason</ErrorText>
+            )}
           </Flex>
           <FormFooter>
             <FormWarning>

@@ -70,7 +70,7 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={LCAInfo} />
+        <ListingDetails listingData={DocInfo} />
       </CaseDetailsContainer>
     </Body>
   );
