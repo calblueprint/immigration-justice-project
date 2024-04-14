@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import { Interest, Listing} from '@/types/schema';
+import { Interest, Listing } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
 import { P, H3 } from '@/styles/text';
@@ -15,17 +15,11 @@ import {
   FormContainer,
   FormTextArea,
   FormQuestion,
-  // RadioGroup as RG,
-  // Radio,
-  // RadioInput,
-  // RadioLabel,
-  // ErrorText,
   FormFooter,
   FormWarning,
 } from './styles';
 
-const formQuestion = (label: string, required = false) => {
-  return (
+const formQuestion = (label: string, required = false) => (
   <Flex $direction="row">
     <FormQuestion>{label}</FormQuestion>
     {required ? (
@@ -33,8 +27,8 @@ const formQuestion = (label: string, required = false) => {
     ) : (
       <FormQuestion>&nbsp;(optional)</FormQuestion>
     )}
-  </Flex>);
-};
+  </Flex>
+);
 
 // need to pass interpretation on ListingDetails
 export default function InterestForm({
@@ -44,7 +38,7 @@ export default function InterestForm({
   listingData: Listing;
   interpretation?: boolean;
 }) {
-  const auth = useAuth();  
+  const auth = useAuth();
   const [reason, setReason] = useState<string>('');
   const [needsInterpreter, setNeedsInterpreter] = useState<string>(''); // useState<boolean | null>(null);
   const [startDate, setStartDate] = useState<string>('');
@@ -116,7 +110,7 @@ export default function InterestForm({
       {submitted ? (
         <P>Your submission has been received!</P>
       ) : (
-        <Flex $gap='30px' $direction='column'>
+        <Flex $gap="30px" $direction="column">
           {(listingData.listing_type === 'CASE' ||
             listingData.listing_type === 'INT') && (
             <DateInput
@@ -128,42 +122,22 @@ export default function InterestForm({
               setValue={setStartDate}
             />
           )}
-          {/* {listingData.listing_type === 'CASE' && !interpretation && formQuestion(
-            'Do you need language interpretation help for the client?',
-            true,
-          )} */}
-          {listingData.listing_type === 'CASE' && !interpretation && <RadioGroup
-            name="reason"
-            required
-            value={needsInterpreter}
-            setValue={setNeedsInterpreter}
-            options={['Yes', 'No']}
-            label="Do you need language interpretation help for the client?"
-            error={
-              missingInfo ? 'Must select whether you need language support' : ''
-            }
-          /> }
-          {/* <RG>
-            {radioOptions.map(option => (
-              <Radio key={option}>
-                <RadioInput
-                  id={`radio${option}`}
-                  type="radio"
-                  name="radioOptions"
-                  value={option}
-                  // checked={rolesInterested === option}
-                  onChange={event => event.target.value}
-                />
-                <RadioLabel htmlFor={`radio${option}`}>{option}</RadioLabel>
-              </Radio>
-            ))}
-            {missingInfo && (
-              <ErrorText>
-                Must select whether you need language support
-              </ErrorText>
-            )}
-          </RG> */}
-          <Flex $gap='10px' $direction='column'>
+          {listingData.listing_type === 'CASE' && !interpretation && (
+            <RadioGroup
+              name="reason"
+              required
+              value={needsInterpreter}
+              setValue={setNeedsInterpreter}
+              options={['Yes', 'No']}
+              label="Do you need language interpretation help for the client?"
+              error={
+                missingInfo
+                  ? 'Must select whether you need language support'
+                  : ''
+              }
+            />
+          )}
+          <Flex $gap="10px" $direction="column">
             {formQuestion(
               'Why are you interested in this case?',
               listingData.listing_type === 'LCA' ||
