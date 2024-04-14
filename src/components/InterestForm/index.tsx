@@ -25,14 +25,15 @@ import {
 } from './styles';
 
 const formQuestion = (label: string, required = false) => {
+  return (
   <Flex $direction="row">
     <FormQuestion>{label}</FormQuestion>
     {required ? (
       <FormQuestion $color={COLORS.redMid}> *</FormQuestion>
     ) : (
-      <FormQuestion> (optional)</FormQuestion>
+      <FormQuestion>&nbsp;(optional)</FormQuestion>
     )}
-  </Flex>;
+  </Flex>);
 };
 
 // need to pass interpretation on ListingDetails
@@ -115,7 +116,7 @@ export default function InterestForm({
       {submitted ? (
         <P>Your submission has been received!</P>
       ) : (
-        <>
+        <Flex $gap='30px' $direction='column'>
           {(listingData.listing_type === 'CASE' ||
             listingData.listing_type === 'INT') && (
             <DateInput
@@ -127,20 +128,21 @@ export default function InterestForm({
               setValue={setStartDate}
             />
           )}
-          {formQuestion(
+          {/* {listingData.listing_type === 'CASE' && !interpretation && formQuestion(
             'Do you need language interpretation help for the client?',
             true,
-          )}
-          <RadioGroup
+          )} */}
+          {listingData.listing_type === 'CASE' && !interpretation && <RadioGroup
             name="reason"
+            required
             value={needsInterpreter}
             setValue={setNeedsInterpreter}
             options={['Yes', 'No']}
-            label="Do you need language interpretation help for the client? *"
+            label="Do you need language interpretation help for the client?"
             error={
               missingInfo ? 'Must select whether you need language support' : ''
             }
-          />
+          /> }
           {/* <RG>
             {radioOptions.map(option => (
               <Radio key={option}>
@@ -161,17 +163,19 @@ export default function InterestForm({
               </ErrorText>
             )}
           </RG> */}
-          {formQuestion(
-            'Why are you interested in this case?',
-            listingData.listing_type === 'LCA' ||
-              listingData.listing_type === 'DOC',
-          )}
-          <FormTextArea
-            id="reason"
-            placeholder="I want to work on this case because..."
-            value={reason}
-            onChange={event => setReason(event.target.value)}
-          />
+          <Flex $gap='10px' $direction='column'>
+            {formQuestion(
+              'Why are you interested in this case?',
+              listingData.listing_type === 'LCA' ||
+                listingData.listing_type === 'DOC',
+            )}
+            <FormTextArea
+              id="reason"
+              placeholder="I want to work on this case because..."
+              value={reason}
+              onChange={event => setReason(event.target.value)}
+            />
+          </Flex>
           <FormFooter>
             <FormWarning>
               Your interest form is not saved!
@@ -186,7 +190,7 @@ export default function InterestForm({
               Submit Interest
             </Button>
           </FormFooter>
-        </>
+        </Flex>
       )}
     </FormContainer>
   );

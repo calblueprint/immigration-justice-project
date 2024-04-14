@@ -13,8 +13,9 @@ export const FormContainer = styled.div`
   margin-left: auto;
 `;
 
-export const FormQuestion = styled(H4)`
+export const FormQuestion = styled(H4)<{ $color?: string }>`
   margin-top: 0.375rem;
+  color: ${({ $color }) => $color || COLORS.greyDark};
 `;
 
 export const FormTextArea = styled.textarea`

@@ -40,7 +40,7 @@ export default function DateInput({
         <InputLabel as="label" htmlFor={id}>
           {label}
         </InputLabel>
-        {required && <InputLabel $color={COLORS.redMid}> *</InputLabel>}
+        {required && <InputLabel $color={COLORS.redMid}>&nbsp;*</InputLabel>}
       </Flex>
       <InputDate
         id={id}
