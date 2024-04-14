@@ -5,7 +5,7 @@ import { UUID } from 'crypto';
 import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
 import ListingCard from '@/components/ListingCard';
-import CaseDetails from '@/components/CaseDetails';
+import ListingDetails from '@/components/ListingDetails';
 import { H1, H2, CenteredH3 } from '@/styles/text';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
@@ -228,7 +228,7 @@ export default function Page() {
         </CardColumn>
         <CaseDetailsContainer>
           {caseInfo ? (
-            <CaseDetails caseData={caseInfo} />
+            <ListingDetails listingData={caseInfo} />
           ) : (
             <NoCasesContainer>
               <H1 $color={COLORS.greyMid}>No cases listed</H1>
