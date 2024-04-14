@@ -1,3 +1,6 @@
+import { LinkButton } from '@/components/Buttons';
+import Icon from '@/components/Icon';
+import InterestForm from '@/components/InterestForm';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H2, H3, H4, P, StrongP } from '@/styles/text';
@@ -16,9 +19,6 @@ import {
 } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
 import React, { useMemo } from 'react';
-import { LinkButton } from '../Button';
-import Icon from '../Icon';
-import InterestForm from '../InterestForm';
 import {
   AuthButtons,
   BorderedSection,

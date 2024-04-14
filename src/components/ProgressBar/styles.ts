@@ -2,7 +2,6 @@ import COLORS from '@/styles/colors';
 import { H4 } from '@/styles/text';
 import Link from 'next/link';
 import styled from 'styled-components';
-import dashedBorder from '../../../public/graphics/onboarding-border.png';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
   display: ${({ $show }) => ($show ? 'grid' : 'none')};
@@ -22,7 +21,6 @@ export const ProgressBarBody = styled.div`
 export const ProgressCircleContainer = styled.div<{
   $active?: boolean;
   $disabled?: boolean;
-  $dottedLine?: boolean;
 }>`
   width: 40px;
   height: 40px;
@@ -43,13 +41,6 @@ export const ProgressCircleContainer = styled.div<{
     border: 0;
     background-color: ${({ $disabled }) =>
       $disabled ? COLORS.greyMid : COLORS.blueMid};
-    ${({ $dottedLine }) =>
-      $dottedLine
-        ? `
-      background-color: transparent;
-      background-image: url(${dashedBorder.src});
-    `
-        : null}
     z-index: -10;
   }
 
