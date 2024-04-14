@@ -78,7 +78,10 @@ export default function InterestForm({
         responses = { ...responses, interest_reason: reason };
         const newInterest: Interest = {
           listing_id: listingData.id,
-          listing_type: listingData.listing_type,
+          listing_type:
+            listingData.listing_type === 'CASE' && interpretation
+              ? 'CASE_INT'
+              : listingData.listing_type,
           user_id: auth.userId,
           form_response: {
             ...responses,
