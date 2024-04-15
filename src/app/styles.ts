@@ -16,18 +16,17 @@ export const TitleSection = styled.div`
 `;
 
 export const ButtonDiv = styled.div`
-  margin-top: 25px;
-  width: clamp(180px, 2vh, 500px);
-  height: clamp(20px, 2vh, 60px);
+  margin-top: clamp(5px, 2vh, 25px);
 `;
 
 export const StatisticsSection = styled.div`
   width: 100%;
   height: 146px;
   background-color: white;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  flex-direction: row;
+  justify-content: space-between;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
   padding-top: 33px;
   padding-bottom: 35px;
@@ -105,7 +104,6 @@ export const TextContainer = styled.div`
   padding-top: clamp(5px, 25vh, 200px);
   padding-left: clamp(40px, 10%, 84px);
   z-index: 1;
-  gap: 30px;
   gap: clamp(10px, 5vh, 30px);
 `;
 export const ImageBackground = styled.div`

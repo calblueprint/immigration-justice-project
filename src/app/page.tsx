@@ -4,7 +4,7 @@ import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import { H2, H3, H4 } from '../styles/text';
 import { LinkButton } from '../components/Button';
-import homepageImage from '../../public/images/HomePageImage.webp';
+import homepageImage from '../../public/images/home-page-image.webp';
 import * as Styles from './styles';
 
 type Stat = {
@@ -96,7 +96,7 @@ export default function Home() {
               href="https://www.americanbar.org/groups/public_interest/immigration/"
               style={{ fontSize: '1.5rem' }}
             >
-              Learn More
+              Volunteer Now
             </LinkButton>
           </Styles.ButtonDiv>
         </Styles.TextContainer>
