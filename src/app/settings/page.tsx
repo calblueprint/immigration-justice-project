@@ -59,7 +59,7 @@ export default function Settings() {
         type: 'single-select',
         options: cities,
         label: 'City',
-        value: profile?.profileData?.location || '',
+        value: profile?.profileData?.city || '',
         validate: (v: string | null) => (v ? '' : 'Must include your city'),
       },
       {
@@ -202,7 +202,7 @@ export default function Settings() {
         profile.updateProfile({
           first_name: firstName,
           last_name: lastName,
-          location,
+          city: location,
         }),
         profile.setLanguages(langs),
       ]);
