@@ -15,6 +15,7 @@ import {
 import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
 import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
 import InterestForm from '../InterestForm';
 import { LinkButton } from '../Button';
 import Icon from '../Icon';
@@ -216,8 +217,10 @@ export default function ListingDetails({
       return (
         <IconTextGroup>
           <Icon type="calendarBig" />
-          <Subheading $bold>{dateHeader}: </Subheading>
-          <Subheading> {dateData}</Subheading>
+          <Flex>
+            <Subheading $bold>{dateHeader}:</Subheading>
+            <Subheading>&nbsp;{dateData}</Subheading>
+          </Flex>
         </IconTextGroup>
       );
     }

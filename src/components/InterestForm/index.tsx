@@ -24,14 +24,13 @@ const formQuestion = (label: string, required = false) => (
   <Flex $direction="row">
     <FormQuestion>{label}</FormQuestion>
     {required ? (
-      <FormQuestion $color={COLORS.redMid}> *</FormQuestion>
+      <FormQuestion $color={COLORS.redMid}>&nbsp;*</FormQuestion>
     ) : (
       <FormQuestion>&nbsp;(optional)</FormQuestion>
     )}
   </Flex>
 );
 
-// need to pass interpretation on ListingDetails
 export default function InterestForm({
   listingData,
   interpretation = false,
@@ -41,7 +40,7 @@ export default function InterestForm({
 }) {
   const auth = useAuth();
   const [reason, setReason] = useState<string>('');
-  const [needsInterpreter, setNeedsInterpreter] = useState<string>(''); // useState<boolean | null>(null);
+  const [needsInterpreter, setNeedsInterpreter] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);

@@ -10,7 +10,7 @@ import {
 import { Body, CardColumn, CaseDetailsContainer } from '../cases/styles';
 
 const LCAInfo = {
-  id: '099644df-c7ef-4eef-bd3b-76196da69886',
+  id: '099644df-c7ef-4eef-bd3b-76196da69881',
   title: 'LCA',
   summary:
     "CL has asylum claim due to persecution that happened 15+ year ago; since 1 yr bar will likely apply this will be withholding/CAT only. CL was threatened and attempted kidnapped/murdered (friend who was supposed to pick him up that day was in fact murdered b/c cartel though CL was also in the vehicle driven by friend) by local cartel group in Cuernavaca Morelos Mexico because he was in a relationship with a woman who was 'claimed' by a younger member of the cartel group. His relationship to the woman placed him at risk of retaliation. CL fled shortly thereafter and has not returned since.",
@@ -25,7 +25,7 @@ const LCAInfo = {
 } as LimitedCaseAssignment;
 
 const InterpInfo = {
-  id: '099644df-c7ef-4eef-bd3b-76196da69886',
+  id: '099644df-c7ef-4eef-bd3b-76196da69882',
   title: 'Interpretation',
   summary: 'Smth',
   is_remote: true,
@@ -35,7 +35,7 @@ const InterpInfo = {
 } as Interpretation;
 
 const DocInfo = {
-  id: '099644df-c7ef-4eef-bd3b-76196da69886',
+  id: '099644df-c7ef-4eef-bd3b-76196da69883',
   title: 'Doc Translation',
   summary: 'smth',
   deadline: '2024-03-16 19:47:39.385578+00',
@@ -46,7 +46,7 @@ const DocInfo = {
 } as DocumentTranslation;
 
 const CaseInterpInfo = {
-  id: '099644df-c7ef-4eef-bd3b-76196da69886',
+  id: '099644df-c7ef-4eef-bd3b-76196da69884',
   legal_server_id: '123',
   title: 'Case Interp',
   needs_attorney: false,
@@ -70,7 +70,7 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={DocInfo} />
+        <ListingDetails listingData={CaseInterpInfo} interpretation />
       </CaseDetailsContainer>
     </Body>
   );
