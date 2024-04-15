@@ -1,5 +1,5 @@
 import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Icon from './Icon';
@@ -18,7 +18,7 @@ const PasswordRequirementDiv = styled.div<{ met: boolean }>`
 `;
 
 const PasswordRequirementText = styled.p<{ met: boolean }>`
-  ${openSans.style}
+  ${sans.style}
   color: ${props => (props.met ? COLORS.green : COLORS.greyMid)};
 `;
 

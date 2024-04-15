@@ -1,9 +1,9 @@
 import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 import styled from 'styled-components';
 
 export const InputDate = styled.input<{ $error: boolean; $filled: boolean }>`
-  ${openSans.style}
+  ${sans.style}
   font-size: 0.875rem; // 14px
   font-weight: 400;
   cursor: text;

@@ -1,5 +1,5 @@
 import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 import { P } from '@/styles/text';
 import styled from 'styled-components';
 
@@ -14,7 +14,7 @@ export const FormContainer = styled.div`
 `;
 
 export const FormTextArea = styled.textarea`
-  ${openSans.style}
+  ${sans.style}
   font-size: 0.875rem; //14px
   min-height: 5.3125rem;
   resize: none;

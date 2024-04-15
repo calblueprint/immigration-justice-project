@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import Link from 'next/link';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 import COLORS from '@/styles/colors';
 import { ComponentProps, forwardRef } from 'react';
 
@@ -35,7 +35,7 @@ interface ButtonProps {
 }
 
 const ButtonStyles = css<ButtonProps>`
-  ${openSans.style}
+  ${sans.style}
   appearance: none;
   color: ${props => (props.$primaryColor ? 'white' : COLORS.blueMid)};
   background: ${props => (props.$primaryColor ? props.$primaryColor : 'white')};

@@ -1,10 +1,10 @@
 import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 import { H4, P } from '@/styles/text';
 import styled from 'styled-components';
 
 export const InputText = styled(P)<{ $error: boolean }>`
-  ${openSans.style}
+  ${sans.style}
   color: ${COLORS.greyDarker};
   padding: 10px;
   border-radius: 5px;
@@ -36,7 +36,7 @@ export const InputLabel = styled(H4)`
 export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
   margin-top: 10px;
-  ${openSans.style}
+  ${sans.style}
 `;
 
 export const InputDiv = styled.div`
