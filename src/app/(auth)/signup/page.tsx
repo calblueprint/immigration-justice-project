@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { H4Centered, HorizontalDiv } from '@/app/(auth)/styles';
-import { BigBlueButton, Button } from '@/components/Buttons';
+import { H4Centered, HorizontalDiv, PCentered } from '@/app/(auth)/styles';
+import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
@@ -74,7 +74,7 @@ export default function SignUp() {
     }
   };
 
-  return !emailSentCount ? (
+  return emailSentCount === 0 ? (
     <SmallCardForm onSubmit={handleSignUp}>
       <Flex $direction="column" $gap="10px">
         <H1>Sign Up</H1>
@@ -114,28 +114,28 @@ export default function SignUp() {
       />
       <Flex $direction="column" $gap="20px">
         <BigBlueButton type="submit">Sign Up</BigBlueButton>
-        <H4Centered>
+        <PCentered>
           Have an account already?{' '}
-          <LinkColored $color={COLORS.greyDark} href="/login">
+          <LinkColored $color={COLORS.blueMid} href="/login">
             Log in
           </LinkColored>
-        </H4Centered>
+        </PCentered>
       </Flex>
     </SmallCardForm>
   ) : (
     <SmallCardForm onSubmit={handleResendEmail}>
       <Flex $direction="column" $gap="20px">
         <H2>An email verification link has been sent.</H2>
-        <H4 $color={COLORS.greyDark}>
+        <H4Centered $color={COLORS.greyDark}>
           This link will direct you to the next step. If you didn’t receive an
           email, please click Resend Email.
-        </H4>
+        </H4Centered>
         <HorizontalDiv>
           <BigBlueButton type="submit">
             <H4 $color="white">Resend Email</H4>
           </BigBlueButton>
           {emailSentCount > 1 && (
-            <P $color={COLORS.greyMid}>Email has been resent!</P>
+            <P $color={COLORS.blueMid}>Email has been resent!</P>
           )}
         </HorizontalDiv>
       </Flex>

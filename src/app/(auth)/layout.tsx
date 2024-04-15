@@ -1,8 +1,13 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { FormDiv, OuterDiv } from './styles';
+import { SmallCardForm } from '@/styles/containers';
+import { OuterDiv } from './styles';
 
 export default function layout({ children }: { children: ReactNode }) {
-  return <OuterDiv>{children}</OuterDiv>;
+  return (
+    <OuterDiv>
+      <SmallCardForm>{children}</SmallCardForm>
+    </OuterDiv>
+  );
 }

@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
-import { H4Centered } from '@/app/(auth)/styles';
+import { PCentered } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import CONFIG from '@/lib/configs';
@@ -109,12 +109,12 @@ export default function Login() {
       </Flex>
       <Flex $direction="column" $gap="20px">
         <BigBlueButton type="submit">Log In</BigBlueButton>
-        <H4Centered>
+        <PCentered>
           Don’t have an account yet?{' '}
-          <LinkColored $color={COLORS.greyDark} href="/signup">
+          <LinkColored $color={COLORS.blueMid} href="/signup">
             Sign up
           </LinkColored>
-        </H4Centered>
+        </PCentered>
       </Flex>
     </SmallCardForm>
   );

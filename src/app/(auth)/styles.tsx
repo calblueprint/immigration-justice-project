@@ -32,6 +32,12 @@ export const H4Centered = styled(H4)`
   text-align: center;
 `;
 
+export const PCentered = styled(P)`
+  color: ${COLORS.greyDark};
+  font-size: 1rem;
+  text-align: center;
+`;
+
 export const HorizontalDiv = styled.div`
   display: flex;
   align-items: center;
