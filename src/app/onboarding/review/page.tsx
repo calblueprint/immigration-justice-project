@@ -58,12 +58,22 @@ export default function Page() {
           </Flex>
           <Flex>
             <Styles.SectionField>
+              <H4>Country</H4>
+              <P>{onboarding.location?.country?.label ?? 'N/A'}</P>
+            </Styles.SectionField>
+            <Styles.SectionField>
+              <H4>State</H4>
+              <P>{onboarding.location?.state?.label ?? 'N/A'}</P>
+            </Styles.SectionField>
+          </Flex>
+          <Flex>
+            <Styles.SectionField>
               <H4>City</H4>
-              <P>{onboarding.profile.location}</P>
+              <P>{onboarding.location?.city?.label ?? 'N/A'}</P>
             </Styles.SectionField>
             <Styles.SectionField>
               <H4>Phone Number</H4>
-              <P>{onboarding.profile.phone_number ?? 'N/A'}</P>
+              <P>{onboarding.profile.phone_number}</P>
             </Styles.SectionField>
           </Flex>
           <Flex>
@@ -111,7 +121,7 @@ export default function Page() {
             </Styles.SectionField>
           </Flex>
           <Flex>
-            <Styles.SectionField>
+            <Styles.SectionField $optional>
               <H4>
                 Are there specific time periods you will not be available?
                 (optional)

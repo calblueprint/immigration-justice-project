@@ -46,11 +46,22 @@ export const SectionBox = styled.div`
   border-radius: 10px;
 `;
 
-export const SectionField = styled.div`
+export const SectionField = styled.div<{ $optional?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
+
+  & > h4 {
+    ${({ $optional }) =>
+      !$optional &&
+      `
+      &::after {
+        content: ' *';
+        color: ${COLORS.redMid};
+      }
+    `}
+  }
 `;
 
 const BackLinkStyles = css`
