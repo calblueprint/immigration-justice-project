@@ -91,6 +91,8 @@ export default function Page() {
           <Icon type="leftArrow" />
         </Styles.BackLinkButton>
 
+        <Styles.RequiredText>Required Fields</Styles.RequiredText>
+
         <H1Centered>Availability</H1Centered>
 
         <Styles.FormFieldsContainer>

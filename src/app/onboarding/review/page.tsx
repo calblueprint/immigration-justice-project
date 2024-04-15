@@ -10,6 +10,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as Styles from '../styles';
 
+function EditButton({ href }: { href: string }) {
+  return (
+    <Link href={href}>
+      <Flex $gap="5px">
+        <Styles.EditText>Edit</Styles.EditText>
+        <Icon type="edit" />
+      </Flex>
+    </Link>
+  );
+}
+
 export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { flowAt, backlinkHref } = useOnboardingNavigation();
@@ -33,9 +44,7 @@ export default function Page() {
         <Styles.SectionBox>
           <Flex $justify="between" $align="center">
             <H2>Basic Information</H2>
-            <Link href={flowAt(1)}>
-              <Icon type="edit" />
-            </Link>
+            <EditButton href={flowAt(1)} />
           </Flex>
           <Flex>
             <Styles.SectionField>
@@ -83,9 +92,7 @@ export default function Page() {
         <Styles.SectionBox>
           <Flex $justify="between" $align="center">
             <H2>Availability</H2>
-            <Link href={flowAt(2)}>
-              <Icon type="edit" />
-            </Link>
+            <EditButton href={flowAt(2)} />
           </Flex>
           <Flex>
             <Styles.SectionField>
@@ -119,9 +126,7 @@ export default function Page() {
           <Styles.SectionBox>
             <Flex $justify="between" $align="center">
               <H2>Legal Experience</H2>
-              <Link href={flowAt(3)}>
-                <Icon type="edit" />
-              </Link>
+              <EditButton href={flowAt(3)} />
             </Flex>
             <Flex>
               <Styles.SectionField>
@@ -159,9 +164,7 @@ export default function Page() {
           <Styles.SectionBox>
             <Flex $justify="between" $align="center">
               <H2>Legal Experience</H2>
-              <Link href={flowAt(3)}>
-                <Icon type="edit" />
-              </Link>
+              <EditButton href={flowAt(3)} />
             </Flex>
             <Flex>
               <Styles.SectionField>

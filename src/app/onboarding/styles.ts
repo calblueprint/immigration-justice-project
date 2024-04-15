@@ -1,5 +1,6 @@
 import { UnstyledButton } from '@/components/Buttons';
 import COLORS from '@/styles/colors';
+import { P } from '@/styles/text';
 import Image from 'next/image';
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
@@ -73,4 +74,21 @@ export const BackLink = styled(Link)`
 
 export const BackLinkButton = styled(UnstyledButton)`
   ${BackLinkStyles}
+`;
+
+export const RequiredText = styled(P)`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: ${COLORS.redMid};
+  text-align: right;
+
+  &::before {
+    content: '* ';
+  }
+`;
+
+export const EditText = styled(P)`
+  font-weight: 600;
+  text-decoration: underline;
 `;
