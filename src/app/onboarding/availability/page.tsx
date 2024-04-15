@@ -1,6 +1,6 @@
 'use client';
 
-import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
+import { BigBlueButton, BigButton } from '@/components/Buttons';
 import DateInput from '@/components/DateInput';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
@@ -41,7 +41,7 @@ const availabilitySchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const { backlinkHref } = useOnboardingNavigation();
+  const { backlinkHref, ebbTo } = useOnboardingNavigation();
   const { push } = useRouter();
 
   const [startDate, setStartDate] = useState<string>(
@@ -68,6 +68,7 @@ export default function Page() {
   // validity should have already been handled by Zod
   const onValidSubmit = () => {
     push(`/onboarding/${onboarding.flow[3].url}`);
+    onboarding.setFormIsDirty(false);
   };
 
   // used to determine whether to disable the continue button
@@ -83,9 +84,12 @@ export default function Page() {
     <FormProvider {...form}>
       {/* noValidate to prevent default HTML invalid input pop-up */}
       <CardForm onSubmit={form.handleSubmit(onValidSubmit)} noValidate>
-        <Styles.BackLink href={backlinkHref}>
+        <Styles.BackLinkButton
+          type="button"
+          onClick={() => ebbTo(backlinkHref)}
+        >
           <Icon type="leftArrow" />
-        </Styles.BackLink>
+        </Styles.BackLinkButton>
 
         <H1Centered>Availability</H1Centered>
 
@@ -191,7 +195,9 @@ export default function Page() {
           />
 
           <Flex $gap="40px">
-            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigButton type="button" onClick={() => ebbTo(backlinkHref)}>
+              Back
+            </BigButton>
             <BigBlueButton type="submit" disabled={isEmpty}>
               Continue
             </BigBlueButton>

@@ -42,7 +42,7 @@ interface OnboardingContextType {
     SetStateAction<FormSubmitterConstructor | undefined>
   >;
   updateProfile: (updateInfo: Partial<Profile>) => void;
-  clearProfile: () => void;
+  removeFromProfile: (toClear: Array<keyof Profile>) => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
@@ -82,10 +82,14 @@ export default function OnboardingProvider({
     setUserProfile(oldProfile => ({ ...oldProfile, ...updatedInfo }));
   }, []);
 
-  const clearProfile = useCallback(() => {
-    setUserProfile({});
-    setCanReads([]);
-    setCanSpeaks([]);
+  const removeFromProfile = useCallback((keys: Array<keyof Profile>) => {
+    setUserProfile(oldProfile => {
+      const clonedProfile = { ...oldProfile };
+      keys.forEach(key => {
+        delete clonedProfile[key];
+      });
+      return clonedProfile;
+    });
   }, []);
 
   const flushData = useCallback(async () => {
@@ -180,7 +184,7 @@ export default function OnboardingProvider({
       setFlow,
       setProgress,
       updateProfile,
-      clearProfile,
+      removeFromProfile,
       makeFormSubmitter,
       setFormSubmitter,
       setCanReads,
@@ -200,7 +204,7 @@ export default function OnboardingProvider({
       setFormIsDirty,
       flushData,
       updateProfile,
-      clearProfile,
+      removeFromProfile,
       setFormSubmitter,
       makeFormSubmitter,
     ],

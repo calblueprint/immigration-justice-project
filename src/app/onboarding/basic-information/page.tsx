@@ -84,6 +84,7 @@ export default function Page() {
   // - validity should be handled by Zod
   const onSubmit = () => {
     push(`/onboarding/${onboarding.flow[2].url}`);
+    onboarding.setFormIsDirty(false);
   };
 
   return (

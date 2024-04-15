@@ -1,7 +1,7 @@
 import { H4 } from '@/styles/text';
 import { FlowData } from '@/types/misc';
+import { useOnboardingNavigation } from '@/utils/hooks';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { useRouter } from 'next/navigation';
 import { useCallback, useContext } from 'react';
 import * as Styles from './styles';
 
@@ -21,25 +21,15 @@ function ProgressCircle({
       'Fatal: onboarding progress should be placed inside onboarding context provider',
     );
 
-  const { push } = useRouter();
-
-  const { makeFormSubmitter, formIsDirty, flow } = onboarding;
   const clickable = idx !== progress && onboarding.progress >= idx;
   const disabled = onboarding.progress <= idx && idx !== progress;
 
-  const onClickEffect = useCallback(() => {
-    push(`/onboarding/${flow[idx].url}`);
-  }, [flow, idx, push]);
+  const { flow: onboardingFlow } = onboarding;
+  const { ebbTo } = useOnboardingNavigation();
 
-  const onClick = async () => {
-    if (formIsDirty) {
-      // await here because for some reason it returns a promise..
-      const submitForm = await makeFormSubmitter?.(onClickEffect);
-      submitForm?.();
-    } else {
-      onClickEffect();
-    }
-  };
+  const onClick = useCallback(() => {
+    ebbTo(`/onboarding/${onboardingFlow[idx].url}`);
+  }, [ebbTo, onboardingFlow, idx]);
 
   return (
     <Styles.ProgressCircleContainer

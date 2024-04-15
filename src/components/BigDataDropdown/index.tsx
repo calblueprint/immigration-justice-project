@@ -154,7 +154,7 @@ export default function BigDataDropdown({
         selectRef={ref}
         components={{ Menu: AnimatedMenu }}
         isClearable
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={!multi}
         hideSelectedOptions={false}
         tabSelectsValue={false}
         instanceId={useId()}

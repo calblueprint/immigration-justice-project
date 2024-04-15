@@ -1,7 +1,8 @@
+import { UnstyledButton } from '@/components/Buttons';
 import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import Link from 'next/link';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -51,7 +52,7 @@ export const SectionField = styled.div`
   width: 100%;
 `;
 
-export const BackLink = styled(Link)`
+const BackLinkStyles = css`
   position: absolute;
   top: 0;
   left: 0;
@@ -59,8 +60,17 @@ export const BackLink = styled(Link)`
   margin-left: 30px;
   transition: 100ms;
   padding: 10px;
+  cursor: pointer;
 
   &:hover {
     transform: translateX(-2px);
   }
+`;
+
+export const BackLink = styled(Link)`
+  ${BackLinkStyles}
+`;
+
+export const BackLinkButton = styled(UnstyledButton)`
+  ${BackLinkStyles}
 `;

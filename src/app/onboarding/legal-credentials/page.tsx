@@ -1,7 +1,7 @@
 'use client';
 
 import BigDataDropdown from '@/components/BigDataDropdown';
-import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
+import { BigBlueButton, BigButton } from '@/components/Buttons';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import RadioGroup from '@/components/RadioGroup';
@@ -32,7 +32,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const { backlinkHref } = useOnboardingNavigation();
+  const { backlinkHref, ebbTo } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize form with data from onboarding context
@@ -52,6 +52,7 @@ export default function Page() {
 
   const onSubmit = () => {
     push(`/onboarding/${onboarding.flow[4].url}`);
+    onboarding.setFormIsDirty(false);
   };
 
   const formValues = form.watch();
@@ -65,9 +66,12 @@ export default function Page() {
   return (
     <FormProvider {...form}>
       <CardForm onSubmit={form.handleSubmit(onSubmit)}>
-        <Styles.BackLink href={backlinkHref}>
+        <Styles.BackLinkButton
+          type="button"
+          onClick={() => ebbTo(backlinkHref)}
+        >
           <Icon type="leftArrow" />
-        </Styles.BackLink>
+        </Styles.BackLinkButton>
 
         <H1Centered>Legal Credentials</H1Centered>
 
@@ -152,7 +156,9 @@ export default function Page() {
           />
 
           <Flex $gap="40px">
-            <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
+            <BigButton type="button" onClick={() => ebbTo(backlinkHref)}>
+              Back
+            </BigButton>
             <BigBlueButton type="submit" disabled={isEmpty}>
               Continue
             </BigBlueButton>

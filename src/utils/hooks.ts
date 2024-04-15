@@ -27,13 +27,14 @@ export const useGuardedOnboarding = () => {
 };
 
 // checks if flow has been set first
-// used to prevent error in the
-// edge case of clicking a link to onboarding (when flow is not set)
+// used to prevent error in the edge case
+// of clicking a link to onboarding (when flow is not set)
 export const useOnboardingNavigation = () => {
   const onboarding = useGuardedOnboarding();
   const pathname = usePathname();
+  const { push } = useRouter();
 
-  const { flow } = onboarding;
+  const { flow, formIsDirty, makeFormSubmitter } = onboarding;
 
   const pageProgress = useMemo(
     () => flow.findIndex(f => `/onboarding/${f.url}` === pathname),
@@ -49,12 +50,29 @@ export const useOnboardingNavigation = () => {
     [flow],
   );
 
+  const ebbTo = useCallback(
+    async (href: string) => {
+      const ebber = () => {
+        push(href);
+      };
+
+      if (formIsDirty) {
+        // await here because for some reason it returns a promise..
+        const submitForm = await makeFormSubmitter?.(ebber);
+        submitForm?.();
+      } else {
+        ebber();
+      }
+    },
+    [formIsDirty, push, makeFormSubmitter],
+  );
+
   const backlinkHref = useMemo(
     () => flowAt(pageProgress - 1),
     [flowAt, pageProgress],
   );
 
-  return { flowAt, backlinkHref, pageProgress };
+  return { flowAt, ebbTo, backlinkHref, pageProgress };
 };
 
 export const useOnboardingFormSubmitterUpdate = <F extends FieldValues>(

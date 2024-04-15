@@ -70,21 +70,32 @@ export default function Page() {
   const onSubmit = (values: z.infer<typeof roleSchema>) => {
     if (!onboarding) throw new Error('Fatal: no onboarding layout detected');
 
+    const oldRoles = onboarding.roles;
     const roles = values.roles.split(',') as RoleEnum[];
     onboarding.setRoles(roles);
 
     let newFlow: FlowData[];
+    const isAttorney = roles.includes('ATTORNEY');
+    const isLegalFellow = roles.includes('LEGAL_FELLOW');
 
-    if (roles.includes('ATTORNEY')) {
+    if (isAttorney) {
       newFlow = ATTORNEY_FLOW;
-    } else if (roles.includes('LEGAL_FELLOW')) {
+    } else if (isLegalFellow) {
       newFlow = LEGAL_FELLOW_FLOW;
     } else {
       newFlow = INTERPRETER_FLOW;
     }
 
-    // clear previously filled out data
-    onboarding.clearProfile();
+    // remove role-specific data if role changes
+    if (oldRoles.includes('ATTORNEY') && !isAttorney)
+      onboarding.removeFromProfile([
+        'bar_number',
+        'eoir_registered',
+        'state_barred',
+      ]);
+
+    if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow)
+      onboarding.removeFromProfile(['expected_bar_date', 'eoir_registered']);
 
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);
