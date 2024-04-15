@@ -7,12 +7,14 @@ import { sans } from './fonts';
 interface TextProps {
   $color?: string;
   $fontWeight?: number | string;
+  $align?: 'left' | 'right' | 'center' | 'end' | 'justify' | 'start';
 }
 
 const TextStyles = css<TextProps>`
   ${sans.style}
   font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
   color: ${({ $color }) => $color || COLORS.greyDarker};
+  text-align: ${({ $align }) => $align};
   margin: 0;
 `;
 
@@ -29,6 +31,7 @@ export const H1Centered = styled(H1)`
 export const H2 = styled.h2<TextProps>`
   ${TextStyles}
   font-size: 2.25rem;
+  font-weight: 500;
 `;
 
 export const H2Centered = styled(H2)`
