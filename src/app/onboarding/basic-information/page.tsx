@@ -74,7 +74,8 @@ export default function Page() {
         formValues.lastName &&
         formValues.city &&
         formValues.phoneNumber &&
-        (formValues.canReads.length > 0 || formValues.canSpeaks.length > 0)
+        formValues.canReads.length > 0 &&
+        formValues.canSpeaks.length > 0
       ),
     [formValues],
   );

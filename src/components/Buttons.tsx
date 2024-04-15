@@ -2,7 +2,15 @@ import styled, { css } from 'styled-components';
 import Link from 'next/link';
 import { sans } from '@/styles/fonts';
 import COLORS from '@/styles/colors';
-import { ComponentProps, forwardRef } from 'react';
+import {
+  ComponentProps,
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
+  forwardRef,
+  useState,
+} from 'react';
+import { Spinner } from '@/styles/spinner';
+import { Flex } from '@/styles/containers';
 
 /* 
   FOR PRIMARY BUTTON USAGE:
@@ -144,3 +152,55 @@ export const UnstyledButton = styled.button`
   font-size: 0.9375rem;
   font-weight: 600;
 `;
+
+interface AsyncButtonProps
+  extends Omit<ComponentProps<typeof BigButton>, 'onClick'> {
+  onClick?: (
+    e: ReactMouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => Promise<void>;
+  icon?: ReactNode;
+}
+
+export const AsyncButton = forwardRef<HTMLButtonElement, AsyncButtonProps>(
+  ({ children, onClick: asyncOnClick, icon = <Spinner />, ...props }, ref) => {
+    const [loading, setLoading] = useState(false);
+
+    const onClick = (e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => {
+      if (loading) return;
+
+      if (asyncOnClick) {
+        setLoading(true);
+        asyncOnClick(e).finally(() => setLoading(false));
+      }
+    };
+
+    return (
+      <BigButton ref={ref} onClick={onClick} disabled={loading} {...props}>
+        <Flex $gap="10px" $justify="center">
+          {loading ? icon : null}
+          {children}
+        </Flex>
+      </BigButton>
+    );
+  },
+);
+AsyncButton.displayName = 'AsyncButton';
+
+export const BigBlueAsyncButton = forwardRef<
+  HTMLButtonElement,
+  Omit<
+    ComponentProps<typeof AsyncButton>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, ...props }, ref) => (
+  <AsyncButton
+    ref={ref}
+    {...props}
+    $primaryColor={COLORS.blueMid}
+    $secondaryColor={COLORS.blueDark}
+    $tertiaryColor={COLORS.blueDarker}
+  >
+    {children}
+  </AsyncButton>
+));
+BigBlueAsyncButton.displayName = 'BigBlueAsyncButton';

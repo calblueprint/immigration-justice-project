@@ -2,7 +2,7 @@
 
 import { H1Centered, H2, H4, P } from '@/styles/text';
 import { Card, Flex } from '@/styles/containers';
-import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
+import { BigBlueAsyncButton, BigLinkButton } from '@/components/Buttons';
 import { formatTruthy, parseDate } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import Icon from '@/components/Icon';
@@ -16,9 +16,8 @@ export default function Page() {
   const { push } = useRouter();
 
   // triggers on clicking submit
-  const onSubmit = () => {
-    push('/onboarding-complete');
-    onboarding.flushData();
+  const onSubmit = async () => {
+    await Promise.all([onboarding.flushData(), push('/onboarding-complete')]);
   };
 
   return (
@@ -196,7 +195,7 @@ export default function Page() {
 
       <Flex $gap="40px">
         <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
-        <BigBlueButton onClick={onSubmit}>Submit</BigBlueButton>
+        <BigBlueAsyncButton onClick={onSubmit}>Submit</BigBlueAsyncButton>
       </Flex>
     </Card>
   );
