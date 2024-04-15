@@ -64,7 +64,7 @@ export default function BigDataDropdown({
   onChange,
 }: BigDataDropdownProps) {
   const ref =
-    useRef<SelectInstance<DropdownOption, false, GroupBase<DropdownOption>>>(
+    useRef<SelectInstance<DropdownOption, boolean, GroupBase<DropdownOption>>>(
       null,
     );
 

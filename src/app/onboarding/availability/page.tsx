@@ -108,8 +108,7 @@ export default function Page() {
                   <TextInput
                     errorText={fieldState.error?.message}
                     placeholder="X hours per month"
-                    type="number"
-                    min="0"
+                    inputMode="numeric"
                     defaultValue={
                       field.value !== undefined ? field.value.toString() : ''
                     }

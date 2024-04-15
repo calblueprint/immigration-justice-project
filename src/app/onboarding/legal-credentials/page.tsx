@@ -1,12 +1,18 @@
 'use client';
 
-import BigDataDropdown from '@/components/BigDataDropdown';
 import { BigBlueButton, BigButton } from '@/components/Buttons';
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/Form';
 import Icon from '@/components/Icon';
+import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
 import TextInput from '@/components/TextInput';
-import { states } from '@/data/citiesAndStates';
+import { usStates } from '@/data/citiesAndStates';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy } from '@/utils/helpers';
@@ -85,9 +91,9 @@ export default function Page() {
               <FormItem>
                 <FormLabel>Which state are you barred in?</FormLabel>
                 <FormControl>
-                  <BigDataDropdown
-                    options={states}
-                    error={fieldState.error?.message}
+                  <InputDropdown
+                    options={usStates}
+                    error={!!fieldState.error}
                     onChange={newValue => {
                       field.onChange(newValue);
                       onboarding.updateProfile({
@@ -98,6 +104,7 @@ export default function Page() {
                     placeholder="Start typing to filter states..."
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

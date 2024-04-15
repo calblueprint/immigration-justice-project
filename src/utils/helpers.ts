@@ -1,5 +1,9 @@
 // given timestamp of format: 2024-01-18T11:22:40+00:00
 // return JS date
+
+import CONFIG from '@/lib/configs';
+import { DropdownOption } from '@/types/dropdown';
+
 // native JS Date constructor should already support this parsing
 export const timestampStringToDate = (ts: string): Date => new Date(ts);
 
@@ -114,4 +118,22 @@ export const formatTruthy = <
 ) => {
   if (obj === null || obj === undefined) return nullishMessage;
   return obj ? truthyMessage : falsyMessage;
+};
+
+export const filterAndPaginate = (
+  options: DropdownOption[],
+  search: string,
+  oldLength: number,
+  pageSize: number = CONFIG.pageSize,
+) => {
+  const searchLower = search.toLowerCase();
+  const filteredOptions = search
+    ? options.filter(o => o.label.toLowerCase().includes(searchLower))
+    : options;
+  const hasMore = filteredOptions.length > oldLength + pageSize;
+  const slicedOptions = filteredOptions.slice(oldLength, oldLength + pageSize);
+  return {
+    options: slicedOptions,
+    hasMore,
+  };
 };

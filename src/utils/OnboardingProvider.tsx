@@ -1,6 +1,8 @@
 'use client';
 
 import { UUID } from 'crypto';
+import { DropdownOption } from '@/types/dropdown';
+import { FlowData } from '@/types/misc';
 import {
   Profile,
   ProfileLanguage,
@@ -19,13 +21,13 @@ import {
   useState,
 } from 'react';
 
-interface FlowData {
-  url: string;
-  name: string;
-}
-
 type FormSubmitter = () => Promise<void>;
 type FormSubmitterConstructor = (func: () => void) => FormSubmitter;
+type LocationData = {
+  country?: DropdownOption;
+  state?: DropdownOption;
+  city?: DropdownOption;
+};
 
 interface OnboardingContextType {
   profile: Partial<Profile>;
@@ -36,6 +38,8 @@ interface OnboardingContextType {
   flow: FlowData[];
   canContinue: boolean;
   formIsDirty: boolean;
+  location?: LocationData;
+  setLocation: Dispatch<SetStateAction<LocationData | undefined>>;
   setFormIsDirty: Dispatch<SetStateAction<boolean>>;
   makeFormSubmitter?: FormSubmitterConstructor;
   setFormSubmitter: Dispatch<
@@ -63,6 +67,7 @@ export default function OnboardingProvider({
 }) {
   const auth = useAuth();
   const profile = useProfile();
+  const [location, setLocation] = useState<LocationData>();
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<FlowData[]>([]);
   const [userProfile, setUserProfile] = useState<Partial<Profile>>({});
@@ -108,8 +113,17 @@ export default function OnboardingProvider({
     if (userProfile.hours_per_month === undefined)
       throw new Error('Error flushing data: profile missing hours per month!');
 
-    if (!userProfile.location)
+    if (!location)
       throw new Error('Error flushing data: profile missing location!');
+
+    if (!location.country || !location.country.label)
+      throw new Error('Error flushing data: profile missing country!');
+
+    if (!location.state || !location.state.label)
+      throw new Error('Error flushing data: profile missing state!');
+
+    if (!location.city || !location.city.label)
+      throw new Error('Error flushing data: profile missing city!');
 
     if (!userProfile.start_date)
       throw new Error('Error flushing data: profile missing start date!');
@@ -140,7 +154,9 @@ export default function OnboardingProvider({
       first_name: userProfile.first_name,
       last_name: userProfile.last_name,
       hours_per_month: userProfile.hours_per_month,
-      location: userProfile.location,
+      country: location.country.label,
+      state: location.state.label,
+      city: location.city.label,
       start_date: userProfile.start_date,
       availability_description: userProfile.availability_description,
       bar_number: userProfile.bar_number,
@@ -167,7 +183,7 @@ export default function OnboardingProvider({
       langsToInsert,
       rolesToInsert,
     );
-  }, [auth, profile, userProfile, canReads, canSpeaks, roles]);
+  }, [auth, profile, userProfile, canReads, canSpeaks, roles, location]);
 
   const providerValue = useMemo(
     () => ({
@@ -179,6 +195,8 @@ export default function OnboardingProvider({
       flow,
       canContinue,
       formIsDirty,
+      location,
+      setLocation,
       setFormIsDirty,
       flushData,
       setFlow,
@@ -201,6 +219,8 @@ export default function OnboardingProvider({
       flow,
       canContinue,
       formIsDirty,
+      location,
+      setLocation,
       setFormIsDirty,
       flushData,
       updateProfile,

@@ -1,8 +1,9 @@
+import { DropdownOption } from '@/types/dropdown';
 import { City, Country, State } from 'country-state-city';
 
-export const countries = Country.getAllCountries()
-  .map(c => c.name)
-  .sort((c1, c2) => c1.localeCompare(c2));
+export const countries: DropdownOption[] = Country.getAllCountries()
+  .map(c => ({ label: c.name, value: c.isoCode }))
+  .sort((c1, c2) => c1.label.localeCompare(c2.label));
 
 export const cities = City.getAllCities()
   .map(c => ({
@@ -15,7 +16,7 @@ export const cities = City.getAllCities()
   .sort((c1, c2) => c1.countryName?.localeCompare(c2?.countryName ?? '') ?? -1)
   .map(c => `${c.cityName}, ${c.stateName}, ${c.countryName}`);
 
-export const states = State.getAllStates()
+export const usStates = State.getAllStates()
   .filter(s => s.countryCode === 'US')
   .map(s => s.name)
   .sort((s1, s2) => s1.localeCompare(s2));

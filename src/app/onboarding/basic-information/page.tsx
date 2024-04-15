@@ -1,14 +1,16 @@
 'use client';
 
-import BigDataDropdown from '@/components/BigDataDropdown';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
+import CreatableBigDataDropdown from '@/components/CreatableBigDataDropdown';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextInput from '@/components/TextInput';
-import { cities } from '@/data/citiesAndStates';
+import { countries } from '@/data/citiesAndStates';
 import { optionalLanguages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
+import type { DropdownOption } from '@/types/dropdown';
+import { filterAndPaginate } from '@/utils/helpers';
 import {
   useGuardedOnboarding,
   useOnboardingFormDirtyUpdate,
@@ -16,19 +18,86 @@ import {
   useOnboardingNavigation,
 } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { City, State } from 'country-state-city';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import type { GroupBase } from 'react-select';
+import type { LoadOptions } from 'react-select-async-paginate';
 import { z } from 'zod';
 import * as Styles from '../styles';
 
+// load languages
+const loadLanguages: LoadOptions<
+  DropdownOption,
+  GroupBase<DropdownOption>,
+  null
+> = (search, prevOptions) =>
+  filterAndPaginate(optionalLanguages, search, prevOptions.length);
+
+// load country, state, city
+const loadCountries: LoadOptions<
+  DropdownOption,
+  GroupBase<DropdownOption>,
+  null
+> = (search, prevOptions) =>
+  filterAndPaginate(countries, search, prevOptions.length);
+
+const loadStates: (
+  countryCode: string,
+) => LoadOptions<
+  DropdownOption,
+  GroupBase<DropdownOption>,
+  null
+> = countryCode => {
+  const states: DropdownOption[] = State.getStatesOfCountry(countryCode)
+    .map(s => ({ label: s.name, value: s.isoCode }))
+    .sort((s1, s2) => s1.label.localeCompare(s2.label));
+  return (search, prevOptions) =>
+    filterAndPaginate(states, search, prevOptions.length);
+};
+
+const loadCities: (
+  countryCode: string,
+  stateCode: string,
+) => LoadOptions<DropdownOption, GroupBase<DropdownOption>, null> = (
+  countryCode,
+  stateCode,
+) => {
+  const cities: DropdownOption[] = City.getCitiesOfState(countryCode, stateCode)
+    .map(c => ({ label: c.name, value: c.name }))
+    .sort((c1, c2) => c1.label.localeCompare(c2.label));
+  return (search, prevOptions) =>
+    filterAndPaginate(cities, search, prevOptions.length);
+};
+
 // define form schema using Zod to automate form validation
+const zodDropdownOption = {
+  label: z.string(),
+  value: z.string(),
+};
+
 const basicInformationSchema = z.object({
   firstName: z.string({ required_error: 'Please include your first name' }),
   lastName: z.string({ required_error: 'Please include your last name' }),
-  city: z.string({
-    required_error: 'Please include the city of your primary residence',
-  }),
+  country: z
+    .object(zodDropdownOption)
+    .nullable()
+    .refine(val => val, {
+      message: 'Please include the country of your primary residence',
+    }),
+  state: z
+    .object(zodDropdownOption)
+    .nullable()
+    .refine(val => val, {
+      message: 'Please include the state of your primary residence',
+    }),
+  city: z
+    .object(zodDropdownOption)
+    .nullable()
+    .refine(val => val, {
+      message: 'Please include the city of your primary residence',
+    }),
   phoneNumber: z
     .string({ required_error: 'Please include a phone number' })
     .regex(
@@ -36,10 +105,10 @@ const basicInformationSchema = z.object({
       { message: 'Invalid phone number' },
     ),
   canSpeaks: z
-    .array(z.string())
+    .array(z.object(zodDropdownOption))
     .min(1, 'Please select a value for languages you can speak or understand'),
   canReads: z
-    .array(z.string())
+    .array(z.object(zodDropdownOption))
     .min(1, 'Please select a value for languages you can speak or understand'),
 });
 
@@ -54,9 +123,11 @@ export default function Page() {
     defaultValues: {
       firstName: onboarding.profile.first_name,
       lastName: onboarding.profile.last_name,
-      canSpeaks: onboarding.canSpeaks,
-      canReads: onboarding.canReads,
-      city: onboarding.profile.location,
+      canSpeaks: onboarding.canSpeaks.map(l => ({ label: l, value: l })),
+      canReads: onboarding.canReads.map(l => ({ label: l, value: l })),
+      country: onboarding.location?.country,
+      state: onboarding.location?.state,
+      city: onboarding.location?.city,
       phoneNumber: onboarding.profile.phone_number,
     },
   });
@@ -72,6 +143,8 @@ export default function Page() {
       !(
         formValues.firstName &&
         formValues.lastName &&
+        formValues.country &&
+        formValues.state &&
         formValues.city &&
         formValues.phoneNumber &&
         formValues.canReads.length > 0 &&
@@ -149,26 +222,106 @@ export default function Page() {
 
           <FormField
             control={form.control}
-            name="city"
+            name="country"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel>Country</FormLabel>
                 <FormControl>
-                  <BigDataDropdown
-                    options={cities}
+                  <CreatableBigDataDropdown
+                    loadOptions={loadCountries}
                     error={fieldState.error?.message}
+                    isMulti={false}
                     onChange={v => {
-                      onboarding.updateProfile({
-                        location: v ?? '',
+                      onboarding.setLocation({
+                        country: v ?? undefined,
+                        state: undefined,
+                        city: undefined,
                       });
                       field.onChange(v ?? '');
+                      form.resetField('state', { defaultValue: null });
+                      form.resetField('city', { defaultValue: null });
                     }}
-                    defaultValue={onboarding?.profile.location}
-                    placeholder="Start typing to filter cities..."
+                    value={field.value ?? null}
+                    placeholder="Type to search or create a country..."
                   />
                 </FormControl>
               </FormItem>
             )}
+          />
+
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field, fieldState }) => {
+              const { country } = form.getValues();
+              return (
+                <FormItem>
+                  <FormLabel>State / Province</FormLabel>
+                  <FormControl>
+                    <CreatableBigDataDropdown
+                      disabled={!country?.label}
+                      loadOptions={loadStates(country?.value ?? '')}
+                      error={fieldState.error?.message}
+                      isMulti={false}
+                      onChange={v => {
+                        onboarding.setLocation(loc => ({
+                          ...loc,
+                          state: v ?? undefined,
+                          city: undefined,
+                        }));
+                        field.onChange(v ?? '');
+                        form.resetField('city', { defaultValue: null });
+                      }}
+                      value={field.value ?? null}
+                      placeholder={
+                        country
+                          ? 'Type to search or create a state...'
+                          : 'Start by inputting a country'
+                      }
+                      cacheUniqs={[country]}
+                    />
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field, fieldState }) => {
+              const { country, state } = form.getValues();
+              return (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <CreatableBigDataDropdown
+                      disabled={!country?.label || !state?.label}
+                      loadOptions={loadCities(
+                        country?.value ?? '',
+                        state?.value ?? '',
+                      )}
+                      error={fieldState.error?.message}
+                      isMulti={false}
+                      onChange={v => {
+                        onboarding.setLocation(loc => ({
+                          ...loc,
+                          city: v ?? undefined,
+                        }));
+                        field.onChange(v ?? '');
+                      }}
+                      value={field.value ?? null}
+                      placeholder={
+                        state
+                          ? 'Type to search or create a city...'
+                          : 'Start by inputting a state'
+                      }
+                      cacheUniqs={[country, state]}
+                    />
+                  </FormControl>
+                </FormItem>
+              );
+            }}
           />
 
           <FormField
@@ -203,15 +356,15 @@ export default function Page() {
                   What languages can you speak and understand?
                 </FormLabel>
                 <FormControl>
-                  <BigDataDropdown
+                  <CreatableBigDataDropdown
                     error={fieldState.error?.message}
-                    options={optionalLanguages}
+                    loadOptions={loadLanguages}
+                    isMulti
                     onChange={v => {
-                      onboarding.setCanSpeaks(v);
+                      onboarding.setCanSpeaks(v.map(l => l.label));
                       field.onChange(v);
                     }}
-                    multi
-                    defaultValue={onboarding?.canSpeaks}
+                    value={field.value}
                     placeholder="Start typing to filter languages..."
                   />
                 </FormControl>
@@ -226,16 +379,16 @@ export default function Page() {
               <FormItem>
                 <FormLabel>What languages can you read and write?</FormLabel>
                 <FormControl>
-                  <BigDataDropdown
+                  <CreatableBigDataDropdown
                     error={fieldState.error?.message}
-                    options={optionalLanguages}
+                    loadOptions={loadLanguages}
+                    isMulti
                     onChange={v => {
-                      onboarding.setCanReads(v);
+                      onboarding.setCanReads(v.map(l => l.label));
                       field.onChange(v);
                     }}
-                    defaultValue={onboarding?.canReads}
+                    value={field.value}
                     placeholder="Start typing to filter languages..."
-                    multi
                   />
                 </FormControl>
               </FormItem>
