@@ -88,7 +88,7 @@ export default function OnboardingManager({
     <OuterDiv>
       <UnstyledButton onClick={goToHomepage}>
         <LogoImage
-          $show={pageProgress !== 0}
+          $show={pageProgress > 0}
           width="205"
           src={IJPLogoBlue}
           alt="IJP Logo"

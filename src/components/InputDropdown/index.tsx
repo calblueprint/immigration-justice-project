@@ -134,7 +134,7 @@ export default function InputDropdown({
         ref={ref}
         components={{ Menu: AnimatedMenu }}
         isClearable
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={!multi}
         tabSelectsValue={false}
         hideSelectedOptions={false}
         defaultValue={defaultDropdownVal}

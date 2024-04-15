@@ -84,6 +84,8 @@ export default function OnboardingProvider({
 
   const clearProfile = useCallback(() => {
     setUserProfile({});
+    setCanReads([]);
+    setCanSpeaks([]);
   }, []);
 
   const flushData = useCallback(async () => {

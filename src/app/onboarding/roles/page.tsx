@@ -2,7 +2,7 @@
 
 import { BigBlueButton } from '@/components/Buttons';
 import InputDropdown from '@/components/InputDropdown';
-import { H1 } from '@/styles/text';
+import { H1, P } from '@/styles/text';
 import { RoleEnum } from '@/types/schema';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { useContext } from 'react';
@@ -23,7 +23,9 @@ import {
   INTERPRETER_FLOW,
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
-import { SmallCardForm } from '@/styles/containers';
+import { Callout, Flex, SmallCardForm } from '@/styles/containers';
+import Icon from '@/components/Icon';
+import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
 
 type RoleOptionType =
   | ''
@@ -81,6 +83,7 @@ export default function Page() {
       newFlow = INTERPRETER_FLOW;
     }
 
+    // clear previously filled out data
     onboarding.clearProfile();
 
     onboarding.setFlow(newFlow);
@@ -96,10 +99,12 @@ export default function Page() {
     },
   });
 
+  const { roles } = form.watch();
+
   return (
     <FormProvider {...form}>
       {/* div to fill top space, delete after nav bar is added */}
-      <div />
+      <div style={{ paddingTop: '100px' }} />
       <SmallCardForm onSubmit={form.handleSubmit(onSubmit)}>
         <H1>Role</H1>
 
@@ -121,6 +126,31 @@ export default function Page() {
             </FormItem>
           )}
         />
+
+        {roles && (
+          <Callout>
+            <Flex $gap="10px">
+              <Icon type="info" />
+              <Flex $direction="column" $gap="16px">
+                {roles.includes('ATTORNEY') && (
+                  <P>
+                    <b>Attorney:</b> {ROLE_DESCRIPTIONS.attorney}
+                  </P>
+                )}
+                {roles.includes('LEGAL_FELLOW') && (
+                  <P>
+                    <b>Legal Fellow:</b> {ROLE_DESCRIPTIONS.legal_fellow}
+                  </P>
+                )}
+                {roles.includes('INTERPRETER') && (
+                  <P>
+                    <b>Interpreter:</b> {ROLE_DESCRIPTIONS.interpreter}
+                  </P>
+                )}
+              </Flex>
+            </Flex>
+          </Callout>
+        )}
 
         {/* TODO: could consider using async button to display loading state */}
         <BigBlueButton type="submit" disabled={!form.formState.isValid}>

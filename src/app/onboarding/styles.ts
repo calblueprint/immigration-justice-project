@@ -11,7 +11,7 @@ export const OuterDiv = styled.div`
   width: 100%;
   min-height: 100vh;
   padding-top: 40px;
-  padding-bottom: 100px;
+  padding-bottom: 180px;
 `;
 
 export const FormContainer = styled.div`

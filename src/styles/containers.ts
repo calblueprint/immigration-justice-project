@@ -132,3 +132,9 @@ export const CenteringDiv = styled.div`
   place-items: center;
   flex-grow: 1;
 `;
+
+export const Callout = styled.div`
+  background: rgba(223, 223, 223, 0.35);
+  border-radius: 8px;
+  padding: 20px 12px;
+`;

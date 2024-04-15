@@ -23,39 +23,25 @@ import { z } from 'zod';
 import * as Styles from '../styles';
 
 // define form schema using Zod to automate form validation
-const basicInformationSchema = z
-  .object({
-    firstName: z.string({ required_error: 'Please include your first name' }),
-    lastName: z.string({ required_error: 'Please include your last name' }),
-    city: z.string({
-      required_error: 'Please include the city of your primary residence',
-    }),
-    phoneNumber: z
-      .string({ required_error: 'Please include a phone number' })
-      .regex(
-        /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
-        { message: 'Invalid phone number' },
-      ),
-    canSpeaks: z.array(z.string(), {
-      required_error:
-        'Please select a value for languages you can speak or understand',
-    }),
-    canReads: z.array(z.string(), {
-      required_error:
-        'Please select a value for languages you can read or write',
-    }),
-  })
-  .superRefine((inputs, ctx) => {
-    // ensures either canSpeak or canRead has at least one language
-    if (inputs.canSpeaks.length + inputs.canReads.length === 0)
-      return ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['canReads', 'canSpeaks'],
-        message:
-          'Please include at least one language that you can speak and understand or read and write in.',
-      });
-    return ctx;
-  });
+const basicInformationSchema = z.object({
+  firstName: z.string({ required_error: 'Please include your first name' }),
+  lastName: z.string({ required_error: 'Please include your last name' }),
+  city: z.string({
+    required_error: 'Please include the city of your primary residence',
+  }),
+  phoneNumber: z
+    .string({ required_error: 'Please include a phone number' })
+    .regex(
+      /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
+      { message: 'Invalid phone number' },
+    ),
+  canSpeaks: z
+    .array(z.string())
+    .min(1, 'Please select a value for languages you can speak or understand'),
+  canReads: z
+    .array(z.string())
+    .min(1, 'Please select a value for languages you can speak or understand'),
+});
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
