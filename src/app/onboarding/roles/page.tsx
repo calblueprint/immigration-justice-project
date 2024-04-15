@@ -81,6 +81,8 @@ export default function Page() {
       newFlow = INTERPRETER_FLOW;
     }
 
+    onboarding.clearProfile();
+
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);
   };

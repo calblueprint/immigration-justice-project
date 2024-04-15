@@ -2,15 +2,20 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { FieldValues, UseFormHandleSubmit } from 'react-hook-form';
 import { OnboardingContext } from './OnboardingProvider';
 
-export const useGuardedOnboarding = () => {
+const useSafeOnboarding = () => {
   const onboarding = useContext(OnboardingContext);
   if (!onboarding)
     throw new Error(
       'Component should be wrapped inside the onboarding context',
     );
+  return onboarding;
+};
 
+export const useGuardedOnboarding = () => {
+  const onboarding = useSafeOnboarding();
   const { flow, ...rest } = onboarding;
   const { push } = useRouter();
 
@@ -50,4 +55,20 @@ export const useOnboardingNavigation = () => {
   );
 
   return { flowAt, backlinkHref, pageProgress };
+};
+
+export const useOnboardingFormSubmitterUpdate = <F extends FieldValues>(
+  formHandleSubmit: UseFormHandleSubmit<F, undefined>,
+) => {
+  const { setFormSubmitter } = useSafeOnboarding();
+  useEffect(() => {
+    setFormSubmitter(formHandleSubmit);
+  }, [formHandleSubmit, setFormSubmitter]);
+};
+
+export const useOnboardingFormDirtyUpdate = (dirty: boolean) => {
+  const { setFormIsDirty } = useSafeOnboarding();
+  useEffect(() => {
+    setFormIsDirty(dirty);
+  }, [setFormIsDirty, dirty]);
 };

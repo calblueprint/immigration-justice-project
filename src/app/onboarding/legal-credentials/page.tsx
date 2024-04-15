@@ -10,7 +10,12 @@ import { states } from '@/data/citiesAndStates';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingFormDirtyUpdate,
+  useOnboardingFormSubmitterUpdate,
+  useOnboardingNavigation,
+} from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -39,6 +44,11 @@ export default function Page() {
       eoirRegistered: onboarding.profile.eoir_registered,
     },
   });
+
+  // update form submitter and dirty state
+  const { handleSubmit, formState } = form;
+  useOnboardingFormSubmitterUpdate(handleSubmit);
+  useOnboardingFormDirtyUpdate(formState.isDirty);
 
   const onSubmit = () => {
     push(`/onboarding/${onboarding.flow[4].url}`);

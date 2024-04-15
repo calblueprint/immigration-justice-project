@@ -1,7 +1,8 @@
 import { H4 } from '@/styles/text';
 import { FlowData } from '@/types/misc';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useContext } from 'react';
 import * as Styles from './styles';
 
 // helper component
@@ -20,19 +21,37 @@ function ProgressCircle({
       'Fatal: onboarding progress should be placed inside onboarding context provider',
     );
 
-  const clickable = onboarding.progress >= idx && idx !== progress;
+  const { push } = useRouter();
+
+  const { makeFormSubmitter, formIsDirty, flow } = onboarding;
+  const clickable = idx !== progress && onboarding.progress >= idx;
+  const disabled = onboarding.progress <= idx && idx !== progress;
+
+  const onClickEffect = useCallback(() => {
+    push(`/onboarding/${flow[idx].url}`);
+  }, [flow, idx, push]);
+
+  const onClick = async () => {
+    if (formIsDirty) {
+      // await here because for some reason it returns a promise..
+      const submitForm = await makeFormSubmitter?.(onClickEffect);
+      submitForm?.();
+    } else {
+      onClickEffect();
+    }
+  };
 
   return (
     <Styles.ProgressCircleContainer
-      $disabled={onboarding.progress <= idx && idx !== progress}
+      $disabled={disabled}
       $active={idx === progress}
     >
       <Styles.ProgressCircleCircle
-        href={clickable ? `/onboarding/${onboarding.flow[idx].url}` : ''}
+        onClick={onClick}
         aria-disabled={!clickable}
         $clickable={clickable}
         $filled={onboarding.progress > idx && idx !== progress}
-        $disabled={onboarding.progress <= idx && idx !== progress}
+        $disabled={disabled}
       >
         {idx}
       </Styles.ProgressCircleCircle>

@@ -1,6 +1,5 @@
 import COLORS from '@/styles/colors';
 import { H4 } from '@/styles/text';
-import Link from 'next/link';
 import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
@@ -54,11 +53,11 @@ export const ProgressCircleContainer = styled.div<{
   }
 `;
 
-export const ProgressCircleCircle = styled(Link)<{
-  $clickable?: boolean;
+export const ProgressCircleCircle = styled.div<{
   $filled?: boolean;
   $disabled?: boolean;
   $current?: boolean;
+  $clickable?: boolean;
 }>`
   display: grid;
   place-items: center;
@@ -67,10 +66,11 @@ export const ProgressCircleCircle = styled(Link)<{
   border-radius: 999px;
   border: 4px solid ${COLORS.blueMid};
   text-decoration: none;
-  pointer-events: ${({ $clickable }) => ($clickable ? 'unset' : 'none')};
   font-size: 1.25rem;
   font-weight: bold;
   color: ${COLORS.blueMid};
+
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
 
   &:active {
     color: ${COLORS.blueMid};

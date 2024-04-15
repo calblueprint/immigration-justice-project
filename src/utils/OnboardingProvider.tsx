@@ -24,6 +24,9 @@ interface FlowData {
   name: string;
 }
 
+type FormSubmitter = () => Promise<void>;
+type FormSubmitterConstructor = (func: () => void) => FormSubmitter;
+
 interface OnboardingContextType {
   profile: Partial<Profile>;
   canReads: string[];
@@ -32,7 +35,14 @@ interface OnboardingContextType {
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
+  formIsDirty: boolean;
+  setFormIsDirty: Dispatch<SetStateAction<boolean>>;
+  makeFormSubmitter?: FormSubmitterConstructor;
+  setFormSubmitter: Dispatch<
+    SetStateAction<FormSubmitterConstructor | undefined>
+  >;
   updateProfile: (updateInfo: Partial<Profile>) => void;
+  clearProfile: () => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
@@ -60,18 +70,21 @@ export default function OnboardingProvider({
   const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
   const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
+  const [formIsDirty, setFormIsDirty] = useState<boolean>(false);
+  const [makeFormSubmitter, setFormSubmitter] =
+    useState<FormSubmitterConstructor>();
 
   /**
    * Updates stored profile state with the partial data.
    * Does not affect database.
    */
-  const updateProfile = useCallback(
-    (updatedInfo: Partial<Profile>) => {
-      const newUserProfile = { ...userProfile, ...updatedInfo };
-      setUserProfile(newUserProfile);
-    },
-    [userProfile],
-  );
+  const updateProfile = useCallback((updatedInfo: Partial<Profile>) => {
+    setUserProfile(oldProfile => ({ ...oldProfile, ...updatedInfo }));
+  }, []);
+
+  const clearProfile = useCallback(() => {
+    setUserProfile({});
+  }, []);
 
   const flushData = useCallback(async () => {
     if (!auth) throw new Error('Fatal: No auth context provided!');
@@ -159,10 +172,15 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
+      formIsDirty,
+      setFormIsDirty,
       flushData,
       setFlow,
       setProgress,
       updateProfile,
+      clearProfile,
+      makeFormSubmitter,
+      setFormSubmitter,
       setCanReads,
       setCanSpeaks,
       setRoles,
@@ -176,8 +194,13 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
+      formIsDirty,
+      setFormIsDirty,
       flushData,
       updateProfile,
+      clearProfile,
+      setFormSubmitter,
+      makeFormSubmitter,
     ],
   );
 

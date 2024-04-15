@@ -9,7 +9,12 @@ import TextInput from '@/components/TextInput';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingFormDirtyUpdate,
+  useOnboardingFormSubmitterUpdate,
+  useOnboardingNavigation,
+} from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -54,6 +59,10 @@ export default function Page() {
       availability: onboarding.profile.availability_description,
     },
   });
+
+  // update form submitter and dirty state
+  useOnboardingFormSubmitterUpdate(form.handleSubmit);
+  useOnboardingFormDirtyUpdate(form.formState.isDirty);
 
   // handle valid form submission
   // validity should have already been handled by Zod

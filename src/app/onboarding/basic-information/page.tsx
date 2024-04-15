@@ -6,10 +6,15 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextInput from '@/components/TextInput';
 import { cities } from '@/data/citiesAndStates';
-import { languages } from '@/data/languages';
+import { optionalLanguages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingFormDirtyUpdate,
+  useOnboardingFormSubmitterUpdate,
+  useOnboardingNavigation,
+} from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -31,8 +36,14 @@ const basicInformationSchema = z
         /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
         { message: 'Invalid phone number' },
       ),
-    canSpeaks: z.array(z.string()),
-    canReads: z.array(z.string()),
+    canSpeaks: z.array(z.string(), {
+      required_error:
+        'Please select a value for languages you can speak or understand',
+    }),
+    canReads: z.array(z.string(), {
+      required_error:
+        'Please select a value for languages you can read or write',
+    }),
   })
   .superRefine((inputs, ctx) => {
     // ensures either canSpeak or canRead has at least one language
@@ -63,6 +74,10 @@ export default function Page() {
       phoneNumber: onboarding.profile.phone_number,
     },
   });
+
+  // update form submitter and dirty state
+  useOnboardingFormSubmitterUpdate(form.handleSubmit);
+  useOnboardingFormDirtyUpdate(form.formState.isDirty);
 
   // used to determine whether to disable the continue button
   const formValues = form.watch();
@@ -194,18 +209,13 @@ export default function Page() {
             name="canSpeaks"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel
-                  $required={
-                    form.getValues().canReads.length === 0 ||
-                    field.value.length > 0
-                  }
-                >
+                <FormLabel>
                   What languages can you speak and understand?
                 </FormLabel>
                 <FormControl>
                   <BigDataDropdown
                     error={fieldState.error?.message}
-                    options={languages}
+                    options={optionalLanguages}
                     onChange={v => {
                       onboarding.setCanSpeaks(v);
                       field.onChange(v);
@@ -224,18 +234,11 @@ export default function Page() {
             name="canReads"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel
-                  $required={
-                    form.getValues().canSpeaks.length === 0 ||
-                    field.value.length > 0
-                  }
-                >
-                  What languages can you read and write?
-                </FormLabel>
+                <FormLabel>What languages can you read and write?</FormLabel>
                 <FormControl>
                   <BigDataDropdown
                     error={fieldState.error?.message}
-                    options={languages}
+                    options={optionalLanguages}
                     onChange={v => {
                       onboarding.setCanReads(v);
                       field.onChange(v);

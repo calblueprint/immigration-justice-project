@@ -9,7 +9,12 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { CardForm, Flex } from '@/styles/containers';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingFormDirtyUpdate,
+  useOnboardingFormSubmitterUpdate,
+  useOnboardingNavigation,
+} from '@/utils/hooks';
 import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import { useMemo, useState } from 'react';
@@ -43,6 +48,11 @@ export default function Page() {
       eoirRegistered: onboarding.profile.eoir_registered,
     },
   });
+
+  // update form submitter and dirty state
+  const { handleSubmit, formState } = form;
+  useOnboardingFormSubmitterUpdate(handleSubmit);
+  useOnboardingFormDirtyUpdate(formState.isDirty);
 
   const onValidSubmit = () => {
     push(`/onboarding/${onboarding.flow[4].url}`);
