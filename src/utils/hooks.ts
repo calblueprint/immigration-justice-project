@@ -34,7 +34,12 @@ export const useOnboardingNavigation = () => {
   const pathname = usePathname();
   const { push } = useRouter();
 
-  const { flow, formIsDirty, makeFormSubmitter } = onboarding;
+  const {
+    flow,
+    formIsDirty,
+    makeFormSubmitter,
+    progress: onboardingProgress,
+  } = onboarding;
 
   const pageProgress = useMemo(
     () => flow.findIndex(f => `/onboarding/${f.url}` === pathname),
@@ -56,7 +61,7 @@ export const useOnboardingNavigation = () => {
         push(href);
       };
 
-      if (formIsDirty) {
+      if (pageProgress !== onboardingProgress && formIsDirty) {
         // await here because for some reason it returns a promise..
         const submitForm = await makeFormSubmitter?.(ebber);
         submitForm?.();
@@ -64,7 +69,7 @@ export const useOnboardingNavigation = () => {
         ebber();
       }
     },
-    [formIsDirty, push, makeFormSubmitter],
+    [formIsDirty, push, makeFormSubmitter, pageProgress, onboardingProgress],
   );
 
   const backlinkHref = useMemo(
