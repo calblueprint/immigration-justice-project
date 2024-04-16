@@ -1,5 +1,6 @@
 'use client';
 
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { getNCases } from '@/api/supabase/queries/cases';
 import { LinkButton } from '@/components/Buttons';
@@ -12,7 +13,6 @@ import { CenteredH3, H1, H2 } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
 import { parseAgency } from '@/utils/helpers';
 import { ProfileContext } from '@/utils/ProfileProvider';
-import { useContext, useEffect, useMemo, useState } from 'react';
 import {
   AuthButtons,
   Body,

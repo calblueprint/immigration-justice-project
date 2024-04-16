@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import COLORS from '@/styles/colors';
 import { H4, P } from '@/styles/text';
 import {
@@ -5,7 +6,6 @@ import {
   RadioSectionData,
   SectionData,
 } from '@/types/settingsSection';
-import { useMemo, useState } from 'react';
 import BigDataDropdown from '../BigDataDropdown';
 import DateInput from '../DateInput';
 import InputDropdown from '../InputDropdown';

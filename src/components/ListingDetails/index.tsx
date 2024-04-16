@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { LinkButton } from '@/components/Buttons';
 import Icon from '@/components/Icon';
 import InterestForm from '@/components/InterestForm';
@@ -18,7 +19,6 @@ import {
   parseTimeCommitment,
 } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
-import React, { useMemo } from 'react';
 import {
   AuthButtons,
   BorderedSection,

@@ -1,6 +1,6 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { H4 } from '@/styles/text';
-import styled from 'styled-components';
 
 export const ProgressBarContainer = styled.div<{ $show: boolean }>`
   display: ${({ $show }) => ($show ? 'grid' : 'none')};

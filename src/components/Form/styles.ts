@@ -1,6 +1,6 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { H4, P } from '@/styles/text';
-import styled from 'styled-components';
 
 export const Label = styled(H4)<{ $required?: boolean }>`
   display: inline-block;

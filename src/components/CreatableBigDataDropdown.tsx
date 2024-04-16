@@ -1,21 +1,21 @@
 'use client';
 
 import { ReactElement, useCallback, useId, useRef } from 'react';
+import { GroupBase, InputActionMeta, SelectInstance } from 'react-select';
 import {
   ComponentProps,
   UseAsyncPaginateParams,
   withAsyncPaginate,
 } from 'react-select-async-paginate';
-import { GroupBase, InputActionMeta, SelectInstance } from 'react-select';
 import Creatable from 'react-select/creatable';
 import type { CreatableProps } from 'react-select/creatable';
-import { DropdownOption } from '@/types/dropdown';
+import { AnimatedMenu, NoOptionsMessage } from '@/components/InputDropdown';
 import {
   DropdownStyles,
   DropdownWrapper,
 } from '@/components/InputDropdown/styles';
 import { ErrorText, InputLabel } from '@/components/TextInput/styles';
-import { AnimatedMenu, NoOptionsMessage } from '@/components/InputDropdown';
+import { DropdownOption } from '@/types/dropdown';
 
 type AsyncPaginateCreatableProps<
   OptionType,

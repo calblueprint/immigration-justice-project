@@ -1,8 +1,5 @@
 'use client';
 
-import COLORS from '@/styles/colors';
-import { P } from '@/styles/text';
-import { DropdownOption } from '@/types/dropdown';
 import { useCallback, useId, useMemo, useRef } from 'react';
 import Select, {
   components,
@@ -13,6 +10,9 @@ import Select, {
   SelectInstance,
   SingleValue,
 } from 'react-select';
+import COLORS from '@/styles/colors';
+import { P } from '@/styles/text';
+import { DropdownOption } from '@/types/dropdown';
 import { ErrorText, InputLabel } from '../TextInput/styles';
 import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
 

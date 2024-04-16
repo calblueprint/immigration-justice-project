@@ -1,7 +1,7 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { H4, P } from '@/styles/text';
-import styled from 'styled-components';
 
 export const InputText = styled(P)<{ $error: boolean }>`
   ${sans.style}

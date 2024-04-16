@@ -1,6 +1,5 @@
 'use client';
 
-import { DropdownOption } from '@/types/dropdown';
 import { useCallback, useId, useMemo, useRef } from 'react';
 import {
   GroupBase,
@@ -10,6 +9,7 @@ import {
   SingleValue,
 } from 'react-select';
 import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
+import { DropdownOption } from '@/types/dropdown';
 import { AnimatedMenu, NoOptionsMessage } from '../InputDropdown';
 import { DropdownStyles, DropdownWrapper } from '../InputDropdown/styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';

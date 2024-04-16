@@ -1,14 +1,10 @@
 'use client';
 
-import { BigBlueButton } from '@/components/Buttons';
-import InputDropdown from '@/components/InputDropdown';
-import { H1, P } from '@/styles/text';
-import { RoleEnum } from '@/types/schema';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { useContext } from 'react';
+import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { BigBlueButton } from '@/components/Buttons';
 import {
   FormControl,
   FormField,
@@ -16,16 +12,20 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/Form';
-import { useRouter } from 'next/navigation';
-import { FlowData } from '@/types/misc';
+import Icon from '@/components/Icon';
+import InputDropdown from '@/components/InputDropdown';
 import {
   ATTORNEY_FLOW,
   INTERPRETER_FLOW,
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
-import { Callout, Flex, SmallCardForm } from '@/styles/containers';
-import Icon from '@/components/Icon';
 import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
+import { Callout, Flex, SmallCardForm } from '@/styles/containers';
+import { H1, P } from '@/styles/text';
+import { FlowData } from '@/types/misc';
+import { RoleEnum } from '@/types/schema';
+import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type RoleOptionType =
   | ''

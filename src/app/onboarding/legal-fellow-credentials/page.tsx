@@ -1,24 +1,24 @@
 'use client';
 
-import { H1Centered } from '@/styles/text';
-import RadioGroup from '@/components/RadioGroup';
-import { z } from 'zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
-import { CardForm, Flex } from '@/styles/containers';
-import { BigBlueButton, BigButton } from '@/components/Buttons';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { BigBlueButton, BigButton } from '@/components/Buttons';
+import DateInput from '@/components/DateInput';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
+import Icon from '@/components/Icon';
+import RadioGroup from '@/components/RadioGroup';
+import { CardForm, Flex } from '@/styles/containers';
+import { H1Centered } from '@/styles/text';
 import {
   formatTruthy,
   getCurrentDate,
   identity,
   parseDateAlt,
 } from '@/utils/helpers';
-import DateInput from '@/components/DateInput';
-import { useEffect, useMemo, useState } from 'react';
-import Icon from '@/components/Icon';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation

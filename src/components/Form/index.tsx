@@ -1,23 +1,16 @@
 // huge inspiration from shadcn form UI
 // https://ui.shadcn.com/docs/components/form
 
+import { createContext, forwardRef, useContext, useId, useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
   HTMLAttributes,
 } from 'react';
-
-import { createContext, forwardRef, useContext, useId, useMemo } from 'react';
-import {
-  Controller,
-  useFormContext,
-  type ControllerProps,
-  type FieldPath,
-  type FieldValues,
-} from 'react-hook-form';
-import { Slot } from '@radix-ui/react-slot';
-
+import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Fill } from '@/styles/containers';
+import { Slot } from '@radix-ui/react-slot';
 import * as Styles from './styles';
 
 // types

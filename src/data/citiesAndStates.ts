@@ -1,5 +1,5 @@
-import { DropdownOption } from '@/types/dropdown';
 import { City, Country, State } from 'country-state-city';
+import { DropdownOption } from '@/types/dropdown';
 
 export const countries: DropdownOption[] = Country.getAllCountries()
   .map(c => ({ label: c.name, value: c.isoCode }))

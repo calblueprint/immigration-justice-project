@@ -1,15 +1,15 @@
 'use client';
 
-import { H1Centered, H2, H4, P } from '@/styles/text';
-import { Card, Flex } from '@/styles/containers';
-import { BigBlueAsyncButton, BigLinkButton } from '@/components/Buttons';
-import { formatTruthy, parseDate } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
-import Icon from '@/components/Icon';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { BigBlueAsyncButton, BigLinkButton } from '@/components/Buttons';
+import Icon from '@/components/Icon';
 import COLORS from '@/styles/colors';
+import { Card, Flex } from '@/styles/containers';
+import { H1Centered, H2, H4, P } from '@/styles/text';
+import { formatTruthy, parseDate } from '@/utils/helpers';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import * as Styles from '../styles';
 
 function EditButton({ href }: { href: string }) {

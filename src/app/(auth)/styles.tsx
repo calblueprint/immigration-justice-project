@@ -1,7 +1,7 @@
-import COLORS from '@/styles/colors';
-import { H4, P } from '@/styles/text';
 import Link from 'next/link';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { H4, P } from '@/styles/text';
 
 export const OuterDiv = styled.div`
   display: flex;

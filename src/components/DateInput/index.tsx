@@ -1,7 +1,7 @@
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { InputLabel, P } from '@/styles/text';
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputDate } from './styles';
 
 interface DateInputProps {

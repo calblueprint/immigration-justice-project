@@ -1,13 +1,13 @@
 'use client';
 
+import Link from 'next/link';
+import { LogoImage, OuterDiv } from '@/app/onboarding/styles';
 import { BigLinkButton } from '@/components/Buttons';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { CenteringDiv, Flex, SmallCard } from '@/styles/containers';
 import { H2Centered, P } from '@/styles/text';
-import Link from 'next/link';
-import CONFIG from '@/lib/configs';
-import IJPLogo from '../../../public/images/ijp_logo_blue.webp';
-import { LogoImage, OuterDiv } from '../onboarding/styles';
+import IJPLogo from '~/public/images/ijp_logo_blue.webp';
 
 export default function Page() {
   return (

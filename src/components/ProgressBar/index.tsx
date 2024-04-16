@@ -1,8 +1,8 @@
+import { useCallback, useContext } from 'react';
 import { H4 } from '@/styles/text';
 import { FlowData } from '@/types/misc';
 import { useOnboardingNavigation } from '@/utils/hooks';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { useCallback, useContext } from 'react';
 import * as Styles from './styles';
 
 // helper component

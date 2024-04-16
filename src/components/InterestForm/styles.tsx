@@ -1,7 +1,7 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { P } from '@/styles/text';
-import styled from 'styled-components';
 
 export const FormContainer = styled.div`
   display: flex;

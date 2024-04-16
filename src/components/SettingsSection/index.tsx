@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import COLORS from '@/styles/colors';
 import { H2, H3 } from '@/styles/text';
 import {
@@ -5,7 +6,6 @@ import {
   SettingsSectionData,
   SubSectionData,
 } from '@/types/settingsSection';
-import React, { useCallback, useEffect, useState } from 'react';
 import { Button } from '../Buttons';
 import SectionPartial from './SectionPartial';
 import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';

@@ -1,9 +1,9 @@
-import { UnstyledButton } from '@/components/Buttons';
-import COLORS from '@/styles/colors';
-import { P } from '@/styles/text';
 import Image from 'next/image';
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
+import { UnstyledButton } from '@/components/Buttons';
+import COLORS from '@/styles/colors';
+import { P } from '@/styles/text';
 
 export const OuterDiv = styled.div`
   display: flex;

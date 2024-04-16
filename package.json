@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@calblueprint/eslint-config-react": "^0.0.3",
+    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@types/styled-components": "^5.1.29",
     "@types/validator": "^13.11.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

@@ -1,6 +1,6 @@
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import COLORS from '@/styles/colors';
 import { InputLabel, P } from '@/styles/text';
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { RadioInput, RadioLabel } from '../InterestForm/styles';
 import { ComponentContainer, GroupContainer } from './styles';
 

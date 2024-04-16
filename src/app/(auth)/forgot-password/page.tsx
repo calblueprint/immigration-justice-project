@@ -1,13 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
 import { HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton, Button } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
 import { H1, H2, H4, P } from '@/styles/text';
-import { useState } from 'react';
-import isEmail from 'validator/lib/isEmail';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

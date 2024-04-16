@@ -1,16 +1,16 @@
-import styled, { css } from 'styled-components';
-import Link from 'next/link';
-import { sans } from '@/styles/fonts';
-import COLORS from '@/styles/colors';
 import {
   ComponentProps,
+  forwardRef,
   MouseEvent as ReactMouseEvent,
   ReactNode,
-  forwardRef,
   useState,
 } from 'react';
-import { Spinner } from '@/styles/spinner';
+import Link from 'next/link';
+import styled, { css } from 'styled-components';
+import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
+import { sans } from '@/styles/fonts';
+import { Spinner } from '@/styles/spinner';
 
 /* 
   FOR PRIMARY BUTTON USAGE:

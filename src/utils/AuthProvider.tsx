@@ -1,8 +1,5 @@
 'use client';
 
-import type { UUID } from 'crypto';
-import supabase from '@/api/supabase/createClient';
-import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import {
   createContext,
   useCallback,
@@ -11,6 +8,9 @@ import {
   useMemo,
   useState,
 } from 'react';
+import type { UUID } from 'crypto';
+import supabase from '@/api/supabase/createClient';
+import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 
 export interface AuthContextType {
   session?: Session;

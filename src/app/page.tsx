@@ -1,11 +1,11 @@
 'use client';
 
-import COLORS from '@/styles/colors';
 import Image from 'next/image';
-import { H2, H3, H4 } from '../styles/text';
-import { LinkButton } from '../components/Buttons';
-import homepageImage from '../../public/images/homepage-image.webp';
-import secondImage from '../../public/images/homepage-second-image.webp';
+import { LinkButton } from '@/components/Buttons';
+import COLORS from '@/styles/colors';
+import { H2, H3, H4 } from '@/styles/text';
+import homepageImage from '~/public/images/homepage-image.webp';
+import secondImage from '~/public/images/homepage-second-image.webp';
 import * as Styles from './styles';
 
 type Stat = {

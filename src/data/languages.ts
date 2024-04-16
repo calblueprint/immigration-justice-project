@@ -1,5 +1,5 @@
-import { DropdownOption } from '@/types/dropdown';
 import { iso6393 } from 'iso-639-3';
+import { DropdownOption } from '@/types/dropdown';
 
 export const languages = iso6393
   .filter(i => i.type === 'living')

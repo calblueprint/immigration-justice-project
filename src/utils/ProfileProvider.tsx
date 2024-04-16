@@ -1,6 +1,15 @@
 'use client';
 
 import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
   deleteLanguages,
   deleteRoles,
   fetchLanguagesById,
@@ -15,15 +24,6 @@ import {
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
 
 interface ProfileContextType {
   profileData: Profile | null;

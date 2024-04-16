@@ -1,7 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import DateInput from '@/components/DateInput';
 import RadioGroup from '@/components/RadioGroup';
 import TextAreaInput from '@/components/TextAreaInput';
 import COLORS from '@/styles/colors';
@@ -10,8 +10,8 @@ import { H3, P } from '@/styles/text';
 import { Interest, Listing } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
-import { useEffect, useState } from 'react';
 import { Button } from '../Buttons';
+import DateInput from '../DateInput';
 import * as Styles from './styles';
 
 interface Responses {
