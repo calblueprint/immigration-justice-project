@@ -24,7 +24,8 @@ const availabilitySchema = z.object({
       required_error:
         'Please include your estimated availability in hours per month',
     })
-    .nonnegative({ message: 'This value must be nonnegative' }),
+    .nonnegative({ message: 'This value must be nonnegative' })
+    .max(744, { message: 'Please enter a valid hours per month' }),
   startDate: z
     .date({
       required_error:
