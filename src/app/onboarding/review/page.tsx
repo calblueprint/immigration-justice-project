@@ -8,7 +8,7 @@ import Icon from '@/components/Icon';
 import COLORS from '@/styles/colors';
 import { Card, Flex } from '@/styles/containers';
 import { H1Centered, H2, H4, P } from '@/styles/text';
-import { formatTruthy, parseDate } from '@/utils/helpers';
+import { formatTruthy, getUTCDate, parseDate } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import * as Styles from '../styles';
 
@@ -125,7 +125,7 @@ export default function Page() {
               <H4>What is the earliest you are available to volunteer?</H4>
               <P>
                 {onboarding.profile.start_date
-                  ? parseDate(new Date(onboarding.profile.start_date))
+                  ? parseDate(getUTCDate(onboarding.profile.start_date))
                   : 'N/A'}
               </P>
             </Styles.SectionField>

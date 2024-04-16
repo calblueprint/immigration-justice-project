@@ -38,12 +38,18 @@ export const parseAgency = (agency: string): string =>
         .join(' ');
 
 /**
+ * @param d - string in date format (i.e. yyyy-mm-dd)
+ * @returns JS Date in UTC-0 timezone
+ */
+export const getUTCDate = (d: string) => new Date(`${d}T00:00`);
+
+/**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise
  */
 export const isValidDate = (d: string) => {
   const currentDate = new Date();
-  const inputDate = new Date(`${d}T00:00`);
+  const inputDate = getUTCDate(d);
   currentDate.setHours(0, 0, 0, 0);
 
   if (d !== '' && inputDate >= currentDate) {

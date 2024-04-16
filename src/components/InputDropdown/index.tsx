@@ -129,7 +129,7 @@ export default function InputDropdown({
 
   return (
     <DropdownWrapper>
-      <InputLabel>{label}</InputLabel>
+      {label && <InputLabel>{label}</InputLabel>}
       <Select
         ref={ref}
         components={{ Menu: AnimatedMenu }}

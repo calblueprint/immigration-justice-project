@@ -26,8 +26,15 @@ import * as Styles from '../styles';
 
 // zod schema to automate form validation
 const legalExperienceSchema = z.object({
-  stateBarred: z.string({ required_error: 'Required' }),
-  barNumber: z.string({ required_error: 'Must include attorney bar number' }),
+  stateBarred: z
+    .string({
+      required_error: 'Please include a state',
+      invalid_type_error: 'Please include a state',
+    })
+    .min(1, { message: 'Please include a state' }),
+  barNumber: z
+    .string({ required_error: 'Please include your attorney bar number' })
+    .min(1, { message: 'Please include your attorney bar number' }),
   eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
 });
 
@@ -115,7 +122,9 @@ export default function Page() {
             name="barNumber"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>What is your attorney bar number?</FormLabel>
+                <FormLabel>
+                  What is your attorney bar number in this state?
+                </FormLabel>
                 <FormControl>
                   <TextInput
                     errorText={fieldState.error?.message}

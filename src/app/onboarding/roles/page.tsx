@@ -97,6 +97,9 @@ export default function Page() {
     if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow)
       onboarding.removeFromProfile(['expected_bar_date', 'eoir_registered']);
 
+    // cap progress to 3 (legal info)
+    onboarding.setProgress(progress => Math.min(progress, 3));
+
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);
   };
@@ -131,6 +134,7 @@ export default function Page() {
                   onChange={v => field.onChange(v ?? '')}
                   options={roleOptions}
                   defaultValue={field.value}
+                  placeholder="Click to select"
                 />
               </FormControl>
               <FormMessage />
