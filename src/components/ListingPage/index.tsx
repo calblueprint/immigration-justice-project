@@ -1,12 +1,13 @@
 'use client';
 
-import { useMemo } from 'react';
-import type { Listing } from '@/types/schema';
 import COLORS from '@/styles/colors';
 import { CenteredH3, H1 } from '@/styles/text';
+import type { Listing } from '@/types/schema';
+import { useMemo } from 'react';
 import FilterDropdown from '../FilterDropdown';
-import * as Styles from './styles';
 import ListingCard from '../ListingCard';
+import ListingDetails from '../ListingDetails';
+import * as Styles from './styles';
 
 interface Filter {
   id: string;
@@ -81,7 +82,10 @@ export default function ListingPage({
         </Styles.CardColumnWrapper>
         <Styles.ListingDetailsContainer>
           {selectedListing ? (
-            <>Listing Details</>
+            <ListingDetails
+              listingData={selectedListing}
+              interpretation={interpretation}
+            />
           ) : (
             <Styles.NoListingsContainer>
               <H1 $color={COLORS.greyMid}>No listings found</H1>

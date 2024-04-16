@@ -72,9 +72,8 @@ export const CardColumn = styled.div`
 `;
 
 export const ListingDetailsContainer = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
-  padding: 40px 48px 28px 48px;
   height: 100%;
   display: flex;
   flex-grow: 1;

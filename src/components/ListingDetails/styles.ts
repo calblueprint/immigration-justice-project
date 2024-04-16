@@ -10,6 +10,7 @@ export const CaseDisplay = styled.aside`
 export const CaseTitle = styled(H1)`
   margin: 6.4px 6.4px;
 `;
+
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,7 +54,11 @@ export const BorderedSection = styled.div`
   flex-direction: column;
   gap: 20px;
   padding: 30px 55px;
-  border: 1px solid ${COLORS.greyLighter};
+  border-top: 2px solid ${COLORS.greyLighter};
+
+  &:first-child {
+    border-top: none;
+  }
 `;
 
 export const Subheading = styled(P)<{ $bold?: true; $color?: string }>`
