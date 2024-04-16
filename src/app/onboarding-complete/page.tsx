@@ -18,7 +18,13 @@ export default function Page() {
       <CenteringDiv>
         <Flex $direction="column" $gap="40px" $align="center">
           <SmallCard>
-            <Flex $direction="column" $justify="center" $gap="40px" $px="40px">
+            <Flex
+              $direction="column"
+              $justify="center"
+              $gap="40px"
+              $px="40px"
+              $minH="100%"
+            >
               <H2Centered>You&apos;re all set!</H2Centered>
               <P $align="center">
                 You can now submit interest applications for the available

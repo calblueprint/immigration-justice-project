@@ -32,7 +32,7 @@ export default function Page() {
   // triggers on clicking submit
   const onSubmit = async () => {
     try {
-      await Promise.all([onboarding.flushData(), push('/onboarding-complete')]);
+      await Promise.all([push('/onboarding-complete'), onboarding.flushData()]);
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       setErrorMessage(msg);

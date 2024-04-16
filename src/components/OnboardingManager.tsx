@@ -4,10 +4,11 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FormContainer, LogoImage, OuterDiv } from '@/app/onboarding/styles';
 import CONFIG from '@/lib/configs';
+import { Box } from '@/styles/containers';
 import { useAuth } from '@/utils/AuthProvider';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
-import IJPLogoBlue from '../../public/images/ijp_logo_blue.webp';
+import IJPLogoBlue from '~/public/images/ijp_logo_blue.webp';
 import { UnstyledButton } from './Buttons';
 import ProgressBar from './ProgressBar';
 
@@ -37,6 +38,7 @@ export default function OnboardingManager({
     flow: onboardingFlow,
     progress: onboardingProgress,
     setProgress,
+    pushingData,
   } = onboarding;
   const { profileReady, profileData } = profile;
   const { userId } = auth;
@@ -49,7 +51,7 @@ export default function OnboardingManager({
       (onboardingFlow.length !== 0 &&
         onboardingProgress >= onboardingFlow.length) ||
       // already onboarded or not signed in
-      (profileReady && (profileData || !userId))
+      (!pushingData && profileReady && (profileData || !userId))
     ) {
       push(CONFIG.homepage);
       return;
@@ -69,6 +71,7 @@ export default function OnboardingManager({
     pageProgress,
     userId,
     setProgress,
+    pushingData,
   ]);
 
   const goToHomepage = () => {
@@ -96,6 +99,7 @@ export default function OnboardingManager({
       </UnstyledButton>
       <ProgressBar steps={onboarding.flow.slice(1)} progress={pageProgress} />
       <FormContainer>{children}</FormContainer>
+      <Box $pt="80px" />
     </OuterDiv>
   );
 }

@@ -43,6 +43,7 @@ interface OnboardingContextType {
   canContinue: boolean;
   location?: LocationData;
   form?: OnboardingFormData;
+  pushingData: boolean;
   setLocation: Dispatch<SetStateAction<LocationData | undefined>>;
   setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
   updateProfile: (updateInfo: Partial<Profile>) => void;
@@ -76,6 +77,7 @@ export default function OnboardingProvider({
   const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
   const [form, setForm] = useState<OnboardingFormData>();
+  const [pushingData, setPushingData] = useState<boolean>(false);
 
   /**
    * Updates stored profile state with the partial data.
@@ -96,6 +98,7 @@ export default function OnboardingProvider({
   }, []);
 
   const flushData = useCallback(async () => {
+    if (pushingData) return;
     if (!auth) throw new Error('Fatal: No auth context provided!');
     if (!profile) throw new Error('Fatal: No profile context provided!');
     if (!auth.userId) throw new Error('Fatal: User is not logged in!');
@@ -173,12 +176,23 @@ export default function OnboardingProvider({
       role: r,
     }));
 
+    setPushingData(true);
+
     await profile.createNewProfile(
       profileToInsert,
       langsToInsert,
       rolesToInsert,
     );
-  }, [auth, profile, userProfile, canReads, canSpeaks, roles, location]);
+  }, [
+    auth,
+    profile,
+    userProfile,
+    canReads,
+    canSpeaks,
+    roles,
+    location,
+    pushingData,
+  ]);
 
   const providerValue = useMemo(
     () => ({
@@ -191,6 +205,7 @@ export default function OnboardingProvider({
       canContinue,
       location,
       form,
+      pushingData,
       setLocation,
       flushData,
       setFlow,
@@ -212,11 +227,12 @@ export default function OnboardingProvider({
       flow,
       canContinue,
       location,
+      pushingData,
+      form,
       setLocation,
       flushData,
       updateProfile,
       removeFromProfile,
-      form,
       setForm,
     ],
   );
