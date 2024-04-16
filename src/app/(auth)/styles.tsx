@@ -21,9 +21,10 @@ export const FormDiv = styled.div`
   width: 39.25rem;
 `;
 
-export const SpacerDiv = styled.div<{ $gap?: number }>`
+export const SpacerDiv = styled.div<{ $gap?: number; $align?: string }>`
   display: flex;
   flex-direction: column;
+  ${({ $align }) => $align && `align-items: ${$align};`};
   gap: ${({ $gap }) => $gap || 19.2}px;
 `;
 
