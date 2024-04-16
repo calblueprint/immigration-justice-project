@@ -137,3 +137,6 @@ export const filterAndPaginate = (
     hasMore,
   };
 };
+
+// to use as empty function
+export const identity = (x: unknown) => x;

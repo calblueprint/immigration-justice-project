@@ -15,16 +15,11 @@ import TextInput from '@/components/TextInput';
 import { usStates } from '@/data/citiesAndStates';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { formatTruthy } from '@/utils/helpers';
-import {
-  useGuardedOnboarding,
-  useOnboardingFormDirtyUpdate,
-  useOnboardingFormSubmitterUpdate,
-  useOnboardingNavigation,
-} from '@/utils/hooks';
+import { formatTruthy, identity } from '@/utils/helpers';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import * as Styles from '../styles';
@@ -51,16 +46,6 @@ export default function Page() {
     },
   });
 
-  // update form submitter and dirty state
-  const { handleSubmit, formState } = form;
-  useOnboardingFormSubmitterUpdate(handleSubmit);
-  useOnboardingFormDirtyUpdate(formState.isDirty);
-
-  const onSubmit = () => {
-    push(`/onboarding/${onboarding.flow[4].url}`);
-    onboarding.setFormIsDirty(false);
-  };
-
   const formValues = form.watch();
   const isEmpty = useMemo(
     () =>
@@ -68,6 +53,22 @@ export default function Page() {
       formValues.eoirRegistered === undefined,
     [formValues],
   );
+
+  // update form submitter and dirty state
+  const { setForm: setOnboardingForm } = onboarding;
+  const { isDirty, isValid } = form.formState;
+  useEffect(() => {
+    setOnboardingForm({
+      trigger: form.handleSubmit(identity),
+      isDirty,
+      isValid,
+    });
+  }, [setOnboardingForm, form, isDirty, isValid]);
+
+  const onSubmit = () => {
+    push(`/onboarding/${onboarding.flow[4].url}`);
+    onboarding.setForm(undefined);
+  };
 
   return (
     <FormProvider {...form}>

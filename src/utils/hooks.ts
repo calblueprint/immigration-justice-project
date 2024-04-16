@@ -2,8 +2,7 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { FieldValues, UseFormHandleSubmit } from 'react-hook-form';
-import { OnboardingContext } from './OnboardingProvider';
+import { OnboardingContext, OnboardingFormData } from './OnboardingProvider';
 
 const useSafeOnboarding = () => {
   const onboarding = useContext(OnboardingContext);
@@ -34,12 +33,7 @@ export const useOnboardingNavigation = () => {
   const pathname = usePathname();
   const { push } = useRouter();
 
-  const {
-    flow,
-    formIsDirty,
-    makeFormSubmitter,
-    progress: onboardingProgress,
-  } = onboarding;
+  const { flow, form, progress: onboardingProgress } = onboarding;
 
   const pageProgress = useMemo(
     () => flow.findIndex(f => `/onboarding/${f.url}` === pathname),
@@ -61,15 +55,18 @@ export const useOnboardingNavigation = () => {
         push(href);
       };
 
-      if (pageProgress !== onboardingProgress && formIsDirty) {
-        // await here because for some reason it returns a promise..
-        const submitForm = await makeFormSubmitter?.(ebber);
-        submitForm?.();
+      if (
+        pageProgress !== onboardingProgress &&
+        form &&
+        form.isDirty &&
+        !form.isValid
+      ) {
+        form.trigger();
       } else {
         ebber();
       }
     },
-    [formIsDirty, push, makeFormSubmitter, pageProgress, onboardingProgress],
+    [push, form, pageProgress, onboardingProgress],
   );
 
   const backlinkHref = useMemo(
@@ -80,18 +77,7 @@ export const useOnboardingNavigation = () => {
   return { flowAt, ebbTo, backlinkHref, pageProgress };
 };
 
-export const useOnboardingFormSubmitterUpdate = <F extends FieldValues>(
-  formHandleSubmit: UseFormHandleSubmit<F, undefined>,
-) => {
-  const { setFormSubmitter } = useSafeOnboarding();
-  useEffect(() => {
-    setFormSubmitter(formHandleSubmit);
-  }, [formHandleSubmit, setFormSubmitter]);
-};
-
-export const useOnboardingFormDirtyUpdate = (dirty: boolean) => {
-  const { setFormIsDirty } = useSafeOnboarding();
-  useEffect(() => {
-    setFormIsDirty(dirty);
-  }, [setFormIsDirty, dirty]);
+export const useOnboardingFormUpdate = (form: OnboardingFormData) => {
+  const { setForm } = useSafeOnboarding();
+  setForm(form);
 };

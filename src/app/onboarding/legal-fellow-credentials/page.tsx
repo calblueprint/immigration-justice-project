@@ -9,15 +9,15 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import { CardForm, Flex } from '@/styles/containers';
 import { BigBlueButton, BigButton } from '@/components/Buttons';
 import { useRouter } from 'next/navigation';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import {
-  useGuardedOnboarding,
-  useOnboardingFormDirtyUpdate,
-  useOnboardingFormSubmitterUpdate,
-  useOnboardingNavigation,
-} from '@/utils/hooks';
-import { formatTruthy, getCurrentDate, parseDateAlt } from '@/utils/helpers';
+  formatTruthy,
+  getCurrentDate,
+  identity,
+  parseDateAlt,
+} from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Icon from '@/components/Icon';
 import * as Styles from '../styles';
 
@@ -49,16 +49,6 @@ export default function Page() {
     },
   });
 
-  // update form submitter and dirty state
-  const { handleSubmit, formState } = form;
-  useOnboardingFormSubmitterUpdate(handleSubmit);
-  useOnboardingFormDirtyUpdate(formState.isDirty);
-
-  const onValidSubmit = () => {
-    push(`/onboarding/${onboarding.flow[4].url}`);
-    onboarding.setFormIsDirty(false);
-  };
-
   const formValues = form.watch();
   const isEmpty = useMemo(
     () =>
@@ -66,6 +56,22 @@ export default function Page() {
       formValues.eoirRegistered === undefined,
     [formValues],
   );
+
+  // update form submitter and dirty state
+  const { setForm: setOnboardingForm } = onboarding;
+  const { isDirty, isValid } = form.formState;
+  useEffect(() => {
+    setOnboardingForm({
+      trigger: form.handleSubmit(identity),
+      isDirty,
+      isValid,
+    });
+  }, [setOnboardingForm, form, isDirty, isValid]);
+
+  const onValidSubmit = () => {
+    push(`/onboarding/${onboarding.flow[4].url}`);
+    onboarding.setForm(undefined);
+  };
 
   return (
     <FormProvider {...form}>

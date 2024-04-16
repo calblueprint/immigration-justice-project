@@ -8,16 +8,11 @@ import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { getCurrentDate, parseDateAlt } from '@/utils/helpers';
-import {
-  useGuardedOnboarding,
-  useOnboardingFormDirtyUpdate,
-  useOnboardingFormSubmitterUpdate,
-  useOnboardingNavigation,
-} from '@/utils/hooks';
+import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import * as Styles from '../styles';
@@ -60,17 +55,6 @@ export default function Page() {
     },
   });
 
-  // update form submitter and dirty state
-  useOnboardingFormSubmitterUpdate(form.handleSubmit);
-  useOnboardingFormDirtyUpdate(form.formState.isDirty);
-
-  // handle valid form submission
-  // validity should have already been handled by Zod
-  const onValidSubmit = () => {
-    push(`/onboarding/${onboarding.flow[3].url}`);
-    onboarding.setFormIsDirty(false);
-  };
-
   // used to determine whether to disable the continue button
   const formValues = form.watch();
   const isEmpty = useMemo(
@@ -79,6 +63,24 @@ export default function Page() {
       formValues.startDate === undefined,
     [formValues],
   );
+
+  // update form submitter and dirty state
+  const { setForm: setOnboardingForm } = onboarding;
+  const { isDirty, isValid } = form.formState;
+  useEffect(() => {
+    setOnboardingForm({
+      trigger: form.handleSubmit(identity),
+      isDirty,
+      isValid,
+    });
+  }, [setOnboardingForm, form, isDirty, isValid]);
+
+  // handle valid form submission
+  // validity should have already been handled by Zod
+  const onValidSubmit = () => {
+    push(`/onboarding/${onboarding.flow[3].url}`);
+    onboarding.setForm(undefined);
+  };
 
   return (
     <FormProvider {...form}>

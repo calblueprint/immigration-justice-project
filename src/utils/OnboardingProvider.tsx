@@ -21,8 +21,12 @@ import {
   useState,
 } from 'react';
 
-type FormSubmitter = () => Promise<void>;
-type FormSubmitterConstructor = (func: () => void) => FormSubmitter;
+export interface OnboardingFormData {
+  trigger: () => Promise<void>;
+  isDirty: boolean;
+  isValid: boolean;
+}
+
 type LocationData = {
   country?: DropdownOption;
   state?: DropdownOption;
@@ -37,14 +41,10 @@ interface OnboardingContextType {
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
-  formIsDirty: boolean;
   location?: LocationData;
+  form?: OnboardingFormData;
   setLocation: Dispatch<SetStateAction<LocationData | undefined>>;
-  setFormIsDirty: Dispatch<SetStateAction<boolean>>;
-  makeFormSubmitter?: FormSubmitterConstructor;
-  setFormSubmitter: Dispatch<
-    SetStateAction<FormSubmitterConstructor | undefined>
-  >;
+  setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
   updateProfile: (updateInfo: Partial<Profile>) => void;
   removeFromProfile: (toClear: Array<keyof Profile>) => void;
   flushData: () => Promise<void>;
@@ -75,9 +75,7 @@ export default function OnboardingProvider({
   const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
   const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
-  const [formIsDirty, setFormIsDirty] = useState<boolean>(false);
-  const [makeFormSubmitter, setFormSubmitter] =
-    useState<FormSubmitterConstructor>();
+  const [form, setForm] = useState<OnboardingFormData>();
 
   /**
    * Updates stored profile state with the partial data.
@@ -104,50 +102,47 @@ export default function OnboardingProvider({
 
     const uid: UUID = auth.userId;
 
-    if (!userProfile.first_name)
-      throw new Error('Error flushing data: profile missing first name!');
+    if (!userProfile.first_name) throw new Error('First name is required!');
 
-    if (!userProfile.last_name)
-      throw new Error('Error flushing data: profile missing last name!');
+    if (!userProfile.last_name) throw new Error('Last name is required!');
 
     if (userProfile.hours_per_month === undefined)
-      throw new Error('Error flushing data: profile missing hours per month!');
+      throw new Error('Hours per month is required!');
 
-    if (!location)
-      throw new Error('Error flushing data: profile missing location!');
+    if (!location) throw new Error('Location is required!');
 
     if (!location.country || !location.country.label)
-      throw new Error('Error flushing data: profile missing country!');
+      throw new Error('Country is required!');
 
     if (!location.state || !location.state.label)
-      throw new Error('Error flushing data: profile missing state!');
+      throw new Error('State is required!');
 
     if (!location.city || !location.city.label)
-      throw new Error('Error flushing data: profile missing city!');
+      throw new Error('City is required!');
 
-    if (!userProfile.start_date)
-      throw new Error('Error flushing data: profile missing start date!');
+    if (!userProfile.start_date) throw new Error('Start date is required!');
 
-    if (!userProfile.phone_number)
-      throw new Error('Error flushing data: profile missing phone number!');
+    if (!userProfile.phone_number) throw new Error('Phone number is required!');
 
-    if (roles.length === 0)
-      throw new Error('Error flushing data: roles data is empty!');
+    if (roles.length === 0) throw new Error('Error: could not determine role!');
 
     if (roles.includes('ATTORNEY')) {
-      if (!userProfile.bar_number)
-        throw new Error(
-          'Error flushing data: attorney profile missing bar number!',
-        );
+      if (!userProfile.bar_number) throw new Error('Bar number is required!');
 
       if (userProfile.eoir_registered === undefined)
-        throw new Error(
-          'Error flushing data: attorney profile missing EOIR registered!',
-        );
+        throw new Error('EOIR registered is required!');
+    }
+
+    if (roles.includes('LEGAL_FELLOW')) {
+      if (!userProfile.expected_bar_date)
+        throw new Error('Expected bar date is required!');
+
+      if (!userProfile.eoir_registered)
+        throw new Error('EOIR registered is required!');
     }
 
     if (canReads.length + canSpeaks.length === 0)
-      throw new Error('Error flushing data: languages data is empty!');
+      throw new Error('Languages are required!');
 
     // format data
     const profileToInsert: Profile = {
@@ -194,17 +189,15 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
-      formIsDirty,
       location,
+      form,
       setLocation,
-      setFormIsDirty,
       flushData,
       setFlow,
       setProgress,
       updateProfile,
       removeFromProfile,
-      makeFormSubmitter,
-      setFormSubmitter,
+      setForm,
       setCanReads,
       setCanSpeaks,
       setRoles,
@@ -218,15 +211,13 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
-      formIsDirty,
       location,
       setLocation,
-      setFormIsDirty,
       flushData,
       updateProfile,
       removeFromProfile,
-      setFormSubmitter,
-      makeFormSubmitter,
+      form,
+      setForm,
     ],
   );
 

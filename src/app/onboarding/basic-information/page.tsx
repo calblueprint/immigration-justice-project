@@ -10,17 +10,12 @@ import { optionalLanguages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import type { DropdownOption } from '@/types/dropdown';
-import { filterAndPaginate } from '@/utils/helpers';
-import {
-  useGuardedOnboarding,
-  useOnboardingFormDirtyUpdate,
-  useOnboardingFormSubmitterUpdate,
-  useOnboardingNavigation,
-} from '@/utils/hooks';
+import { filterAndPaginate, identity } from '@/utils/helpers';
+import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { City, State } from 'country-state-city';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { GroupBase } from 'react-select';
 import type { LoadOptions } from 'react-select-async-paginate';
@@ -78,8 +73,12 @@ const zodDropdownOption = {
 };
 
 const basicInformationSchema = z.object({
-  firstName: z.string({ required_error: 'Please include your first name' }),
-  lastName: z.string({ required_error: 'Please include your last name' }),
+  firstName: z
+    .string({ required_error: 'Please include your first name' })
+    .min(1, { message: 'Please include your first name' }),
+  lastName: z
+    .string({ required_error: 'Please include your last name' })
+    .min(1, { message: 'Please include your first name' }),
   country: z
     .object(zodDropdownOption)
     .nullable()
@@ -132,10 +131,6 @@ export default function Page() {
     },
   });
 
-  // update form submitter and dirty state
-  useOnboardingFormSubmitterUpdate(form.handleSubmit);
-  useOnboardingFormDirtyUpdate(form.formState.isDirty);
-
   // used to determine whether to disable the continue button
   const formValues = form.watch();
   const isEmpty = useMemo(
@@ -153,11 +148,22 @@ export default function Page() {
     [formValues],
   );
 
+  // update form submitter and dirty state
+  const { setForm: setOnboardingForm } = onboarding;
+  const { isDirty, isValid } = form.formState;
+  useEffect(() => {
+    setOnboardingForm({
+      trigger: form.handleSubmit(identity),
+      isDirty,
+      isValid,
+    });
+  }, [setOnboardingForm, form, isDirty, isValid]);
+
   // handle valid form submission
   // - validity should be handled by Zod
   const onSubmit = () => {
     push(`/onboarding/${onboarding.flow[2].url}`);
-    onboarding.setFormIsDirty(false);
+    onboarding.setForm(undefined);
   };
 
   return (

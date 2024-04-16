@@ -8,6 +8,8 @@ import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import Icon from '@/components/Icon';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import COLORS from '@/styles/colors';
 import * as Styles from '../styles';
 
 function EditButton({ href }: { href: string }) {
@@ -23,12 +25,18 @@ function EditButton({ href }: { href: string }) {
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
+  const [errorMessage, setErrorMessage] = useState('');
   const { flowAt, backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // triggers on clicking submit
   const onSubmit = async () => {
-    await Promise.all([onboarding.flushData(), push('/onboarding-complete')]);
+    try {
+      await Promise.all([onboarding.flushData(), push('/onboarding-complete')]);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      setErrorMessage(msg);
+    }
   };
 
   return (
@@ -39,6 +47,8 @@ export default function Page() {
         </Styles.BackLink>
 
         <H1Centered>Review & Submit</H1Centered>
+
+        {errorMessage && <P $color={COLORS.redMid}>* {errorMessage}</P>}
 
         {/* basic information section */}
         <Styles.SectionBox>
@@ -205,6 +215,8 @@ export default function Page() {
           </Styles.SectionBox>
         )}
       </Flex>
+
+      {errorMessage && <P $color={COLORS.redMid}>* {errorMessage}</P>}
 
       <Flex $gap="40px">
         <BigLinkButton href={backlinkHref}>Back</BigLinkButton>
