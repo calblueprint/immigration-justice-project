@@ -12,7 +12,6 @@ export const NavBarContainer = styled.div`
   width: 100%;
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
-  padding: 15px 0px;
 `;
 
 export const NavBarSectionDiv = styled.div`
@@ -31,13 +30,24 @@ export const AuthButtons = styled.div`
   right: 0;
   margin-right: 3.375rem;
 `;
-export const NoUnderlineLink = styled(LinkColored)`
+export const NoUnderlineLink = styled(LinkColored)<{ active?: boolean }>`
   ${openSans.style}
   text-decoration: none;
+  margin: 10px;
+  position: relative;
   cursor: pointer;
 
   &:hover,
   &:focus {
     text-decoration: underline;
   }
+`;
+export const LinkContainer = styled.div<{ active: boolean }>`
+  display: flex;
+  height: 100%;
+  margin: 5px;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  background: ${props => (props.active ? '#0f71ad' : COLORS.blueMid)};
 `;
