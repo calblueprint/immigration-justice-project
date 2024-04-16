@@ -2,7 +2,7 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { OnboardingContext, OnboardingFormData } from './OnboardingProvider';
+import { OnboardingContext } from './OnboardingProvider';
 
 const useSafeOnboarding = () => {
   const onboarding = useContext(OnboardingContext);
@@ -75,9 +75,4 @@ export const useOnboardingNavigation = () => {
   );
 
   return { flowAt, ebbTo, backlinkHref, pageProgress };
-};
-
-export const useOnboardingFormUpdate = (form: OnboardingFormData) => {
-  const { setForm } = useSafeOnboarding();
-  setForm(form);
 };
