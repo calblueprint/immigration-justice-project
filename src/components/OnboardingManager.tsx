@@ -1,13 +1,13 @@
 'use client';
 
+import { ReactNode, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { FormContainer, LogoImage, OuterDiv } from '@/app/onboarding/styles';
 import CONFIG from '@/lib/configs';
 import { useAuth } from '@/utils/AuthProvider';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
-import IJPLogoBlue from '~/public/images/ijp_logo_blue.webp';
-import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import IJPLogoBlue from '../../public/images/ijp_logo_blue.webp';
 import { UnstyledButton } from './Buttons';
 import ProgressBar from './ProgressBar';
 

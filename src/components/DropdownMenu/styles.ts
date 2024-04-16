@@ -1,5 +1,5 @@
-import COLORS from '@/styles/colors';
 import styled, { keyframes } from 'styled-components';
+import COLORS from '@/styles/colors';
 
 // use this keyframe in input dropdown in the future
 export const FadeInKeyframes = keyframes`

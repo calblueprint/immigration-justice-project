@@ -1,5 +1,9 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { BigBlueButton, BigButton } from '@/components/Buttons';
 import DateInput from '@/components/DateInput';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
@@ -11,10 +15,6 @@ import { H1Centered } from '@/styles/text';
 import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import * as Styles from '../styles';
 
 // define form schema to automate form validation

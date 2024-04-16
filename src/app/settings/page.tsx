@@ -1,5 +1,7 @@
 'use client';
 
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button, LinkButton } from '@/components/Buttons';
 import SettingsSection from '@/components/SettingsSection';
 import { cities } from '@/data/citiesAndStates';
@@ -11,8 +13,6 @@ import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidBarNumber } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([

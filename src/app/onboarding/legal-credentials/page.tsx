@@ -1,5 +1,9 @@
 'use client';
 
+import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { BigBlueButton, BigButton } from '@/components/Buttons';
 import {
   FormControl,
@@ -18,10 +22,6 @@ import { H1Centered } from '@/styles/text';
 import { formatTruthy, identity } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation

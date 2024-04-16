@@ -1,5 +1,5 @@
-import { SectionData, SettingsSectionData } from '@/types/settingsSection';
 import React, { useEffect, useState } from 'react';
+import { SectionData, SettingsSectionData } from '@/types/settingsSection';
 import DataField from './DataField';
 import { SectionRow } from './styles';
 
