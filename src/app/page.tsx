@@ -3,7 +3,7 @@
 import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import { H2, H3, H4 } from '../styles/text';
-import { LinkButton } from '../components/Button';
+import { LinkButton } from '../components/Buttons';
 import homepageImage from '../../public/images/homepage-image.webp';
 import secondImage from '../../public/images/homepage-second-image.webp';
 import * as Styles from './styles';
@@ -77,7 +77,6 @@ export default function Home() {
             placeholder="blur"
             blurDataURL={homepageImage.src}
             quality={100}
-            layout="fill"
             style={{ objectFit: 'cover' }}
             fill
           />
@@ -145,8 +144,9 @@ export default function Home() {
             placeholder="blur"
             blurDataURL={secondImage.src}
             quality={100}
-            layout="fill"
             style={{ objectFit: 'contain' }}
+            sizes="100%"
+            fill
           />
         </Styles.ImageWrapper>
       </Styles.MissionValuesContainer>

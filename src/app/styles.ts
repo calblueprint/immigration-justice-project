@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 
 export const PageContainer = styled.div`
   width: 100%;
@@ -123,7 +123,7 @@ export const ImageContainer = styled.div`
   left: 0;
 `;
 export const Title = styled.h5<{ $color?: string }>`
-  ${openSans.style}
+  ${sans.style}
   font-size: 5.31rem;
   font-weight: 600;
   color: white;
@@ -139,7 +139,7 @@ export const ImageWrapper = styled.div`
   justify-self: end;
 `;
 export const Subtitle = styled.h3`
-  ${openSans.style}
+  ${sans.style}
   font-weight: 400;
   color: white;
   font-size: 1.5rem;
