@@ -21,6 +21,14 @@ export default function ListingCard({
   onClick?: (id: UUID) => void;
   interpretation?: boolean;
 }) {
+  const interpretationType = useMemo(() => {
+    if (listing.listing_type === 'CASE' && listing.needs_interpreter)
+      return 'Case Interpretation';
+    if (listing.listing_type === 'DOC') return 'Document Translation';
+    if (listing.listing_type === 'INT') return 'One-time Interpretation';
+    return '';
+  }, [listing]);
+
   // list of tags to display
   const cardTags = useMemo(() => {
     const tags = [];
@@ -87,6 +95,12 @@ export default function ListingCard({
       $selected={isSelected}
       onClick={() => onClick?.(listing.id)}
     >
+      {interpretation && (
+        <Styles.LanguageSupportLabel>
+          {interpretationType}
+        </Styles.LanguageSupportLabel>
+      )}
+
       <H4>{listing.title || 'Migrant seeking representation'}</H4>
 
       {cardTags.length > 0 && (
