@@ -4,7 +4,8 @@ import COLORS from '@/styles/colors';
 import Image from 'next/image';
 import { H2, H3, H4 } from '../styles/text';
 import { LinkButton } from '../components/Button';
-import homepageImage from '../../public/images/home-page-image.webp';
+import homepageImage from '../../public/images/homepage-image.webp';
+import secondImage from '../../public/images/homepage-second-image.webp';
 import * as Styles from './styles';
 
 type Stat = {
@@ -13,10 +14,10 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { number: '181+', label: 'Matched Cases' },
-  { number: '181+', label: 'Attorneys' },
+  { number: '180+', label: 'Pro Bono Cases' },
+  { number: '200+', label: 'Attorney Volunteers' },
   { number: '65+', label: 'Interpreters & Translators' },
-  { number: '46+', label: 'Successful Outcomes' },
+  { number: '50+', label: 'Successful Outcomes' },
 ];
 
 const renderStat = (stat: Stat) => (
@@ -93,7 +94,7 @@ export default function Home() {
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
-              href="https://www.americanbar.org/groups/public_interest/immigration/"
+              href="/login"
               style={{ fontSize: '1.5rem' }}
             >
               Volunteer Now
@@ -140,9 +141,9 @@ export default function Home() {
         <Styles.ImageWrapper>
           <Image
             alt="Lawyer Image"
-            src={homepageImage.src}
+            src={secondImage.src}
             placeholder="blur"
-            blurDataURL={homepageImage.src}
+            blurDataURL={secondImage.src}
             quality={100}
             layout="fill"
             style={{ objectFit: 'contain' }}
