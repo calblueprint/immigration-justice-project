@@ -3,13 +3,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
-import { PCentered } from '@/app/(auth)/styles';
+import { AuthSubHeading, PCentered } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { Flex, SmallCardForm } from '@/styles/containers';
-import { H1, LinkColored, P } from '@/styles/text';
+import { LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
 
@@ -77,7 +77,7 @@ export default function Login() {
   return (
     <SmallCardForm onSubmit={handleSignIn}>
       <Flex $direction="column" $gap="10px">
-        <H1>Log In</H1>
+        <AuthSubHeading>Log In</AuthSubHeading>
         {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
       </Flex>
       <Flex $direction="column" $gap="13px">

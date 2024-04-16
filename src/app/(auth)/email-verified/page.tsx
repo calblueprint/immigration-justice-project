@@ -4,14 +4,14 @@ import { BigBlueLinkButton } from '@/components/Buttons';
 import Icon from '@/components/Icon';
 import CONFIG from '@/lib/configs';
 import { Flex, SmallCard } from '@/styles/containers';
-import { H2 } from '@/styles/text';
+import { AuthSubHeading } from '../styles';
 
 export default function EmailVerified() {
   return (
     <SmallCard>
       <Flex $direction="column" $gap="20px">
         <Icon type="blue_check" />
-        <H2>Your email has been verified!</H2>
+        <AuthSubHeading>Your email has been verified!</AuthSubHeading>
         <BigBlueLinkButton type="button" href={CONFIG.onboardingHome}>
           Go to Onboarding
         </BigBlueLinkButton>

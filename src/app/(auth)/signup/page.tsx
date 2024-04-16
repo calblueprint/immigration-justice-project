@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { H4Centered, HorizontalDiv, PCentered } from '@/app/(auth)/styles';
+import { AuthSubHeading, H4Centered, PCentered } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
+import Icon from '@/components/Icon';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
 import { Flex, SmallCardForm } from '@/styles/containers';
-import { H1, H2, H4, LinkColored, P } from '@/styles/text';
+import { H1, H4, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 
 export default function SignUp() {
@@ -125,19 +126,18 @@ export default function SignUp() {
   ) : (
     <SmallCardForm onSubmit={handleResendEmail}>
       <Flex $direction="column" $gap="20px">
-        <H2>An email verification link has been sent.</H2>
+        <Icon type="email" />
+        <AuthSubHeading>Verification email sent!</AuthSubHeading>
         <H4Centered $color={COLORS.greyDark}>
           This link will direct you to the next step. If you didn’t receive an
           email, please click Resend Email.
         </H4Centered>
-        <HorizontalDiv>
-          <BigBlueButton type="submit">
-            <H4 $color="white">Resend Email</H4>
-          </BigBlueButton>
-          {emailSentCount > 1 && (
-            <P $color={COLORS.blueMid}>Email has been resent!</P>
-          )}
-        </HorizontalDiv>
+        <BigBlueButton type="submit">
+          <H4 $color="white">Resend Email</H4>
+        </BigBlueButton>
+        {emailSentCount > 1 && (
+          <P $color={COLORS.blueMid}>Email has been resent!</P>
+        )}
       </Flex>
     </SmallCardForm>
   );

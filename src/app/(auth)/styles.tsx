@@ -31,12 +31,28 @@ export const SpacerDiv = styled.div<{ $gap?: number; $align?: string }>`
 export const H4Centered = styled(H4)`
   color: ${COLORS.greyDark};
   text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
 export const PCentered = styled(P)`
   color: ${COLORS.greyDark};
   font-size: 1rem;
   text-align: center;
+`;
+
+export const AuthHeading = styled.h1`
+  color: ${COLORS.blueDarker};
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+`;
+
+export const AuthSubHeading = styled.h2`
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
 `;
 
 export const HorizontalDiv = styled.div`

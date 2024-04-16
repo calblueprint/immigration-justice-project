@@ -14,6 +14,7 @@ export const InputText = styled(P)<{ $error: boolean }>`
 
   &::placeholder {
     color: ${COLORS.placeholderText};
+    font-weight: 400;
   }
 
   &:not(:placeholder-shown) {
