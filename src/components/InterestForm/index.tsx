@@ -9,8 +9,9 @@ import { P, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import RadioGroup from '@/components/RadioGroup';
-import DateInput from '../DateInput';
-import Button from '../Button';
+import TextAreaInput from '@/components/TextAreaInput';
+import DateInput from '@/components/DateInput';
+import Button from '@/components/Button';
 import {
   FormContainer,
   FormTextArea,
@@ -19,6 +20,7 @@ import {
   FormWarning,
   ErrorText,
 } from './styles';
+import { TextArea } from '../TextAreaInput/styles';
 
 const formQuestion = (label: string, required = false) => (
   <Flex $direction="row">
@@ -146,17 +148,25 @@ export default function InterestForm({
               value={needsInterpreter}
               setValue={setNeedsInterpreter}
               options={['Yes', 'No']}
-              label="Do you need language interpretation help for the client?"
+              label="Will you require language interpretation assistance to represent this client?"
               error={
                 missingInfo
-                  ? 'Must select whether you need language support'
+                  ? 'Must select whether you need language interpretation assistance'
                   : ''
               }
             />
           )}
-          <Flex $gap="10px" $direction="column">
+          <TextAreaInput 
+               label = {`Why are you interested in this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'}?`}
+               placeholder = {`I want to work on this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'} because...`}
+               error = {(missingInfo && reason === '') ? 'Must include a reason' : ''}
+               id="reason"
+               value={reason}
+               setValue={setReason}
+               />
+          {/* <Flex $gap="10px" $direction="column">
             {formQuestion(
-              'Why are you interested in this case?',
+              `Why are you interested in this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'}?`,
               listingData.listing_type === 'LCA' ||
                 listingData.listing_type === 'DOC',
             )}
@@ -169,7 +179,7 @@ export default function InterestForm({
             {missingInfo && reason === '' && (
               <ErrorText>Must include a reason</ErrorText>
             )}
-          </Flex>
+          </Flex> */}
           <FormFooter>
             <FormWarning>
               Your interest form is not saved!
