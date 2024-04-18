@@ -12,26 +12,7 @@ import RadioGroup from '@/components/RadioGroup';
 import TextAreaInput from '@/components/TextAreaInput';
 import DateInput from '@/components/DateInput';
 import Button from '@/components/Button';
-import {
-  FormContainer,
-  FormTextArea,
-  FormQuestion,
-  FormFooter,
-  FormWarning,
-  ErrorText,
-} from './styles';
-import { TextArea } from '../TextAreaInput/styles';
-
-const formQuestion = (label: string, required = false) => (
-  <Flex $direction="row">
-    <FormQuestion>{label}</FormQuestion>
-    {required ? (
-      <FormQuestion $color={COLORS.redMid}>&nbsp;*</FormQuestion>
-    ) : (
-      <FormQuestion>&nbsp;(optional)</FormQuestion>
-    )}
-  </Flex>
-);
+import { FormContainer, FormFooter, FormWarning } from './styles';
 
 export default function InterestForm({
   listingData,
@@ -156,30 +137,19 @@ export default function InterestForm({
               }
             />
           )}
-          <TextAreaInput 
-               label = {`Why are you interested in this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'}?`}
-               placeholder = {`I want to work on this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'} because...`}
-               error = {(missingInfo && reason === '') ? 'Must include a reason' : ''}
-               id="reason"
-               value={reason}
-               setValue={setReason}
-               />
-          {/* <Flex $gap="10px" $direction="column">
-            {formQuestion(
-              `Why are you interested in this ${listingData.listing_type === 'CASE' ? 'case': 'assignment'}?`,
-              listingData.listing_type === 'LCA' ||
-                listingData.listing_type === 'DOC',
-            )}
-            <FormTextArea
-              id="reason"
-              placeholder="I want to work on this case because..."
-              value={reason}
-              onChange={event => setReason(event.target.value)}
-            />
-            {missingInfo && reason === '' && (
-              <ErrorText>Must include a reason</ErrorText>
-            )}
-          </Flex> */}
+          <TextAreaInput
+            label={`Why are you interested in this ${
+              listingData.listing_type === 'CASE' ? 'case' : 'assignment'
+            }?`}
+            required
+            placeholder={`I want to work on this ${
+              listingData.listing_type === 'CASE' ? 'case' : 'assignment'
+            } because...`}
+            error={missingInfo && reason === '' ? 'Must include a reason' : ''}
+            id="reason"
+            value={reason}
+            setValue={setReason}
+          />
           <FormFooter>
             <FormWarning>
               Your interest form is not saved!

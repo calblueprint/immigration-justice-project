@@ -248,7 +248,10 @@ export default function ListingDetails({
   const interestSection = useMemo(() => {
     if (auth && auth.userId) {
       return profile?.profileData ? (
-        <InterestForm listingData={listingData} interpretation={interpretation} />
+        <InterestForm
+          listingData={listingData}
+          interpretation={interpretation}
+        />
       ) : (
         <>
           <H3>Please complete your profile before submitting interest.</H3>
@@ -285,7 +288,7 @@ export default function ListingDetails({
         </AuthButtons>
       </>
     );
-  }, [auth, listingData, profile]);
+  }, [auth, listingData, profile, interpretation]);
 
   return (
     <CaseDisplay>

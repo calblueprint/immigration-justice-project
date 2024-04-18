@@ -1,10 +1,12 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import { Flex } from '@/styles/containers';
 import { H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { TextArea, TextAreaContainer } from './styles';
 
 export default function TextAreaInput({
   label,
+  required = false,
   placeholder = '',
   error = '',
   id,
@@ -13,6 +15,7 @@ export default function TextAreaInput({
   onChange,
 }: {
   label: string;
+  required?: boolean;
   placeholder?: string;
   error?: string;
   id?: string;
@@ -30,9 +33,12 @@ export default function TextAreaInput({
 
   return (
     <TextAreaContainer>
-      <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
-        {label}
-      </H4>
+      <Flex $direction="row">
+        <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
+          {label}
+        </H4>
+        {required && <H4 $color={COLORS.redMid}>&nbsp;*</H4>}
+      </Flex>
       <TextArea
         id={id}
         placeholder={placeholder}
