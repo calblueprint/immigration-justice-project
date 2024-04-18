@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getNCases } from '@/api/supabase/queries/cases';
+import { getAllCases } from '@/api/supabase/queries/cases';
 import ListingPage from '@/components/ListingPage';
 import { CaseListing, Listing } from '@/types/schema';
 import { parseAgency } from '@/utils/helpers';
@@ -20,7 +20,7 @@ export default function Page() {
   useEffect(() => {
     (async () => {
       try {
-        const cases = await getNCases(20);
+        const cases = await getAllCases();
         setCaseData(cases);
         setSelectedListing(cases[0]);
       } catch (error) {

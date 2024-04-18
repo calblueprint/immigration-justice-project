@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getNLCA } from '@/api/supabase/queries/limitedCaseAssignments';
+import { getAllLCA } from '@/api/supabase/queries/limitedCaseAssignments';
 import ListingPage from '@/components/ListingPage';
 import { LimitedCaseAssignment, Listing } from '@/types/schema';
 
@@ -15,7 +15,7 @@ export default function Page() {
   useEffect(() => {
     (async () => {
       try {
-        const lcas = await getNLCA(20);
+        const lcas = await getAllLCA();
         setLCAData(lcas);
         setSelectedListing(lcas[0]);
       } catch (error) {

@@ -11,13 +11,3 @@ export async function getAllLCA(): Promise<LimitedCaseAssignment[]> {
     listing_type: 'LCA',
   }));
 }
-
-export async function getNLCA(n: number): Promise<LimitedCaseAssignment[]> {
-  const { data, error } = await supabase.rpc('get_lca').limit(n);
-  if (error) throw new Error(`Error fetching ${n} LCA: ${error.message}`);
-
-  return data.map((l: LimitedCaseAssignment) => ({
-    ...l,
-    listing_type: 'LCA',
-  }));
-}
