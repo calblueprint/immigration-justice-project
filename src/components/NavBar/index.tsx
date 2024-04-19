@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import ProfileButton from '@/components/ProfileButton';
 import { LinkButton } from '@/components/SmallerButton';
 import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
 import * as Styles from './style';
@@ -47,12 +48,12 @@ export default function NavBar() {
     return currentPath.includes(path);
   }
 
-  type NavLinks = {
+  type NavLink = {
     name: string;
     path: string;
     active: boolean;
   };
-  const navllink: NavLinks[] = [
+  const navlink: NavLink[] = [
     { name: 'Cases', path: '/cases', active: IsActive('/cases') },
     {
       name: 'Limited Case Assignments',
@@ -66,9 +67,9 @@ export default function NavBar() {
     },
   ];
 
-  const renderLink = (link: NavLinks) => (
+  const renderLink = (link: NavLink) => (
     <Styles.LinkContainer>
-      <div
+      <Flex
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -83,23 +84,8 @@ export default function NavBar() {
         >
           {link.name}
         </Styles.NoUnderlineLink>
-      </div>
-
-      {link.active && (
-        <hr
-          style={{
-            display: 'block',
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            height: '4px',
-            backgroundColor: 'white',
-            border: 'none',
-            margin: 0,
-            marginBottom: '4px',
-          }}
-        />
-      )}
+      </Flex>
+      <Styles.ActiveUnderline isActive={link.active} />
     </Styles.LinkContainer>
   );
 
@@ -114,7 +100,7 @@ export default function NavBar() {
         <Link href="/">
           <Icon type="logo" />
         </Link>
-        {navllink.map(NavLinks => renderLink(NavLinks))}
+        {navlink.map(NavLink => renderLink(NavLink))}
       </Styles.NavBarSectionDiv>
       <Styles.NavBarSectionDiv>
         <Styles.AuthButtons>{AuthButtonView}</Styles.AuthButtons>

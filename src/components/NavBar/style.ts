@@ -47,3 +47,15 @@ export const LinkContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+export const ActiveUnderline = styled.hr<{ isActive: boolean }>`
+  display: ${props => (props.isActive ? 'block' : 'none')};
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background-color: white;
+  border: none;
+  margin: 0;
+  margin-bottom: 4px;
+`;

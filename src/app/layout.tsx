@@ -26,7 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <ProfileProvider>
             <StyledComponentsRegistry>
-              {/* nav bar */}
+              <NavBar />
               {children}
             </StyledComponentsRegistry>
           </ProfileProvider>
