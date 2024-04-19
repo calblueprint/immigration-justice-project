@@ -56,14 +56,18 @@ export default function NavBar() {
     { name: 'Cases', path: '/cases', active: IsActive('/cases') },
     {
       name: 'Limited Case Assignments',
-      path: '/cases',
-      active: IsActive('/cses'),
+      path: '/limited-case-assignments',
+      active: IsActive('/limited-case-assignments'),
     },
-    { name: 'Language Support', path: '/cases', active: IsActive('/cses') },
+    {
+      name: 'Language Support',
+      path: '/language-support',
+      active: IsActive('/language-support'),
+    },
   ];
 
   const renderLink = (link: NavLinks) => (
-    <Styles.LinkContainer active={link.active}>
+    <Styles.LinkContainer>
       <div
         style={{
           display: 'flex',
@@ -72,7 +76,11 @@ export default function NavBar() {
           flex: 1,
         }}
       >
-        <Styles.NoUnderlineLink href={link.path} $color="white">
+        <Styles.NoUnderlineLink
+          href={link.path}
+          $color="white"
+          isactive={link.active}
+        >
           {link.name}
         </Styles.NoUnderlineLink>
       </div>
@@ -81,11 +89,14 @@ export default function NavBar() {
         <hr
           style={{
             display: 'block',
+            position: 'absolute',
+            bottom: 0,
             width: '100%',
             height: '4px',
             backgroundColor: 'white',
             border: 'none',
             margin: 0,
+            marginBottom: '4px',
           }}
         />
       )}

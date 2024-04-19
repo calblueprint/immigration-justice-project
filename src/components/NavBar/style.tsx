@@ -30,24 +30,20 @@ export const AuthButtons = styled.div`
   right: 0;
   margin-right: 3.375rem;
 `;
-export const NoUnderlineLink = styled(LinkColored)<{ active?: boolean }>`
+export const NoUnderlineLink = styled(LinkColored)<{ isactive: boolean }>`
   ${sans.style}
   text-decoration: none;
   margin: 10px;
+  font-weight: ${props => (props.isactive ? '600' : '400')};
   position: relative;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
 `;
-export const LinkContainer = styled.div<{ active: boolean }>`
+export const LinkContainer = styled.div`
   display: flex;
+  position: relative;
   height: 100%;
   margin: 5px;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  background: ${props => (props.active ? '#0f71ad' : COLORS.blueMid)};
 `;
