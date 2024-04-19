@@ -4,17 +4,11 @@ import { useContext, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProfileButton from '@/components/ProfileButton';
+import { LinkButton } from '@/components/SmallerButton';
 import COLORS from '@/styles/colors';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
-import { LinkButton } from '../Buttons';
-import {
-  AuthButtons,
-  LinkContainer,
-  NavBarContainer,
-  NavBarSectionDiv,
-  NoUnderlineLink,
-} from './style';
+import * as Styles from './style';
 
 export default function NavBar() {
   const profile = useContext(ProfileContext);
@@ -31,13 +25,15 @@ export default function NavBar() {
         <LinkButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}
+          $fontColor="white"
           href="/login"
         >
           Log In
         </LinkButton>
         <LinkButton
-          $primaryColor={COLORS.goldMid}
-          $secondaryColor={COLORS.blueMid}
+          $primaryColor="white"
+          $secondaryColor={COLORS.blueDark}
+          $fontColor={COLORS.blueMid}
           href="/signup"
         >
           Sign Up
@@ -67,8 +63,7 @@ export default function NavBar() {
   ];
 
   const renderLink = (link: NavLinks) => (
-    <LinkContainer active={link.active}>
-      {/* Wrapper div for vertical centering */}
+    <Styles.LinkContainer active={link.active}>
       <div
         style={{
           display: 'flex',
@@ -77,33 +72,42 @@ export default function NavBar() {
           flex: 1,
         }}
       >
-        <NoUnderlineLink href={link.path} $color="white">
+        <Styles.NoUnderlineLink href={link.path} $color="white">
           {link.name}
-        </NoUnderlineLink>
+        </Styles.NoUnderlineLink>
       </div>
-      <hr
-        style={{
-          display: 'block',
-          width: '100%',
-          height: '4px',
-          backgroundColor: 'white',
-          border: 'none',
-          margin: 0, // Removing default margin from <hr>
-        }}
-      />
-    </LinkContainer>
+
+      {link.active && (
+        <hr
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '4px',
+            backgroundColor: 'white',
+            border: 'none',
+            margin: 0,
+          }}
+        />
+      )}
+    </Styles.LinkContainer>
   );
+
+  const currentPath = usePathname();
+  if (currentPath.includes('/onboarding')) {
+    return null;
+  }
+
   return (
-    <NavBarContainer>
-      <NavBarSectionDiv>
+    <Styles.NavBarContainer>
+      <Styles.NavBarSectionDiv>
         <Link href="/">
           <Icon type="logo" />
         </Link>
         {navllink.map(NavLinks => renderLink(NavLinks))}
-      </NavBarSectionDiv>
-      <NavBarSectionDiv>
-        <AuthButtons>{AuthButtonView}</AuthButtons>
-      </NavBarSectionDiv>
-    </NavBarContainer>
+      </Styles.NavBarSectionDiv>
+      <Styles.NavBarSectionDiv>
+        <Styles.AuthButtons>{AuthButtonView}</Styles.AuthButtons>
+      </Styles.NavBarSectionDiv>
+    </Styles.NavBarContainer>
   );
 }

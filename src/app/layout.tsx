@@ -5,6 +5,7 @@ import { sans } from '@/styles/fonts';
 import AuthProvider from '@/utils/AuthProvider';
 import ProfileProvider from '@/utils/ProfileProvider';
 import './globals.css';
+import NavBar from '@/components/NavBar';
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',
