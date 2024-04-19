@@ -56,6 +56,7 @@ export const AuthSubHeading = styled.h2`
   font-size: 2.25rem;
   font-style: normal;
   font-weight: 400;
+  text-align: center;
 `;
 
 export const HorizontalDiv = styled.div`
