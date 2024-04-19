@@ -139,11 +139,11 @@ export default function InterestForm({
           )}
           <TextAreaInput
             label={`Why are you interested in this ${
-              listingData.listing_type === 'CASE' ? 'case' : 'assignment'
+              listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
             }?`}
             required
             placeholder={`I want to work on this ${
-              listingData.listing_type === 'CASE' ? 'case' : 'assignment'
+              listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
             } because...`}
             error={missingInfo && reason === '' ? 'Must include a reason' : ''}
             id="reason"
