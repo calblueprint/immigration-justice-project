@@ -1,6 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -20,12 +21,12 @@ import {
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
 import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
+import COLORS from '@/styles/colors';
 import { Callout, Flex, SmallCardForm } from '@/styles/containers';
 import { H1, P } from '@/styles/text';
 import { FlowData } from '@/types/misc';
 import { RoleEnum } from '@/types/schema';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 type RoleOptionType =
   | ''
@@ -147,21 +148,23 @@ export default function Page() {
             <Flex $gap="10px">
               <Icon type="info" />
               <Flex $direction="column" $gap="16px">
-                {roles.includes('ATTORNEY') && (
-                  <P>
-                    <b>Attorney:</b> {ROLE_DESCRIPTIONS.attorney}
-                  </P>
-                )}
-                {roles.includes('LEGAL_FELLOW') && (
-                  <P>
-                    <b>Legal Fellow:</b> {ROLE_DESCRIPTIONS.legal_fellow}
-                  </P>
-                )}
-                {roles.includes('INTERPRETER') && (
-                  <P>
-                    <b>Interpreter:</b> {ROLE_DESCRIPTIONS.interpreter}
-                  </P>
-                )}
+                <P $color={COLORS.greyDark}>
+                  {roles.includes('ATTORNEY') && (
+                    <>
+                      <b>Attorney:</b> {ROLE_DESCRIPTIONS.attorney}
+                    </>
+                  )}
+                  {roles.includes('LEGAL_FELLOW') && (
+                    <>
+                      <b>Legal Fellow:</b> {ROLE_DESCRIPTIONS.legal_fellow}
+                    </>
+                  )}
+                  {roles.includes('INTERPRETER') && (
+                    <>
+                      <b>Interpreter:</b> {ROLE_DESCRIPTIONS.interpreter}
+                    </>
+                  )}
+                </P>
               </Flex>
             </Flex>
           </Callout>

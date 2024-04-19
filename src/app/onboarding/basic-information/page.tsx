@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { City, State } from 'country-state-city';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -19,7 +20,6 @@ import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { filterAndPaginate, identity } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
-import { zodResolver } from '@hookform/resolvers/zod';
 import * as Styles from '../styles';
 
 // load languages

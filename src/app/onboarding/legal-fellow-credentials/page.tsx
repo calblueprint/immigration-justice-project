@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,7 +19,6 @@ import {
   parseDateAlt,
 } from '@/utils/helpers';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
-import { zodResolver } from '@hookform/resolvers/zod';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation

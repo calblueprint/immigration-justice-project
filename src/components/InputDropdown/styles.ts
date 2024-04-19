@@ -83,6 +83,7 @@ export const DropdownStyles = (
     background: COLORS.blueLighter,
     paddingLeft: '0.5rem',
     margin: '0.25rem 0.5rem 0.25rem 0',
+    borderRadius: '3px',
   }),
   multiValueRemove: baseStyles => ({
     ...baseStyles,
