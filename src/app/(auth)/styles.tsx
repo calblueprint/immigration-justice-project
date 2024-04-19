@@ -43,7 +43,6 @@ export const PCentered = styled(P)`
 `;
 
 export const AuthHeading = styled.h1`
-  color: ${COLORS.blueDarker};
   font-size: 48px;
   font-style: normal;
   font-weight: 600;
