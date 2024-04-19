@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H4, P } from '@/styles/text';
+import { H1, H4, P } from '@/styles/text';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -21,19 +21,24 @@ export const FormDiv = styled.div`
   width: 39.25rem;
 `;
 
-export const SpacerDiv = styled.div<{ $gap?: number; $align?: string }>`
+export const SpacerDiv = styled.div<{
+  $gap?: number;
+  $align?: string;
+}>`
   display: flex;
   flex-direction: column;
   ${({ $align }) => $align && `align-items: ${$align};`};
-  gap: ${({ $gap }) => $gap || 19.2}px;
+  gap: ${({ $gap }) => $gap || 20}px;
 `;
 
-export const H4Centered = styled(H4)`
+export const H4Centered = styled(H4)<{ $pad?: boolean }>`
   color: ${COLORS.greyDark};
   text-align: center;
-  font-size: 16px;
+  font-size: 1rem;
   font-style: normal;
   font-weight: 400;
+  padding-left: ${({ $pad }) => ($pad ? '36px' : '0')};
+  padding-right: ${({ $pad }) => ($pad ? '36px' : '0')};
 `;
 
 export const PCentered = styled(P)`
@@ -42,14 +47,13 @@ export const PCentered = styled(P)`
   text-align: center;
 `;
 
-export const AuthHeading = styled.h1`
+export const AuthHeading = styled(H1)`
   font-size: 48px;
   font-style: normal;
-  font-weight: 600;
 `;
 
 export const AuthSubHeading = styled.h2`
-  font-size: 36px;
+  font-size: 2.25rem;
   font-style: normal;
   font-weight: 400;
 `;
