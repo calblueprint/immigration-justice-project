@@ -24,7 +24,7 @@ export const NavBarSectionDiv = styled.div`
 `;
 export const AuthButtons = styled.div`
   display: flex;
-  gap: 1.5625rem;
+  gap: 1rem;
   align-self: center;
   top: 0;
   right: 0;
