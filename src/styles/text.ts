@@ -31,7 +31,6 @@ export const H1Centered = styled(H1)`
 export const H2 = styled.h2<TextProps>`
   ${TextStyles}
   font-size: 2.25rem;
-  font-weight: 500;
 `;
 
 export const H2Centered = styled(H2)`
@@ -60,10 +59,6 @@ export const P = styled.p<TextProps>`
 
 export const StrongP = styled(P)`
   font-weight: 700;
-`;
-
-export const MediumP = styled(P)`
-  font-weight: 500;
 `;
 
 export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`

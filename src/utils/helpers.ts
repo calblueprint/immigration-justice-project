@@ -126,6 +126,11 @@ export const formatTruthy = <
   return obj ? truthyMessage : falsyMessage;
 };
 
+/**
+ * filters the given options by the search string
+ * returns a list of more options for the big data dropdown
+ *  and a boolean for it to know whether there are more options
+ */
 export const filterAndPaginate = (
   options: DropdownOption[],
   search: string,
