@@ -8,9 +8,13 @@ const getBorderColor = (error: string, filled: boolean): string => {
   return filled ? COLORS.greyMid : COLORS.greyLight;
 };
 
-export const InputLabel = styled(H4)<{ $color?: string }>`
+export const InputLabel = styled(H4)<{ $color?: string, $required?: boolean }>`
   color: ${({ $color }) => $color || COLORS.greyDark};
   margin-bottom: 10px;
+  ${({ $required }) => $required && `&::after {
+    content: ' *';
+    color: ${COLORS.redMid};`
+  }
 `;
 
 export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
