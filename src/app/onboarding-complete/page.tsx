@@ -27,8 +27,8 @@ export default function Page() {
             >
               <H2Centered>You&apos;re all set!</H2Centered>
               <P $align="center">
-                You can now submit interest applications for the available
-                listings.
+                You can now submit interest applications <br />
+                for available listings.
               </P>
               <BigLinkButton
                 href={CONFIG.homepage}
