@@ -16,7 +16,7 @@ export default function Page() {
         <LogoImage $show width="205" alt="IJP Logo" src={IJPLogo} />
       </Link>
       <CenteringDiv>
-        <Flex $direction="column" $gap="40px" $align="center">
+        <Flex $direction="column" $align="center">
           <SmallCard>
             <Flex
               $direction="column"
@@ -26,7 +26,7 @@ export default function Page() {
               $minH="100%"
             >
               <H2Centered>You&apos;re all set!</H2Centered>
-              <P $align="center">
+              <P $align="center" $color={COLORS.greyDark}>
                 You can now submit interest applications <br />
                 for available listings.
               </P>
