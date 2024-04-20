@@ -1,8 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { H2, H4 } from '@/styles/text';
 import BigButton from '@/components/BigButton';
+import { H2, H4 } from '@/styles/text';
+import { useRouter } from 'next/navigation';
 import { SpacerDiv } from '../styles';
 
 export default function ConfirmResetPassword() {

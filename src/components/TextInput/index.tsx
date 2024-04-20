@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { InputLabel, InputText, InputDiv, ErrorText } from './styles';
+import { ErrorText, InputDiv, InputLabel, InputText } from './styles';
 
 type TextInputProps = {
   label: string;

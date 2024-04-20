@@ -1,9 +1,9 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { H4, P } from '@/styles/text';
-import { Flex } from '@/styles/containers';
 import COLORS from '@/styles/colors';
-import { ComponentContainer, GroupContainer } from './styles';
+import { Flex } from '@/styles/containers';
+import { H4, P } from '@/styles/text';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { RadioInput, RadioLabel } from '../InterestForm/styles';
+import { ComponentContainer, GroupContainer } from './styles';
 
 export default function RadioGroup({
   value,

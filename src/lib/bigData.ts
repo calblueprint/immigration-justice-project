@@ -1,4 +1,4 @@
-import { City, State, Country } from 'country-state-city';
+import { City, Country, State } from 'country-state-city';
 import { iso6393 } from 'iso-639-3';
 
 export const languages = new Set(

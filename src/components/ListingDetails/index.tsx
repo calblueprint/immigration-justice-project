@@ -1,9 +1,5 @@
-import React, { useMemo } from 'react';
-import {
-  formatTimestamp,
-  parseAgency,
-  parseTimeCommitment,
-} from '@/utils/helpers';
+import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
 import { H2, H3, H4, P, StrongP } from '@/styles/text';
 import {
   CaseListing,
@@ -12,21 +8,25 @@ import {
   LimitedCaseAssignment,
   Listing,
 } from '@/types/schema';
-import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
-import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
-import InterestForm from '../InterestForm';
+import {
+  formatTimestamp,
+  parseAgency,
+  parseTimeCommitment,
+} from '@/utils/helpers';
+import { useProfile } from '@/utils/ProfileProvider';
+import React, { useMemo } from 'react';
 import { LinkButton } from '../Button';
 import Icon from '../Icon';
+import InterestForm from '../InterestForm';
 import {
-  CaseDisplay,
-  InfoContainer,
-  FieldContainer,
-  InnerFieldContainer,
   AuthButtons,
-  IconTextGroup,
   BorderedSection,
+  CaseDisplay,
+  FieldContainer,
+  IconTextGroup,
+  InfoContainer,
+  InnerFieldContainer,
   Subheading,
 } from './styles';
 

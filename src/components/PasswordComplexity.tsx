@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { openSans } from '@/styles/fonts';
 import COLORS from '@/styles/colors';
+import { openSans } from '@/styles/fonts';
 import { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
 import Icon from './Icon';
 
 const PasswordComplexityDiv = styled.div`

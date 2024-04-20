@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
+import styled from 'styled-components';
 
 const BigButton = styled.button<{ disabled?: boolean }>`
   background: ${props => (props.disabled ? COLORS.greyLight : COLORS.blueMid)};

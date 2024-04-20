@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { LimitedCaseAssignment } from '@/types/schema';
 import { getAllLCA } from '@/api/supabase/queries/limitedCaseAssignments';
+import { LimitedCaseAssignment } from '@/types/schema';
+import { useEffect, useState } from 'react';
 
 /**
  * Fetches all LCA listings from the database

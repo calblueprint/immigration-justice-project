@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext, useMemo, useState, useEffect } from 'react';
-import { H1 } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
-import TextInput from '@/components/TextInput';
-import { isValidDate, parseDateAlt } from '@/utils/helpers';
 import DateInput from '@/components/DateInput';
 import TextAreaInput from '@/components/TextAreaInput';
+import TextInput from '@/components/TextInput';
+import { H1 } from '@/styles/text';
+import { isValidDate, parseDateAlt } from '@/utils/helpers';
+import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);

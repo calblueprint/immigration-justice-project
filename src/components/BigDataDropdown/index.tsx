@@ -1,7 +1,7 @@
 'use client';
 
+import { DropdownOption } from '@/types/dropdown';
 import { useCallback, useId, useMemo, useRef } from 'react';
-import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
 import {
   GroupBase,
   InputActionMeta,
@@ -9,10 +9,10 @@ import {
   SelectInstance,
   SingleValue,
 } from 'react-select';
-import { DropdownOption } from '@/types/dropdown';
+import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
+import { AnimatedMenu, NoOptionsMessage } from '../InputDropdown';
 import { DropdownStyles, DropdownWrapper } from '../InputDropdown/styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';
-import { AnimatedMenu, NoOptionsMessage } from '../InputDropdown';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {

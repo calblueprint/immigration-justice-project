@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { openSans } from '@/styles/fonts';
 import COLORS from '@/styles/colors';
+import { openSans } from '@/styles/fonts';
+import styled from 'styled-components';
 
 export const TextAreaContainer = styled.div`
   display: flex;

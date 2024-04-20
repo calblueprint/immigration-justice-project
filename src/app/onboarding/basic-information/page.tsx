@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useContext, useEffect } from 'react';
-import { cities, languages } from '@/lib/bigData';
 import BigDataDropdown from '@/components/BigDataDropdown';
+import TextInput from '@/components/TextInput';
+import { cities, languages } from '@/lib/bigData';
 import { H1 } from '@/styles/text';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
-import TextInput from '@/components/TextInput';
+import { useContext, useEffect, useState } from 'react';
 import { LineDiv } from '../styles';
 
 export default function Page() {

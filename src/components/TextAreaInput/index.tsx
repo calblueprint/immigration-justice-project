@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H4, P } from '@/styles/text';
-import COLORS from '@/styles/colors';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { TextArea, TextAreaContainer } from './styles';
 
 export default function TextAreaInput({

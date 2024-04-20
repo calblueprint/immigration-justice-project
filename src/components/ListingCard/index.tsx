@@ -1,12 +1,12 @@
 'use client';
 
 import { UUID } from 'crypto';
-import { Listing } from '@/types/schema';
-import { useMemo } from 'react';
-import { parseAgency, formatTimestamp } from '@/utils/helpers';
-import { P, H4 } from '@/styles/text';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
+import { H4, P } from '@/styles/text';
+import { Listing } from '@/types/schema';
+import { formatTimestamp, parseAgency } from '@/utils/helpers';
+import { useMemo } from 'react';
 import Icon from '../Icon';
 import * as Styles from './styles';
 

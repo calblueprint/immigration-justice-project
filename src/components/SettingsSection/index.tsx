@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { H2, H3 } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import { H2, H3 } from '@/styles/text';
 import {
   SectionData,
   SettingsSectionData,
   SubSectionData,
 } from '@/types/settingsSection';
-import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '../Button';
 import SectionPartial from './SectionPartial';
+import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
 
 interface SettingsSectionProps {
   title: string;

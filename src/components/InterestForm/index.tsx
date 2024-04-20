@@ -1,18 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
+import Button from '@/components/Button';
+import DateInput from '@/components/DateInput';
+import RadioGroup from '@/components/RadioGroup';
+import TextAreaInput from '@/components/TextAreaInput';
+import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
+import { H3, P } from '@/styles/text';
 import { Interest, Listing } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
-import { P, H3 } from '@/styles/text';
-import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
-import RadioGroup from '@/components/RadioGroup';
-import TextAreaInput from '@/components/TextAreaInput';
-import DateInput from '@/components/DateInput';
-import Button from '@/components/Button';
-import { FormContainer, FormFooter, FormWarning } from './styles';
+import { useEffect, useState } from 'react';
+import { EmptySpace, FormContainer, FormFooter, FormWarning } from './styles';
+
+interface Responses {
+  start_date?: Date;
+  needs_interpreter?: boolean;
+  interest_reason: string;
+}
 
 export default function InterestForm({
   listingData,
@@ -38,14 +44,17 @@ export default function InterestForm({
   }, [listingData]);
 
   const handleInsert = async () => {
-    // Error handling
+    // Error handling, check if required fields are unfilled.
     if (
+      // CASE listing requires: startDate and needsInterpreter
       (listingData.listing_type === 'CASE' &&
         !interpretation &&
         (startDate === '' || needsInterpreter === '')) ||
+      // CASE_INT and INT listings require: startDate
       (((listingData.listing_type === 'CASE' && interpretation) ||
         listingData.listing_type === 'INT') &&
         startDate === '') ||
+      // LCA and DOC listings require: reason
       ((listingData.listing_type === 'LCA' ||
         listingData.listing_type === 'DOC') &&
         reason === '')
@@ -53,7 +62,7 @@ export default function InterestForm({
       setMissingInfo(true);
       return;
     }
-    let responses = {};
+    const responses: Responses = { interest_reason: '' };
     if (
       isValidDate(startDate) ||
       listingData.listing_type === 'DOC' ||
@@ -64,15 +73,12 @@ export default function InterestForm({
           listingData.listing_type === 'CASE' ||
           listingData.listing_type === 'INT'
         ) {
-          responses = { ...responses, start_date: new Date(startDate) };
+          responses.start_date = new Date(startDate);
           if (listingData.listing_type === 'CASE' && !interpretation) {
-            responses = {
-              ...responses,
-              needs_interpreter: needsInterpreter === 'Yes',
-            };
+            responses.needs_interpreter = needsInterpreter === 'Yes';
           }
         }
-        responses = { ...responses, interest_reason: reason };
+        responses.interest_reason = reason;
         const newInterest: Interest = {
           listing_id: listingData.id,
           listing_type:
@@ -108,7 +114,9 @@ export default function InterestForm({
     <FormContainer>
       <H3>Submit Interest</H3>
       {submitted ? (
-        <P>Your submission has been received!</P>
+        <EmptySpace>
+          <P>Your submission has been received!</P>
+        </EmptySpace>
       ) : (
         <Flex $gap="30px" $direction="column">
           {(listingData.listing_type === 'CASE' ||
@@ -141,7 +149,10 @@ export default function InterestForm({
             label={`Why are you interested in this ${
               listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
             }?`}
-            required
+            required={
+              listingData.listing_type === 'DOC' ||
+              listingData.listing_type === 'LCA'
+            }
             placeholder={`I want to work on this ${
               listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
             } because...`}

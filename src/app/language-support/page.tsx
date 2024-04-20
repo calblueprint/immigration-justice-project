@@ -1,11 +1,11 @@
 'use client';
 
-import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
-import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllCases } from '@/api/supabase/queries/cases';
+import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
+import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
+import { AllLanguageSupport } from '@/types/schema';
 import { timestampStringToDate } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
-import { AllLanguageSupport } from '@/types/schema';
 
 export default function Page() {
   const [allLanguageSupport, setAllLanguageSupport] = useState<

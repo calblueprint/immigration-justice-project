@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
-import { DropdownContainer, DropdownButton } from './styles';
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import DropdownMenu from '../DropdownMenu';
+import { DropdownButton, DropdownContainer } from './styles';
 
 // for map: keys are the actual values stored, values are the displayed value
 interface CommonProps {

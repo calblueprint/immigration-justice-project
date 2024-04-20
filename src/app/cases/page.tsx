@@ -1,29 +1,29 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
-import { CaseListing } from '@/types/schema';
 import { getNCases } from '@/api/supabase/queries/cases';
+import { LinkButton } from '@/components/Button';
+import FilterDropdown from '@/components/FilterDropdown';
 import ListingCard from '@/components/ListingCard';
 import ListingDetails from '@/components/ListingDetails';
-import { H1, H2, CenteredH3 } from '@/styles/text';
-import { ProfileContext } from '@/utils/ProfileProvider';
 import ProfileButton from '@/components/ProfileButton';
-import { LinkButton } from '@/components/Button';
 import COLORS from '@/styles/colors';
-import FilterDropdown from '@/components/FilterDropdown';
+import { CenteredH3, H1, H2 } from '@/styles/text';
+import { CaseListing } from '@/types/schema';
 import { parseAgency } from '@/utils/helpers';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
-  CardColumn,
-  PageContainer,
-  FiltersContainer,
-  Body,
-  CaseDetailsContainer,
   AuthButtons,
+  Body,
+  CardColumn,
+  CaseDetailsContainer,
+  FiltersContainer,
   Header,
-  ResetFilters,
   ListingCount,
   NoCasesContainer,
+  PageContainer,
+  ResetFilters,
 } from './styles';
 
 type FilterType = {

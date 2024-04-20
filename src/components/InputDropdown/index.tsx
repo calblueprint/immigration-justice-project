@@ -1,20 +1,20 @@
 'use client';
 
+import COLORS from '@/styles/colors';
+import { P } from '@/styles/text';
+import { DropdownOption } from '@/types/dropdown';
 import { useCallback, useId, useMemo, useRef } from 'react';
 import Select, {
+  components,
   GroupBase,
   InputActionMeta,
   MenuProps,
   MultiValue,
   SelectInstance,
   SingleValue,
-  components,
 } from 'react-select';
-import { DropdownOption } from '@/types/dropdown';
-import { P } from '@/styles/text';
-import COLORS from '@/styles/colors';
-import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
 import { ErrorText, InputLabel } from '../TextInput/styles';
+import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
 
 // for map: key is actual data stored, value is displayed
 interface CommonProps {

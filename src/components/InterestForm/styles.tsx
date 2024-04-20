@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { P } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
+import { P } from '@/styles/text';
+import styled from 'styled-components';
 
 export const FormContainer = styled.div`
   display: flex;
@@ -84,4 +84,8 @@ export const FormWarning = styled(P)`
   line-height: normal;
   max-width: 50%;
   height: 100%;
+`;
+
+export const EmptySpace = styled.div`
+  margin-bottom: auto;
 `;

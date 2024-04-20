@@ -2,10 +2,10 @@
 
 import ListingDetails from '@/components/ListingDetails';
 import {
-  LimitedCaseAssignment,
-  Interpretation,
-  DocumentTranslation,
   CaseListing,
+  DocumentTranslation,
+  Interpretation,
+  LimitedCaseAssignment,
 } from '@/types/schema';
 import { Body, CardColumn, CaseDetailsContainer } from '../cases/styles';
 

@@ -1,15 +1,15 @@
 'use client';
 
-import { FormDiv, OuterDiv, FormContainer } from '@/app/onboarding/styles';
+import { FormContainer, FormDiv, OuterDiv } from '@/app/onboarding/styles';
+import CONFIG from '@/lib/configs';
 import { BackLink, H4 } from '@/styles/text';
+import { AuthContext } from '@/utils/AuthProvider';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { ProfileContext } from '@/utils/ProfileProvider';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useContext, useEffect, useMemo } from 'react';
-import { ProfileContext } from '@/utils/ProfileProvider';
-import { AuthContext } from '@/utils/AuthProvider';
-import CONFIG from '@/lib/configs';
-import ProgressBar from './ProgressBar';
 import BigButton from './BigButton';
+import ProgressBar from './ProgressBar';
 
 export default function OnboardingManager({
   children,

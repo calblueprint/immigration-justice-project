@@ -1,17 +1,17 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { BackLink, H1, H4 } from '@/styles/text';
 import Button, { LinkButton } from '@/components/Button';
-import COLORS from '@/styles/colors';
+import SettingsSection from '@/components/SettingsSection';
 import { cities, languages } from '@/lib/bigData';
+import COLORS from '@/styles/colors';
+import { BackLink, H1, H4 } from '@/styles/text';
 import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
 import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
-import SettingsSection from '@/components/SettingsSection';
-import { useProfile } from '@/utils/ProfileProvider';
-import { isValidBarNumber } from '@/utils/helpers';
 import { useAuth } from '@/utils/AuthProvider';
+import { isValidBarNumber } from '@/utils/helpers';
+import { useProfile } from '@/utils/ProfileProvider';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([

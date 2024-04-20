@@ -1,20 +1,21 @@
-import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H4 } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
+import { H4 } from '@/styles/text';
+import styled from 'styled-components';
 
 const getBorderColor = (error: string, filled: boolean): string => {
   if (error !== '') return COLORS.redMid;
   return filled ? COLORS.greyMid : COLORS.greyLight;
 };
 
-export const InputLabel = styled(H4)<{ $color?: string, $required?: boolean }>`
+export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
   color: ${({ $color }) => $color || COLORS.greyDark};
   margin-bottom: 10px;
-  ${({ $required }) => $required && `&::after {
+  ${({ $required }) =>
+    $required &&
+    `&::after {
     content: ' *';
-    color: ${COLORS.redMid};`
-  }
+    color: ${COLORS.redMid};`}
 `;
 
 export const InputDate = styled.input<{ $error: string; $filled: boolean }>`
