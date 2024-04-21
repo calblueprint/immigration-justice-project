@@ -148,23 +148,21 @@ export default function Page() {
             <Flex $gap="10px">
               <Icon type="info" />
               <Flex $direction="column" $gap="16px">
-                <P $color={COLORS.greyDark}>
-                  {roles.includes('ATTORNEY') && (
-                    <>
-                      <b>Attorney:</b> {ROLE_DESCRIPTIONS.attorney}
-                    </>
-                  )}
-                  {roles.includes('LEGAL_FELLOW') && (
-                    <>
-                      <b>Legal Fellow:</b> {ROLE_DESCRIPTIONS.legal_fellow}
-                    </>
-                  )}
-                  {roles.includes('INTERPRETER') && (
-                    <>
-                      <b>Interpreter:</b> {ROLE_DESCRIPTIONS.interpreter}
-                    </>
-                  )}
-                </P>
+                {roles.includes('ATTORNEY') && (
+                  <P $color={COLORS.greyDark}>
+                    <b>Attorney:</b> {ROLE_DESCRIPTIONS.attorney}
+                  </P>
+                )}
+                {roles.includes('LEGAL_FELLOW') && (
+                  <P $color={COLORS.greyDark}>
+                    <b>Legal Fellow:</b> {ROLE_DESCRIPTIONS.legal_fellow}
+                  </P>
+                )}
+                {roles.includes('INTERPRETER') && (
+                  <P $color={COLORS.greyDark}>
+                    <b>Interpreter:</b> {ROLE_DESCRIPTIONS.interpreter}
+                  </P>
+                )}
               </Flex>
             </Flex>
           </Callout>
