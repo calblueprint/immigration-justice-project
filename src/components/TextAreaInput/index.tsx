@@ -1,5 +1,5 @@
 import COLORS from '@/styles/colors';
-import { H4, P } from '@/styles/text';
+import { InputLabel, P } from '@/styles/text';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { TextArea, TextAreaContainer } from './styles';
 
@@ -32,9 +32,14 @@ export default function TextAreaInput({
 
   return (
     <TextAreaContainer>
-      <H4 as="label" htmlFor={id} $color={COLORS.greyDark} $required={required}>
+      <InputLabel
+        as="label"
+        htmlFor={id}
+        $color={COLORS.greyDark}
+        $required={required}
+      >
         {label}
-      </H4>
+      </InputLabel>
       <TextArea
         id={id}
         placeholder={placeholder}

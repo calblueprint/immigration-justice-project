@@ -1,5 +1,5 @@
 import COLORS from '@/styles/colors';
-import { H4, P } from '@/styles/text';
+import { InputLabel, P } from '@/styles/text';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { RadioInput, RadioLabel } from '../InterestForm/styles';
 import { ComponentContainer, GroupContainer } from './styles';
@@ -33,9 +33,9 @@ export default function RadioGroup({
 
   return (
     <ComponentContainer>
-      <H4 $color={COLORS.greyDark} $required={required}>
+      <InputLabel $color={COLORS.greyDark} $required={required}>
         {label}
-      </H4>
+      </InputLabel>
       <GroupContainer>
         {options.map(o => (
           <RadioLabel key={o} htmlFor={o}>

@@ -34,17 +34,12 @@ export const CenteredH3 = styled(H3)`
   align-self: center;
 `;
 
-export const H4 = styled.h4<{ $color?: string; $required?: boolean }>`
+export const H4 = styled.h4<{ $color?: string }>`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
-  ${({ $required }) =>
-    $required &&
-    `&::after {
-  content: ' *';
-  color: ${COLORS.redMid}}`};
 `;
 
 export const P = styled.p<{ $color?: string }>`
@@ -61,6 +56,15 @@ export const StrongP = styled(P)`
 
 export const MediumP = styled(P)`
   font-weight: 500;
+`;
+
+export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
+  color: ${props => props.$color || COLORS.greyDarker};
+  ${({ $required }) =>
+    $required &&
+    `&::after {
+  content: ' *';
+  color: ${COLORS.redMid}}`};
 `;
 
 export const LinkColored = styled(Link)<{ $color?: string }>`
