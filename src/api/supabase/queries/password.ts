@@ -1,8 +1,8 @@
 import supabase from '../createClient';
 
 /**
- * Fetches all non-case-specific language support entries  from the database
- * @returns a Promise of all non-case-specific language support objects
+ * Checks if the current password is different from the current user's password
+ * @returns a Promise of whether the password is different
  */
 export async function verifyUserPassword(password: string): Promise<boolean> {
   const { data, error } = await supabase.rpc('verify_user_password', {
