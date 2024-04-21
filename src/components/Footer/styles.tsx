@@ -12,24 +12,27 @@ export const FooterContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 export const FooterSection = styled.div`
-  max-width: 316px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
+
 export const FooterDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 50px;
 `;
+
 export const IconDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
 `;
+
 export const FooterLink = styled(LinkColored)`
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 400px;
 `;
