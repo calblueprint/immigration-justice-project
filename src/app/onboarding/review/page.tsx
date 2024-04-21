@@ -69,17 +69,17 @@ export default function Page() {
           <Flex>
             <Styles.SectionField>
               <H4>Country</H4>
-              <P>{onboarding.location?.country?.label ?? 'N/A'}</P>
+              <P>{onboarding.profile.country ?? 'N/A'}</P>
             </Styles.SectionField>
             <Styles.SectionField>
               <H4>State</H4>
-              <P>{onboarding.location?.state?.label ?? 'N/A'}</P>
+              <P>{onboarding.profile.state ?? 'N/A'}</P>
             </Styles.SectionField>
           </Flex>
           <Flex>
             <Styles.SectionField>
               <H4>City</H4>
-              <P>{onboarding.location?.city?.label ?? 'N/A'}</P>
+              <P>{onboarding.profile.city ?? 'N/A'}</P>
             </Styles.SectionField>
             <Styles.SectionField>
               <H4>Phone Number</H4>
