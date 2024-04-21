@@ -16,31 +16,29 @@ export default function Page() {
         <LogoImage $show width="205" alt="IJP Logo" src={IJPLogo} />
       </Link>
       <CenteringDiv>
-        <Flex $direction="column" $align="center">
-          <SmallCard>
-            <Flex
-              $direction="column"
-              $justify="center"
-              $gap="40px"
-              $px="40px"
-              $minH="100%"
+        <SmallCard>
+          <Flex
+            $direction="column"
+            $justify="center"
+            $gap="40px"
+            $px="40px"
+            $minH="100%"
+          >
+            <H2Centered>You&apos;re all set!</H2Centered>
+            <P $align="center" $color={COLORS.greyDark}>
+              You can now submit interest applications <br />
+              for available listings.
+            </P>
+            <BigLinkButton
+              href={CONFIG.homepage}
+              $primaryColor={COLORS.blueMid}
+              $secondaryColor={COLORS.blueDark}
+              $tertiaryColor={COLORS.blueDarker}
             >
-              <H2Centered>You&apos;re all set!</H2Centered>
-              <P $align="center" $color={COLORS.greyDark}>
-                You can now submit interest applications <br />
-                for available listings.
-              </P>
-              <BigLinkButton
-                href={CONFIG.homepage}
-                $primaryColor={COLORS.blueMid}
-                $secondaryColor={COLORS.blueDark}
-                $tertiaryColor={COLORS.blueDarker}
-              >
-                Back to Home
-              </BigLinkButton>
-            </Flex>
-          </SmallCard>
-        </Flex>
+              Back to Home
+            </BigLinkButton>
+          </Flex>
+        </SmallCard>
       </CenteringDiv>
     </OuterDiv>
   );
