@@ -105,7 +105,7 @@ export default function Page() {
             render={({ field, fieldState }) => (
               <FormItem>
                 <FormLabel>
-                  How many hours are you able to dedicate per month?
+                  How many hours are you able to volunteer per month?
                 </FormLabel>
                 <FormControl>
                   <TextInput
