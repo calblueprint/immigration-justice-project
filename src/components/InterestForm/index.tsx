@@ -12,7 +12,7 @@ import { Interest, Listing } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
-import { EmptySpace, FormContainer, FormFooter, FormWarning } from './styles';
+import * as Styles from './styles';
 
 interface Responses {
   start_date?: Date;
@@ -49,11 +49,13 @@ export default function InterestForm({
       // CASE listing requires: startDate and needsInterpreter
       (listingData.listing_type === 'CASE' &&
         !interpretation &&
-        (startDate === '' || needsInterpreter === '')) ||
+        (startDate === '' ||
+          !isValidDate(startDate) ||
+          needsInterpreter === '')) ||
       // CASE_INT and INT listings require: startDate
       (((listingData.listing_type === 'CASE' && interpretation) ||
         listingData.listing_type === 'INT') &&
-        startDate === '') ||
+        (startDate === '' || !isValidDate(startDate))) ||
       // LCA and DOC listings require: reason
       ((listingData.listing_type === 'LCA' ||
         listingData.listing_type === 'DOC') &&
@@ -62,42 +64,41 @@ export default function InterestForm({
       setMissingInfo(true);
       return;
     }
+    // submit interest form with fields according to listing_type
+    // CASE_INT, INT: startDate, reason
+    // CASE: startDate, needs_interpreter reason
+    // LCA, DOC interest: reason
     const responses: Responses = { interest_reason: '' };
-    if (
-      isValidDate(startDate) ||
-      listingData.listing_type === 'DOC' ||
-      listingData.listing_type === 'LCA'
-    ) {
-      if (auth && auth.userId) {
-        if (
-          listingData.listing_type === 'CASE' ||
-          listingData.listing_type === 'INT'
-        ) {
-          responses.start_date = new Date(startDate);
-          if (listingData.listing_type === 'CASE' && !interpretation) {
-            responses.needs_interpreter = needsInterpreter === 'Yes';
-          }
+    if (auth && auth.userId) {
+      if (
+        listingData.listing_type === 'CASE' ||
+        listingData.listing_type === 'INT'
+      ) {
+        // CASE_INT, INT, CASE include startDate
+        responses.start_date = new Date(startDate);
+        // CASE also includes needs_interpreter
+        if (listingData.listing_type === 'CASE' && !interpretation) {
+          responses.needs_interpreter = needsInterpreter === 'Yes';
         }
-        responses.interest_reason = reason;
-        const newInterest: Interest = {
-          listing_id: listingData.id,
-          listing_type:
-            listingData.listing_type === 'CASE' && interpretation
-              ? 'CASE_INT'
-              : listingData.listing_type,
-          user_id: auth.userId,
-          form_response: {
-            ...responses,
-          },
-        };
-        await upsertInterest(newInterest);
       }
-
-      setReason('');
-      setStartDate('');
-      setNeedsInterpreter('');
-      setSubmitted(true);
+      // all listings have interest_reason
+      responses.interest_reason = reason;
+      const newInterest: Interest = {
+        listing_id: listingData.id,
+        listing_type:
+          listingData.listing_type === 'CASE' && interpretation
+            ? 'CASE_INT'
+            : listingData.listing_type,
+        user_id: auth.userId,
+        form_response: responses,
+      };
+      await upsertInterest(newInterest);
     }
+
+    setReason('');
+    setStartDate('');
+    setNeedsInterpreter('');
+    setSubmitted(true);
   };
 
   const getErrorText = () => {
@@ -111,12 +112,12 @@ export default function InterestForm({
   };
 
   return (
-    <FormContainer>
+    <Styles.FormContainer>
       <H3>Submit Interest</H3>
       {submitted ? (
-        <EmptySpace>
+        <Styles.EmptySpace>
           <P>Your submission has been received!</P>
-        </EmptySpace>
+        </Styles.EmptySpace>
       ) : (
         <Flex $gap="30px" $direction="column">
           {(listingData.listing_type === 'CASE' ||
@@ -156,17 +157,23 @@ export default function InterestForm({
             placeholder={`I want to work on this ${
               listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
             } because...`}
-            error={missingInfo && reason === '' ? 'Must include a reason' : ''}
+            error={
+              missingInfo &&
+              (listingData.listing_type === 'LCA' ||
+                listingData.listing_type === 'DOC')
+                ? 'Must include a reason'
+                : ''
+            }
             id="reason"
             value={reason}
             setValue={setReason}
           />
-          <FormFooter>
-            <FormWarning>
+          <Styles.FormFooter>
+            <Styles.FormWarning>
               Your interest form is not saved!
               <br />
               Please submit before leaving this page.
-            </FormWarning>
+            </Styles.FormWarning>
             <Button
               $primaryColor={COLORS.blueMid}
               $secondaryColor={COLORS.blueDark}
@@ -174,9 +181,9 @@ export default function InterestForm({
             >
               Submit Interest
             </Button>
-          </FormFooter>
+          </Styles.FormFooter>
         </Flex>
       )}
-    </FormContainer>
+    </Styles.FormContainer>
   );
 }
