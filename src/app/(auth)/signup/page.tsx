@@ -3,7 +3,12 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { H4Centered, HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
+import {
+  FormDiv,
+  H4Centered,
+  HorizontalDiv,
+  SpacerDiv,
+} from '@/app/(auth)/styles';
 import { BigBlueButton, Button } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
@@ -24,7 +29,8 @@ export default function SignUp() {
 
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!auth) return;
     setEmailError(validEmail(email) ? '' : 'Invalid email.');
     setPasswordError(password !== '' ? '' : 'Invalid password.');
@@ -75,78 +81,82 @@ export default function SignUp() {
   return (
     <>
       {!emailSentCount && (
-        <>
-          <SpacerDiv $gap={10}>
-            <H1>Sign Up</H1>
-            {errorMessage !== '' && (
-              <P $color={COLORS.redMid}>{errorMessage}</P>
-            )}
-          </SpacerDiv>
-          <TextInput
-            label="Email"
-            placeholder="email@example.com"
-            errorText={emailError}
-            type="email"
-            id="email"
-            value={email}
-            setValue={setEmail}
-          />
-          <SpacerDiv $gap={8}>
+        <form onSubmit={handleSignUp}>
+          <FormDiv>
+            <SpacerDiv $gap={10}>
+              <H1>Sign Up</H1>
+              {errorMessage !== '' && (
+                <P $color={COLORS.redMid}>{errorMessage}</P>
+              )}
+            </SpacerDiv>
             <TextInput
-              label="Password"
-              placeholder="Password"
-              errorText={passwordError}
+              label="Email"
+              placeholder="email@example.com"
+              errorText={emailError}
+              type="email"
+              id="email"
+              value={email}
+              setValue={setEmail}
+            />
+            <SpacerDiv $gap={8}>
+              <TextInput
+                label="Password"
+                placeholder="Password"
+                errorText={passwordError}
+                type="password"
+                id="password"
+                value={password}
+                setValue={setPassword}
+              />
+              <PasswordComplexity
+                password={password}
+                setComplexity={setPasswordComplexity}
+              />
+            </SpacerDiv>
+            <TextInput
+              label="Confirm Password"
+              placeholder="Confirm Password"
               type="password"
-              id="password"
-              value={password}
-              setValue={setPassword}
+              id="confirmPassword"
+              value={confirmPassword}
+              setValue={setConfirmPassword}
             />
-            <PasswordComplexity
-              password={password}
-              setComplexity={setPasswordComplexity}
-            />
-          </SpacerDiv>
-          <TextInput
-            label="Confirm Password"
-            placeholder="Confirm Password"
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            setValue={setConfirmPassword}
-          />
-          <SpacerDiv>
-            <BigBlueButton type="button" onClick={handleSignUp}>
-              Sign Up
-            </BigBlueButton>
-            <H4Centered>
-              Have an account already?{' '}
-              <LinkColored $color={COLORS.greyDark} href="/login">
-                Log In
-              </LinkColored>
-            </H4Centered>
-          </SpacerDiv>
-        </>
+            <SpacerDiv>
+              <BigBlueButton type="submit">Sign Up</BigBlueButton>
+              <H4Centered>
+                Have an account already?{' '}
+                <LinkColored $color={COLORS.greyDark} href="/login">
+                  Log In
+                </LinkColored>
+              </H4Centered>
+            </SpacerDiv>
+          </FormDiv>
+        </form>
       )}
       {emailSentCount > 0 && (
-        <SpacerDiv>
-          <H2>An email verification link has been sent.</H2>
-          <H4 $color={COLORS.greyDark}>
-            This link will direct you to the next step. If you didn’t receive an
-            email, please click Resend Email.
-          </H4>
-          <HorizontalDiv>
-            <Button
-              $primaryColor={COLORS.blueMid}
-              $secondaryColor={COLORS.blueDark}
-              onClick={handleResendEmail}
-            >
-              <H4 $color="white">Resend Email</H4>
-            </Button>
-            {emailSentCount > 1 && (
-              <P $color={COLORS.greyMid}>Email has been resent!</P>
-            )}
-          </HorizontalDiv>
-        </SpacerDiv>
+        <form onSubmit={handleSignUp}>
+          <FormDiv>
+            <SpacerDiv>
+              <H2>An email verification link has been sent.</H2>
+              <H4 $color={COLORS.greyDark}>
+                This link will direct you to the next step. If you didn’t
+                receive an email, please click Resend Email.
+              </H4>
+              <HorizontalDiv>
+                <Button
+                  $primaryColor={COLORS.blueMid}
+                  $secondaryColor={COLORS.blueDark}
+                  onClick={handleResendEmail}
+                >
+                  <H4 $color="white">Resend Email</H4>
+                </Button>
+                {emailSentCount > 1 && (
+                  <P $color={COLORS.greyMid}>Email has been resent!</P>
+                )}
+              </HorizontalDiv>
+            </SpacerDiv>
+          </FormDiv>
+        </form>
       )}
     </>
   );
