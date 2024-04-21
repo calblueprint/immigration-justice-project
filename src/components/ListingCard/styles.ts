@@ -1,6 +1,6 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
-import styled from 'styled-components';
 
 // the card itself
 export const CardBody = styled.div<{ $selected?: boolean }>`

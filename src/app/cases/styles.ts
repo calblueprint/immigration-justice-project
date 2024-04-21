@@ -1,7 +1,7 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { H4 } from '@/styles/text';
-import styled from 'styled-components';
 
 export const AuthButtons = styled.div`
   display: flex;
