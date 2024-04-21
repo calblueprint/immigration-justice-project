@@ -1,9 +1,4 @@
 import { City, Country, State } from 'country-state-city';
-import { DropdownOption } from '@/types/dropdown';
-
-export const countries: DropdownOption[] = Country.getAllCountries()
-  .map(c => ({ label: c.name, value: c.isoCode }))
-  .sort((c1, c2) => c1.label.localeCompare(c2.label));
 
 export const cities = City.getAllCities()
   .map(c => ({

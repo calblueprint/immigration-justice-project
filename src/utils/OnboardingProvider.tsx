@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react';
 import { UUID } from 'crypto';
-import { DropdownOption } from '@/types/dropdown';
 import { FlowData } from '@/types/misc';
 import {
   Profile,
@@ -27,12 +26,6 @@ export interface OnboardingFormData {
   isValid: boolean;
 }
 
-type LocationData = {
-  country?: DropdownOption;
-  state?: DropdownOption;
-  city?: DropdownOption;
-};
-
 interface OnboardingContextType {
   profile: Partial<Profile>;
   canReads: string[];
@@ -41,10 +34,8 @@ interface OnboardingContextType {
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
-  location?: LocationData;
   form?: OnboardingFormData;
   pushingData: boolean;
-  setLocation: Dispatch<SetStateAction<LocationData | undefined>>;
   setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
   updateProfile: (updateInfo: Partial<Profile>) => void;
   removeFromProfile: (toClear: Array<keyof Profile>) => void;
@@ -68,7 +59,6 @@ export default function OnboardingProvider({
 }) {
   const auth = useAuth();
   const profile = useProfile();
-  const [location, setLocation] = useState<LocationData>();
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<FlowData[]>([]);
   const [userProfile, setUserProfile] = useState<Partial<Profile>>({});
@@ -112,16 +102,11 @@ export default function OnboardingProvider({
     if (userProfile.hours_per_month === undefined)
       throw new Error('Hours per month is required!');
 
-    if (!location) throw new Error('Location is required!');
+    if (!userProfile.country) throw new Error('Country is required!');
 
-    if (!location.country || !location.country.label)
-      throw new Error('Country is required!');
+    if (!userProfile.state) throw new Error('State is required!');
 
-    if (!location.state || !location.state.label)
-      throw new Error('State is required!');
-
-    if (!location.city || !location.city.label)
-      throw new Error('City is required!');
+    if (!userProfile.city) throw new Error('City is required!');
 
     if (!userProfile.start_date) throw new Error('Start date is required!');
 
@@ -152,9 +137,9 @@ export default function OnboardingProvider({
       first_name: userProfile.first_name,
       last_name: userProfile.last_name,
       hours_per_month: userProfile.hours_per_month,
-      country: location.country.label,
-      state: location.state.label,
-      city: location.city.label,
+      country: userProfile.country,
+      state: userProfile.state,
+      city: userProfile.city,
       start_date: userProfile.start_date,
       availability_description: userProfile.availability_description,
       bar_number: userProfile.bar_number,
@@ -183,16 +168,7 @@ export default function OnboardingProvider({
       langsToInsert,
       rolesToInsert,
     );
-  }, [
-    auth,
-    profile,
-    userProfile,
-    canReads,
-    canSpeaks,
-    roles,
-    location,
-    pushingData,
-  ]);
+  }, [auth, profile, userProfile, canReads, canSpeaks, roles, pushingData]);
 
   const providerValue = useMemo(
     () => ({
@@ -203,10 +179,8 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
-      location,
       form,
       pushingData,
-      setLocation,
       flushData,
       setFlow,
       setProgress,
@@ -226,10 +200,8 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
-      location,
       pushingData,
       form,
-      setLocation,
       flushData,
       updateProfile,
       removeFromProfile,
