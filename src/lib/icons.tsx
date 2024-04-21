@@ -155,7 +155,7 @@ export const IconSvgs = {
       </g>
     </svg>
   ),
-  redCheck: (
+  redCross: (
     <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g id="iconmonstr-x-mark-9 1">
     <path id="Vector" d="M15.3346 14.0829L9.87797 8.62487L15.3346 3.17553L13.4466 1.3042L7.99197 6.75687L2.5413 1.3042L0.667969 3.17753L6.1253 8.64153L0.667969 14.0975L2.5413 15.9709L8.00997 10.5095L13.4633 15.9709L15.3346 14.0829Z" fill="#D13E40"/>
