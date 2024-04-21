@@ -87,5 +87,5 @@ export const FormWarning = styled(P)`
 `;
 
 export const EmptySpace = styled.div`
-  margin-bottom: auto;
+  padding-bottom: 200px;
 `;

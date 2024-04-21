@@ -1,5 +1,4 @@
 import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
 import { H4, P } from '@/styles/text';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { TextArea, TextAreaContainer } from './styles';
@@ -33,12 +32,9 @@ export default function TextAreaInput({
 
   return (
     <TextAreaContainer>
-      <Flex $direction="row">
-        <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
-          {label}
-        </H4>
-        {required && <H4 $color={COLORS.redMid}>&nbsp;*</H4>}
-      </Flex>
+      <H4 as="label" htmlFor={id} $color={COLORS.greyDark} $required={required}>
+        {label}
+      </H4>
       <TextArea
         id={id}
         placeholder={placeholder}

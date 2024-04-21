@@ -34,12 +34,17 @@ export const CenteredH3 = styled(H3)`
   align-self: center;
 `;
 
-export const H4 = styled.h4<{ $color?: string }>`
+export const H4 = styled.h4<{ $color?: string; $required?: boolean }>`
   ${openSans.style}
   font-size: 1rem;
   font-weight: 600;
   color: ${props => props.$color || COLORS.greyDarker};
   margin: 0;
+  ${({ $required }) =>
+    $required &&
+    `&::after {
+  content: ' *';
+  color: ${COLORS.redMid}}`};
 `;
 
 export const P = styled.p<{ $color?: string }>`
