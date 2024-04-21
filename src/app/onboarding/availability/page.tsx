@@ -105,7 +105,7 @@ export default function Page() {
             render={({ field, fieldState }) => (
               <FormItem>
                 <FormLabel>
-                  How much time do you have to commit per month?
+                  How many hours are you able to dedicate per month?
                 </FormLabel>
                 <FormControl>
                   <TextInput
