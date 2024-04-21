@@ -66,10 +66,8 @@ export const SectionField = styled.div<{ $optional?: boolean }>`
 
 const BackLinkStyles = css`
   position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: 30px;
-  margin-left: 30px;
+  top: 30px;
+  left: 30px;
   transition: 100ms;
   padding: 10px;
   cursor: pointer;

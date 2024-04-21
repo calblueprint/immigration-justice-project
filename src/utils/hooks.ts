@@ -5,28 +5,18 @@ import { usePathname, useRouter } from 'next/navigation';
 import { OnboardingContext } from './OnboardingProvider';
 
 /**
- * Wrapper to use the onboarding context.
- * Throws an error if onboarding context doesn't exist
- * (i.e. the component is not wrapped in a onboarding provider, or it's a server component)
- * @returns the onboarding context object.
- */
-const useSafeOnboarding = () => {
-  const onboarding = useContext(OnboardingContext);
-  if (!onboarding)
-    throw new Error(
-      'Component should be wrapped inside the onboarding context',
-    );
-  return onboarding;
-};
-
-/**
  * Wrapper to use onboarding.
  * Redirects to roles page if flow is empty
  * (i.e. if the user enters the onboarding flow with an URL)
  * @returns the onboarding context object
  */
 export const useGuardedOnboarding = () => {
-  const onboarding = useSafeOnboarding();
+  const onboarding = useContext(OnboardingContext);
+  if (!onboarding)
+    throw new Error(
+      'Component should be wrapped inside the onboarding context',
+    );
+
   const { flow, ...rest } = onboarding;
   const { push } = useRouter();
 

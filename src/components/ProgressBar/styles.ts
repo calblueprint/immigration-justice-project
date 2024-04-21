@@ -53,7 +53,7 @@ export const ProgressCircleContainer = styled.div<{
   }
 `;
 
-export const ProgressCircleCircle = styled.div<{
+export const ProgressBubble = styled.div<{
   $filled?: boolean;
   $disabled?: boolean;
   $current?: boolean;

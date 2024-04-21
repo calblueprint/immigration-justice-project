@@ -36,7 +36,7 @@ function ProgressCircle({
       $disabled={disabled}
       $active={idx === progress}
     >
-      <Styles.ProgressCircleCircle
+      <Styles.ProgressBubble
         onClick={onClick}
         aria-disabled={!clickable}
         $clickable={clickable}
@@ -44,7 +44,7 @@ function ProgressCircle({
         $disabled={disabled}
       >
         {idx}
-      </Styles.ProgressCircleCircle>
+      </Styles.ProgressBubble>
       <H4>{step.name}</H4>
     </Styles.ProgressCircleContainer>
   );

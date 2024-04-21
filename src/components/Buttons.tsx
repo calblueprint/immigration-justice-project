@@ -105,7 +105,7 @@ export const LinkButton = styled(Link)`
 const BigButtonStyles = css<ButtonProps>`
   ${ButtonStyles}
 
-  padding: 15px 0;
+  padding: .9375rem 0;
   width: 100%;
 
   &:active {
