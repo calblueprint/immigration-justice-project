@@ -171,7 +171,7 @@ export default function Home() {
           />
         </Styles.ImageWrapper>
       </Styles.MissionValuesContainer>
-      <Footer/>
+      <Footer />
     </Styles.PageContainer>
   );
 }
