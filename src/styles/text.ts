@@ -61,13 +61,18 @@ export const StrongP = styled(P)`
   font-weight: 700;
 `;
 
-export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
-  color: ${props => props.$color || COLORS.greyDark};
+interface LabelProps extends TextProps {
+  $required?: boolean;
+}
+
+export const InputLabel = styled(H4)<LabelProps>`
+  color: ${({ $color }) => $color || COLORS.greyDark};
   ${({ $required }) =>
     $required &&
     `&::after {
-  content: ' *';
-  color: ${COLORS.redMid}}`};
+      content: ' *';
+      color: ${COLORS.redMid};
+    }`};
 `;
 
 export const LinkColored = styled(Link)<TextProps>`
