@@ -142,6 +142,26 @@ export const BigBlueButton = forwardRef<
 ));
 BigBlueButton.displayName = 'BigBlueButton';
 
+export const BigBlueLinkButton = forwardRef<
+  HTMLAnchorElement,
+  Omit<
+    ComponentProps<typeof BigLinkButton>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, href, ...props }, ref) => (
+  <BigLinkButton
+    ref={ref}
+    href={href}
+    {...props}
+    $primaryColor={COLORS.blueMid}
+    $secondaryColor={COLORS.blueDark}
+    $tertiaryColor={COLORS.blueDarker}
+  >
+    {children}
+  </BigLinkButton>
+));
+BigBlueLinkButton.displayName = 'BigBlueLinkButton';
+
 export const UnstyledButton = styled.button`
   background: none;
   border: none;
