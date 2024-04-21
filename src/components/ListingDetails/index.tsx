@@ -167,18 +167,10 @@ export default function ListingDetails({
 
   const listingFields = useMemo(() => {
     if (listingData.listing_type === 'CASE') {
-      if (interpretation && listingData.needs_interpreter) {
-        return (
-          <ListingFields
-            fields={caseInterpretationFields}
-            listingData={listingData}
-          />
-        );
-      }
       return (
         <ListingFields
           fields={[
-            ...caseFields,
+            ...(interpretation && listingData.needs_interpreter ? caseInterpretationFields : caseFields),
             {
               label: listingData.is_detained
                 ? 'Custody Location'
@@ -323,8 +315,10 @@ export default function ListingDetails({
         </BorderedSection>
       </InfoContainer>
       <BorderedSection>
-        {/* <ProfileMatch listingData={listingData}/> */}
-        {interestSection}
+        <Flex $gap='40px'>
+          <ProfileMatch listingData={listingData}/>
+          {interestSection}
+        </Flex>
       </BorderedSection>
     </CaseDisplay>
   );

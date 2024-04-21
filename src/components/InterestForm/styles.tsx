@@ -77,7 +77,7 @@ export const FormFooter = styled.div`
 
 export const FormWarning = styled(P)`
   padding-bottom: 0.375rem; // 6px
-  color: ${COLORS.greyMid};
+  color: ${COLORS.blueDark};
   font-size: 0.75rem; // 12px
   font-style: normal;
   font-weight: 400;
