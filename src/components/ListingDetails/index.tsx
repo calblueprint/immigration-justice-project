@@ -322,7 +322,10 @@ export default function ListingDetails({
           <P>{listingData.summary || 'Not Available'}</P>
         </BorderedSection>
       </InfoContainer>
-      <BorderedSection>{interestSection}</BorderedSection>
+      <BorderedSection>
+        {/* <ProfileMatch listingData={listingData}/> */}
+        {interestSection}
+      </BorderedSection>
     </CaseDisplay>
   );
 }
