@@ -6,8 +6,8 @@ export const FooterContainer = styled.div`
   width: 100%;
   background-color: ${COLORS.blueMid};
   min-height: 290px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
   padding-top: 40px;
   display: flex;
   justify-content: space-between;

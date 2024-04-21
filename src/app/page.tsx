@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { LinkButton } from '@/components/Buttons';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import Footer from '@/components/Footer';
 import { H2, H3, H4 } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
@@ -170,6 +171,7 @@ export default function Home() {
           />
         </Styles.ImageWrapper>
       </Styles.MissionValuesContainer>
+      <Footer/>
     </Styles.PageContainer>
   );
 }
