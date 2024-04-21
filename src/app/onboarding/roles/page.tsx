@@ -118,8 +118,6 @@ export default function Page() {
 
   return (
     <FormProvider {...form}>
-      {/* div to fill top space, delete after nav bar is added */}
-      <div style={{ paddingTop: '100px' }} />
       <SmallCardForm onSubmit={form.handleSubmit(onSubmit)}>
         <H1>Role</H1>
 

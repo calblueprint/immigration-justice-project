@@ -17,10 +17,10 @@ export const OuterDiv = styled.div`
 `;
 
 export const FormContainer = styled.div`
-  display: grid;
-  place-items: center;
-  flex-grow: 2;
+  display: flex;
+  justify-content: center;
   width: 100%;
+  flex: 1;
 `;
 
 export const FormFieldsContainer = styled.div`

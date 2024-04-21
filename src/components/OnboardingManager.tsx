@@ -4,7 +4,6 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FormContainer, LogoImage, OuterDiv } from '@/app/onboarding/styles';
 import CONFIG from '@/lib/configs';
-import { Box } from '@/styles/containers';
 import { useAuth } from '@/utils/AuthProvider';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
@@ -99,7 +98,6 @@ export default function OnboardingManager({
       </UnstyledButton>
       <ProgressBar steps={onboarding.flow.slice(1)} progress={pageProgress} />
       <FormContainer>{children}</FormContainer>
-      <Box $pt="80px" />
     </OuterDiv>
   );
 }
