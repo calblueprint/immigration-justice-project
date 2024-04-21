@@ -3,28 +3,27 @@
 import {
   deleteLanguages,
   deleteRoles,
+  fetchLanguagesById,
   fetchProfileById,
-  upsertRoles,
+  fetchRolesById,
+  insertLanguages,
+  insertProfile,
+  insertRoles,
   updateProfile as updateSupabaseProfile,
   upsertLanguages,
-  fetchRolesById,
-  fetchLanguagesById,
-  insertProfile,
-  insertLanguages,
-  insertRoles,
+  upsertRoles,
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
+import { useAuth } from '@/utils/AuthProvider';
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
-  useMemo,
   ReactNode,
   useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
-
-import { useAuth } from '@/utils/AuthProvider';
 
 interface ProfileContextType {
   profileData: Profile | null;

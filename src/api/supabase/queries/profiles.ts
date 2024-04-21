@@ -1,5 +1,5 @@
-import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { UUID } from 'crypto';
+import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import supabase from '../createClient';
 
 export async function upsertProfile(profile: Profile) {

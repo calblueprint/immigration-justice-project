@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { H1, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
+import { H1, P } from '@/styles/text';
+import styled from 'styled-components';
 
 export const CaseDisplay = styled.aside`
   position: relative;

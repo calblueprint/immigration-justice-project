@@ -1,6 +1,6 @@
 import {
-  ProgressBarContainer,
   ProgressBarBody,
+  ProgressBarContainer,
   ProgressCircle,
 } from './styles';
 

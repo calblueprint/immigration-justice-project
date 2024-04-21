@@ -1,15 +1,15 @@
 'use client';
 
-import { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import isEmail from 'validator/lib/isEmail';
-import TextInput from '@/components/TextInput/index';
-import { H1, P, LinkColored } from '@/styles/text';
-import COLORS from '@/styles/colors';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import TextInput from '@/components/TextInput/index';
+import COLORS from '@/styles/colors';
+import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
+import { ProfileContext } from '@/utils/ProfileProvider';
+import { useRouter } from 'next/navigation';
+import { useContext, useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 
 export default function Login() {
   const auth = useAuth();

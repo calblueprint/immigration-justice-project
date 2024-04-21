@@ -1,37 +1,35 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { upsertInterest } from '@/api/supabase/queries/interest';
-import { Interest, CaseListing, RoleEnum } from '@/types/schema';
+import Button from '@/components/Button';
+import DateInput from '@/components/DateInput';
+import RadioGroup from '@/components/RadioGroup';
+import TextAreaInput from '@/components/TextAreaInput';
+import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
+import { H3, P } from '@/styles/text';
+import { Interest, Listing } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidDate } from '@/utils/helpers';
-import { P, H3 } from '@/styles/text';
-import COLORS from '@/styles/colors';
-import DateInput from '../DateInput';
-import Button from '../Button';
-import {
-  FormContainer,
-  FormTextArea,
-  FormQuestion,
-  RadioGroup,
-  Radio,
-  RadioInput,
-  FormFooter,
-  FormWarning,
-  ErrorText,
-  RadioLabel,
-} from './styles';
+import { useEffect, useState } from 'react';
+import * as Styles from './styles';
 
-const radioOptions = [
-  'Attorney',
-  'Interpreter',
-  'Either Attorney or Interpreter',
-];
+interface Responses {
+  start_date?: Date;
+  needs_interpreter?: boolean;
+  interest_reason: string;
+}
 
-export default function InterestForm({ caseData }: { caseData: CaseListing }) {
+export default function InterestForm({
+  listingData,
+  interpretation = false,
+}: {
+  listingData: Listing;
+  interpretation?: boolean;
+}) {
   const auth = useAuth();
   const [reason, setReason] = useState<string>('');
-  const [rolesInterested, setRolesInterested] = useState<string>('');
+  const [needsInterpreter, setNeedsInterpreter] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [missingInfo, setMissingInfo] = useState(false);
@@ -39,37 +37,68 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   useEffect(() => {
     // Reset form fields when caseData changes
     setReason('');
+    setNeedsInterpreter('');
     setStartDate('');
-    setRolesInterested('');
     setSubmitted(false);
     setMissingInfo(false);
-  }, [caseData]);
+  }, [listingData]);
 
   const handleInsert = async () => {
-    if (startDate === '' || rolesInterested === '') {
+    // Error handling, check if required fields are unfilled.
+    if (
+      // CASE listing requires: startDate and needsInterpreter
+      (listingData.listing_type === 'CASE' &&
+        !interpretation &&
+        (startDate === '' ||
+          !isValidDate(startDate) ||
+          needsInterpreter === '')) ||
+      // CASE_INT and INT listings require: startDate
+      (((listingData.listing_type === 'CASE' && interpretation) ||
+        listingData.listing_type === 'INT') &&
+        (startDate === '' || !isValidDate(startDate))) ||
+      // LCA and DOC listings require: reason
+      ((listingData.listing_type === 'LCA' ||
+        listingData.listing_type === 'DOC') &&
+        reason === '')
+    ) {
       setMissingInfo(true);
       return;
     }
-    if (isValidDate(startDate)) {
-      if (auth && auth.userId) {
-        const newInterest: Interest = {
-          listing_id: caseData.id,
-          listing_type: 'CASE',
-          user_id: auth.userId,
-          form_response: {
-            start_date: new Date(startDate),
-            interest_reason: reason,
-            // TODO: add needs_interpreter field
-          },
-        };
-        await upsertInterest(newInterest);
+    // submit interest form with fields according to listing_type
+    // CASE_INT, INT: startDate, reason
+    // CASE: startDate, needs_interpreter reason
+    // LCA, DOC interest: reason
+    const responses: Responses = { interest_reason: '' };
+    if (auth && auth.userId) {
+      if (
+        listingData.listing_type === 'CASE' ||
+        listingData.listing_type === 'INT'
+      ) {
+        // CASE_INT, INT, CASE include startDate
+        responses.start_date = new Date(startDate);
+        // CASE also includes needs_interpreter
+        if (listingData.listing_type === 'CASE' && !interpretation) {
+          responses.needs_interpreter = needsInterpreter === 'Yes';
+        }
       }
-
-      setReason('');
-      setStartDate('');
-      setRolesInterested('');
-      setSubmitted(true);
+      // all listings have interest_reason
+      responses.interest_reason = reason;
+      const newInterest: Interest = {
+        listing_id: listingData.id,
+        listing_type:
+          listingData.listing_type === 'CASE' && interpretation
+            ? 'CASE_INT'
+            : listingData.listing_type,
+        user_id: auth.userId,
+        form_response: responses,
+      };
+      await upsertInterest(newInterest);
     }
+
+    setReason('');
+    setStartDate('');
+    setNeedsInterpreter('');
+    setSubmitted(true);
   };
 
   const getErrorText = () => {
@@ -83,55 +112,68 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
   };
 
   return (
-    <FormContainer>
+    <Styles.FormContainer>
       <H3>Submit Interest</H3>
       {submitted ? (
-        <P>We have received your submission!</P>
+        <Styles.EmptySpace>
+          <P>Your submission has been received!</P>
+        </Styles.EmptySpace>
       ) : (
-        <>
-          <FormQuestion $color={COLORS.greyDark}>
-            What role(s) are you applying for?
-          </FormQuestion>
-          <RadioGroup>
-            {radioOptions.map(option => (
-              <Radio key={option}>
-                <RadioInput
-                  id={`radio${option}`}
-                  type="radio"
-                  name="radioOptions"
-                  value={option}
-                  checked={rolesInterested === option}
-                  onChange={event => setRolesInterested(event.target.value)}
-                />
-                <RadioLabel htmlFor={`radio${option}`}>{option}</RadioLabel>
-              </Radio>
-            ))}
-            {missingInfo && rolesInterested === '' && (
-              <ErrorText>Must select your preferred role</ErrorText>
-            )}
-          </RadioGroup>
-          <DateInput
-            label="What is the earliest date you can contact the client?"
-            error={getErrorText()}
-            name="startDate"
-            value={startDate}
-            setValue={setStartDate}
-          />
-          <FormQuestion $color={COLORS.greyDark}>
-            Why are you interested in this case?
-          </FormQuestion>
-          <FormTextArea
+        <Flex $gap="30px" $direction="column">
+          {(listingData.listing_type === 'CASE' ||
+            listingData.listing_type === 'INT') && (
+            <DateInput
+              label="What is the earliest date you can contact the client?"
+              required
+              error={getErrorText()}
+              name="startDate"
+              value={startDate}
+              setValue={setStartDate}
+            />
+          )}
+          {listingData.listing_type === 'CASE' && !interpretation && (
+            <RadioGroup
+              name="reason"
+              required
+              value={needsInterpreter}
+              setValue={setNeedsInterpreter}
+              options={['Yes', 'No']}
+              label="Will you require language interpretation assistance to represent this client?"
+              error={
+                missingInfo
+                  ? 'Must select whether you need language interpretation assistance'
+                  : ''
+              }
+            />
+          )}
+          <TextAreaInput
+            label={`Why are you interested in this ${
+              listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
+            }?`}
+            required={
+              listingData.listing_type === 'DOC' ||
+              listingData.listing_type === 'LCA'
+            }
+            placeholder={`I want to work on this ${
+              listingData.listing_type === 'CASE' ? 'case' : 'opportunity'
+            } because...`}
+            error={
+              missingInfo &&
+              (listingData.listing_type === 'LCA' ||
+                listingData.listing_type === 'DOC')
+                ? 'Must include a reason'
+                : ''
+            }
             id="reason"
-            placeholder="I want to work on this case because..."
             value={reason}
-            onChange={event => setReason(event.target.value)}
+            setValue={setReason}
           />
-          <FormFooter>
-            <FormWarning>
+          <Styles.FormFooter>
+            <Styles.FormWarning>
               Your interest form is not saved!
               <br />
               Please submit before leaving this page.
-            </FormWarning>
+            </Styles.FormWarning>
             <Button
               $primaryColor={COLORS.blueMid}
               $secondaryColor={COLORS.blueDark}
@@ -139,9 +181,9 @@ export default function InterestForm({ caseData }: { caseData: CaseListing }) {
             >
               Submit Interest
             </Button>
-          </FormFooter>
-        </>
+          </Styles.FormFooter>
+        </Flex>
       )}
-    </FormContainer>
+    </Styles.FormContainer>
   );
 }

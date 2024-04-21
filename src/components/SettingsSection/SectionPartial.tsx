@@ -1,7 +1,7 @@
 import { SectionData, SettingsSectionData } from '@/types/settingsSection';
 import React, { useEffect, useState } from 'react';
-import { SectionRow } from './styles';
 import DataField from './DataField';
+import { SectionRow } from './styles';
 
 export default function SectionPartial({
   data,

@@ -1,9 +1,5 @@
-import React, { useMemo } from 'react';
-import {
-  formatTimestamp,
-  parseAgency,
-  parseTimeCommitment,
-} from '@/utils/helpers';
+import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
 import { H2, H3, H4, P, StrongP } from '@/styles/text';
 import {
   CaseListing,
@@ -12,20 +8,25 @@ import {
   LimitedCaseAssignment,
   Listing,
 } from '@/types/schema';
-import { useProfile } from '@/utils/ProfileProvider';
 import { useAuth } from '@/utils/AuthProvider';
-import COLORS from '@/styles/colors';
-import InterestForm from '../InterestForm';
+import {
+  formatTimestamp,
+  parseAgency,
+  parseTimeCommitment,
+} from '@/utils/helpers';
+import { useProfile } from '@/utils/ProfileProvider';
+import React, { useMemo } from 'react';
 import { LinkButton } from '../Button';
 import Icon from '../Icon';
+import InterestForm from '../InterestForm';
 import {
-  CaseDisplay,
-  InfoContainer,
-  FieldContainer,
-  InnerFieldContainer,
   AuthButtons,
-  IconTextGroup,
   BorderedSection,
+  CaseDisplay,
+  FieldContainer,
+  IconTextGroup,
+  InfoContainer,
+  InnerFieldContainer,
   Subheading,
 } from './styles';
 
@@ -216,8 +217,10 @@ export default function ListingDetails({
       return (
         <IconTextGroup>
           <Icon type="calendarBig" />
-          <Subheading $bold>{dateHeader}: </Subheading>
-          <Subheading> {dateData}</Subheading>
+          <Flex>
+            <Subheading $bold>{dateHeader}:</Subheading>
+            <Subheading>&nbsp;{dateData}</Subheading>
+          </Flex>
         </IconTextGroup>
       );
     }
@@ -245,7 +248,10 @@ export default function ListingDetails({
   const interestSection = useMemo(() => {
     if (auth && auth.userId) {
       return profile?.profileData ? (
-        <InterestForm caseData={listingData as CaseListing} />
+        <InterestForm
+          listingData={listingData}
+          interpretation={interpretation}
+        />
       ) : (
         <>
           <H3>Please complete your profile before submitting interest.</H3>
@@ -282,7 +288,7 @@ export default function ListingDetails({
         </AuthButtons>
       </>
     );
-  }, [auth, listingData, profile]);
+  }, [auth, listingData, profile, interpretation]);
 
   return (
     <CaseDisplay>

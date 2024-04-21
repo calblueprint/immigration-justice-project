@@ -1,18 +1,18 @@
-import { useMemo, useState } from 'react';
+import COLORS from '@/styles/colors';
+import { H4, P } from '@/styles/text';
 import {
   MiscSectionData,
   RadioSectionData,
   SectionData,
 } from '@/types/settingsSection';
-import { H4, P } from '@/styles/text';
-import COLORS from '@/styles/colors';
-import DateInput from '../DateInput';
+import { useMemo, useState } from 'react';
 import BigDataDropdown from '../BigDataDropdown';
+import DateInput from '../DateInput';
 import InputDropdown from '../InputDropdown';
+import RadioGroup from '../RadioGroup';
+import TextAreaInput from '../TextAreaInput';
 import TextInput from '../TextInput';
 import { KeyValueBlurb } from './styles';
-import TextAreaInput from '../TextAreaInput';
-import RadioGroup from '../RadioGroup';
 
 // config
 const DROPDOWN_LIMIT = 20;

@@ -1,11 +1,11 @@
 'use client';
 
-import { useContext, useState, useEffect, useCallback } from 'react';
-import { H1 } from '@/styles/text';
-import { OnboardingContext } from '@/utils/OnboardingProvider';
-import TextInput from '@/components/TextInput';
 import RadioGroup from '@/components/RadioGroup';
+import TextInput from '@/components/TextInput';
+import { H1 } from '@/styles/text';
 import { isValidBarNumber } from '@/utils/helpers';
+import { OnboardingContext } from '@/utils/OnboardingProvider';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);

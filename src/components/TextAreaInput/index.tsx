@@ -1,10 +1,12 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { TextArea, TextAreaContainer } from './styles';
+import { Flex } from '@/styles/containers';
+import { InputLabel, P } from '@/styles/text';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
+import { TextArea } from './styles';
 
 export default function TextAreaInput({
   label,
+  required = false,
   placeholder = '',
   error = '',
   id,
@@ -13,6 +15,7 @@ export default function TextAreaInput({
   onChange,
 }: {
   label: string;
+  required?: boolean;
   placeholder?: string;
   error?: string;
   id?: string;
@@ -29,17 +32,22 @@ export default function TextAreaInput({
   );
 
   return (
-    <TextAreaContainer>
-      <H4 as="label" htmlFor={id} $color={COLORS.greyDark}>
+    <Flex $direction="column" $gap="10px">
+      <InputLabel
+        as="label"
+        htmlFor={id}
+        $color={COLORS.greyDark}
+        $required={required}
+      >
         {label}
-      </H4>
+      </InputLabel>
       <TextArea
         id={id}
         placeholder={placeholder}
         value={value}
         onChange={e => handleChange(e.target.value)}
       />
-      {error && <P $color={COLORS.redMid}>{error}</P>}
-    </TextAreaContainer>
+      {!!error && <P $color={COLORS.redMid}>{error}</P>}
+    </Flex>
   );
 }

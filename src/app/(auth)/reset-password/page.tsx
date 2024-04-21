@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import TextInput from '@/components/TextInput/index';
-import { H1, H4, P } from '@/styles/text';
-import COLORS from '@/styles/colors';
+import supabase from '@/api/supabase/createClient';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import PasswordComplexity from '@/components/PasswordComplexity';
-
-import supabase from '@/api/supabase/createClient';
+import TextInput from '@/components/TextInput/index';
+import COLORS from '@/styles/colors';
+import { H1, H4, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ResetPassword() {
   const auth = useAuth();

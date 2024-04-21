@@ -1,9 +1,9 @@
 import StyledComponentsRegistry from '@/lib/registry';
 import './globals.css';
-import type { Metadata } from 'next';
 import { openSans } from '@/styles/fonts';
-import ProfileProvider from '@/utils/ProfileProvider';
 import AuthProvider from '@/utils/AuthProvider';
+import ProfileProvider from '@/utils/ProfileProvider';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',

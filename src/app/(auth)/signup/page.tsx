@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import isEmail from 'validator/lib/isEmail';
-import TextInput from '@/components/TextInput/index';
-import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import supabase from '@/api/supabase/createClient';
-import COLORS from '@/styles/colors';
-import { SpacerDiv, HorizontalDiv, H4Centered } from '@/app/(auth)/styles';
+import { H4Centered, HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
 import Button from '@/components/Button';
-import { useAuth } from '@/utils/AuthProvider';
 import PasswordComplexity from '@/components/PasswordComplexity';
+import TextInput from '@/components/TextInput/index';
+import COLORS from '@/styles/colors';
+import { H1, H2, H4, LinkColored, P } from '@/styles/text';
+import { useAuth } from '@/utils/AuthProvider';
+import { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 
 export default function SignUp() {
   const auth = useAuth();

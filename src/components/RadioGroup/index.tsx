@@ -1,11 +1,12 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { H4, P } from '@/styles/text';
 import COLORS from '@/styles/colors';
-import { ComponentContainer, GroupContainer } from './styles';
+import { InputLabel, P } from '@/styles/text';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { RadioInput, RadioLabel } from '../InterestForm/styles';
+import { ComponentContainer, GroupContainer } from './styles';
 
 export default function RadioGroup({
   value,
+  required = false,
   name,
   setValue,
   options,
@@ -14,6 +15,7 @@ export default function RadioGroup({
   onChange,
 }: {
   value: string;
+  required?: boolean;
   setValue: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
   name: string;
@@ -31,7 +33,9 @@ export default function RadioGroup({
 
   return (
     <ComponentContainer>
-      <H4 $color={COLORS.greyDark}>{label}</H4>
+      <InputLabel $color={COLORS.greyDark} $required={required}>
+        {label}
+      </InputLabel>
       <GroupContainer>
         {options.map(o => (
           <RadioLabel key={o} htmlFor={o}>

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H4, P } from '@/styles/text';
 import { openSans } from '@/styles/fonts';
+import { P } from '@/styles/text';
+import styled from 'styled-components';
 
 export const FormContainer = styled.div`
   display: flex;
@@ -11,10 +11,6 @@ export const FormContainer = styled.div`
   float: right;
   gap: 0.625rem; // 10px
   margin-left: auto;
-`;
-
-export const FormQuestion = styled(H4)`
-  margin-top: 0.375rem;
 `;
 
 export const FormTextArea = styled.textarea`
@@ -40,14 +36,6 @@ export const FormTextArea = styled.textarea`
   }
 `;
 
-export const RadioGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 2.5rem;
-  row-gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.375rem;
-`;
 export const Radio = styled.div`
   display: flex;
   align-items: center;
@@ -87,7 +75,7 @@ export const FormFooter = styled.div`
   align-self: stretch;
 `;
 
-export const FormWarning = styled.p`
+export const FormWarning = styled(P)`
   padding-bottom: 0.375rem; // 6px
   color: ${COLORS.greyMid};
   font-size: 0.75rem; // 12px
@@ -98,7 +86,6 @@ export const FormWarning = styled.p`
   height: 100%;
 `;
 
-export const ErrorText = styled(P)`
-  color: ${COLORS.redMid};
-  ${openSans.style}
+export const EmptySpace = styled.div`
+  padding-bottom: 200px;
 `;

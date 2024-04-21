@@ -1,8 +1,8 @@
 'use client';
 
 import InputDropdown from '@/components/InputDropdown';
-import { RoleEnum } from '@/types/schema';
 import { H1 } from '@/styles/text';
+import { RoleEnum } from '@/types/schema';
 import { OnboardingContext } from '@/utils/OnboardingProvider';
 import { useContext } from 'react';
 

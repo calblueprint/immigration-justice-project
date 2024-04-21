@@ -1,9 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { H2 } from '@/styles/text';
 import { SpacerDiv } from '@/app/(auth)/styles';
 import BigButton from '@/components/BigButton';
+import { H2 } from '@/styles/text';
+import { useRouter } from 'next/navigation';
 
 export default function EmailVerified() {
   const { push } = useRouter();

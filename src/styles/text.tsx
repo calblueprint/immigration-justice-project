@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import Link from 'next/link';
+import styled from 'styled-components';
 import COLORS from './colors';
 import { openSans } from './fonts';
 
@@ -58,6 +58,15 @@ export const StrongP = styled(P)`
 
 export const MediumP = styled(P)`
   font-weight: 500;
+`;
+
+export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
+  color: ${props => props.$color || COLORS.greyDark};
+  ${({ $required }) =>
+    $required &&
+    `&::after {
+  content: ' *';
+  color: ${COLORS.redMid}}`};
 `;
 
 export const LinkColored = styled(Link)<{ $color?: string }>`

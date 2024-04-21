@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
-import Link from 'next/link';
 import { openSans } from '@/styles/fonts';
+import Link from 'next/link';
+import styled, { css } from 'styled-components';
 
 /* 
   FOR PRIMARY BUTTON USAGE:
