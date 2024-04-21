@@ -40,7 +40,7 @@ const legalExperienceSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const { backlinkHref, ebbTo } = useOnboardingNavigation();
+  const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize form with data from onboarding context
@@ -73,7 +73,7 @@ export default function Page() {
   }, [setOnboardingForm, form, isDirty, isValid]);
 
   const onSubmit = () => {
-    push(`/onboarding/${onboarding.flow[4].url}`);
+    push(`/onboarding/${onboarding.flow[pageProgress + 1].url}`);
     onboarding.setForm(undefined);
   };
 

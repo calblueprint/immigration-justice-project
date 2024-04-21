@@ -37,7 +37,7 @@ const availabilitySchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const { backlinkHref, ebbTo } = useOnboardingNavigation();
+  const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
 
   const [startDate, setStartDate] = useState<string>(
@@ -79,7 +79,7 @@ export default function Page() {
   // handle valid form submission
   // validity should have already been handled by Zod
   const onValidSubmit = () => {
-    push(`/onboarding/${onboarding.flow[3].url}`);
+    push(`/onboarding/${onboarding.flow[pageProgress + 1].url}`);
     onboarding.setForm(undefined);
   };
 

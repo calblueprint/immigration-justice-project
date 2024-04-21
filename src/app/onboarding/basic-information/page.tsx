@@ -74,7 +74,7 @@ const basicInformationSchema = z.object({
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
-  const { backlinkHref } = useOnboardingNavigation();
+  const { backlinkHref, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
 
   // initialize react hook form with current data from onboarding context
@@ -123,7 +123,7 @@ export default function Page() {
   // handle valid form submission
   // - validity should be handled by Zod
   const onSubmit = () => {
-    push(`/onboarding/${onboarding.flow[2].url}`);
+    push(`/onboarding/${onboarding.flow[pageProgress + 1].url}`);
     onboarding.setForm(undefined);
   };
 
