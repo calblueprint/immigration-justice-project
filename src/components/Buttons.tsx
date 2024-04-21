@@ -45,8 +45,8 @@ interface ButtonProps {
 const ButtonStyles = css<ButtonProps>`
   ${sans.style}
   appearance: none;
-  color: ${props => (props.$primaryColor ? 'white' : COLORS.blueMid)};
-  background: ${props => (props.$primaryColor ? props.$primaryColor : 'white')};
+  color: ${({ $primaryColor }) => ($primaryColor ? 'white' : COLORS.blueMid)};
+  background: ${({ $primaryColor }) => $primaryColor || 'white'};
   padding: 0.625rem 1.25rem;
   border-radius: 5px;
   cursor: pointer;
@@ -55,15 +55,13 @@ const ButtonStyles = css<ButtonProps>`
   font-weight: 600;
 
   border: 2px solid
-    ${props =>
-      props.$primaryColor
-        ? props.$primaryColor
-        : props.$secondaryColor ?? COLORS.blueMid};
+    ${({ $primaryColor, $secondaryColor }) =>
+      $primaryColor || ($secondaryColor ?? COLORS.blueMid)};
 
   &:hover {
     color: white;
-    background: ${props => props.$secondaryColor ?? COLORS.blueMid};
-    border-color: ${props => props.$secondaryColor ?? COLORS.blueMid};
+    background: ${({ $secondaryColor }) => $secondaryColor ?? COLORS.blueMid};
+    border-color: ${({ $secondaryColor }) => $secondaryColor ?? COLORS.blueMid};
   }
 
   &:active {
