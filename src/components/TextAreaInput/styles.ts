@@ -2,13 +2,6 @@ import COLORS from '@/styles/colors';
 import { openSans } from '@/styles/fonts';
 import styled from 'styled-components';
 
-export const TextAreaContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 0.625rem;
-`;
-
 export const TextArea = styled.textarea`
   ${openSans.style}
   resize: none;

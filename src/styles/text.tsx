@@ -59,7 +59,7 @@ export const MediumP = styled(P)`
 `;
 
 export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
-  color: ${props => props.$color || COLORS.greyDarker};
+  color: ${props => props.$color || COLORS.greyDark};
   ${({ $required }) =>
     $required &&
     `&::after {

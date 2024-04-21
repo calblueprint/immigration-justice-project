@@ -1,7 +1,8 @@
 import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
 import { InputLabel, P } from '@/styles/text';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { TextArea, TextAreaContainer } from './styles';
+import { TextArea } from './styles';
 
 export default function TextAreaInput({
   label,
@@ -31,7 +32,7 @@ export default function TextAreaInput({
   );
 
   return (
-    <TextAreaContainer>
+    <Flex $direction="column" $gap="10px">
       <InputLabel
         as="label"
         htmlFor={id}
@@ -46,7 +47,7 @@ export default function TextAreaInput({
         value={value}
         onChange={e => handleChange(e.target.value)}
       />
-      {error && <P $color={COLORS.redMid}>{error}</P>}
-    </TextAreaContainer>
+      {!!error && <P $color={COLORS.redMid}>{error}</P>}
+    </Flex>
   );
 }

@@ -1,5 +1,8 @@
+import COLORS from '@/styles/colors';
+import { Flex } from '@/styles/containers';
+import { InputLabel, P } from '@/styles/text';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { ErrorText, InputDate, InputDiv, InputLabel } from './styles';
+import { InputDate } from './styles';
 
 type DateInputProps = {
   label: string;
@@ -33,8 +36,8 @@ export default function DateInput({
   );
 
   return (
-    <InputDiv>
-      <InputLabel $required={required} as="label" htmlFor={id}>
+    <Flex $direction="column" $gap="10px">
+      <InputLabel as="label" htmlFor={id} $required={required}>
         {label}
       </InputLabel>
       <InputDate
@@ -48,7 +51,7 @@ export default function DateInput({
         min={min}
         onChange={e => handleChange(e.target.value)}
       />
-      {error !== '' && <ErrorText>{error}</ErrorText>}
-    </InputDiv>
+      {!!error && <P $color={COLORS.redMid}>{error}</P>}
+    </Flex>
   );
 }
