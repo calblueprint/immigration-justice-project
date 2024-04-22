@@ -57,7 +57,10 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
   const loadProfile = useCallback(async () => {
     setProfileReady(false);
 
-    if (!auth?.userId) return;
+    if (!auth?.userId) {
+      setProfileReady(true);
+      return;
+    }
 
     await Promise.all([
       fetchProfileById(auth.userId).then(data => setProfileData(data)),

@@ -125,7 +125,7 @@ export default function OnboardingProvider({
       if (!userProfile.expected_bar_date)
         throw new Error('Expected bar date is required!');
 
-      if (!userProfile.eoir_registered)
+      if (userProfile.eoir_registered === undefined)
         throw new Error('EOIR registered is required!');
     }
 
