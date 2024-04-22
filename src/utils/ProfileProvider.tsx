@@ -49,27 +49,31 @@ export const useProfile = () => useContext(ProfileContext);
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
   const auth = useAuth();
+  if (!auth)
+    throw new Error('Profile provider should be nested inside auth provider');
+
   const [profileReady, setProfileReady] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
+  const { userId } = auth;
 
   const loadProfile = useCallback(async () => {
     setProfileReady(false);
 
-    if (!auth?.userId) {
+    if (!userId) {
       setProfileReady(true);
       return;
     }
 
     await Promise.all([
-      fetchProfileById(auth.userId).then(data => setProfileData(data)),
-      fetchLanguagesById(auth.userId).then(data => setProfileLangs(data)),
-      fetchRolesById(auth.userId).then(data => setProfileRoles(data)),
+      fetchProfileById(userId).then(data => setProfileData(data)),
+      fetchLanguagesById(userId).then(data => setProfileLangs(data)),
+      fetchRolesById(userId).then(data => setProfileRoles(data)),
     ]);
 
     setProfileReady(true);
-  }, [auth]);
+  }, [userId]);
 
   useEffect(() => {
     loadProfile();

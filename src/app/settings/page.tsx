@@ -6,6 +6,7 @@ import { Button, LinkButton } from '@/components/Buttons';
 import SettingsSection from '@/components/SettingsSection';
 import { cities } from '@/data/citiesAndStates';
 import { languages } from '@/data/languages';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { BackLink, H1, H4 } from '@/styles/text';
 import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
@@ -36,6 +37,14 @@ export default function Settings() {
   const [availability, setAvailability] = useState<SettingsSectionData>([]);
   const [roles, setRoles] = useState<SettingsSectionData>([]);
   const [attorneySettings, setAttorneySettings] = useState<SubSectionData>();
+
+  useEffect(() => {
+    if (!profile || !auth) return;
+
+    if (profile.profileReady && !auth.userId) {
+      push(CONFIG.homepage);
+    }
+  }, [profile, auth, push]);
 
   useEffect(() => {
     if (!profile?.profileData) return;

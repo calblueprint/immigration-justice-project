@@ -64,9 +64,11 @@ export default function AuthProvider({
       setAll(newSession);
     });
 
-    supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setAll(newSession);
     });
+
+    return () => data.subscription.unsubscribe();
   }, [setAll]);
 
   // sign in and set the session, userId, and userEmail

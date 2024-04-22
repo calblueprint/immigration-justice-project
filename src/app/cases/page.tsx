@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UUID } from 'crypto';
 import { getNCases } from '@/api/supabase/queries/cases';
 import { LinkButton } from '@/components/Buttons';
@@ -11,8 +11,9 @@ import ProfileButton from '@/components/ProfileButton';
 import COLORS from '@/styles/colors';
 import { CenteredH3, H1, H2 } from '@/styles/text';
 import { CaseListing } from '@/types/schema';
+import { useAuth } from '@/utils/AuthProvider';
 import { parseAgency } from '@/utils/helpers';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { useProfile } from '@/utils/ProfileProvider';
 import {
   AuthButtons,
   Body,
@@ -43,7 +44,8 @@ const defaultFilterValues = {
 };
 
 export default function Page() {
-  const profile = useContext(ProfileContext);
+  const profile = useProfile();
+  const auth = useAuth();
   const [selectedCard, setSelecatedCard] = useState<UUID | null>(null);
   const [caseData, setCaseData] = useState<CaseListing[]>([]);
   const [caseInfo, setCaseInfo] = useState<CaseListing>();
@@ -122,7 +124,7 @@ export default function Page() {
   }, []);
 
   const AuthButtonView = useMemo(() => {
-    if (profile?.profileReady)
+    if (profile?.profileReady && auth?.userId)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
@@ -143,7 +145,7 @@ export default function Page() {
         </LinkButton>
       </>
     );
-  }, [profile]);
+  }, [profile, auth]);
 
   const resetFilters = () => {
     setCaseFilters({
