@@ -316,7 +316,7 @@ export default function ListingDetails({
       </InfoContainer>
       <BorderedSection>
         <Flex $gap='40px'>
-          <ProfileMatch listingData={listingData}/>
+          <ProfileMatch listingData={listingData} interpretation={interpretation}/>
           {interestSection}
         </Flex>
       </BorderedSection>
