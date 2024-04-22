@@ -11,12 +11,12 @@ import COLORS from "@/styles/colors";
 
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
-  getText: (data: T, profileData: Profile, match: boolean) => string;
+  getText: (data: T, profileData: Profile, match: boolean | undefined) => string;
 }
 
 const timeCommitmentMatch : MatchField<CaseListing> = {
-  getMatch: (data, profileData: Profile) => data.hours_per_week ? profileData.hours_per_month > data.hours_per_week * 4 : undefined,
-  getText: (data, profileData: Profile, match: boolean) => data.hours_per_week ? `Your time commitment (${profileData.hours_per_month} hours/month) ${match ? 'meeets' : 'does not meet'} the minimum for this case (${data.hours_per_week * 4} hours/month).` :  'No information available about Time Commitment', 
+  getMatch: (data, profileData) => data.hours_per_week ? profileData.hours_per_month > data.hours_per_week * 4 : undefined,
+  getText: (data, profileData, match) => data.hours_per_week ? `Your time commitment (${profileData.hours_per_month} hours/month) ${match ? 'meeets' : 'does not meet'} the minimum for this case (${data.hours_per_week * 4} hours/month).` :  'No information available about Time Commitment', 
 };
 
 const locationMatch : MatchField<CaseListing> = {
@@ -30,22 +30,21 @@ const locationMatch : MatchField<CaseListing> = {
 const startDateMatch : MatchField<CaseListing | LimitedCaseAssignment | DocumentTranslation > = {
   getMatch: (data, profileData) => {
     if (data.listing_type === 'CASE') {
-      return data.upcoming_date ? timestampStringToDate(profileData.start_date) < timestampStringToDate(data.upcoming_date) : undefined
+      return !!data.upcoming_date ? timestampStringToDate(profileData.start_date) < timestampStringToDate(data.upcoming_date) : undefined
     }
     if (data.listing_type === 'DOC' || data.listing_type === 'LCA') {
-      return data.deadline ? timestampStringToDate(profileData.start_date) < timestampStringToDate(data.deadline) : undefined
+      return !!data.deadline ? timestampStringToDate(profileData.start_date) < timestampStringToDate(data.deadline) : undefined
     }
   },
   getText: (data, profileData, match) => match === undefined ? `No information available about the ${data.listing_type === 'CASE' ? 'Next Court Hearing/Filing Date' : 'Deadline'}` : `The ${data.listing_type === 'CASE' ? 'next court hearing/filing date' :'deadline'} (${formatTimestamp(data.listing_type === 'CASE' ? data.upcoming_date : data.deadline)}) is ${match ? 'after' : 'before'} your first available start date (${formatTimestamp(profileData.start_date)}).`,
 };
 
-const languageMatch : MatchField<Listing> = {
-  getMatch: (data, profileData) => { profileData
-    // const languages = await fetchLanguagesById(profile.user_id); 
-    return undefined; 
-  },
-  getText: (data, profileData, match) => `You ${match ? '' : "don't "}list ${data.languages.join(',')} as one of your languages`
-};
+// const languageMatch : MatchField<Listing> = {
+//   getMatch: (data, profileData) => { profileData
+//     return undefined; 
+//   },
+//   getText: (data, profileData, match) => `You ${match ? '' : "don't "}list ${data.languages.join(',')} as one of your languages`
+// };
 
 const matchIcon = (match: boolean | undefined) => {
   if (match === undefined) {
@@ -69,7 +68,7 @@ export default function ProfileMatch({listingData, interpretation = false} : {li
     return ( 
       <Flex $gap='16px' $align='center'>
           <Flex $w='15px' $h='15px'>{matchIcon(match)}</Flex>
-          <P>{fields.getText(listingData, profile.profileData, !!match)}</P>
+          <P>{fields.getText(listingData, profile.profileData, match)}</P>
       </Flex>
     )
   }
