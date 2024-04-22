@@ -18,7 +18,11 @@ import {
   identity,
   parseDateAlt,
 } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingNavigation,
+  useScrollToTop,
+} from '@/utils/hooks';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation
@@ -33,6 +37,9 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+
+  // scroll to top
+  useScrollToTop();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
     onboarding.profile.expected_bar_date ?? '',

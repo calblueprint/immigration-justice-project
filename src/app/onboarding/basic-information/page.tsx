@@ -17,7 +17,11 @@ import { optionalLanguages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { filterAndPaginate, identity } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingNavigation,
+  useScrollToTop,
+} from '@/utils/hooks';
 import * as Styles from '../styles';
 
 // load languages
@@ -76,6 +80,9 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+
+  // scroll to top
+  useScrollToTop();
 
   // initialize react hook form with current data from onboarding context
   const form = useForm<z.infer<typeof basicInformationSchema>>({

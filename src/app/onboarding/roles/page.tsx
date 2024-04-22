@@ -22,7 +22,7 @@ import {
 } from '@/data/onboardingFlows';
 import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
 import COLORS from '@/styles/colors';
-import { Callout, Flex, SmallCardForm } from '@/styles/containers';
+import { Box, Callout, Flex, SmallCardForm } from '@/styles/containers';
 import { H1, P } from '@/styles/text';
 import { FlowData } from '@/types/misc';
 import { RoleEnum } from '@/types/schema';
@@ -118,6 +118,7 @@ export default function Page() {
 
   return (
     <FormProvider {...form}>
+      <Box $pt="50px" />
       <SmallCardForm onSubmit={form.handleSubmit(onSubmit)}>
         <H1>Role</H1>
 

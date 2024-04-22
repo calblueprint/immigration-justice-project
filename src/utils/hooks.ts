@@ -5,6 +5,15 @@ import { usePathname, useRouter } from 'next/navigation';
 import { OnboardingContext } from './OnboardingProvider';
 
 /**
+ * Scroll to top on first render
+ */
+export const useScrollToTop = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+};
+
+/**
  * Wrapper to use onboarding.
  * Redirects to roles page if flow is empty
  * (i.e. if the user enters the onboarding flow with an URL)

@@ -9,7 +9,11 @@ import COLORS from '@/styles/colors';
 import { Card, Flex } from '@/styles/containers';
 import { H1Centered, H2, H4, P } from '@/styles/text';
 import { formatTruthy, getUTCDate, parseDate } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingNavigation,
+  useScrollToTop,
+} from '@/utils/hooks';
 import * as Styles from '../styles';
 
 function EditButton({ href }: { href: string }) {
@@ -29,10 +33,14 @@ export default function Page() {
   const { flowAt, backlinkHref } = useOnboardingNavigation();
   const { push } = useRouter();
 
+  // scroll to top
+  useScrollToTop();
+
   // triggers on clicking submit
   const onSubmit = async () => {
     try {
-      await Promise.all([push('/onboarding-complete'), onboarding.flushData()]);
+      await onboarding.flushData();
+      await push('/onboarding-complete');
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       setErrorMessage(msg);

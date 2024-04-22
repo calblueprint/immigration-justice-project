@@ -21,7 +21,11 @@ import { usStates } from '@/data/citiesAndStates';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy, identity } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingNavigation,
+  useScrollToTop,
+} from '@/utils/hooks';
 import * as Styles from '../styles';
 
 // zod schema to automate form validation
@@ -42,6 +46,9 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+
+  // scroll to top
+  useScrollToTop();
 
   // initialize form with data from onboarding context
   const form = useForm<z.infer<typeof legalExperienceSchema>>({

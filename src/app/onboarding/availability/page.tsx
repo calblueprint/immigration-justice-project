@@ -14,7 +14,11 @@ import TextInput from '@/components/TextInput';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
-import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
+import {
+  useGuardedOnboarding,
+  useOnboardingNavigation,
+  useScrollToTop,
+} from '@/utils/hooks';
 import * as Styles from '../styles';
 
 // define form schema to automate form validation
@@ -39,6 +43,9 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+
+  // scroll to top
+  useScrollToTop();
 
   const [startDate, setStartDate] = useState<string>(
     onboarding.profile.start_date ?? '',
@@ -110,7 +117,7 @@ export default function Page() {
                 <FormControl>
                   <TextInput
                     errorText={fieldState.error?.message}
-                    placeholder="X hours per month"
+                    placeholder="x hours per month"
                     inputMode="numeric"
                     defaultValue={
                       field.value !== undefined ? field.value.toString() : ''
