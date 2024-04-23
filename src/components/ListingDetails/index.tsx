@@ -170,7 +170,9 @@ export default function ListingDetails({
       return (
         <ListingFields
           fields={[
-            ...(interpretation && listingData.needs_interpreter ? caseInterpretationFields : caseFields),
+            ...(interpretation && listingData.needs_interpreter
+              ? caseInterpretationFields
+              : caseFields),
             {
               label: listingData.is_detained
                 ? 'Custody Location'
@@ -315,8 +317,11 @@ export default function ListingDetails({
         </BorderedSection>
       </InfoContainer>
       <BorderedSection>
-        <Flex $gap='40px'>
-          <ProfileMatch listingData={listingData} interpretation={interpretation}/>
+        <Flex $gap="40px">
+          <ProfileMatch
+            listingData={listingData}
+            interpretation={interpretation}
+          />
           {interestSection}
         </Flex>
       </BorderedSection>
