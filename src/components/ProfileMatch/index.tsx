@@ -1,7 +1,6 @@
 'use client';
 
 import { H3, LinkColored, P } from '@/styles/text';
-import Icon from '../Icon';
 import { Flex } from '@/styles/containers';
 import {
   CaseListing,
@@ -18,6 +17,7 @@ import {
 } from '@/utils/helpers';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import Icon from '../Icon';
 
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
@@ -46,12 +46,9 @@ const locationMatch: MatchField<CaseListing> = {
     data.client_location
       ? data.client_location === profileData.location
       : undefined,
-  getText: match => {
-    console.log(match);
-    return match === undefined
+  getText: (data, profileData, match) => match === undefined
       ? 'No information available about Client Location'
-      : `This client is ${match ? '' : 'not '}in your city.`;
-  },
+      : `This client is ${match ? '' : 'not '}in your city.`,
 };
 
 const startDateMatch: MatchField<
@@ -59,22 +56,10 @@ const startDateMatch: MatchField<
 > = {
   getMatch: (data, profileData) => {
     const date = data.listing_type === 'CASE' ? data.upcoming_date : data.deadline; 
-    return !!date
+    return date
         ? timestampStringToDate(profileData.start_date) <
             timestampStringToDate(date)
         : undefined;
-    // if (data.listing_type === 'CASE') {
-    //   return !!data.upcoming_date
-    //     ? timestampStringToDate(profileData.start_date) <
-    //         timestampStringToDate(data.upcoming_date)
-    //     : undefined;
-    // }
-    // if (data.listing_type === 'DOC' || data.listing_type === 'LCA') {
-    //   return !!data.deadline
-    //     ? timestampStringToDate(profileData.start_date) <
-    //         timestampStringToDate(data.deadline)
-    //     : undefined;
-    // }
   },
   getText: (data, profileData, match) =>
     match === undefined
@@ -148,7 +133,7 @@ export default function ProfileMatch({
             {renderIconGroup(locationMatch as MatchField<Listing>)}
           </>
         )}
-        {listingData.listing_type !== 'DOC' &&
+        {listingData.listing_type !== 'INT' &&
           renderIconGroup(startDateMatch as MatchField<Listing>)}
         <Flex $gap="16px">
           {matchIcon(
