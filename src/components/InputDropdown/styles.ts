@@ -1,7 +1,7 @@
-import COLORS from '@/styles/colors';
-import { DropdownOption } from '@/types/dropdown';
 import { StylesConfig } from 'react-select';
 import styled, { keyframes } from 'styled-components';
+import COLORS from '@/styles/colors';
+import { DropdownOption } from '@/types/dropdown';
 
 export const DropdownWrapper = styled.div`
   display: flex;
@@ -36,7 +36,7 @@ const getControlBorderColor = (
 ) => {
   if (error) return COLORS.redMid;
   if (inFocus) return COLORS.blueMid;
-  return hasValue ? COLORS.greyDarker : COLORS.greyLight;
+  return hasValue ? COLORS.greyMid : COLORS.greyLight;
 };
 
 const determineOptionColor = (focused: boolean, selected: boolean) => {
@@ -83,6 +83,7 @@ export const DropdownStyles = (
     background: COLORS.blueLighter,
     paddingLeft: '0.5rem',
     margin: '0.25rem 0.5rem 0.25rem 0',
+    borderRadius: '3px',
   }),
   multiValueRemove: baseStyles => ({
     ...baseStyles,

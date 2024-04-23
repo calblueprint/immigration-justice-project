@@ -1,6 +1,6 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
 
 // the card itself
 export const CardBody = styled.div<{ $selected?: boolean }>`
@@ -33,7 +33,7 @@ export const TagRow = styled.div`
 `;
 
 export const CardTag = styled.span<{ color: string }>`
-  ${openSans.style}
+  ${sans.style}
   border-radius: 200px;
   font-size: 0.875rem; // 14px
   color: ${COLORS.greyDarker};

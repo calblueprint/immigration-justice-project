@@ -1,20 +1,21 @@
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { InputLabel, P } from '@/styles/text';
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { InputDate } from './styles';
 
-type DateInputProps = {
-  label: string;
-  required?: boolean;
+interface DateInputProps {
+  label?: string;
   error?: string;
   name?: string;
-  value: string;
   id?: string;
   min?: string | number;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string;
+  // TODO: refactor away from set value to use onChange instead
+  setValue?: Dispatch<SetStateAction<string>>;
   onChange?: (s: string) => void;
-};
+  required?: boolean;
+}
 
 export default function DateInput({
   label,
@@ -29,7 +30,7 @@ export default function DateInput({
 }: DateInputProps) {
   const handleChange = useCallback(
     (val: string) => {
-      setValue(val);
+      setValue?.(val);
       onChange?.(val);
     },
     [onChange, setValue],
@@ -37,21 +38,23 @@ export default function DateInput({
 
   return (
     <Flex $direction="column" $gap="10px">
-      <InputLabel as="label" htmlFor={id} $required={required}>
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel as="label" htmlFor={id} $required={required}>
+          {label}
+        </InputLabel>
+      )}
       <InputDate
         id={id}
-        required
+        required={required}
         type="date"
-        $error={error}
+        $error={error !== ''}
         $filled={value !== ''}
         name={name}
         value={value}
         min={min}
         onChange={e => handleChange(e.target.value)}
       />
-      {!!error && <P $color={COLORS.redMid}>{error}</P>}
+      {error && <P $color={COLORS.redMid}>{error}</P>}
     </Flex>
   );
 }

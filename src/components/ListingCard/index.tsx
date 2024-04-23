@@ -1,12 +1,12 @@
 'use client';
 
+import { useMemo } from 'react';
 import { UUID } from 'crypto';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H4, P } from '@/styles/text';
 import { Listing } from '@/types/schema';
 import { formatTimestamp, parseAgency } from '@/utils/helpers';
-import { useMemo } from 'react';
 import Icon from '../Icon';
 import * as Styles from './styles';
 

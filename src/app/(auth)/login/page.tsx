@@ -1,15 +1,15 @@
 'use client';
 
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import isEmail from 'validator/lib/isEmail';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
+import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
-import { useRouter } from 'next/navigation';
-import { useContext, useState } from 'react';
-import isEmail from 'validator/lib/isEmail';
 
 export default function Login() {
   const auth = useAuth();
@@ -82,9 +82,9 @@ export default function Login() {
         </P>
       </SpacerDiv>
       <SpacerDiv>
-        <BigButton type="button" onClick={handleSignIn}>
+        <BigBlueButton type="button" onClick={handleSignIn}>
           Log in
-        </BigButton>
+        </BigBlueButton>
         <H4Centered>
           Don’t have an account yet?{' '}
           <LinkColored $color={COLORS.greyDark} href="/signup">

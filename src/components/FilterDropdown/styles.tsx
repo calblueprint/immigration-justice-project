@@ -1,6 +1,6 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
 
 export const DropdownContainer = styled.div`
   position: relative;
@@ -20,7 +20,7 @@ export const DropdownButton = styled.button<{
 
   color: ${({ $changed }) => ($changed ? 'white' : 'black')};
   font-size: 0.9rem;
-  ${openSans.style}
+  ${sans.style}
 
   background-color: ${({ $changed }) => ($changed ? COLORS.blueMid : 'white')};
   background-image: ${({ $changed }) =>

@@ -1,6 +1,15 @@
 'use client';
 
 import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
   deleteLanguages,
   deleteRoles,
   fetchLanguagesById,
@@ -15,15 +24,6 @@ import {
 } from '@/api/supabase/queries/profiles';
 import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
 
 interface ProfileContextType {
   profileData: Profile | null;
@@ -49,24 +49,31 @@ export const useProfile = () => useContext(ProfileContext);
 
 export default function ProfileProvider({ children }: { children: ReactNode }) {
   const auth = useAuth();
+  if (!auth)
+    throw new Error('Profile provider should be nested inside auth provider');
+
   const [profileReady, setProfileReady] = useState<boolean>(false);
   const [profileData, setProfileData] = useState<Profile | null>(null);
   const [profileLangs, setProfileLangs] = useState<ProfileLanguage[]>([]);
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
+  const { userId } = auth;
 
   const loadProfile = useCallback(async () => {
     setProfileReady(false);
 
-    if (!auth?.userId) return;
+    if (!userId) {
+      setProfileReady(true);
+      return;
+    }
 
     await Promise.all([
-      fetchProfileById(auth.userId).then(data => setProfileData(data)),
-      fetchLanguagesById(auth.userId).then(data => setProfileLangs(data)),
-      fetchRolesById(auth.userId).then(data => setProfileRoles(data)),
+      fetchProfileById(userId).then(data => setProfileData(data)),
+      fetchLanguagesById(userId).then(data => setProfileLangs(data)),
+      fetchRolesById(userId).then(data => setProfileRoles(data)),
     ]);
 
     setProfileReady(true);
-  }, [auth]);
+  }, [userId]);
 
   useEffect(() => {
     loadProfile();

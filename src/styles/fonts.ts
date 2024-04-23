@@ -1,3 +1,3 @@
-import { Open_Sans as OpenSans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
-export const openSans = OpenSans({ subsets: ['latin'] });
+export const sans = Inter({ subsets: ['latin'] });

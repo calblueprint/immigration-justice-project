@@ -10,7 +10,9 @@ export interface Profile {
   start_date: string; // timestamp
   availability_description?: string;
   expected_bar_date?: string; // timestamp
-  location: string; // city, ST
+  country: string;
+  state: string;
+  city: string;
   phone_number: string;
   state_barred?: string;
 }

@@ -1,15 +1,14 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
-import { H4, P } from '@/styles/text';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
+import { H4, P } from '@/styles/text';
 
 export const InputText = styled(P)<{ $error: boolean }>`
-  ${openSans.style}
+  ${sans.style}
   color: ${COLORS.greyDarker};
-  padding: 0.625rem;
-  border-radius: 0.313rem; // 5px
-  border: 2px solid
-    ${({ $error }) => ($error ? COLORS.redMid : COLORS.greyLight)};
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid ${COLORS.greyLight};
   outline: none;
   width: 100%;
 
@@ -22,20 +21,22 @@ export const InputText = styled(P)<{ $error: boolean }>`
   }
 
   &:focus {
-    border: 2px solid
-      ${({ $error }) => ($error ? COLORS.redMid : COLORS.blueMid)};
+    border-color: ${COLORS.blueMid};
   }
+
+  ${({ $error }) =>
+    $error ? `border-color: ${COLORS.redMid} !important` : null};
 `;
 
 export const InputLabel = styled(H4)`
   color: ${COLORS.greyDark};
-  margin-bottom: 0.625rem; //10px
+  margin-bottom: 10px;
 `;
 
 export const ErrorText = styled(P)`
   color: ${COLORS.redMid};
-  margin-top: 0.625rem;
-  ${openSans.style}
+  margin-top: 10px;
+  ${sans.style}
 `;
 
 export const InputDiv = styled.div`

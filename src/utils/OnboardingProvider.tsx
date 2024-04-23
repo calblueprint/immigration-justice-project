@@ -1,14 +1,5 @@
 'use client';
 
-import { UUID } from 'crypto';
-import {
-  Profile,
-  ProfileLanguage,
-  ProfileRole,
-  RoleEnum,
-} from '@/types/schema';
-import { useAuth } from '@/utils/AuthProvider';
-import { useProfile } from '@/utils/ProfileProvider';
 import {
   createContext,
   Dispatch,
@@ -18,28 +9,43 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { UUID } from 'crypto';
+import { FlowData } from '@/types/misc';
+import {
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  RoleEnum,
+} from '@/types/schema';
+import { useAuth } from '@/utils/AuthProvider';
+import { useProfile } from '@/utils/ProfileProvider';
 
-interface FlowData {
-  url: string;
-  name: string;
+export interface OnboardingFormData {
+  trigger: () => Promise<void>;
+  isDirty: boolean;
+  isValid: boolean;
 }
 
 interface OnboardingContextType {
-  userProfile: Partial<Profile>;
-  canReads: Set<string>;
-  canSpeaks: Set<string>;
-  roles: Set<RoleEnum>;
+  profile: Partial<Profile>;
+  canReads: string[];
+  canSpeaks: string[];
+  roles: RoleEnum[];
   progress: number;
   flow: FlowData[];
   canContinue: boolean;
+  form?: OnboardingFormData;
+  pushingData: boolean;
+  setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
   updateProfile: (updateInfo: Partial<Profile>) => void;
+  removeFromProfile: (toClear: Array<keyof Profile>) => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
   setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
-  setCanReads: Dispatch<SetStateAction<Set<string>>>;
-  setCanSpeaks: Dispatch<SetStateAction<Set<string>>>;
-  setRoles: Dispatch<SetStateAction<Set<RoleEnum>>>;
+  setCanReads: Dispatch<SetStateAction<string[]>>;
+  setCanSpeaks: Dispatch<SetStateAction<string[]>>;
+  setRoles: Dispatch<SetStateAction<RoleEnum[]>>;
 }
 
 export const OnboardingContext = createContext<
@@ -54,98 +60,99 @@ export default function OnboardingProvider({
   const auth = useAuth();
   const profile = useProfile();
   const [progress, setProgress] = useState(0);
-  const [flow, setFlow] = useState<FlowData[]>([
-    { name: 'Roles', url: 'roles' },
-    { name: 'Basic Info', url: 'basic-information' },
-    { name: 'Availability', url: 'availability' },
-    { name: 'Legal Experience', url: 'legal-experience' },
-    { name: 'Done', url: 'done' },
-  ]);
+  const [flow, setFlow] = useState<FlowData[]>([]);
   const [userProfile, setUserProfile] = useState<Partial<Profile>>({});
-  const [canReads, setCanReads] = useState<Set<string>>(new Set());
-  const [canSpeaks, setCanSpeaks] = useState<Set<string>>(new Set());
-  const [roles, setRoles] = useState<Set<RoleEnum>>(new Set());
+  const [canReads, setCanReads] = useState<string[]>([]);
+  const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
+  const [roles, setRoles] = useState<RoleEnum[]>([]);
   const [canContinue, setCanContinue] = useState<boolean>(false);
+  const [form, setForm] = useState<OnboardingFormData>();
+  const [pushingData, setPushingData] = useState<boolean>(false);
 
   /**
    * Updates stored profile state with the partial data.
    * Does not affect database.
    */
-  const updateProfile = useCallback(
-    (updatedInfo: Partial<Profile>) => {
-      const newUserProfile = { ...userProfile, ...updatedInfo };
-      setUserProfile(newUserProfile);
-    },
-    [userProfile],
-  );
+  const updateProfile = useCallback((updatedInfo: Partial<Profile>) => {
+    setUserProfile(oldProfile => ({ ...oldProfile, ...updatedInfo }));
+  }, []);
+
+  const removeFromProfile = useCallback((keys: Array<keyof Profile>) => {
+    setUserProfile(oldProfile => {
+      const clonedProfile = { ...oldProfile };
+      keys.forEach(key => {
+        delete clonedProfile[key];
+      });
+      return clonedProfile;
+    });
+  }, []);
 
   const flushData = useCallback(async () => {
+    if (pushingData) return;
     if (!auth) throw new Error('Fatal: No auth context provided!');
     if (!profile) throw new Error('Fatal: No profile context provided!');
     if (!auth.userId) throw new Error('Fatal: User is not logged in!');
 
     const uid: UUID = auth.userId;
 
-    if (!userProfile.first_name)
-      throw new Error('Error flushing data: profile missing first name!');
+    if (!userProfile.first_name) throw new Error('First name is required!');
 
-    if (!userProfile.last_name)
-      throw new Error('Error flushing data: profile missing last name!');
+    if (!userProfile.last_name) throw new Error('Last name is required!');
 
     if (userProfile.hours_per_month === undefined)
-      throw new Error('Error flushing data: profile missing hours per month!');
+      throw new Error('Hours per month is required!');
 
-    if (!userProfile.location)
-      throw new Error('Error flushing data: profile missing location!');
+    if (!userProfile.country) throw new Error('Country is required!');
 
-    if (!userProfile.start_date)
-      throw new Error('Error flushing data: profile missing start date!');
+    if (!userProfile.state) throw new Error('State is required!');
 
-    if (roles.size === 0)
-      throw new Error('Error flushing data: roles data is empty!');
+    if (!userProfile.city) throw new Error('City is required!');
 
-    if (roles.has('ATTORNEY')) {
-      if (!userProfile.bar_number)
-        throw new Error(
-          'Error flushing data: attorney profile missing bar number!',
-        );
+    if (!userProfile.start_date) throw new Error('Start date is required!');
+
+    if (!userProfile.phone_number) throw new Error('Phone number is required!');
+
+    if (roles.length === 0) throw new Error('Error: could not determine role!');
+
+    if (roles.includes('ATTORNEY')) {
+      if (!userProfile.bar_number) throw new Error('Bar number is required!');
 
       if (userProfile.eoir_registered === undefined)
-        throw new Error(
-          'Error flushing data: attorney profile missing EOIR registered!',
-        );
+        throw new Error('EOIR registered is required!');
     }
 
-    if (canReads.size === 0)
-      throw new Error('Error flushing data: can read languages data is empty!');
+    if (roles.includes('LEGAL_FELLOW')) {
+      if (!userProfile.expected_bar_date)
+        throw new Error('Expected bar date is required!');
 
-    if (canSpeaks.size === 0)
-      throw new Error(
-        'Error flushing data: can write languages data is empty!',
-      );
+      if (userProfile.eoir_registered === undefined)
+        throw new Error('EOIR registered is required!');
+    }
+
+    if (canReads.length + canSpeaks.length === 0)
+      throw new Error('Languages are required!');
 
     // format data
     const profileToInsert: Profile = {
       first_name: userProfile.first_name,
       last_name: userProfile.last_name,
       hours_per_month: userProfile.hours_per_month,
-      location: userProfile.location,
+      country: userProfile.country,
+      state: userProfile.state,
+      city: userProfile.city,
       start_date: userProfile.start_date,
       availability_description: userProfile.availability_description,
       bar_number: userProfile.bar_number,
       eoir_registered: userProfile.eoir_registered,
       user_id: uid,
-      // TODO: update to get phone number
-      phone_number: '000-000-0000',
+      phone_number: userProfile.phone_number,
     };
 
-    const userLangs = new Set(
-      Array.from(canReads).concat(Array.from(canSpeaks)),
-    );
+    const userLangs = new Set(canReads.concat(canSpeaks));
     const langsToInsert: ProfileLanguage[] = Array.from(userLangs).map(l => ({
       user_id: uid,
-      can_read: canReads.has(l),
-      can_speak: canSpeaks.has(l),
+      can_read: canReads.includes(l),
+      can_speak: canSpeaks.includes(l),
       language_name: l,
     }));
 
@@ -154,26 +161,32 @@ export default function OnboardingProvider({
       role: r,
     }));
 
+    setPushingData(true);
+
     await profile.createNewProfile(
       profileToInsert,
       langsToInsert,
       rolesToInsert,
     );
-  }, [auth, profile, userProfile, canReads, canSpeaks, roles]);
+  }, [auth, profile, userProfile, canReads, canSpeaks, roles, pushingData]);
 
   const providerValue = useMemo(
     () => ({
       progress,
-      userProfile,
+      profile: userProfile,
       canReads,
       canSpeaks,
       roles,
       flow,
       canContinue,
+      form,
+      pushingData,
       flushData,
       setFlow,
       setProgress,
       updateProfile,
+      removeFromProfile,
+      setForm,
       setCanReads,
       setCanSpeaks,
       setRoles,
@@ -187,8 +200,12 @@ export default function OnboardingProvider({
       roles,
       flow,
       canContinue,
+      pushingData,
+      form,
       flushData,
       updateProfile,
+      removeFromProfile,
+      setForm,
     ],
   );
 

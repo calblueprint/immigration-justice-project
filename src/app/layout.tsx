@@ -1,9 +1,10 @@
+import type { Metadata } from 'next';
 import StyledComponentsRegistry from '@/lib/registry';
-import './globals.css';
-import { openSans } from '@/styles/fonts';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
 import AuthProvider from '@/utils/AuthProvider';
 import ProfileProvider from '@/utils/ProfileProvider';
-import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',
@@ -17,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={openSans.className}>
+      <body
+        className={sans.className}
+        style={{ background: COLORS.background }}
+      >
         <AuthProvider>
           <ProfileProvider>
             <StyledComponentsRegistry>{children}</StyledComponentsRegistry>

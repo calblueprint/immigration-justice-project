@@ -1,9 +1,9 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
 
 export const TextArea = styled.textarea`
-  ${openSans.style}
+  ${sans.style}
   resize: none;
   font-size: 0.875rem;
   font-weight: 400;

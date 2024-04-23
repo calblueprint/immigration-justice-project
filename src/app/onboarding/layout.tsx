@@ -1,8 +1,6 @@
-'use client';
-
+import { ReactNode } from 'react';
 import OnboardingManager from '@/components/OnboardingManager';
 import OnboardingProvider from '@/utils/OnboardingProvider';
-import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

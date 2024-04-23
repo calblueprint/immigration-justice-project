@@ -1,6 +1,6 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
 
 export const ComponentContainer = styled.div`
   display: flex;
@@ -36,7 +36,7 @@ export const RadioInput = styled.input`
 `;
 
 export const RadioLabel = styled.label`
-  ${openSans}
+  ${sans}
   font-size: .875rem;
   color: ${COLORS.greyDarker};
   display: flex;

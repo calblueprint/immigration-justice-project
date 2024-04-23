@@ -1,26 +1,11 @@
-/**
- * inspiration from https://stackoverflow.com/a/57941711/22063638
- * example timestamp format: 2024-01-18T11:22:40+00:00
- * WARNING: assumes +00:00 (which should be the case for timestamptz)
- * @param ts
- * @returns Date
- */
-export function timestampStringToDate(ts: string): Date {
-  const digits = ts.split(/\D/).map(s => parseInt(s, 10));
-  digits[1] -= 1; // ground month to 0-index
+// given timestamp of format: 2024-01-18T11:22:40+00:00
+// return JS date
 
-  const ms = Date.UTC(
-    digits[0], // year
-    digits[1], // month
-    digits[2], // day
-    digits[3], // hour
-    digits[4], // minute
-    digits[5], // second
-    0,
-  );
+import CONFIG from '@/lib/configs';
+import { DropdownOption } from '@/types/dropdown';
 
-  return new Date(ms);
-}
+// native JS Date constructor should already support this parsing
+export const timestampStringToDate = (ts: string): Date => new Date(ts);
 
 // parse js date to mm/dd/yyyy
 export const parseDate = (d: Date): string =>
@@ -51,13 +36,20 @@ export const parseAgency = (agency: string): string =>
         .split('_')
         .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
         .join(' ');
+
+/**
+ * @param d - string in date format (i.e. yyyy-mm-dd)
+ * @returns JS Date in UTC-0 timezone
+ */
+export const getUTCDate = (d: string) => new Date(`${d}T00:00`);
+
 /**
  * @param d - date in string format
  * @returns true if the date is an upcoming date, false otherwise
  */
 export const isValidDate = (d: string) => {
   const currentDate = new Date();
-  const inputDate = new Date(`${d}T00:00`);
+  const inputDate = getUTCDate(d);
   currentDate.setHours(0, 0, 0, 0);
 
   if (d !== '' && inputDate >= currentDate) {
@@ -111,3 +103,51 @@ export const parseTimeCommitment = (
   const rate = numWeeks > 4 ? hoursPerWeek * 4 : hoursPerWeek;
   return `${rate} hours/${unit} for ${numUnit} ${unit}${plural}`;
 };
+
+// return JS date object with current date at 00:00:00
+export const getCurrentDate = () => {
+  const now = new Date();
+  const nowDate = parseDateAlt(now);
+  return new Date(`${nowDate}T00:00`);
+};
+
+// parse value to three strings depending on truthy, falsy, and nullish
+export const formatTruthy = <
+  T extends string | undefined,
+  F extends string | undefined,
+  N extends string | undefined,
+>(
+  obj: unknown,
+  truthyMessage: T,
+  falsyMessage: F,
+  nullishMessage: N,
+) => {
+  if (obj === null || obj === undefined) return nullishMessage;
+  return obj ? truthyMessage : falsyMessage;
+};
+
+/**
+ * filters the given options by the search string
+ * returns a list of more options for the big data dropdown
+ *  and a boolean for it to know whether there are more options
+ */
+export const filterAndPaginate = (
+  options: DropdownOption[],
+  search: string,
+  oldLength: number,
+  pageSize: number = CONFIG.pageSize,
+) => {
+  const searchLower = search.toLowerCase();
+  const filteredOptions = search
+    ? options.filter(o => o.label.toLowerCase().includes(searchLower))
+    : options;
+  const hasMore = filteredOptions.length > oldLength + pageSize;
+  const slicedOptions = filteredOptions.slice(oldLength, oldLength + pageSize);
+  return {
+    options: slicedOptions,
+    hasMore,
+  };
+};
+
+// to use as empty function
+export const identity = (x: unknown) => x;

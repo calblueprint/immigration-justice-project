@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import COLORS from '@/styles/colors';
 import { H4, P } from '@/styles/text';
 import {
@@ -5,7 +6,6 @@ import {
   RadioSectionData,
   SectionData,
 } from '@/types/settingsSection';
-import { useMemo, useState } from 'react';
 import BigDataDropdown from '../BigDataDropdown';
 import DateInput from '../DateInput';
 import InputDropdown from '../InputDropdown';
@@ -84,7 +84,7 @@ const chooseFormatter = (data: SectionData): string => {
     if (data.type !== 'multi-select') return data.format(data.value || '');
     return data.format(data.value);
   }
-  if (data.value instanceof Set) return Array.from(data.value).join(', ');
+  if (data.value instanceof Array) return data.value.join(', ');
   return data.value || '';
 };
 
@@ -115,13 +115,16 @@ export default function DataField({
 
     // typescript complains when i try to put this condition
     // in the multi prop :pensive:
+    const len =
+      data.options instanceof Array ? data.options.length : data.options.size;
+
     if (data.type === 'multi-select')
-      return data.options.size > DROPDOWN_LIMIT ? (
+      return len > DROPDOWN_LIMIT ? (
         <BigDataDropdown
           label={editorLabel}
           options={data.options}
           pageSize={data.pageSize}
-          defaultValue={data.value}
+          defaultValue={data.value ?? undefined}
           onChange={nv => {
             if (!data.validate?.(nv))
               onChange({ ...data, error: '', value: nv });
@@ -140,11 +143,12 @@ export default function DataField({
               onChange({ ...data, error: '', value: nv });
             else onChange({ ...data, value: nv });
           }}
-          error={data.error}
+          error={!!data.error}
           multi
         />
       );
-    return data.options.size > DROPDOWN_LIMIT ? (
+
+    return len > DROPDOWN_LIMIT ? (
       <BigDataDropdown
         label={editorLabel}
         options={data.options}
@@ -165,7 +169,7 @@ export default function DataField({
           if (!data.validate?.(nv)) onChange({ ...data, error: '', value: nv });
           else onChange({ ...data, value: nv });
         }}
-        error={data.error}
+        error={!!data.error}
       />
     );
   }, [data, onChange]);
@@ -178,7 +182,7 @@ export default function DataField({
         <>
           <H4 $color={COLORS.greyDark}>{data.label}</H4>
           {data.emptyText &&
-          ((data.type === 'multi-select' && data.value.size === 0) ||
+          ((data.type === 'multi-select' && data.value.length === 0) ||
             (data.type !== 'multi-select' && !data.value)) ? (
             <P $color={COLORS.greyMid}>{data.emptyText}</P>
           ) : (

@@ -1,5 +1,5 @@
-import { IconSvgs, IconType } from '@/lib/icons';
 import React from 'react';
+import { IconSvgs, IconType } from '@/lib/icons';
 
 interface Props {
   className?: string;

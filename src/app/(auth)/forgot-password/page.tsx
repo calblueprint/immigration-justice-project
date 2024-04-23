@@ -1,14 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
 import { HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
-import BigButton from '@/components/BigButton';
-import Button from '@/components/Button';
+import { BigBlueButton, Button } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
 import { H1, H2, H4, P } from '@/styles/text';
-import { useState } from 'react';
-import isEmail from 'validator/lib/isEmail';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -41,9 +40,9 @@ export default function ForgotPassword() {
             value={email}
             setValue={setEmail}
           />
-          <BigButton type="button" onClick={sendPasswordResetLink}>
+          <BigBlueButton type="button" onClick={sendPasswordResetLink}>
             <H4 $color="white">Send link to email</H4>
-          </BigButton>
+          </BigBlueButton>
         </>
       )}
       {emailSentCount > 0 && (

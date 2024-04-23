@@ -1,77 +1,83 @@
 import Link from 'next/link';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import COLORS from './colors';
-import { openSans } from './fonts';
+import { sans } from './fonts';
 
 // 1 rem = 16 px
+interface TextProps {
+  $color?: string;
+  $fontWeight?: number | string;
+  $align?: 'left' | 'right' | 'center' | 'end' | 'justify' | 'start';
+}
 
-export const H1 = styled.h1<{ $color?: string }>`
-  ${openSans.style}
+const TextStyles = css<TextProps>`
+  ${sans.style}
+  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
+  color: ${({ $color }) => $color || COLORS.greyDarker};
+  text-align: ${({ $align }) => $align};
+  margin: 0;
+`;
+
+export const H1 = styled.h1<TextProps>`
+  ${TextStyles}
   display: block;
   font-size: 3rem;
-  font-weight: 700;
-  color: ${props => props.$color || COLORS.greyDarker};
-  margin: 0;
 `;
 
-export const H2 = styled.h2<{ $color?: string; $fontWeight?: number | string }>`
-  ${openSans.style}
+export const H1Centered = styled(H1)`
+  text-align: center;
+`;
+
+export const H2 = styled.h2<TextProps>`
+  ${TextStyles}
   font-size: 2.25rem;
-  font-weight: 600;
-  color: ${({ $color }) => $color || COLORS.greyDarker};
-  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
-  margin: 0;
 `;
 
-export const H3 = styled.h3<{ $color?: string; $fontWeight?: number | string }>`
-  ${openSans.style}
-  font-size: 1.5rem;
-  color: ${({ $color }) => $color || COLORS.greyDarker};
-  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
-  margin: 0;
+export const H2Centered = styled(H2)`
+  text-align: center;
+`;
+
+export const H3 = styled.h3<TextProps>`
+  ${TextStyles}
+  font-size: 1.25rem;
 `;
 
 export const CenteredH3 = styled(H3)`
   align-self: center;
 `;
 
-export const H4 = styled.h4<{ $color?: string; $fontWeight?: number | string }>`
-  ${openSans.style}
+export const H4 = styled.h4<TextProps>`
+  ${TextStyles}
   font-size: 1rem;
-  font-weight: 600;
-  color: ${({ $color }) => $color || COLORS.greyDarker};
-  font-weight: ${({ $fontWeight }) => $fontWeight || '600'};
-  margin: 0;
 `;
 
-export const P = styled.p<{ $color?: string }>`
-  ${openSans.style}
-  font-size: 0.875rem;
+export const P = styled.p<TextProps>`
+  ${TextStyles}
+  font-size: .9375rem;
   font-weight: 400;
-  color: ${props => props.$color || COLORS.greyDarker};
-  margin: 0;
 `;
 
 export const StrongP = styled(P)`
   font-weight: 700;
 `;
 
-export const MediumP = styled(P)`
-  font-weight: 500;
-`;
+interface LabelProps extends TextProps {
+  $required?: boolean;
+}
 
-export const InputLabel = styled(H4)<{ $color?: string; $required?: boolean }>`
-  color: ${props => props.$color || COLORS.greyDark};
+export const InputLabel = styled(H4)<LabelProps>`
+  color: ${({ $color }) => $color || COLORS.greyDark};
   ${({ $required }) =>
     $required &&
     `&::after {
-  content: ' *';
-  color: ${COLORS.redMid}}`};
+      content: ' *';
+      color: ${COLORS.redMid};
+    }`};
 `;
 
-export const LinkColored = styled(Link)<{ $color?: string }>`
-  ${openSans.style}
-  color: ${props => props.$color || COLORS.greyDarker};
+export const LinkColored = styled(Link)<TextProps>`
+  ${TextStyles}
+  font-weight: 400;
 `;
 
 export const BackLink = styled(Link)`

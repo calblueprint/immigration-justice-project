@@ -1,8 +1,12 @@
 'use client';
 
-import Button, { LinkButton } from '@/components/Button';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button, LinkButton } from '@/components/Buttons';
 import SettingsSection from '@/components/SettingsSection';
-import { cities, languages } from '@/lib/bigData';
+import { cities } from '@/data/citiesAndStates';
+import { languages } from '@/data/languages';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { BackLink, H1, H4 } from '@/styles/text';
 import { ProfileLanguage, ProfileRole, RoleEnum } from '@/types/schema';
@@ -10,8 +14,6 @@ import { SettingsSectionData, SubSectionData } from '@/types/settingsSection';
 import { useAuth } from '@/utils/AuthProvider';
 import { isValidBarNumber } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ButtonContainer, ContentContainer, PageContainer } from './styles';
 
 const rolesOptions = new Map<RoleEnum, string>([
@@ -37,6 +39,14 @@ export default function Settings() {
   const [attorneySettings, setAttorneySettings] = useState<SubSectionData>();
 
   useEffect(() => {
+    if (!profile || !auth) return;
+
+    if (profile.profileReady && !auth.userId) {
+      push(CONFIG.homepage);
+    }
+  }, [profile, auth, push]);
+
+  useEffect(() => {
     if (!profile?.profileData) return;
 
     setBasicInformation([
@@ -58,28 +68,28 @@ export default function Settings() {
         type: 'single-select',
         options: cities,
         label: 'City',
-        value: profile?.profileData?.location || '',
+        value: profile?.profileData?.city || '',
         validate: (v: string | null) => (v ? '' : 'Must include your city'),
       },
       {
         type: 'multi-select',
         options: languages,
         label: 'Languages (speak and understand)',
-        value: new Set(
-          profile?.languages.filter(l => l.can_speak).map(l => l.language_name),
-        ),
-        validate: (v: Set<string>) =>
-          v.size > 0 ? '' : 'Must select at least one language',
+        value: profile?.languages
+          .filter(l => l.can_speak)
+          .map(l => l.language_name),
+        validate: (v: string[]) =>
+          v.length > 0 ? '' : 'Must select at least one language',
       },
       {
         type: 'multi-select',
         options: languages,
         label: 'Languages (read and write)',
-        value: new Set(
-          profile?.languages.filter(l => l.can_read).map(l => l.language_name),
-        ),
-        validate: (v: Set<string>) =>
-          v.size > 0 ? '' : 'Must select at least one language',
+        value: profile?.languages
+          .filter(l => l.can_read)
+          .map(l => l.language_name),
+        validate: (v: string[]) =>
+          v.length > 0 ? '' : 'Must select at least one language',
       },
     ]);
 
@@ -125,13 +135,11 @@ export default function Settings() {
         type: 'multi-select',
         options: rolesOptions,
         label: 'Selected Roles',
-        value: new Set(profile?.roles.map(r => r.role)),
-        format: (v: Set<string>) =>
-          Array.from(v)
-            .map(r => r.charAt(0) + r.toLowerCase().slice(1))
-            .join(', '),
-        validate: (v: Set<string>) =>
-          v.size > 0 ? '' : 'Must select at least one role',
+        value: profile?.roles.map(r => r.role),
+        format: (v: string[]) =>
+          v.map(r => r.charAt(0) + r.toLowerCase().slice(1)).join(', '),
+        validate: (v: string[]) =>
+          v.length > 0 ? '' : 'Must select at least one role',
       },
     ]);
 
@@ -185,18 +193,17 @@ export default function Settings() {
 
       const canSpeaks = sections.find(
         sec => sec.label === 'Languages (speak and understand)',
-      )?.value as Set<string>;
+      )?.value as string[];
       const canReads = sections.find(
         sec => sec.label === 'Languages (read and write)',
-      )?.value as Set<string>;
-      const allSpeakRead = new Set(
-        Array.from(canReads).concat(Array.from(canSpeaks)),
-      );
+      )?.value as string[];
+
+      const allSpeakRead = new Set(canReads.concat(canSpeaks));
 
       const langs: ProfileLanguage[] = Array.from(allSpeakRead).map(l => ({
         user_id: userId,
-        can_read: canReads.has(l),
-        can_speak: canSpeaks.has(l),
+        can_read: canReads.includes(l),
+        can_speak: canSpeaks.includes(l),
         language_name: l,
       }));
 
@@ -204,7 +211,7 @@ export default function Settings() {
         profile.updateProfile({
           first_name: firstName,
           last_name: lastName,
-          location,
+          city: location,
         }),
         profile.setLanguages(langs),
       ]);
@@ -253,9 +260,9 @@ export default function Settings() {
 
       const sections = nd.flat();
       const selectedRoles = sections.find(sec => sec.label === 'Selected Roles')
-        ?.value as Set<RoleEnum>;
+        ?.value as RoleEnum[];
 
-      if (selectedRoles.has('ATTORNEY')) {
+      if (selectedRoles.includes('ATTORNEY')) {
         const attorneySections = ns[0].data.flat();
         const barNumber = attorneySections.find(
           sec => sec.label === 'Attorney Bar Number',

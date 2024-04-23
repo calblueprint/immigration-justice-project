@@ -1,7 +1,7 @@
-import COLORS from '@/styles/colors';
-import { openSans } from '@/styles/fonts';
-import { H4 } from '@/styles/text';
 import styled from 'styled-components';
+import COLORS from '@/styles/colors';
+import { sans } from '@/styles/fonts';
+import { H4 } from '@/styles/text';
 
 export const AuthButtons = styled.div`
   display: flex;
@@ -83,7 +83,7 @@ export const Body = styled.div`
 `;
 
 export const ResetFilters = styled.button`
-  ${openSans.style}
+  ${sans.style}
 
   background: none;
   outline: none;

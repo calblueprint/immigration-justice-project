@@ -1,8 +1,5 @@
 'use client';
 
-import type { UUID } from 'crypto';
-import supabase from '@/api/supabase/createClient';
-import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import {
   createContext,
   useCallback,
@@ -11,6 +8,9 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
+import type { UUID } from 'crypto';
+import supabase from '@/api/supabase/createClient';
 
 export interface AuthContextType {
   session?: Session;
@@ -64,9 +64,11 @@ export default function AuthProvider({
       setAll(newSession);
     });
 
-    supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setAll(newSession);
     });
+
+    return () => data.subscription.unsubscribe();
   }, [setAll]);
 
   // sign in and set the session, userId, and userEmail
