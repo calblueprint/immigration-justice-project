@@ -67,13 +67,14 @@ const basicInformationSchema = z.object({
     .regex(
       /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
       { message: 'Invalid phone number' },
-    ),
+    )
+    .min(1, { message: 'Please include a phone number' }),
   canSpeaks: z
     .array(z.object(zodDropdownOption))
-    .min(1, 'Please select a value for languages you can speak or understand'),
+    .min(1, 'Please select at least one language you can speak or understand'),
   canReads: z
     .array(z.object(zodDropdownOption))
-    .min(1, 'Please select a value for languages you can speak or understand'),
+    .min(1, 'Please select at least one language you can speak or understand'),
 });
 
 export default function Page() {

@@ -28,8 +28,8 @@ function ProgressCircle({
   const { ebbTo } = useOnboardingNavigation();
 
   const onClick = useCallback(() => {
-    ebbTo(`/onboarding/${onboardingFlow[idx].url}`);
-  }, [ebbTo, onboardingFlow, idx]);
+    if (clickable) ebbTo(`/onboarding/${onboardingFlow[idx].url}`);
+  }, [ebbTo, onboardingFlow, idx, clickable]);
 
   return (
     <Styles.ProgressCircleContainer
