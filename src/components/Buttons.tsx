@@ -169,6 +169,7 @@ export const UnstyledButton = styled.button`
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 interface AsyncButtonProps

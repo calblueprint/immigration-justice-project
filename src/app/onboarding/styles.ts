@@ -97,9 +97,3 @@ export const RequiredText = styled(P)`
     content: '* ';
   }
 `;
-
-export const EditText = styled(P)`
-  font-weight: 600;
-  text-decoration: underline;
-  color: ${COLORS.blueMid};
-`;
