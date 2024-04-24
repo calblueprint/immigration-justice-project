@@ -1,7 +1,7 @@
+import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { H4 } from '@/styles/text';
-import styled from 'styled-components';
 
 export const FiltersContainer = styled.div`
   display: flex;

@@ -1,9 +1,9 @@
 'use client';
 
+import { useMemo } from 'react';
+import type { Listing } from '@/types/schema';
 import COLORS from '@/styles/colors';
 import { CenteredH3, H1 } from '@/styles/text';
-import type { Listing } from '@/types/schema';
-import { useMemo } from 'react';
 import FilterDropdown from '../FilterDropdown';
 import ListingCard from '../ListingCard';
 import ListingDetails from '../ListingDetails';
