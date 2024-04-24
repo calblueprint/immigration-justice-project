@@ -1,5 +1,10 @@
 import { UUID } from 'crypto';
-import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
+import {
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  ProfileToUpload,
+} from '@/types/schema';
 import supabase from '../createClient';
 
 export async function upsertProfile(profile: Profile) {
@@ -31,7 +36,7 @@ export async function fetchProfileById(userId: UUID) {
   return data[0];
 }
 
-export async function insertProfile(profileData: Profile) {
+export async function insertProfile(profileData: ProfileToUpload) {
   const { data, error } = await supabase
     .from('profiles')
     .insert(profileData)
@@ -45,7 +50,7 @@ export async function insertProfile(profileData: Profile) {
 
 export async function updateProfile(
   userId: UUID,
-  updatedInfo: Partial<Profile>,
+  updatedInfo: Partial<ProfileToUpload>,
 ) {
   const { data, error } = await supabase
     .from('profiles')

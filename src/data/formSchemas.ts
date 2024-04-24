@@ -79,7 +79,7 @@ export const availabilitySchema = z.object({
         'Please include your estimated starting date of availability',
     })
     .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  availability: z.string().optional(),
+  availability: z.string().optional().nullable(),
 });
 
 export const legalCredentialSchema = z.object({

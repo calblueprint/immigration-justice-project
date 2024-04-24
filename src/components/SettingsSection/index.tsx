@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  FormState,
-} from 'react-hook-form';
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useMemo,
+} from 'react';
+import { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Flex } from '@/styles/containers';
 import { Spinner } from '@/styles/spinner';
 import { H2, P } from '@/styles/text';
@@ -24,46 +25,43 @@ const SettingSectionContext = createContext<SettingSectionContextProps>({
 });
 
 // root section (card/container)
-interface RootProps<TFieldValues extends FieldValues> {
+interface RootProps {
   title: string;
-  canEdit?: boolean;
   children: React.ReactNode;
-  formState?: FormState<TFieldValues>;
+  isEditing?: boolean;
+  setIsEditing?: Dispatch<SetStateAction<boolean>>;
+  isSubmitting?: boolean;
 }
 
-export function SettingSection<TFieldValues extends FieldValues = FieldValues>({
-  canEdit,
+export function SettingSection({
+  isEditing,
+  setIsEditing,
   title,
-  formState,
+  isSubmitting,
   children,
-}: RootProps<TFieldValues>) {
-  const [isEditing, setIsEditing] = useState(false);
+}: RootProps) {
   const editing = useMemo(() => ({ editing: isEditing }), [isEditing]);
-
-  useEffect(() => {
-    if (formState?.isSubmitSuccessful) setIsEditing(false);
-  }, [formState]);
 
   return (
     <SettingSectionContext.Provider value={editing}>
       <Styles.SectionContainer>
         <Flex $justify="between">
           <H2>{title}</H2>
-          {!isEditing && canEdit ? (
-            <EditButton onClick={() => setIsEditing(true)} />
+          {!isEditing ? (
+            <EditButton onClick={() => setIsEditing?.(true)} />
           ) : null}
         </Flex>
 
         {children}
 
-        {isEditing && canEdit ? (
+        {isEditing ? (
           <Flex $gap="1.25rem" $justify="end">
-            <Button type="button" onClick={() => setIsEditing(false)}>
+            <Button type="button" onClick={() => setIsEditing?.(false)}>
               Discard Changes
             </Button>
-            <BlueButton type="submit" disabled={formState?.isSubmitting}>
+            <BlueButton type="submit" disabled={isSubmitting}>
               <Flex $gap="10px" $justify="center">
-                {formState?.isSubmitting ? <Spinner /> : null}
+                {isSubmitting ? <Spinner /> : null}
                 Save Changes
               </Flex>
             </BlueButton>

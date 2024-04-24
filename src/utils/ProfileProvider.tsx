@@ -22,7 +22,12 @@ import {
   upsertLanguages,
   upsertRoles,
 } from '@/api/supabase/queries/profiles';
-import { Profile, ProfileLanguage, ProfileRole } from '@/types/schema';
+import {
+  Profile,
+  ProfileLanguage,
+  ProfileRole,
+  ProfileToUpload,
+} from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 
 interface ProfileContextType {
@@ -30,11 +35,11 @@ interface ProfileContextType {
   languages: ProfileLanguage[];
   roles: ProfileRole[];
   profileReady: boolean;
-  updateProfile: (newProfileData: Partial<Profile>) => Promise<void>;
+  updateProfile: (newProfileData: Partial<ProfileToUpload>) => Promise<void>;
   setLanguages: (languages: ProfileLanguage[]) => Promise<void>;
   setRoles: (roles: ProfileRole[]) => Promise<void>;
   createNewProfile: (
-    profile: Profile,
+    profile: ProfileToUpload,
     languages: ProfileLanguage[],
     roles: ProfileRole[],
   ) => Promise<void>;
@@ -87,7 +92,7 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
    */
   const createNewProfile = useCallback(
     async (
-      newProfile: Profile,
+      newProfile: ProfileToUpload,
       newLanguages: ProfileLanguage[],
       newRoles: ProfileRole[],
     ) => {
@@ -112,13 +117,12 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
    * setup for the profiles table.
    */
   const updateProfile = useCallback(
-    async (updatedInfo: Partial<Profile>) => {
+    async (updatedInfo: Partial<ProfileToUpload>) => {
       if (!auth?.userId) throw new Error('Fatal: user is not logged in');
       if (auth.userId !== profileData?.user_id)
         throw new Error('Fatal: user id does not match profile user id!');
 
-      const newProfileData = { ...profileData, ...updatedInfo };
-      await updateSupabaseProfile(auth.userId, newProfileData)
+      await updateSupabaseProfile(auth.userId, updatedInfo)
         .then(data => setProfileData(data))
         .catch((err: Error) => {
           throw new Error(`Error updating profile data: ${err.message}`);

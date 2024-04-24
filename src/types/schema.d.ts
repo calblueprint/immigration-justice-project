@@ -17,6 +17,12 @@ export interface Profile {
   state_barred?: string;
 }
 
+export interface ProfileToUpload
+  extends Omit<Profile, 'start_date' | 'expected_bar_date'> {
+  start_date: Date;
+  expected_bar_date?: Date;
+}
+
 // only used for ProfileRoles
 export type RoleEnum = 'ATTORNEY' | 'INTERPRETER' | 'LEGAL_FELLOW';
 

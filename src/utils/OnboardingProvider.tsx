@@ -15,6 +15,7 @@ import {
   Profile,
   ProfileLanguage,
   ProfileRole,
+  ProfileToUpload,
   RoleEnum,
 } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
@@ -27,7 +28,7 @@ export interface OnboardingFormData {
 }
 
 interface OnboardingContextType {
-  profile: Partial<Profile>;
+  profile: Partial<ProfileToUpload>;
   canReads: string[];
   canSpeaks: string[];
   roles: RoleEnum[];
@@ -37,7 +38,7 @@ interface OnboardingContextType {
   form?: OnboardingFormData;
   pushingData: boolean;
   setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
-  updateProfile: (updateInfo: Partial<Profile>) => void;
+  updateProfile: (updateInfo: Partial<ProfileToUpload>) => void;
   removeFromProfile: (toClear: Array<keyof Profile>) => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
@@ -61,7 +62,7 @@ export default function OnboardingProvider({
   const profile = useProfile();
   const [progress, setProgress] = useState(0);
   const [flow, setFlow] = useState<FlowData[]>([]);
-  const [userProfile, setUserProfile] = useState<Partial<Profile>>({});
+  const [userProfile, setUserProfile] = useState<Partial<ProfileToUpload>>({});
   const [canReads, setCanReads] = useState<string[]>([]);
   const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
   const [roles, setRoles] = useState<RoleEnum[]>([]);
@@ -73,7 +74,7 @@ export default function OnboardingProvider({
    * Updates stored profile state with the partial data.
    * Does not affect database.
    */
-  const updateProfile = useCallback((updatedInfo: Partial<Profile>) => {
+  const updateProfile = useCallback((updatedInfo: Partial<ProfileToUpload>) => {
     setUserProfile(oldProfile => ({ ...oldProfile, ...updatedInfo }));
   }, []);
 
@@ -133,7 +134,7 @@ export default function OnboardingProvider({
       throw new Error('Languages are required!');
 
     // format data
-    const profileToInsert: Profile = {
+    const profileToInsert: ProfileToUpload = {
       first_name: userProfile.first_name,
       last_name: userProfile.last_name,
       hours_per_month: userProfile.hours_per_month,

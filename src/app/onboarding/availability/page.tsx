@@ -14,7 +14,12 @@ import TextInput from '@/components/TextInput';
 import { availabilitySchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
+import {
+  getCurrentDate,
+  identity,
+  parseDateAlt,
+  parseDateString,
+} from '@/utils/helpers';
 import {
   useGuardedOnboarding,
   useOnboardingNavigation,
@@ -31,7 +36,9 @@ export default function Page() {
   useScrollToTop();
 
   const [startDate, setStartDate] = useState<string>(
-    onboarding.profile.start_date ?? '',
+    onboarding.profile.start_date
+      ? parseDateAlt(onboarding.profile.start_date)
+      : '',
   );
 
   // initialize react-hook-form with default values from onboarding context
@@ -151,9 +158,11 @@ export default function Page() {
                         });
                         return;
                       }
-                      field.onChange(new Date(`${newValue}T00:00`));
+
+                      const newDate = parseDateString(newValue);
+                      field.onChange(newDate);
                       onboarding.updateProfile({
-                        start_date: newValue,
+                        start_date: newDate,
                       });
                     }}
                   />
@@ -174,7 +183,7 @@ export default function Page() {
                 <FormControl>
                   <TextAreaInput
                     placeholder="I won't be available from..."
-                    defaultValue={field.value}
+                    defaultValue={field.value ?? ''}
                     error={fieldState.error?.message}
                     onChange={newValue => {
                       onboarding.updateProfile({

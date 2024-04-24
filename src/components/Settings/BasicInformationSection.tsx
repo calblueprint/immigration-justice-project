@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,6 +14,8 @@ import TextInput from '../TextInput';
 
 export default function BasicInformationSection() {
   const { profile, auth } = useProfileAuth();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   // split languages for rendering
   const { languages: profileLanguages } = profile;
@@ -89,6 +91,8 @@ export default function BasicInformationSection() {
       }),
       profile.setLanguages(langsToInsert),
     ]);
+
+    setIsEditing(false);
   };
 
   return (
@@ -97,8 +101,9 @@ export default function BasicInformationSection() {
         <form onSubmit={form.handleSubmit(onValidSubmit)}>
           <SettingSection
             title="Basic Information"
-            canEdit
-            formState={form.formState}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            isSubmitting={form.formState.isSubmitting}
           >
             <Flex $gap="20px">
               <SettingField

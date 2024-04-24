@@ -1,5 +1,6 @@
 'use client';
 
+import AvailabilitySection from '@/components/Settings/AvailabilitySection';
 import BasicInformationSection from '@/components/Settings/BasicInformationSection';
 import {
   ReadOnlySettingField,
@@ -23,7 +24,12 @@ export default function Page() {
           <ReadOnlySettingField label="Password" value="*************" />
         </SettingSection>
 
-        {profile.profileReady && <BasicInformationSection />}
+        {profile.profileReady && (
+          <>
+            <BasicInformationSection />
+            <AvailabilitySection />
+          </>
+        )}
       </Styles.ContentContainer>
     </Styles.PageContainer>
   );
