@@ -102,6 +102,25 @@ export const LinkButton = styled(Link)`
   text-decoration: none;
 `;
 
+export const BlueButton = forwardRef<
+  HTMLButtonElement,
+  Omit<
+    ComponentProps<typeof Button>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, ...props }, ref) => (
+  <Button
+    ref={ref}
+    {...props}
+    $primaryColor={COLORS.blueMid}
+    $secondaryColor={COLORS.blueDark}
+    $tertiaryColor={COLORS.blueDarker}
+  >
+    {children}
+  </Button>
+));
+BlueButton.displayName = 'BigBlueButton';
+
 const BigButtonStyles = css<ButtonProps>`
   ${ButtonStyles}
 
@@ -180,7 +199,7 @@ interface AsyncButtonProps
   icon?: ReactNode;
 }
 
-export const AsyncButton = forwardRef<HTMLButtonElement, AsyncButtonProps>(
+export const BigAsyncButton = forwardRef<HTMLButtonElement, AsyncButtonProps>(
   ({ children, onClick: asyncOnClick, icon = <Spinner />, ...props }, ref) => {
     const [loading, setLoading] = useState(false);
 
@@ -203,16 +222,16 @@ export const AsyncButton = forwardRef<HTMLButtonElement, AsyncButtonProps>(
     );
   },
 );
-AsyncButton.displayName = 'AsyncButton';
+BigAsyncButton.displayName = 'BigAsyncButton';
 
 export const BigBlueAsyncButton = forwardRef<
   HTMLButtonElement,
   Omit<
-    ComponentProps<typeof AsyncButton>,
+    ComponentProps<typeof BigAsyncButton>,
     '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
   >
 >(({ children, ...props }, ref) => (
-  <AsyncButton
+  <BigAsyncButton
     ref={ref}
     {...props}
     $primaryColor={COLORS.blueMid}
@@ -220,6 +239,6 @@ export const BigBlueAsyncButton = forwardRef<
     $tertiaryColor={COLORS.blueDarker}
   >
     {children}
-  </AsyncButton>
+  </BigAsyncButton>
 ));
 BigBlueAsyncButton.displayName = 'BigBlueAsyncButton';

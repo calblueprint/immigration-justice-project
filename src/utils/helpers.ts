@@ -151,3 +151,18 @@ export const filterAndPaginate = (
 
 // to use as empty function
 export const identity = (x: unknown) => x;
+
+// format a list into a grammatically correct enumeration
+// EXAMPLE USAGE:
+//   formatEnumeration([]) => ""
+//   formatEnumeration(["hi"]) => "hi"
+//   formatEnumeration(["apples", "oranges"]) => "apples and oranges"
+//   formatEnumeration(["one", "two"], joinWord="or") => "one or two"
+//   formatEnumeration(["one", "two", "four"]) => "one, two, and four"
+export const formatEnumeration = (list: string[], joinWord = 'and') => {
+  if (list.length === 0) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list.join(` ${joinWord} `);
+  const cutLast = list.slice(0, -1);
+  return `${cutLast.join(', ')} ${joinWord} ${list.at(-1)}`;
+};

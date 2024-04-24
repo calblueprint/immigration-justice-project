@@ -11,6 +11,7 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
+import { availabilitySchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
@@ -20,24 +21,6 @@ import {
   useScrollToTop,
 } from '@/utils/hooks';
 import * as Styles from '../styles';
-
-// define form schema to automate form validation
-const availabilitySchema = z.object({
-  hoursPerMonth: z
-    .number({
-      required_error:
-        'Please include your estimated availability in hours per month',
-    })
-    .nonnegative({ message: 'This value must be nonnegative' })
-    .max(744, { message: 'Please enter a valid hours per month' }),
-  startDate: z
-    .date({
-      required_error:
-        'Please include your estimated starting date of availability',
-    })
-    .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  availability: z.string().optional(),
-});
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();

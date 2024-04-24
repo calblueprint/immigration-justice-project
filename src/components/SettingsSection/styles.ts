@@ -11,3 +11,10 @@ export const SectionContainer = styled.section`
   gap: 40px;
   position: relative;
 `;
+
+export const Field = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;

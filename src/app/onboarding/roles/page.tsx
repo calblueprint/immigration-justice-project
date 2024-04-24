@@ -15,6 +15,7 @@ import {
 } from '@/components/Form';
 import Icon from '@/components/Icon';
 import InputDropdown from '@/components/InputDropdown';
+import { roleSchema } from '@/data/formSchemas';
 import {
   ATTORNEY_FLOW,
   INTERPRETER_FLOW,
@@ -43,26 +44,6 @@ const roleOptions = new Map<string, string>([
   ['ATTORNEY,INTERPRETER', 'Attorney and Interpreter'],
   ['LEGAL_FELLOW,INTERPRETER', 'Legal Fellow and Interpreter'],
 ]);
-
-const roleSchema = z.object({
-  roles: z
-    .enum([
-      'ATTORNEY',
-      'INTERPRETER',
-      'LEGAL_FELLOW',
-      'ATTORNEY,INTERPRETER',
-      'LEGAL_FELLOW,INTERPRETER',
-      '',
-    ])
-    .superRefine((input, ctx) => {
-      if (input === '')
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Must include at least one role',
-        });
-      return ctx;
-    }),
-});
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
