@@ -6,3 +6,11 @@ export const ROLE_DESCRIPTIONS = {
   legal_fellow:
     'Law students and recent graduates awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
 };
+
+export const roleOptions = new Map<string, string>([
+  ['ATTORNEY', 'Attorney'],
+  ['INTERPRETER', 'Interpreter'],
+  ['LEGAL_FELLOW', 'Legal Fellow'],
+  ['ATTORNEY,INTERPRETER', 'Attorney and Interpreter'],
+  ['LEGAL_FELLOW,INTERPRETER', 'Legal Fellow and Interpreter'],
+]);

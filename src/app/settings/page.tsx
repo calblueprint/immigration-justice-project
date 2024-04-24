@@ -6,6 +6,7 @@ import {
 } from '@/components/SettingsSection';
 import AvailabilitySection from '@/components/SettingsSection/AvailabilitySection';
 import BasicInformationSection from '@/components/SettingsSection/BasicInformationSection';
+import RolesSection from '@/components/SettingsSection/RolesSection';
 import { BackLink, H1 } from '@/styles/text';
 import { useProfileAuth } from '@/utils/hooks';
 import * as Styles from './styles';
@@ -28,6 +29,7 @@ export default function Page() {
           <>
             <BasicInformationSection />
             <AvailabilitySection />
+            <RolesSection />
           </>
         )}
       </Styles.ContentContainer>

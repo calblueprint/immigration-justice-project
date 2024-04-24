@@ -21,7 +21,7 @@ import {
   INTERPRETER_FLOW,
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
-import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
+import { ROLE_DESCRIPTIONS, roleOptions } from '@/data/roles';
 import COLORS from '@/styles/colors';
 import { Box, Callout, Flex, SmallCardForm } from '@/styles/containers';
 import { H1, P } from '@/styles/text';
@@ -36,14 +36,6 @@ type RoleOptionType =
   | 'LEGAL_FELLOW'
   | 'ATTORNEY,INTERPRETER'
   | 'LEGAL_FELLOW,INTERPRETER';
-
-const roleOptions = new Map<string, string>([
-  ['ATTORNEY', 'Attorney'],
-  ['INTERPRETER', 'Interpreter'],
-  ['LEGAL_FELLOW', 'Legal Fellow'],
-  ['ATTORNEY,INTERPRETER', 'Attorney and Interpreter'],
-  ['LEGAL_FELLOW,INTERPRETER', 'Legal Fellow and Interpreter'],
-]);
 
 export default function Page() {
   const onboarding = useContext(OnboardingContext);

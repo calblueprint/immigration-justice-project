@@ -192,3 +192,10 @@ export const parseDateString = (ds: string): Date => {
   now.setDate(parseInt(day, 10));
   return now;
 };
+
+/**
+ * @param word - word to capitalize
+ * @returns capitalized word
+ */
+export const capitalize = (word: string): string =>
+  `${word.at(0)?.toUpperCase()}${word.slice(1)}`;
