@@ -1,10 +1,4 @@
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useMemo,
-} from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Flex } from '@/styles/containers';
 import { Spinner } from '@/styles/spinner';
@@ -29,16 +23,20 @@ interface RootProps {
   title: string;
   children: React.ReactNode;
   isEditing?: boolean;
-  setIsEditing?: Dispatch<SetStateAction<boolean>>;
+  startEdit?: () => void;
+  cancelEdit?: () => void;
   isSubmitting?: boolean;
+  canEdit?: boolean;
 }
 
 export function SettingSection({
   isEditing,
-  setIsEditing,
+  startEdit,
+  cancelEdit,
   title,
   isSubmitting,
   children,
+  canEdit = true,
 }: RootProps) {
   const editing = useMemo(() => ({ editing: isEditing }), [isEditing]);
 
@@ -47,8 +45,8 @@ export function SettingSection({
       <Styles.SectionContainer>
         <Flex $justify="between">
           <H2>{title}</H2>
-          {!isEditing ? (
-            <EditButton onClick={() => setIsEditing?.(true)} />
+          {!isEditing && canEdit ? (
+            <EditButton onClick={() => startEdit?.()} />
           ) : null}
         </Flex>
 
@@ -56,7 +54,7 @@ export function SettingSection({
 
         {isEditing ? (
           <Flex $gap="1.25rem" $justify="end">
-            <Button type="button" onClick={() => setIsEditing?.(false)}>
+            <Button type="button" onClick={() => cancelEdit?.()}>
               Discard Changes
             </Button>
             <BlueButton type="submit" disabled={isSubmitting}>

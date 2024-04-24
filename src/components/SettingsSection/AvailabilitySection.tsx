@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { availabilitySchema } from '@/data/formSchemas';
 import { Box } from '@/styles/containers';
+import { Profile } from '@/types/schema';
 import {
   getCurrentDate,
   parseDate,
@@ -12,10 +13,18 @@ import {
   timestampStringToDate,
 } from '@/utils/helpers';
 import { useProfileAuth } from '@/utils/hooks';
+import { SettingField, SettingSection } from '.';
 import DateInput from '../DateInput';
-import { SettingField, SettingSection } from '../SettingsSection';
 import TextAreaInput from '../TextAreaInput';
 import TextInput from '../TextInput';
+
+const getDefaults = (
+  profile: Partial<Profile>,
+): Partial<z.infer<typeof availabilitySchema>> => ({
+  availability: profile.availability_description,
+  hoursPerMonth: profile.hours_per_month,
+  startDate: profile.start_date ? new Date(profile.start_date) : undefined,
+});
 
 export default function AvailabilitySection() {
   const { profile } = useProfileAuth();
@@ -28,13 +37,7 @@ export default function AvailabilitySection() {
 
   const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
-    defaultValues: {
-      availability: profile.profileData?.availability_description,
-      hoursPerMonth: profile.profileData?.hours_per_month,
-      startDate: profile.profileData?.start_date
-        ? new Date(profile.profileData.start_date)
-        : undefined,
-    },
+    defaultValues: getDefaults(profile.profileData ?? {}),
   });
 
   const onValidSubmit = async (values: z.infer<typeof availabilitySchema>) => {
@@ -54,7 +57,11 @@ export default function AvailabilitySection() {
           <SettingSection
             title="Availability"
             isEditing={isEditing}
-            setIsEditing={setIsEditing}
+            startEdit={() => setIsEditing(true)}
+            cancelEdit={() => {
+              setIsEditing(false);
+              form.reset(getDefaults(profile.profileData ?? {}));
+            }}
             isSubmitting={form.formState.isSubmitting}
           >
             <SettingField

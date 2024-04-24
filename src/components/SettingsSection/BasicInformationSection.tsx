@@ -5,12 +5,33 @@ import { z } from 'zod';
 import { basicInformationSchema } from '@/data/formSchemas';
 import { loadLanguages } from '@/data/languages';
 import { Box, Flex } from '@/styles/containers';
-import { ProfileLanguage } from '@/types/schema';
+import { Profile, ProfileLanguage } from '@/types/schema';
 import { formatEnumeration } from '@/utils/helpers';
 import { useProfileAuth } from '@/utils/hooks';
+import { SettingField, SettingSection } from '.';
 import CreatableBigDataDropdown from '../CreatableBigDataDropdown';
-import { SettingField, SettingSection } from '../SettingsSection';
 import TextInput from '../TextInput';
+
+const getDefaults = (
+  profile: Partial<Profile>,
+  canSpeaks: ProfileLanguage[],
+  canReads: ProfileLanguage[],
+): Partial<z.infer<typeof basicInformationSchema>> => ({
+  firstName: profile.first_name,
+  lastName: profile.last_name,
+  country: profile.country,
+  state: profile.state,
+  city: profile.city,
+  phoneNumber: profile.phone_number,
+  canReads: canReads.map(lang => ({
+    label: lang.language_name,
+    value: lang.language_name,
+  })),
+  canSpeaks: canSpeaks.map(lang => ({
+    label: lang.language_name,
+    value: lang.language_name,
+  })),
+});
 
 export default function BasicInformationSection() {
   const { profile, auth } = useProfileAuth();
@@ -30,22 +51,11 @@ export default function BasicInformationSection() {
 
   const form = useForm<z.infer<typeof basicInformationSchema>>({
     resolver: zodResolver(basicInformationSchema),
-    defaultValues: {
-      firstName: profile.profileData?.first_name,
-      lastName: profile.profileData?.last_name,
-      country: profile.profileData?.country,
-      state: profile.profileData?.state,
-      city: profile.profileData?.city,
-      phoneNumber: profile.profileData?.phone_number,
-      canReads: canReadLangs.map(lang => ({
-        label: lang.language_name,
-        value: lang.language_name,
-      })),
-      canSpeaks: canSpeakLangs.map(lang => ({
-        label: lang.language_name,
-        value: lang.language_name,
-      })),
-    },
+    defaultValues: getDefaults(
+      profile.profileData ?? {},
+      canSpeakLangs,
+      canReadLangs,
+    ),
   });
 
   // handle save changes
@@ -102,7 +112,17 @@ export default function BasicInformationSection() {
           <SettingSection
             title="Basic Information"
             isEditing={isEditing}
-            setIsEditing={setIsEditing}
+            startEdit={() => setIsEditing(true)}
+            cancelEdit={() => {
+              setIsEditing(false);
+              form.reset(
+                getDefaults(
+                  profile.profileData ?? {},
+                  canSpeakLangs,
+                  canReadLangs,
+                ),
+              );
+            }}
             isSubmitting={form.formState.isSubmitting}
           >
             <Flex $gap="20px">
