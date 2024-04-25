@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const IconDiv = styled.div`
-  width: 15px;
-  height: 15px;
+  min-width: 16px;
+  min-height: 16px;
   text-align: center;
+  align-items: center;
 `;
 
 export const IconGroup = styled.div`

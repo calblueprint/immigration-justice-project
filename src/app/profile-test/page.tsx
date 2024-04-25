@@ -53,7 +53,7 @@ const CaseInterpInfo = {
   needs_interpreter: true,
   summary: 'Something',
   country: 'USA',
-  client_location: 'Berkeley, CA',
+  client_location: 'San Jose, CA',
   hours_per_week: 4,
   num_weeks: 8,
   is_remote: undefined,

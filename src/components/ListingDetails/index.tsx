@@ -57,7 +57,12 @@ const caseFields: ListingField<CaseListing>[] = [
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: data => (data.is_remote ? 'Remote' : 'In Person'),
+    getValue: data => {
+      if (data.is_remote === null || data.is_remote === undefined) {
+        return 'Not Available';
+      }
+      return data.is_remote ? 'Remote' : 'In Person';
+    },
   },
   // Adjudicating Agency
   {

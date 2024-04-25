@@ -106,7 +106,7 @@ const startDateMatch: MatchField<
 
 const matchIcon = (match: boolean | undefined) => {
   if (match === undefined) {
-    return <Icon type="yellowExclamation" />;
+    return <Icon type="gray_dot" />;
   }
   if (match) {
     return <Icon type="green_check" />; // rename to greenCheck later
@@ -153,10 +153,9 @@ export default function ProfileMatch({
       <IconGroup>
         <IconDiv>
           {listingData.listing_type === 'CASE' &&
-          interpretation &&
           !!listingData.is_remote && // listingData.is_remote !== false if we don't want gray_dot for null values of is_remote
           match === false ? (
-            <Icon type="gray_dot" />
+            <Icon type="yellowExclamation" />
           ) : (
             matchIcon(match)
           )}
@@ -164,7 +163,7 @@ export default function ProfileMatch({
         <P>{locationMatch.getText(listingData, profile.profileData, match)}</P>
       </IconGroup>
     );
-  }, [interpretation, listingData, profile]);
+  }, [listingData, profile]);
 
   return (
     <Flex $direction="column" $gap="30px">
@@ -174,19 +173,18 @@ export default function ProfileMatch({
           <>
             {renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
             {renderLocationGroup}
-            {/* {renderIconGroup(locationMatch as MatchField<Listing>)} */}
           </>
         )}
         {listingData.listing_type !== 'INT' &&
           renderIconGroup(startDateMatch as MatchField<Listing>)}
         <IconGroup>
           <IconDiv>
-            {matchIcon(
-              listingData.listing_type === 'CASE' &&
-                !interpretation &&
-                matchedLanguages.length === 0
-                ? undefined
-                : matchedLanguages.length > 0,
+            {listingData.listing_type === 'CASE' &&
+            !interpretation &&
+            matchedLanguages.length === 0 ? (
+              <Icon type="yellowExclamation" />
+            ) : (
+              matchIcon(matchedLanguages.length > 0)
             )}
           </IconDiv>
           <P>
