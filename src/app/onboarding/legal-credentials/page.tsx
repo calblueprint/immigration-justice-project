@@ -41,9 +41,9 @@ export default function Page() {
   const form = useForm<z.infer<typeof legalCredentialSchema>>({
     resolver: zodResolver(legalCredentialSchema),
     defaultValues: {
-      stateBarred: onboarding.profile.state_barred,
-      barNumber: onboarding.profile.bar_number,
-      eoirRegistered: onboarding.profile.eoir_registered,
+      stateBarred: onboarding.profile.state_barred ?? undefined,
+      barNumber: onboarding.profile.bar_number ?? undefined,
+      eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
     },
   });
 
@@ -102,7 +102,7 @@ export default function Page() {
                         state_barred: newValue ?? undefined,
                       });
                     }}
-                    defaultValue={onboarding.profile.state_barred}
+                    defaultValue={onboarding.profile.state_barred ?? ''}
                     placeholder="Start typing to filter states..."
                   />
                 </FormControl>
