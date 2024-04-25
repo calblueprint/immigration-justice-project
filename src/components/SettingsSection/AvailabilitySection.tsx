@@ -18,7 +18,7 @@ import DateInput from '../DateInput';
 import TextAreaInput from '../TextAreaInput';
 import TextInput from '../TextInput';
 
-const getDefaults = (
+const getFormDefaults = (
   profile: Partial<Profile>,
 ): Partial<z.infer<typeof availabilitySchema>> => ({
   availability: profile.availability_description,
@@ -26,18 +26,21 @@ const getDefaults = (
   startDate: profile.start_date ? new Date(profile.start_date) : undefined,
 });
 
+const getDateDefault = (profile: Partial<Profile>): string =>
+  profile.start_date
+    ? parseDateAlt(timestampStringToDate(profile.start_date))
+    : '';
+
 export default function AvailabilitySection() {
   const { profile } = useProfileAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState<string>(
-    profile.profileData?.start_date
-      ? parseDateAlt(timestampStringToDate(profile.profileData.start_date))
-      : '',
+    getDateDefault(profile.profileData ?? {}),
   );
 
   const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
-    defaultValues: getDefaults(profile.profileData ?? {}),
+    defaultValues: getFormDefaults(profile.profileData ?? {}),
   });
 
   const onValidSubmit = async (values: z.infer<typeof availabilitySchema>) => {
@@ -60,7 +63,8 @@ export default function AvailabilitySection() {
             startEdit={() => setIsEditing(true)}
             cancelEdit={() => {
               setIsEditing(false);
-              form.reset(getDefaults(profile.profileData ?? {}));
+              form.reset(getFormDefaults(profile.profileData ?? {}));
+              setStartDate(getDateDefault(profile.profileData ?? {}));
             }}
             isSubmitting={form.formState.isSubmitting}
           >

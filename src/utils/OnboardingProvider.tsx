@@ -118,6 +118,9 @@ export default function OnboardingProvider({
     if (roles.includes('ATTORNEY')) {
       if (!userProfile.bar_number) throw new Error('Bar number is required!');
 
+      if (!userProfile.state_barred)
+        throw new Error('State barred is required!');
+
       if (userProfile.eoir_registered === undefined)
         throw new Error('EOIR registered is required!');
     }
@@ -144,6 +147,7 @@ export default function OnboardingProvider({
       start_date: userProfile.start_date,
       availability_description: userProfile.availability_description,
       bar_number: userProfile.bar_number,
+      state_barred: userProfile.state_barred,
       eoir_registered: userProfile.eoir_registered,
       user_id: uid,
       phone_number: userProfile.phone_number,

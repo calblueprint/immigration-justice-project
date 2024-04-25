@@ -18,6 +18,7 @@ import {
   getCurrentDate,
   identity,
   parseDateAlt,
+  parseDateString,
 } from '@/utils/helpers';
 import {
   useGuardedOnboarding,
@@ -35,7 +36,9 @@ export default function Page() {
   useScrollToTop();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
-    onboarding.profile.expected_bar_date ?? '',
+    onboarding.profile.expected_bar_date
+      ? parseDateAlt(onboarding.profile.expected_bar_date)
+      : '',
   );
 
   // initialize form with values from onboarding context
@@ -45,7 +48,7 @@ export default function Page() {
       expectedBarDate: onboarding.profile.expected_bar_date
         ? new Date(`${onboarding.profile.expected_bar_date}T00:00`)
         : undefined,
-      eoirRegistered: onboarding.profile.eoir_registered,
+      eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
     },
   });
 
@@ -110,9 +113,11 @@ export default function Page() {
                         });
                         return;
                       }
-                      field.onChange(new Date(`${newValue}T00:00`));
+
+                      const newDate = parseDateString(newValue);
+                      field.onChange(newDate);
                       onboarding.updateProfile({
-                        expected_bar_date: newValue,
+                        expected_bar_date: newDate,
                       });
                     }}
                   />

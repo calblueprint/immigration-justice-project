@@ -6,24 +6,26 @@ const zodDropdownOption = {
   value: z.string(),
 };
 
+export const roleEnumeration = [
+  'ATTORNEY',
+  'INTERPRETER',
+  'LEGAL_FELLOW',
+  'ATTORNEY,INTERPRETER',
+  'LEGAL_FELLOW,INTERPRETER',
+  '',
+] as const;
+
+export type FormRoleEnum = (typeof roleEnumeration)[number];
+
 export const roleSchema = z.object({
-  roles: z
-    .enum([
-      'ATTORNEY',
-      'INTERPRETER',
-      'LEGAL_FELLOW',
-      'ATTORNEY,INTERPRETER',
-      'LEGAL_FELLOW,INTERPRETER',
-      '',
-    ])
-    .superRefine((input, ctx) => {
-      if (input === '')
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Must include at least one role',
-        });
-      return ctx;
-    }),
+  roles: z.enum(roleEnumeration).superRefine((input, ctx) => {
+    if (input === '')
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Must include at least one role',
+      });
+    return ctx;
+  }),
 });
 
 export const basicInformationSchema = z.object({
@@ -101,3 +103,73 @@ export const legalFellowCredentialSchema = z.object({
     .min(getCurrentDate(), { message: 'Must select a current or future date' }),
   eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
 });
+
+// for settings
+export const roleAndLegalSchema = z
+  .object({
+    roles: z.enum(roleEnumeration).superRefine((input, ctx) => {
+      if (input === '')
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Must include at least one role',
+        });
+      return ctx;
+    }),
+    stateBarred: z
+      .string({
+        invalid_type_error: 'Please include a state',
+      })
+      .min(1, { message: 'Please include a state' })
+      .optional(),
+    barNumber: z
+      .string()
+      .min(1, { message: 'Please include your attorney bar number' })
+      .optional(),
+    eoirRegistered: z.boolean().optional(),
+    expectedBarDate: z
+      .date()
+      .min(getCurrentDate(), {
+        message: 'Must select a current or future date',
+      })
+      .optional(),
+  })
+  .superRefine((input, ctx) => {
+    // attorney or legal fellow must fill out EOIR registered
+    if (
+      input.roles !== 'INTERPRETER' &&
+      typeof input.eoirRegistered !== 'boolean'
+    )
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must select one option',
+        path: ['eoirRegistered'],
+      });
+
+    // attorney specific fields required
+    if (input.roles === 'ATTORNEY' || input.roles === 'ATTORNEY,INTERPRETER') {
+      if (!input.barNumber)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Please include your attorney bar number',
+          path: ['barNumber'],
+        });
+      if (!input.stateBarred)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Please include a state',
+          path: ['stateBarred'],
+        });
+    }
+
+    // legal fellow fields required
+    if (
+      (input.roles === 'LEGAL_FELLOW' ||
+        input.roles === 'LEGAL_FELLOW,INTERPRETER') &&
+      !input.expectedBarDate
+    )
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must include expected barred date',
+        path: ['expectedBarDate'],
+      });
+  });

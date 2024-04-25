@@ -135,7 +135,10 @@ export async function deleteRoles(userId: UUID, deleteInfo: ProfileRole[]) {
     .from('profiles-roles')
     .delete()
     .eq('user_id', userId)
-    .in('role', Array.from(new Set(deleteInfo.map(i => i.role))));
+    .in(
+      'role',
+      deleteInfo.map(i => i.role),
+    );
 
   if (error) throw new Error(`Error deleting profiles-roles: ${error.message}`);
 }
