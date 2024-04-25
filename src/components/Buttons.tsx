@@ -119,7 +119,26 @@ export const BlueButton = forwardRef<
     {children}
   </Button>
 ));
-BlueButton.displayName = 'BigBlueButton';
+BlueButton.displayName = 'BlueButton';
+
+export const RedButton = forwardRef<
+  HTMLButtonElement,
+  Omit<
+    ComponentProps<typeof Button>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, ...props }, ref) => (
+  <Button
+    ref={ref}
+    {...props}
+    $primaryColor={COLORS.redMid}
+    $secondaryColor={COLORS.redDark}
+    $tertiaryColor={COLORS.redDarker}
+  >
+    {children}
+  </Button>
+));
+RedButton.displayName = 'RedButton';
 
 const BigButtonStyles = css<ButtonProps>`
   ${ButtonStyles}

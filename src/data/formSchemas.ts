@@ -120,18 +120,21 @@ export const roleAndLegalSchema = z
         invalid_type_error: 'Please include a state',
       })
       .min(1, { message: 'Please include a state' })
-      .optional(),
+      .optional()
+      .nullable(),
     barNumber: z
       .string()
       .min(1, { message: 'Please include your attorney bar number' })
-      .optional(),
-    eoirRegistered: z.boolean().optional(),
+      .optional()
+      .nullable(),
+    eoirRegistered: z.boolean().optional().nullable(),
     expectedBarDate: z
       .date()
       .min(getCurrentDate(), {
         message: 'Must select a current or future date',
       })
-      .optional(),
+      .optional()
+      .nullable(),
   })
   .superRefine((input, ctx) => {
     // attorney or legal fellow must fill out EOIR registered

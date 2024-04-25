@@ -36,21 +36,22 @@ const getFormDefaults = (
   const isLegalFellow = roleList.includes('LEGAL_FELLOW');
   const isInterpreter = roleList.includes('INTERPRETER');
 
+  let defaultRole: FormRoleEnum = '';
+  if (isInterpreter) defaultRole = 'INTERPRETER';
+  if (isAttorney) defaultRole = 'ATTORNEY';
+  if (isLegalFellow) defaultRole = 'LEGAL_FELLOW';
+  if (isAttorney && isInterpreter) defaultRole = 'ATTORNEY,INTERPRETER';
+  if (isLegalFellow && isInterpreter) defaultRole = 'LEGAL_FELLOW,INTERPRETER';
+
   const defaultValue: Partial<z.infer<typeof roleAndLegalSchema>> = {
     barNumber: profile.bar_number,
     eoirRegistered: profile.eoir_registered,
     expectedBarDate: profile.expected_bar_date
-      ? timestampStringToDate(profile.expected_bar_date)
+      ? new Date(profile.expected_bar_date)
       : undefined,
     stateBarred: profile.state_barred,
+    roles: defaultRole,
   };
-
-  if (isInterpreter) {
-    if (isAttorney) defaultValue.roles = 'ATTORNEY,INTERPRETER';
-    else if (isLegalFellow) defaultValue.roles = 'LEGAL_FELLOW,INTERPRETER';
-    else defaultValue.roles = 'INTERPRETER';
-  } else if (isAttorney) defaultValue.roles = 'ATTORNEY';
-  else if (isLegalFellow) defaultValue.roles = 'LEGAL_FELLOW';
 
   return defaultValue;
 };
@@ -97,7 +98,7 @@ export default function RolesSection() {
         bar_number: isAttorney ? values.barNumber : null,
         eoir_registered:
           isAttorney || isLegalFellow ? values.eoirRegistered : null,
-        expected_bar_date: isAttorney ? values.expectedBarDate : null,
+        expected_bar_date: isLegalFellow ? values.expectedBarDate : null,
       }),
       profile.setRoles(rolesToUpdate),
     ]);
@@ -119,7 +120,7 @@ export default function RolesSection() {
         stateBarred: undefined,
         roles: newRole,
       });
-      setExpectedBarDate(getDateDefault(profile.profileData ?? {}));
+      setExpectedBarDate('');
       return;
     }
 
@@ -143,7 +144,7 @@ export default function RolesSection() {
         stateBarred: undefined,
         roles: newRole,
       });
-      setExpectedBarDate(getDateDefault(profile.profileData ?? {}));
+      setExpectedBarDate('');
     }
   };
 
@@ -211,7 +212,7 @@ export default function RolesSection() {
                         options={usStates}
                         error={!!fieldState.error}
                         onChange={field.onChange}
-                        defaultValue={field.value}
+                        defaultValue={field.value ?? ''}
                         placeholder="Start typing to filter states..."
                       />
                       <FormMessage />
@@ -228,7 +229,7 @@ export default function RolesSection() {
                       errorText={fieldState.error?.message}
                       placeholder="123456"
                       type="text"
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? ''}
                       onChange={field.onChange}
                     />
                   )}
