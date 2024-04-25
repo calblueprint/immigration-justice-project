@@ -2,7 +2,6 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import CONFIG from '@/lib/configs';
 import { useAuth } from './AuthProvider';
 import { OnboardingContext } from './OnboardingProvider';
 import { useProfile } from './ProfileProvider';
@@ -26,7 +25,7 @@ export const useProfileAuth = () => {
   const { userId } = auth;
 
   useEffect(() => {
-    if (profileReady && !userId) push(CONFIG.homepage);
+    if (profileReady && !userId) push('/login');
   }, [profileReady, userId, push]);
 
   return { profile, auth };
