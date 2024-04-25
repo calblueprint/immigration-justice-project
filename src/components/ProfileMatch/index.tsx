@@ -17,6 +17,7 @@ import {
 } from '@/utils/helpers';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import { useMemo } from 'react';
 import Icon from '../Icon';
 
 interface MatchField<T extends Listing> {
@@ -125,6 +126,28 @@ export default function ProfileMatch({
     );
   };
 
+  const renderLocationGroup = useMemo(() => {
+    if (!profile?.profileData || listingData.listing_type !== 'CASE') {
+      return null;
+    }
+    const match = locationMatch.getMatch(listingData, profile.profileData);
+    return (
+      <Flex $gap="16px" $align="center">
+        <Flex $w="15px" $h="15px">
+          {listingData.listing_type === 'CASE' &&
+          interpretation &&
+          !!listingData.is_remote && // listingData.is_remote !== false if we don't want gray_dot for null values of is_remote
+          match === false ? (
+            <Icon type="gray_dot" />
+          ) : (
+            matchIcon(match)
+          )}
+        </Flex>
+        <P>{locationMatch.getText(listingData, profile.profileData, match)}</P>
+      </Flex>
+    );
+  }, [interpretation, listingData, profile]);
+
   return (
     <Flex $direction="column" $gap="30px">
       <H3>Profile Match</H3>
@@ -132,7 +155,8 @@ export default function ProfileMatch({
         {listingData.listing_type === 'CASE' && (
           <>
             {renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
-            {renderIconGroup(locationMatch as MatchField<Listing>)}
+            {renderLocationGroup}
+            {/* {renderIconGroup(locationMatch as MatchField<Listing>)} */}
           </>
         )}
         {listingData.listing_type !== 'INT' &&

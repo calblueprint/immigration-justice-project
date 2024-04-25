@@ -56,7 +56,7 @@ const CaseInterpInfo = {
   client_location: 'Berkeley',
   hours_per_week: 4,
   num_weeks: 8,
-  is_remote: true,
+  // is_remote: null,
   adjudicating_agency: 'Agency',
   upcoming_date: '2024-03-16 19:47:39.385578+00',
   is_detained: false,
@@ -70,7 +70,7 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={DocInfo} />
+        <ListingDetails listingData={CaseInterpInfo} interpretation />
       </CaseDetailsContainer>
     </Body>
   );
