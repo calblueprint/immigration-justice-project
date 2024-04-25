@@ -46,7 +46,8 @@ const locationMatch: MatchField<CaseListing> = {
     data.client_location
       ? data.client_location === profileData.location
       : undefined,
-  getText: (data, profileData, match) => match === undefined
+  getText: (data, profileData, match) =>
+    match === undefined
       ? 'No information available about Client Location'
       : `This client is ${match ? '' : 'not '}in your city.`,
 };
@@ -55,11 +56,12 @@ const startDateMatch: MatchField<
   CaseListing | LimitedCaseAssignment | DocumentTranslation
 > = {
   getMatch: (data, profileData) => {
-    const date = data.listing_type === 'CASE' ? data.upcoming_date : data.deadline; 
+    const date =
+      data.listing_type === 'CASE' ? data.upcoming_date : data.deadline;
     return date
-        ? timestampStringToDate(profileData.start_date) <
-            timestampStringToDate(date)
-        : undefined;
+      ? timestampStringToDate(profileData.start_date) <
+          timestampStringToDate(date)
+      : undefined;
   },
   getText: (data, profileData, match) =>
     match === undefined
@@ -158,7 +160,7 @@ export default function ProfileMatch({
           <LinkColored $color={COLORS.blueMid} href={CONFIG.settings}>
             Profile
           </LinkColored>{' '}
-          to change any information.
+          to update any information.
         </P>
       </Flex>
     </Flex>
