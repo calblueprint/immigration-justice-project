@@ -1,7 +1,10 @@
 'use client';
 
-import { H3, LinkColored, P } from '@/styles/text';
+import { useMemo } from 'react';
+import CONFIG from '@/lib/configs';
+import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
+import { H3, LinkColored, P } from '@/styles/text';
 import {
   CaseListing,
   DocumentTranslation,
@@ -9,16 +12,14 @@ import {
   Listing,
   Profile,
 } from '@/types/schema';
-import { useProfile } from '@/utils/ProfileProvider';
 import {
-  timestampStringToDate,
   formatTimestamp,
   parseLanguageList,
+  timestampStringToDate,
 } from '@/utils/helpers';
-import CONFIG from '@/lib/configs';
-import COLORS from '@/styles/colors';
-import { useMemo } from 'react';
+import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../Icon';
+import { IconDiv, IconGroup } from './styles';
 
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
@@ -42,10 +43,29 @@ const timeCommitmentMatch: MatchField<CaseListing> = {
       : 'No information available about Time Commitment',
 };
 
+const checkLocation = (
+  clientLocation: string,
+  city: string,
+  state: string,
+  country: string,
+) => {
+  // const usaRegex = [uU]\.?[sS]\.?[aA];
+  // if (usaRegex.test(country)) { // country !== 'USA'
+  //   return false
+  // }
+  const cl = clientLocation.split(', ');
+  return cl[0].toUpperCase() === city.toUpperCase(); // && cl[1].toUpperCase() === state;
+};
+
 const locationMatch: MatchField<CaseListing> = {
   getMatch: (data, profileData) =>
     data.client_location
-      ? data.client_location === profileData.location
+      ? checkLocation(
+          data.client_location,
+          profileData.city,
+          profileData.state,
+          profileData.country,
+        ) // data.client_location === profileData.location
       : undefined,
   getText: (data, profileData, match) =>
     match === undefined
@@ -60,7 +80,7 @@ const startDateMatch: MatchField<
     const date =
       data.listing_type === 'CASE' ? data.upcoming_date : data.deadline;
     return date
-      ? timestampStringToDate(profileData.start_date) <
+      ? timestampStringToDate(profileData.start_date) <=
           timestampStringToDate(date)
       : undefined;
   },
@@ -86,7 +106,7 @@ const startDateMatch: MatchField<
 
 const matchIcon = (match: boolean | undefined) => {
   if (match === undefined) {
-    return <Icon type="gray_dot" />; // change to yellowExclaimation
+    return <Icon type="yellowExclamation" />;
   }
   if (match) {
     return <Icon type="green_check" />; // rename to greenCheck later
@@ -117,12 +137,10 @@ export default function ProfileMatch({
     }
     const match = fields.getMatch(listingData, profile.profileData);
     return (
-      <Flex $gap="16px" $align="center">
-        <Flex $w="15px" $h="15px">
-          {matchIcon(match)}
-        </Flex>
+      <IconGroup>
+        <IconDiv>{matchIcon(match)}</IconDiv>
         <P>{fields.getText(listingData, profile.profileData, match)}</P>
-      </Flex>
+      </IconGroup>
     );
   };
 
@@ -132,8 +150,8 @@ export default function ProfileMatch({
     }
     const match = locationMatch.getMatch(listingData, profile.profileData);
     return (
-      <Flex $gap="16px" $align="center">
-        <Flex $w="15px" $h="15px">
+      <IconGroup>
+        <IconDiv>
           {listingData.listing_type === 'CASE' &&
           interpretation &&
           !!listingData.is_remote && // listingData.is_remote !== false if we don't want gray_dot for null values of is_remote
@@ -142,9 +160,9 @@ export default function ProfileMatch({
           ) : (
             matchIcon(match)
           )}
-        </Flex>
+        </IconDiv>
         <P>{locationMatch.getText(listingData, profile.profileData, match)}</P>
-      </Flex>
+      </IconGroup>
     );
   }, [interpretation, listingData, profile]);
 
@@ -161,14 +179,16 @@ export default function ProfileMatch({
         )}
         {listingData.listing_type !== 'INT' &&
           renderIconGroup(startDateMatch as MatchField<Listing>)}
-        <Flex $gap="16px">
-          {matchIcon(
-            listingData.listing_type === 'CASE' &&
-              !interpretation &&
-              matchedLanguages.length === 0
-              ? undefined
-              : matchedLanguages.length > 0,
-          )}
+        <IconGroup>
+          <IconDiv>
+            {matchIcon(
+              listingData.listing_type === 'CASE' &&
+                !interpretation &&
+                matchedLanguages.length === 0
+                ? undefined
+                : matchedLanguages.length > 0,
+            )}
+          </IconDiv>
           <P>
             You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
             {matchedLanguages.length > 0
@@ -176,7 +196,7 @@ export default function ProfileMatch({
               : parseLanguageList(listingData.languages, true)}{' '}
             in your languages.
           </P>
-        </Flex>
+        </IconGroup>
       </Flex>
       <Flex>
         <P>

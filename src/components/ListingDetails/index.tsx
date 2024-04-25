@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { LinkButton } from '@/components/Buttons';
 import Icon from '@/components/Icon';
 import InterestForm from '@/components/InterestForm';
+import ProfileMatch from '@/components/ProfileMatch';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H2, H3, H4, P, StrongP } from '@/styles/text';
@@ -91,7 +92,12 @@ const caseInterpretationFields: ListingField<CaseListing>[] = [
   // Remote/In Person
   {
     label: 'Remote/In Person',
-    getValue: data => (data.is_remote ? 'Remote' : 'In Person'),
+    getValue: data => {
+      if (data.is_remote === null || data.is_remote === undefined) {
+        return 'Not Available';
+      }
+      return data.is_remote ? 'Remote' : 'In Person';
+    },
   },
 ];
 

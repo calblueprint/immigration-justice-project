@@ -2,10 +2,10 @@
 
 import ListingDetails from '@/components/ListingDetails';
 import {
-  LimitedCaseAssignment,
-  Interpretation,
-  DocumentTranslation,
   CaseListing,
+  DocumentTranslation,
+  Interpretation,
+  LimitedCaseAssignment,
 } from '@/types/schema';
 import { Body, CardColumn, CaseDetailsContainer } from '../cases/styles';
 
@@ -53,10 +53,10 @@ const CaseInterpInfo = {
   needs_interpreter: true,
   summary: 'Something',
   country: 'USA',
-  client_location: 'Berkeley',
+  client_location: 'Berkeley, CA',
   hours_per_week: 4,
   num_weeks: 8,
-  // is_remote: null,
+  is_remote: undefined,
   adjudicating_agency: 'Agency',
   upcoming_date: '2024-03-16 19:47:39.385578+00',
   is_detained: false,

@@ -201,6 +201,21 @@ export const IconSvgs = {
       />
     </svg>
   ),
+  yellowExclamation: (
+    <svg
+      width="3"
+      height="20"
+      viewBox="0 0 3 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        id="Vector"
+        d="M0 12.375V0H2.75V12.375H0ZM0 19.25V16.5H2.75V19.25H0Z"
+        fill="#C38F19"
+      />
+    </svg>
+  ),
 };
 
 export type IconType = keyof typeof IconSvgs;
