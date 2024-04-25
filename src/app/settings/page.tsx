@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { RedButton } from '@/components/Buttons';
+import { BlueLinkButton, RedButton } from '@/components/Buttons';
 import {
   ReadOnlySettingField,
   SettingSection,
@@ -17,6 +17,8 @@ import * as Styles from './styles';
 export default function Page() {
   const { profile, auth } = useProfileAuth();
   const { push } = useRouter();
+
+  const { profileReady, profileData } = profile;
 
   const handleSignOut = async () => {
     const error = await auth.signOut();
@@ -35,7 +37,7 @@ export default function Page() {
           <ReadOnlySettingField label="Password" value="*************" />
         </SettingSection>
 
-        {profile.profileReady && (
+        {profileReady && profileData && (
           <>
             <BasicInformationSection />
             <AvailabilitySection />
@@ -43,7 +45,14 @@ export default function Page() {
           </>
         )}
 
-        <Flex $justify="end">
+        <Flex $justify="between" $align="center">
+          <div>
+            {profileReady && !profileData && (
+              <BlueLinkButton href="/onboarding">
+                Go to onboarding
+              </BlueLinkButton>
+            )}
+          </div>
           <RedButton onClick={handleSignOut}>Sign Out</RedButton>
         </Flex>
       </Styles.ContentContainer>

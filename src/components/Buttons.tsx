@@ -102,6 +102,26 @@ export const LinkButton = styled(Link)`
   text-decoration: none;
 `;
 
+export const BlueLinkButton = forwardRef<
+  HTMLAnchorElement,
+  Omit<
+    ComponentProps<typeof LinkButton>,
+    '$primaryColor' | '$secondaryColor' | '$tertiaryColor'
+  >
+>(({ children, href, ...props }, ref) => (
+  <LinkButton
+    ref={ref}
+    href={href}
+    {...props}
+    $primaryColor={COLORS.blueMid}
+    $secondaryColor={COLORS.blueDark}
+    $tertiaryColor={COLORS.blueDarker}
+  >
+    {children}
+  </LinkButton>
+));
+BlueLinkButton.displayName = 'BlueLinkButton';
+
 export const BlueButton = forwardRef<
   HTMLButtonElement,
   Omit<
