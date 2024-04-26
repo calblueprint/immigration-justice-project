@@ -253,10 +253,16 @@ export default function ListingDetails({
   const interestSection = useMemo(() => {
     if (auth && auth.userId) {
       return profile?.profileData ? (
-        <InterestForm
-          listingData={listingData}
-          interpretation={interpretation}
-        />
+        <Flex $gap="40px">
+          <ProfileMatch
+            listingData={listingData}
+            interpretation={interpretation}
+          />
+          <InterestForm
+            listingData={listingData}
+            interpretation={interpretation}
+          />
+        </Flex>
       ) : (
         <>
           <H3>Please complete your profile before submitting interest.</H3>
@@ -327,15 +333,7 @@ export default function ListingDetails({
           <P>{listingData.summary || 'Not Available'}</P>
         </BorderedSection>
       </InfoContainer>
-      <BorderedSection>
-        <Flex $gap="40px">
-          <ProfileMatch
-            listingData={listingData}
-            interpretation={interpretation}
-          />
-          {interestSection}
-        </Flex>
-      </BorderedSection>
+      <BorderedSection>{interestSection}</BorderedSection>
     </CaseDisplay>
   );
 }
