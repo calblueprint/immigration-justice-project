@@ -6,3 +6,11 @@ export const IconDiv = styled.div`
   text-align: center;
   align-items: center;
 `;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 40%;
+  height: 100%;
+`;

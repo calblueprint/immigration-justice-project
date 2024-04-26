@@ -19,7 +19,7 @@ import {
 } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../Icon';
-import { IconDiv } from './styles';
+import { Container, IconDiv } from './styles';
 
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
@@ -123,42 +123,37 @@ export default function ProfileMatch({
   };
 
   return (
-    <Flex $direction="column" $gap="30px">
+    <Container>
       <H3>Profile Match</H3>
-      <Flex $direction="column" $gap="15px">
-        {listingData.listing_type === 'CASE' && (
-          <>{renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}</>
-        )}
-        {listingData.listing_type !== 'INT' &&
-          renderIconGroup(startDateMatch as MatchField<Listing>)}
-        <Flex $align="center" $gap="16px">
-          <IconDiv>
-            {listingData.listing_type === 'CASE' &&
-            !interpretation &&
-            matchedLanguages.length === 0 ? (
-              <Icon type="yellowExclamation" />
-            ) : (
-              matchIcon(matchedLanguages.length > 0)
-            )}
-          </IconDiv>
-          <P>
-            You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
-            {matchedLanguages.length > 0
-              ? formatEnumeration(matchedLanguages, 'and')
-              : formatEnumeration(listingData.languages, 'or')}{' '}
-            in your languages.
-          </P>
-        </Flex>
-      </Flex>
-      <Flex>
+      {listingData.listing_type === 'CASE' &&
+        renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
+      {listingData.listing_type !== 'INT' &&
+        renderIconGroup(startDateMatch as MatchField<Listing>)}
+      <Flex $align="center" $gap="16px">
+        <IconDiv>
+          {listingData.listing_type === 'CASE' &&
+          !interpretation &&
+          matchedLanguages.length === 0 ? (
+            <Icon type="yellowExclamation" />
+          ) : (
+            matchIcon(matchedLanguages.length > 0)
+          )}
+        </IconDiv>
         <P>
-          Go to{' '}
-          <LinkColored $color={COLORS.blueMid} href={CONFIG.settings}>
-            Profile
-          </LinkColored>{' '}
-          to update any information.
+          You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
+          {matchedLanguages.length > 0
+            ? formatEnumeration(matchedLanguages, 'and')
+            : formatEnumeration(listingData.languages, 'or')}{' '}
+          in your languages.
         </P>
       </Flex>
-    </Flex>
+      <P>
+        Go to{' '}
+        <LinkColored $color={COLORS.blueMid} href={CONFIG.settings}>
+          Profile
+        </LinkColored>{' '}
+        to update any information.
+      </P>
+    </Container>
   );
 }
