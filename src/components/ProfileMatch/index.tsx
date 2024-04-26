@@ -13,8 +13,8 @@ import {
   Profile,
 } from '@/types/schema';
 import {
+  formatEnumeration,
   formatTimestamp,
-  parseLanguageList,
   timestampStringToDate,
 } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
@@ -144,8 +144,8 @@ export default function ProfileMatch({
           <P>
             You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
             {matchedLanguages.length > 0
-              ? parseLanguageList(matchedLanguages, false)
-              : parseLanguageList(listingData.languages, true)}{' '}
+              ? formatEnumeration(matchedLanguages, 'and')
+              : formatEnumeration(listingData.languages, 'or')}{' '}
             in your languages.
           </P>
         </Flex>
