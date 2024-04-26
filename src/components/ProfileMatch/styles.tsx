@@ -6,10 +6,3 @@ export const IconDiv = styled.div`
   text-align: center;
   align-items: center;
 `;
-
-export const IconGroup = styled.div`
-  display: flex;
-  direction: row;
-  align-items: center;
-  gap: 16px;
-`;
