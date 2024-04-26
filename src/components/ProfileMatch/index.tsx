@@ -43,36 +43,6 @@ const timeCommitmentMatch: MatchField<CaseListing> = {
       : 'No information available about Time Commitment',
 };
 
-const checkLocation = (
-  clientLocation: string,
-  city: string,
-  state: string,
-  country: string,
-) => {
-  // const usaRegex = [uU]\.?[sS]\.?[aA];
-  // if (usaRegex.test(country)) { // country !== 'USA'
-  //   return false
-  // }
-  const cl = clientLocation.split(', ');
-  return cl[0].toUpperCase() === city.toUpperCase(); // && cl[1].toUpperCase() === state;
-};
-
-const locationMatch: MatchField<CaseListing> = {
-  getMatch: (data, profileData) =>
-    data.client_location
-      ? checkLocation(
-          data.client_location,
-          profileData.city,
-          profileData.state,
-          profileData.country,
-        ) // data.client_location === profileData.location
-      : undefined,
-  getText: (data, profileData, match) =>
-    match === undefined
-      ? 'No information available about Client Location'
-      : `This client is ${match ? '' : 'not '}in your city.`,
-};
-
 const startDateMatch: MatchField<
   CaseListing | LimitedCaseAssignment | DocumentTranslation
 > = {
@@ -123,7 +93,9 @@ export default function ProfileMatch({
 }) {
   const profile = useProfile();
   if (!profile) {
-    return null;
+    throw new Error(
+      'Profile must be complete before ProfileMatch is displayed.',
+    );
   }
   const { languages, profileData } = profile;
   const matchedLanguages = useMemo(
@@ -134,7 +106,7 @@ export default function ProfileMatch({
         )
         .map(l => l.language_name)
         .filter(l => listingData.languages.includes(l)),
-    [languages],
+    [languages, listingData.languages, listingData.listing_type],
   );
 
   const renderIconGroup = (fields: MatchField<Listing>) => {
@@ -150,36 +122,12 @@ export default function ProfileMatch({
     );
   };
 
-  const renderLocationGroup = useMemo(() => {
-    if (!profileData || listingData.listing_type !== 'CASE') {
-      return null;
-    }
-    const match = locationMatch.getMatch(listingData, profileData);
-    return (
-      <Flex $align="center" $gap="16px">
-        <IconDiv>
-          {listingData.listing_type === 'CASE' &&
-          !!listingData.is_remote && // listingData.is_remote !== false if we don't want gray_dot for null values of is_remote
-          match === false ? (
-            <Icon type="yellowExclamation" />
-          ) : (
-            matchIcon(match)
-          )}
-        </IconDiv>
-        <P>{locationMatch.getText(listingData, profileData, match)}</P>
-      </Flex>
-    );
-  }, [listingData, profileData]);
-
   return (
     <Flex $direction="column" $gap="30px">
       <H3>Profile Match</H3>
       <Flex $direction="column" $gap="15px">
         {listingData.listing_type === 'CASE' && (
-          <>
-            {renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
-            {renderLocationGroup}
-          </>
+          <>{renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}</>
         )}
         {listingData.listing_type !== 'INT' &&
           renderIconGroup(startDateMatch as MatchField<Listing>)}
