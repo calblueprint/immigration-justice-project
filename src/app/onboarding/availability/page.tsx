@@ -47,7 +47,7 @@ export default function Page() {
     defaultValues: {
       hoursPerMonth: onboarding.profile.hours_per_month,
       startDate: onboarding.profile.start_date
-        ? new Date(`${onboarding.profile.start_date}T00:00`)
+        ? onboarding.profile.start_date
         : undefined,
       availability: onboarding.profile.availability_description,
     },

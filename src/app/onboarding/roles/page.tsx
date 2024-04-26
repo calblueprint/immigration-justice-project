@@ -46,7 +46,6 @@ export default function Page() {
 
     const oldRoles = onboarding.roles;
     const roles = values.roles.split(',') as RoleEnum[];
-    onboarding.setRoles(roles);
 
     let newFlow: FlowData[];
     const isAttorney = roles.includes('ATTORNEY');
@@ -61,18 +60,22 @@ export default function Page() {
     }
 
     // remove role-specific data if role changes
-    if (oldRoles.includes('ATTORNEY') && !isAttorney)
+    if (oldRoles.includes('ATTORNEY') && !isAttorney) {
       onboarding.removeFromProfile([
         'bar_number',
         'eoir_registered',
         'state_barred',
       ]);
+      onboarding.setProgress(progress => Math.min(progress, 3));
+    }
 
-    if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow)
+    if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow) {
       onboarding.removeFromProfile(['expected_bar_date', 'eoir_registered']);
+      onboarding.setProgress(progress => Math.min(progress, 3));
+    }
 
     // cap progress to 3 (legal info)
-    onboarding.setProgress(progress => Math.min(progress, 3));
+    onboarding.setRoles(roles);
 
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);

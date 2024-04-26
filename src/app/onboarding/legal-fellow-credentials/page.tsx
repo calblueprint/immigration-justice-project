@@ -46,7 +46,7 @@ export default function Page() {
     resolver: zodResolver(legalFellowCredentialSchema),
     defaultValues: {
       expectedBarDate: onboarding.profile.expected_bar_date
-        ? new Date(`${onboarding.profile.expected_bar_date}T00:00`)
+        ? onboarding.profile.expected_bar_date
         : undefined,
       eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
     },
