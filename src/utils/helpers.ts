@@ -1,4 +1,3 @@
-import { FormRoleEnum } from '@/data/formSchemas';
 import CONFIG from '@/lib/configs';
 import { DropdownOption } from '@/types/dropdown';
 
@@ -200,19 +199,3 @@ export const parseDateString = (ds: string): Date => {
  */
 export const capitalize = (word: string): string =>
   `${word.at(0)?.toUpperCase()}${word.slice(1)}`;
-
-/**
- * From a single role string, split
- * it into three booleans indicating each role
- * @param role - a string of form "ATTORNEY", "ATTORNEY,INTERPRETER", etc.
- * @returns {
- *   isAttorney: boolean;
- *   isLegalFellow: boolean;
- *   isInterpreter: boolean;
- * }
- */
-export const getRoleBools = (role: FormRoleEnum) => ({
-  isAttorney: role.includes('ATTORNEY'),
-  isLegalFellow: role.includes('LEGAL_FELLOW'),
-  isInterpreter: role.includes('INTERPRETER'),
-});

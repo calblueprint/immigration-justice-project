@@ -84,7 +84,7 @@ export const availabilitySchema = z.object({
   availability: z.string().optional().nullable(),
 });
 
-export const legalCredentialSchema = z.object({
+export const attorneyCredentialSchema = z.object({
   stateBarred: z
     .string({
       required_error: 'Please include a state',

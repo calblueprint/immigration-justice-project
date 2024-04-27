@@ -13,7 +13,6 @@ import {
   formatEnumeration,
   formatTruthy,
   getCurrentDate,
-  getRoleBools,
   parseDate,
   parseDateAlt,
   parseDateString,
@@ -82,9 +81,15 @@ export default function RolesSection() {
     // nasty boolean checking to ensure type safety
     const rolesToUpdate: ProfileRole[] = [];
 
-    const { isAttorney, isLegalFellow, isInterpreter } = getRoleBools(
-      values.roles,
-    );
+    const isAttorney =
+      values.roles === 'ATTORNEY' || values.roles === 'ATTORNEY,INTERPRETER';
+    const isLegalFellow =
+      values.roles === 'LEGAL_FELLOW' ||
+      values.roles === 'LEGAL_FELLOW,INTERPRETER';
+    const isInterpreter =
+      values.roles === 'INTERPRETER' ||
+      values.roles === 'ATTORNEY,INTERPRETER' ||
+      values.roles === 'LEGAL_FELLOW,INTERPRETER';
 
     if (isAttorney) rolesToUpdate.push({ role: 'ATTORNEY', user_id: userId });
     if (isLegalFellow)

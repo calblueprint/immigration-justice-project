@@ -18,7 +18,7 @@ import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
 import TextInput from '@/components/TextInput';
 import { usStates } from '@/data/citiesAndStates';
-import { legalCredentialSchema } from '@/data/formSchemas';
+import { attorneyCredentialSchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy, identity } from '@/utils/helpers';
@@ -38,8 +38,8 @@ export default function Page() {
   useScrollToTop();
 
   // initialize form with data from onboarding context
-  const form = useForm<z.infer<typeof legalCredentialSchema>>({
-    resolver: zodResolver(legalCredentialSchema),
+  const form = useForm<z.infer<typeof attorneyCredentialSchema>>({
+    resolver: zodResolver(attorneyCredentialSchema),
     defaultValues: {
       stateBarred: onboarding.profile.state_barred ?? undefined,
       barNumber: onboarding.profile.bar_number ?? undefined,
