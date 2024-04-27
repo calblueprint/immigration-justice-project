@@ -48,11 +48,21 @@ export default function OnboardingManager({
       onboardingProgress < 0 ||
       // progress beyond length of flow
       (onboardingFlow.length !== 0 &&
-        onboardingProgress >= onboardingFlow.length) ||
-      // already onboarded or not signed in
-      (!pushingData && profileReady && (profileData || !userId))
+        onboardingProgress >= onboardingFlow.length)
     ) {
       push(CONFIG.homepage);
+      return;
+    }
+
+    // already onboarded: redirect to settings
+    if (!pushingData && profileReady && profileData) {
+      push('/settings');
+      return;
+    }
+
+    // not signed in: redirect to login
+    if (!pushingData && profileReady && !userId) {
+      push('/login');
       return;
     }
 

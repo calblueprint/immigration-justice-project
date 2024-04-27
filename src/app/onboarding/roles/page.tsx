@@ -15,12 +15,13 @@ import {
 } from '@/components/Form';
 import Icon from '@/components/Icon';
 import InputDropdown from '@/components/InputDropdown';
+import { roleSchema } from '@/data/formSchemas';
 import {
   ATTORNEY_FLOW,
   INTERPRETER_FLOW,
   LEGAL_FELLOW_FLOW,
 } from '@/data/onboardingFlows';
-import { ROLE_DESCRIPTIONS } from '@/data/roleDescriptions';
+import { ROLE_DESCRIPTIONS, roleOptions } from '@/data/roles';
 import COLORS from '@/styles/colors';
 import { Box, Callout, Flex, SmallCardForm } from '@/styles/containers';
 import { H1, P } from '@/styles/text';
@@ -36,34 +37,6 @@ type RoleOptionType =
   | 'ATTORNEY,INTERPRETER'
   | 'LEGAL_FELLOW,INTERPRETER';
 
-const roleOptions = new Map<string, string>([
-  ['ATTORNEY', 'Attorney'],
-  ['INTERPRETER', 'Interpreter'],
-  ['LEGAL_FELLOW', 'Legal Fellow'],
-  ['ATTORNEY,INTERPRETER', 'Attorney and Interpreter'],
-  ['LEGAL_FELLOW,INTERPRETER', 'Legal Fellow and Interpreter'],
-]);
-
-const roleSchema = z.object({
-  roles: z
-    .enum([
-      'ATTORNEY',
-      'INTERPRETER',
-      'LEGAL_FELLOW',
-      'ATTORNEY,INTERPRETER',
-      'LEGAL_FELLOW,INTERPRETER',
-      '',
-    ])
-    .superRefine((input, ctx) => {
-      if (input === '')
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Must include at least one role',
-        });
-      return ctx;
-    }),
-});
-
 export default function Page() {
   const onboarding = useContext(OnboardingContext);
   const { push } = useRouter();
@@ -73,7 +46,6 @@ export default function Page() {
 
     const oldRoles = onboarding.roles;
     const roles = values.roles.split(',') as RoleEnum[];
-    onboarding.setRoles(roles);
 
     let newFlow: FlowData[];
     const isAttorney = roles.includes('ATTORNEY');
@@ -88,18 +60,22 @@ export default function Page() {
     }
 
     // remove role-specific data if role changes
-    if (oldRoles.includes('ATTORNEY') && !isAttorney)
+    if (oldRoles.includes('ATTORNEY') && !isAttorney) {
       onboarding.removeFromProfile([
         'bar_number',
         'eoir_registered',
         'state_barred',
       ]);
+      onboarding.setProgress(progress => Math.min(progress, 3));
+    }
 
-    if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow)
+    if (oldRoles.includes('LEGAL_FELLOW') && !isLegalFellow) {
       onboarding.removeFromProfile(['expected_bar_date', 'eoir_registered']);
+      onboarding.setProgress(progress => Math.min(progress, 3));
+    }
 
     // cap progress to 3 (legal info)
-    onboarding.setProgress(progress => Math.min(progress, 3));
+    onboarding.setRoles(roles);
 
     onboarding.setFlow(newFlow);
     push(`/onboarding/${newFlow[1].url}`);

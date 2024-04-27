@@ -1,175 +1,128 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import COLORS from '@/styles/colors';
-import { H2, H3 } from '@/styles/text';
-import {
-  SectionData,
-  SettingsSectionData,
-  SubSectionData,
-} from '@/types/settingsSection';
-import { Button } from '../Buttons';
-import SectionPartial from './SectionPartial';
-import { ButtonContainer, EditButton, Section, SectionHeader } from './styles';
+import { createContext, useContext, useMemo } from 'react';
+import { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
+import { Flex } from '@/styles/containers';
+import { Spinner } from '@/styles/spinner';
+import { H2, P } from '@/styles/text';
+import { BlueButton, Button } from '../Buttons';
+import { EditButton } from '../EditButton';
+import { FormField, FormItem, FormLabel } from '../Form';
+import { Label } from '../Form/styles';
+import * as Styles from './styles';
 
-interface SettingsSectionProps {
-  title: string;
-  data: SettingsSectionData;
-  subsections?: SubSectionData[];
-  editable?: boolean;
-  onSave?: (
-    newData: Array<SectionData | SectionData[]>,
-    newSubs: SubSectionData[],
-  ) => void;
+// context to control edit mode
+interface SettingSectionContextProps {
+  editing?: boolean;
 }
 
-// helpers
-const validateData = (v: SectionData) => {
-  let errorMsg = '';
-  if (v.validate) {
-    if (v.type !== 'multi-select') errorMsg = v.validate(v.value || '');
-    else errorMsg = v.validate(v.value);
-  }
-  return errorMsg;
-};
+const SettingSectionContext = createContext<SettingSectionContextProps>({
+  editing: false,
+});
 
-const validateSettingsSection = (data: SettingsSectionData) => {
-  let hasError = false;
+// root section (card/container)
+interface RootProps {
+  title: string;
+  children: React.ReactNode;
+  isEditing?: boolean;
+  startEdit?: () => void;
+  cancelEdit?: () => void;
+  isSubmitting?: boolean;
+  canEdit?: boolean;
+}
 
-  // validate data
-  const copy = [...data].map(dataValue => {
-    if (dataValue instanceof Array) {
-      const copyArr = [...dataValue].map(v => {
-        const errorMsg = validateData(v);
-        if (errorMsg !== '') hasError = true;
-        return errorMsg ? { ...v, error: errorMsg } : v;
-      });
-
-      return copyArr;
-    }
-
-    const errorMsg = validateData(dataValue);
-    if (errorMsg !== '') hasError = true;
-    return errorMsg ? { ...dataValue, error: errorMsg } : dataValue;
-  });
-
-  return { hasError, copy };
-};
-
-// main component
-export default function SettingsSection({
+export function SettingSection({
+  isEditing,
+  startEdit,
+  cancelEdit,
   title,
-  data,
-  editable,
-  subsections,
-  onSave,
-}: SettingsSectionProps) {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [storedData, setStoredData] = useState<SettingsSectionData>([...data]);
-  const [storedSubsections, setStoredSusbections] = useState<SubSectionData[]>(
-    subsections ? [...subsections] : [],
-  );
-
-  useEffect(() => {
-    setStoredData([...data]);
-  }, [data]);
-
-  useEffect(() => {
-    setStoredSusbections(subsections ? [...subsections] : []);
-  }, [subsections]);
-
-  const subVisible = useCallback(
-    (sub: SubSectionData) =>
-      storedData
-        .flat()
-        .find(d =>
-          d.label === sub.linkLabel && d.value instanceof Set
-            ? d.value.has(sub.linkValue)
-            : d.value === sub.linkValue,
-        ),
-    [storedData],
-  );
-
-  const handleSaveChanges = useCallback(() => {
-    let hasError = false;
-
-    // validate data
-    const { hasError: sectionErrored, copy: sectionCopy } =
-      validateSettingsSection(storedData);
-    if (sectionErrored) hasError = true;
-
-    // validate subsections
-    const subc = (storedSubsections ? [...storedSubsections] : []).map(sub => {
-      const { hasError: subErrored, copy: subCopy } = validateSettingsSection(
-        sub.data,
-      );
-      if (subErrored && subVisible(sub)) hasError = true;
-      return { ...sub, data: subCopy };
-    });
-
-    if (!hasError) {
-      onSave?.(storedData, storedSubsections);
-      setIsEditing(false);
-    } else {
-      setStoredData(sectionCopy);
-      setStoredSusbections(subc);
-    }
-  }, [onSave, storedData, storedSubsections, subVisible]);
+  isSubmitting,
+  children,
+  canEdit = true,
+}: RootProps) {
+  const editing = useMemo(() => ({ editing: isEditing }), [isEditing]);
 
   return (
-    <Section>
-      <SectionHeader>
-        <H2>{title}</H2>
-        {editable && !isEditing && (
-          <EditButton onClick={() => setIsEditing(true)} />
-        )}
-      </SectionHeader>
-      <SectionPartial
-        data={storedData}
-        onChange={nd => setStoredData(nd)}
-        isEditing={isEditing}
-      />
-      {storedSubsections?.map((sub, idx) => {
-        const handleSubChange = (nd: SettingsSectionData) => {
-          const copy = [...storedSubsections];
-          copy[idx] = { ...sub, data: nd };
-          setStoredSusbections(copy);
-        };
+    <SettingSectionContext.Provider value={editing}>
+      <Styles.SectionContainer>
+        <Flex $justify="between">
+          <H2>{title}</H2>
+          {!isEditing && canEdit ? (
+            <EditButton onClick={() => startEdit?.()} />
+          ) : null}
+        </Flex>
 
-        return (
-          subVisible(sub) && (
-            <React.Fragment key={sub.title}>
-              <H3>{sub.title}</H3>
-              <SectionPartial
-                data={sub.data}
-                onChange={handleSubChange}
-                isEditing={isEditing}
-              />
-            </React.Fragment>
-          )
-        );
-      })}
-      {isEditing && (
-        <ButtonContainer>
-          <Button
-            $secondaryColor={COLORS.redMid}
-            onClick={() => {
-              setStoredData([...data]);
-              setStoredSusbections(
-                subsections ? [...subsections.map(d => ({ ...d }))] : [],
-              );
-              setIsEditing(false);
-            }}
-          >
-            Discard Changes
-          </Button>
-          <Button
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-            onClick={handleSaveChanges}
-          >
-            Save Changes
-          </Button>
-        </ButtonContainer>
+        {children}
+
+        {isEditing ? (
+          <Flex $gap="1.25rem" $justify="end">
+            <Button type="button" onClick={() => cancelEdit?.()}>
+              Discard Changes
+            </Button>
+            <BlueButton type="submit" disabled={isSubmitting}>
+              <Flex $gap="10px" $justify="center">
+                {isSubmitting ? <Spinner /> : null}
+                Save Changes
+              </Flex>
+            </BlueButton>
+          </Flex>
+        ) : null}
+      </Styles.SectionContainer>
+    </SettingSectionContext.Provider>
+  );
+}
+
+// one field (label + value) in the section
+
+interface FieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends ControllerProps<TFieldValues, TName> {
+  label: string;
+  extractValue?: (v: TFieldValues[TName]) => string;
+  naValue?: string;
+  required?: boolean;
+}
+
+export function SettingField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  label,
+  naValue = 'N/A',
+  render,
+  extractValue = v => (typeof v === 'string' ? v : String(v)),
+  required = true,
+  ...props
+}: FieldProps<TFieldValues, TName>) {
+  const { editing } = useContext(SettingSectionContext);
+
+  return (
+    <FormField
+      {...props}
+      render={({ field, ...renderProps }) => (
+        <FormItem>
+          <FormLabel $required={editing && required}>{label}</FormLabel>
+          {editing ? (
+            render({ field, ...renderProps })
+          ) : (
+            <P>{extractValue(field.value) || naValue}</P>
+          )}
+        </FormItem>
       )}
-    </Section>
+    />
+  );
+}
+
+// read only field - used for account section
+interface ReadOnlyFieldProps {
+  label: string;
+  value: string;
+}
+
+export function ReadOnlySettingField({ label, value }: ReadOnlyFieldProps) {
+  return (
+    <Styles.Field>
+      <Label>{label}</Label>
+      <P>{value}</P>
+    </Styles.Field>
   );
 }

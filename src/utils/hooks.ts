@@ -2,7 +2,34 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from './AuthProvider';
 import { OnboardingContext } from './OnboardingProvider';
+import { useProfile } from './ProfileProvider';
+
+/**
+ * Wrapper to use profile and auth
+ * Throws an error if neither contexts does not exist
+ * Redirects to home page if not logged in
+ */
+export const useProfileAuth = () => {
+  const auth = useAuth();
+  if (!auth)
+    throw new Error('Component should be wrapped inside an auth context!');
+
+  const profile = useProfile();
+  if (!profile)
+    throw new Error('Component should be wrapped inside a profile context!');
+
+  const { push } = useRouter();
+  const { profileReady } = profile;
+  const { userId } = auth;
+
+  useEffect(() => {
+    if (profileReady && !userId) push('/login');
+  }, [profileReady, userId, push]);
+
+  return { profile, auth };
+};
 
 /**
  * Scroll to top on first render

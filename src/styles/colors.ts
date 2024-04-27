@@ -14,10 +14,11 @@ const COLORS = {
   greyDarker: '#292929',
   placeholderText: '#B3B3B3',
   // Error Red
+  redLighter: '#FFE9E9',
+  redLight: '#F3B1B2',
   redMid: '#D13E40', // Mid = Primary!
   redDark: '#B53839',
-  redLight: '#F3B1B2',
-  redLighter: '#FFE9E9',
+  redDarker: '#AB3334',
   green: '#2E9D1B',
   goldMid: '#CA9B30',
   goldDark: '#B38212',

@@ -1,31 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { BigBlueAsyncButton, BigLinkButton } from '@/components/Buttons';
+import { EditLinkButton } from '@/components/EditButton';
 import Icon from '@/components/Icon';
 import COLORS from '@/styles/colors';
 import { Card, Flex } from '@/styles/containers';
 import { H1Centered, H2, H4, P } from '@/styles/text';
-import { formatTruthy, getUTCDate, parseDate } from '@/utils/helpers';
+import { formatTruthy, parseDate } from '@/utils/helpers';
 import {
   useGuardedOnboarding,
   useOnboardingNavigation,
   useScrollToTop,
 } from '@/utils/hooks';
 import * as Styles from '../styles';
-
-function EditButton({ href }: { href: string }) {
-  return (
-    <Link href={href}>
-      <Flex $gap="5px">
-        <Styles.EditText>Edit</Styles.EditText>
-        <Icon type="edit" />
-      </Flex>
-    </Link>
-  );
-}
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
@@ -62,7 +51,7 @@ export default function Page() {
         <Styles.SectionBox>
           <Flex $justify="between" $align="center">
             <H2>Basic Information</H2>
-            <EditButton href={flowAt(1)} />
+            <EditLinkButton href={flowAt(1)} />
           </Flex>
           <Flex>
             <Styles.SectionField>
@@ -120,7 +109,7 @@ export default function Page() {
         <Styles.SectionBox>
           <Flex $justify="between" $align="center">
             <H2>Availability</H2>
-            <EditButton href={flowAt(2)} />
+            <EditLinkButton href={flowAt(2)} />
           </Flex>
           <Flex>
             <Styles.SectionField>
@@ -133,7 +122,7 @@ export default function Page() {
               <H4>What is the earliest you are available to volunteer?</H4>
               <P>
                 {onboarding.profile.start_date
-                  ? parseDate(getUTCDate(onboarding.profile.start_date))
+                  ? parseDate(onboarding.profile.start_date)
                   : 'N/A'}
               </P>
             </Styles.SectionField>
@@ -154,7 +143,7 @@ export default function Page() {
           <Styles.SectionBox>
             <Flex $justify="between" $align="center">
               <H2>Legal Experience</H2>
-              <EditButton href={flowAt(3)} />
+              <EditLinkButton href={flowAt(3)} />
             </Flex>
             <Flex>
               <Styles.SectionField>
@@ -192,7 +181,7 @@ export default function Page() {
           <Styles.SectionBox>
             <Flex $justify="between" $align="center">
               <H2>Legal Experience</H2>
-              <EditButton href={flowAt(3)} />
+              <EditLinkButton href={flowAt(3)} />
             </Flex>
             <Flex>
               <Styles.SectionField>

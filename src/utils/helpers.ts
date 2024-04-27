@@ -1,15 +1,28 @@
-// given timestamp of format: 2024-01-18T11:22:40+00:00
-// return JS date
-
 import CONFIG from '@/lib/configs';
 import { DropdownOption } from '@/types/dropdown';
 
-// native JS Date constructor should already support this parsing
-export const timestampStringToDate = (ts: string): Date => new Date(ts);
+// inspiration from https://stackoverflow.com/a/57941711/22063638
+// example timestamp format: 2024-01-18T11:22:40+00:00
+// WARNING: assumes +00:00 (which should be the case for timestamptz)
+export const timestampStringToDate = (ts: string): Date => {
+  const digits = ts.split(/\D/).map(s => parseInt(s, 10));
+  digits[1] -= 1; // ground month to 0-index
+
+  const ms = Date.UTC(
+    digits[0], // year
+    digits[1], // month
+    digits[2], // day
+    digits[3], // hour
+    digits[4], // minute
+    digits[5], // second
+    0,
+  );
+
+  return new Date(ms);
+};
 
 // parse js date to mm/dd/yyyy
-export const parseDate = (d: Date): string =>
-  `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+export const parseDate = (d: Date): string => d.toLocaleDateString();
 
 // format timestamp string
 export const formatTimestamp = (timestamp?: string): string =>
@@ -151,3 +164,38 @@ export const filterAndPaginate = (
 
 // to use as empty function
 export const identity = (x: unknown) => x;
+
+// format a list into a grammatically correct enumeration
+// EXAMPLE USAGE:
+//   formatEnumeration([]) => ""
+//   formatEnumeration(["hi"]) => "hi"
+//   formatEnumeration(["apples", "oranges"]) => "apples and oranges"
+//   formatEnumeration(["one", "two"], "or") => "one or two"
+//   formatEnumeration(["one", "two", "four"]) => "one, two, and four"
+export const formatEnumeration = (list: string[], joinWord = 'and') => {
+  if (list.length === 0) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list.join(` ${joinWord} `);
+  const cutLast = list.slice(0, -1);
+  return `${cutLast.join(', ')} ${joinWord} ${list.at(-1)}`;
+};
+
+/**
+ * @param ds - string in date format (yyyy-mm-dd)
+ * @returns date object in client timezone
+ */
+export const parseDateString = (ds: string): Date => {
+  const [year, month, day] = ds.split('-');
+  const now = new Date();
+  now.setFullYear(parseInt(year, 10));
+  now.setMonth(parseInt(month, 10) - 1);
+  now.setDate(parseInt(day, 10));
+  return now;
+};
+
+/**
+ * @param word - word to capitalize
+ * @returns capitalized word
+ */
+export const capitalize = (word: string): string =>
+  `${word.at(0)?.toUpperCase()}${word.slice(1)}`;

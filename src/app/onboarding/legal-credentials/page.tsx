@@ -18,6 +18,7 @@ import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
 import TextInput from '@/components/TextInput';
 import { usStates } from '@/data/citiesAndStates';
+import { attorneyCredentialSchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy, identity } from '@/utils/helpers';
@@ -28,20 +29,6 @@ import {
 } from '@/utils/hooks';
 import * as Styles from '../styles';
 
-// zod schema to automate form validation
-const legalExperienceSchema = z.object({
-  stateBarred: z
-    .string({
-      required_error: 'Please include a state',
-      invalid_type_error: 'Please include a state',
-    })
-    .min(1, { message: 'Please include a state' }),
-  barNumber: z
-    .string({ required_error: 'Please include your attorney bar number' })
-    .min(1, { message: 'Please include your attorney bar number' }),
-  eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
-});
-
 export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
@@ -51,12 +38,12 @@ export default function Page() {
   useScrollToTop();
 
   // initialize form with data from onboarding context
-  const form = useForm<z.infer<typeof legalExperienceSchema>>({
-    resolver: zodResolver(legalExperienceSchema),
+  const form = useForm<z.infer<typeof attorneyCredentialSchema>>({
+    resolver: zodResolver(attorneyCredentialSchema),
     defaultValues: {
-      stateBarred: onboarding.profile.state_barred,
-      barNumber: onboarding.profile.bar_number,
-      eoirRegistered: onboarding.profile.eoir_registered,
+      stateBarred: onboarding.profile.state_barred ?? undefined,
+      barNumber: onboarding.profile.bar_number ?? undefined,
+      eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
     },
   });
 
@@ -115,7 +102,7 @@ export default function Page() {
                         state_barred: newValue ?? undefined,
                       });
                     }}
-                    defaultValue={onboarding.profile.state_barred}
+                    defaultValue={onboarding.profile.state_barred ?? ''}
                     placeholder="Start typing to filter states..."
                   />
                 </FormControl>

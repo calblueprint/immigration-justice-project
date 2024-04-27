@@ -11,33 +11,21 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
+import { availabilitySchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { getCurrentDate, identity, parseDateAlt } from '@/utils/helpers';
+import {
+  getCurrentDate,
+  identity,
+  parseDateAlt,
+  parseDateString,
+} from '@/utils/helpers';
 import {
   useGuardedOnboarding,
   useOnboardingNavigation,
   useScrollToTop,
 } from '@/utils/hooks';
 import * as Styles from '../styles';
-
-// define form schema to automate form validation
-const availabilitySchema = z.object({
-  hoursPerMonth: z
-    .number({
-      required_error:
-        'Please include your estimated availability in hours per month',
-    })
-    .nonnegative({ message: 'This value must be nonnegative' })
-    .max(744, { message: 'Please enter a valid hours per month' }),
-  startDate: z
-    .date({
-      required_error:
-        'Please include your estimated starting date of availability',
-    })
-    .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  availability: z.string().optional(),
-});
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
@@ -48,7 +36,9 @@ export default function Page() {
   useScrollToTop();
 
   const [startDate, setStartDate] = useState<string>(
-    onboarding.profile.start_date ?? '',
+    onboarding.profile.start_date
+      ? parseDateAlt(onboarding.profile.start_date)
+      : '',
   );
 
   // initialize react-hook-form with default values from onboarding context
@@ -57,7 +47,7 @@ export default function Page() {
     defaultValues: {
       hoursPerMonth: onboarding.profile.hours_per_month,
       startDate: onboarding.profile.start_date
-        ? new Date(`${onboarding.profile.start_date}T00:00`)
+        ? onboarding.profile.start_date
         : undefined,
       availability: onboarding.profile.availability_description,
     },
@@ -168,9 +158,11 @@ export default function Page() {
                         });
                         return;
                       }
-                      field.onChange(new Date(`${newValue}T00:00`));
+
+                      const newDate = parseDateString(newValue);
+                      field.onChange(newDate);
                       onboarding.updateProfile({
-                        start_date: newValue,
+                        start_date: newDate,
                       });
                     }}
                   />
@@ -191,7 +183,7 @@ export default function Page() {
                 <FormControl>
                   <TextAreaInput
                     placeholder="I won't be available from..."
-                    defaultValue={field.value}
+                    defaultValue={field.value ?? ''}
                     error={fieldState.error?.message}
                     onChange={newValue => {
                       onboarding.updateProfile({

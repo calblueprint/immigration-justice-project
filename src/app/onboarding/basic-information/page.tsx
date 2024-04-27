@@ -5,77 +5,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import type { DropdownOption } from '@/types/dropdown';
-import type { GroupBase } from 'react-select';
-import type { LoadOptions } from 'react-select-async-paginate';
 import { BigBlueButton, BigLinkButton } from '@/components/Buttons';
 import CreatableBigDataDropdown from '@/components/CreatableBigDataDropdown';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextInput from '@/components/TextInput';
-import { optionalLanguages } from '@/data/languages';
+import { basicInformationSchema } from '@/data/formSchemas';
+import { loadLanguages } from '@/data/languages';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
-import { filterAndPaginate, identity } from '@/utils/helpers';
+import { identity } from '@/utils/helpers';
 import {
   useGuardedOnboarding,
   useOnboardingNavigation,
   useScrollToTop,
 } from '@/utils/hooks';
 import * as Styles from '../styles';
-
-// load languages
-const loadLanguages: LoadOptions<
-  DropdownOption,
-  GroupBase<DropdownOption>,
-  null
-> = (search, prevOptions) =>
-  filterAndPaginate(optionalLanguages, search, prevOptions.length);
-
-// define form schema using Zod to automate form validation
-const zodDropdownOption = {
-  label: z.string(),
-  value: z.string(),
-};
-
-const basicInformationSchema = z.object({
-  firstName: z
-    .string({ required_error: 'Please include your first name' })
-    .min(1, { message: 'Please include your first name' }),
-  lastName: z
-    .string({ required_error: 'Please include your last name' })
-    .min(1, { message: 'Please include your first name' }),
-  country: z
-    .string({
-      required_error: 'Please include the country of your primary residence',
-    })
-    .min(1, {
-      message: 'Please include the country of your primary residence',
-    }),
-  state: z
-    .string({
-      required_error: 'Please include the state of your primary residence',
-    })
-    .min(1, { message: 'Please include the state of your primary residence' }),
-  city: z
-    .string({
-      required_error: 'Please include the city of your primary residence',
-    })
-    .min(1, { message: 'Please include the city of your primary residence' }),
-  phoneNumber: z
-    .string({ required_error: 'Please include a phone number' })
-    .regex(
-      /(^(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?$)|(^$)/,
-      { message: 'Invalid phone number' },
-    )
-    .min(1, { message: 'Please include a phone number' }),
-  canSpeaks: z
-    .array(z.object(zodDropdownOption))
-    .min(1, 'Please select at least one language you can speak or understand'),
-  canReads: z
-    .array(z.object(zodDropdownOption))
-    .min(1, 'Please select at least one language you can speak or understand'),
-});
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();

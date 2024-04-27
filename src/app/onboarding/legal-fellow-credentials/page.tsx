@@ -10,6 +10,7 @@ import DateInput from '@/components/DateInput';
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import RadioGroup from '@/components/RadioGroup';
+import { legalFellowCredentialSchema } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import {
@@ -17,6 +18,7 @@ import {
   getCurrentDate,
   identity,
   parseDateAlt,
+  parseDateString,
 } from '@/utils/helpers';
 import {
   useGuardedOnboarding,
@@ -24,14 +26,6 @@ import {
   useScrollToTop,
 } from '@/utils/hooks';
 import * as Styles from '../styles';
-
-// zod schema to automate form validation
-const legalExperienceSchema = z.object({
-  expectedBarDate: z
-    .date({ required_error: 'Must include expected barred date' })
-    .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
-});
 
 export default function Page() {
   const onboarding = useGuardedOnboarding();
@@ -42,17 +36,19 @@ export default function Page() {
   useScrollToTop();
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
-    onboarding.profile.expected_bar_date ?? '',
+    onboarding.profile.expected_bar_date
+      ? parseDateAlt(onboarding.profile.expected_bar_date)
+      : '',
   );
 
   // initialize form with values from onboarding context
-  const form = useForm<z.infer<typeof legalExperienceSchema>>({
-    resolver: zodResolver(legalExperienceSchema),
+  const form = useForm<z.infer<typeof legalFellowCredentialSchema>>({
+    resolver: zodResolver(legalFellowCredentialSchema),
     defaultValues: {
       expectedBarDate: onboarding.profile.expected_bar_date
-        ? new Date(`${onboarding.profile.expected_bar_date}T00:00`)
+        ? onboarding.profile.expected_bar_date
         : undefined,
-      eoirRegistered: onboarding.profile.eoir_registered,
+      eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
     },
   });
 
@@ -117,9 +113,11 @@ export default function Page() {
                         });
                         return;
                       }
-                      field.onChange(new Date(`${newValue}T00:00`));
+
+                      const newDate = parseDateString(newValue);
+                      field.onChange(newDate);
                       onboarding.updateProfile({
-                        expected_bar_date: newValue,
+                        expected_bar_date: newDate,
                       });
                     }}
                   />

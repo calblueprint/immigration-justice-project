@@ -10,7 +10,7 @@ export const ContentContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 45.0625rem;
+  width: min(720px, 96%);
   margin: 0 auto;
   gap: 2.5rem;
 `;
