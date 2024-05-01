@@ -14,11 +14,7 @@ import {
   Listing,
 } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
-import {
-  formatTimestamp,
-  parseAgency,
-  parseTimeCommitment,
-} from '@/utils/helpers';
+import { formatTimestamp, parseTimeCommitment } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
 import {
   AuthButtons,
@@ -67,10 +63,7 @@ const caseFields: ListingField<CaseListing>[] = [
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: data =>
-      data.adjudicating_agency
-        ? parseAgency(data.adjudicating_agency)
-        : 'Not Available',
+    getValue: data => data.adjudicating_agency ?? 'Not Available',
   },
   // Client Languages
   {

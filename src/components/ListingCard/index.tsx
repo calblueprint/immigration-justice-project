@@ -6,7 +6,7 @@ import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { H4, P } from '@/styles/text';
 import { Listing } from '@/types/schema';
-import { formatTimestamp, parseAgency } from '@/utils/helpers';
+import { formatTimestamp } from '@/utils/helpers';
 import Icon from '../Icon';
 import * as Styles from './styles';
 
@@ -124,7 +124,7 @@ export default function ListingCard({
         listing.adjudicating_agency ? (
           <Styles.IconTextGroup>
             <Icon type="gavel" />
-            <P>{parseAgency(listing.adjudicating_agency)}</P>
+            <P>{listing.adjudicating_agency}</P>
           </Styles.IconTextGroup>
         ) : null}
       </Flex>
