@@ -71,10 +71,10 @@ export default function Page() {
             agencyFilters.size === 0 ||
             (c.adjudicating_agency && agencyFilters.has(c.adjudicating_agency)),
         )
-        .filter(c =>
-          countriesFilters.size > 0
-            ? c.country && countriesFilters.has(c.country)
-            : true,
+        .filter(
+          c =>
+            countriesFilters.size === 0 ||
+            (c.country && countriesFilters.has(c.country)),
         ),
     [
       caseData,

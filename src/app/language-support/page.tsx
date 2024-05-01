@@ -45,7 +45,7 @@ export default function Page() {
         ];
 
         setLSData(lsDataToSet);
-        setSelectedListing(lsDataToSet[0]);
+        if (lsDataToSet.length > 0) setSelectedListing(lsDataToSet[0]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }

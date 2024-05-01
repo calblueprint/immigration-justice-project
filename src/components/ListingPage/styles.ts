@@ -50,7 +50,8 @@ export const ListingCount = styled(H4)`
 
 export const CardColumnWrapper = styled.div`
   height: 100%;
-  width: clamp(400px, 33vw, 500px);
+  width: 100%;
+  overflow-y: auto;
   border-right: 1px solid ${COLORS.greyLight};
   background-color: ${COLORS.background};
 
@@ -64,11 +65,9 @@ export const CardColumnWrapper = styled.div`
 `;
 
 export const CardColumn = styled.div`
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  padding: 16px 48px 0 32px;
-  height: 100%;
+  padding: 16px 48px 16px 32px;
 `;
 
 export const ListingDetailsContainer = styled.div`
@@ -88,7 +87,8 @@ export const Header = styled.header`
 `;
 
 export const ListingDisplay = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: clamp(400px, 30%, 500px) 1fr;
   overflow: hidden;
   flex-grow: 1;
 `;
