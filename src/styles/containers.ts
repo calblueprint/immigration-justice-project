@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface BoxProps {
+  $textAlign?: 'center' | 'start' | 'end' | 'justify';
   $border?: string;
   $borderColor?: string;
   $radius?: string;
@@ -30,6 +31,7 @@ interface BoxProps {
 
 const BoxStyles = css<BoxProps>`
   position: ${({ $position }) => $position ?? 'static'};
+  text-align: ${({ $textAlign }) => $textAlign};
 
   border: ${({ $border }) => $border};
   border-color: ${({ $borderColor }) => $borderColor};

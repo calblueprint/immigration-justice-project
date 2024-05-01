@@ -6,11 +6,9 @@ import { P } from '@/styles/text';
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  width: 61%;
-  float: right;
-  gap: 0.625rem; // 10px
-  margin-left: auto;
+  gap: 16px;
+  flex: 1 0 0;
+  align-items: flex-start;
 `;
 
 export const FormTextArea = styled.textarea`
@@ -77,7 +75,7 @@ export const FormFooter = styled.div`
 
 export const FormWarning = styled(P)`
   padding-bottom: 0.375rem; // 6px
-  color: ${COLORS.greyMid};
+  color: ${COLORS.blueDark};
   font-size: 0.75rem; // 12px
   font-style: normal;
   font-weight: 400;

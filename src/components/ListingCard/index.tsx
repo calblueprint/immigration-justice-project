@@ -73,8 +73,12 @@ export default function ListingCard({
 
   // remote info
   const remoteInfo = useMemo(() => {
-    if (listing.listing_type === 'CASE' || listing.listing_type === 'INT')
-      return `${listing.is_remote ? 'Remote' : 'In Person'}`;
+    if (listing.listing_type === 'CASE' || listing.listing_type === 'INT') {
+      if (listing.is_remote === null || listing.is_remote === undefined) {
+        return 'Not Available';
+      }
+      return listing.is_remote ? 'Remote' : 'In Person';
+    }
     return 'Asynchronous';
   }, [listing]);
 

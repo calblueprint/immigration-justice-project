@@ -25,7 +25,7 @@ const PasswordRequirementText = styled.p<{ met: boolean }>`
 function PasswordRequirement({ met, text }: { met: boolean; text: string }) {
   return (
     <PasswordRequirementDiv met={met}>
-      <Icon type={met ? 'green_check' : 'gray_dot'} />
+      <Icon type={met ? 'greenCheck' : 'grayDot'} />
       <PasswordRequirementText met={met}>{text}</PasswordRequirementText>
     </PasswordRequirementDiv>
   );

@@ -49,7 +49,7 @@ export default function TextAreaInput({
 
   return (
     <Flex $direction="column" $gap="10px">
-      {required && (
+      {label && (
         <InputLabel
           as="label"
           htmlFor={id}
