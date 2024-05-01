@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
+import { Box, Flex } from '@/styles/containers';
 import { H3, LinkColored, P } from '@/styles/text';
 import {
   CaseListing,
@@ -19,7 +19,6 @@ import {
 } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../Icon';
-import { Container, IconDiv } from './styles';
 
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
@@ -110,21 +109,23 @@ export default function ProfileMatch({
     const match = fields.getMatch(listingData, profileData);
     return (
       <Flex $align="center" $gap="16px">
-        <IconDiv>{matchIcon(match)}</IconDiv>
+        <Box $h="16px" $w="16px" $textAlign="center">
+          {matchIcon(match)}
+        </Box>
         <P>{fields.getText(listingData, profileData, match)}</P>
       </Flex>
     );
   };
 
   return (
-    <Container>
+    <Flex $direction="column" $gap="16px" $h="100%" $maxW="40%">
       <H3>Profile Match</H3>
       {listingData.listing_type === 'CASE' &&
         renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
       {listingData.listing_type !== 'INT' &&
         renderIconGroup(startDateMatch as MatchField<Listing>)}
       <Flex $align="center" $gap="16px">
-        <IconDiv>
+        <Box $h="16px" $w="16px" $textAlign="center">
           {((listingData.listing_type === 'CASE' && !interpretation) ||
             listingData.listing_type === 'LCA') &&
           matchedLanguages.length === 0 ? (
@@ -132,7 +133,7 @@ export default function ProfileMatch({
           ) : (
             matchIcon(matchedLanguages.length > 0)
           )}
-        </IconDiv>
+        </Box>
         <P>
           You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
           {matchedLanguages.length > 0
@@ -148,6 +149,6 @@ export default function ProfileMatch({
         </LinkColored>{' '}
         to update any information.
       </P>
-    </Container>
+    </Flex>
   );
 }
