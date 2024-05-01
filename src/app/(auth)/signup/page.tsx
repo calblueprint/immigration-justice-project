@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { H4Centered, HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { H4Centered, HorizontalDiv } from '@/app/(auth)/styles';
 import { BigBlueButton, Button } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
-import { SmallCardForm } from '@/styles/containers';
+import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, H2, H4, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 
@@ -78,12 +78,12 @@ export default function SignUp() {
     <>
       {!emailSentCount && (
         <SmallCardForm onSubmit={handleSignUp}>
-          <SpacerDiv $gap={10}>
+          <Flex $direction="column" $gap="10px">
             <H1>Sign Up</H1>
             {errorMessage !== '' && (
               <P $color={COLORS.redMid}>{errorMessage}</P>
             )}
-          </SpacerDiv>
+          </Flex>
           <TextInput
             label="Email"
             placeholder="email@example.com"
@@ -93,7 +93,7 @@ export default function SignUp() {
             value={email}
             setValue={setEmail}
           />
-          <SpacerDiv $gap={8}>
+          <Flex $direction="column" $gap="8px">
             <TextInput
               label="Password"
               placeholder="Password"
@@ -107,7 +107,7 @@ export default function SignUp() {
               password={password}
               setComplexity={setPasswordComplexity}
             />
-          </SpacerDiv>
+          </Flex>
           <TextInput
             label="Confirm Password"
             placeholder="Confirm Password"
@@ -116,7 +116,7 @@ export default function SignUp() {
             value={confirmPassword}
             setValue={setConfirmPassword}
           />
-          <SpacerDiv>
+          <Flex $direction="column" $gap="20px">
             <BigBlueButton type="submit">Sign Up</BigBlueButton>
             <H4Centered>
               Have an account already?{' '}
@@ -124,12 +124,12 @@ export default function SignUp() {
                 Log In
               </LinkColored>
             </H4Centered>
-          </SpacerDiv>
+          </Flex>
         </SmallCardForm>
       )}
       {emailSentCount > 0 && (
         <SmallCardForm onSubmit={handleSignUp}>
-          <SpacerDiv>
+          <Flex $direction="column" $gap="20px">
             <H2>An email verification link has been sent.</H2>
             <H4 $color={COLORS.greyDark}>
               This link will direct you to the next step. If you didn’t receive
@@ -147,7 +147,7 @@ export default function SignUp() {
                 <P $color={COLORS.greyMid}>Email has been resent!</P>
               )}
             </HorizontalDiv>
-          </SpacerDiv>
+          </Flex>
         </SmallCardForm>
       )}
     </>

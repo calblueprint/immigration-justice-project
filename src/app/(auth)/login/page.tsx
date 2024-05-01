@@ -3,12 +3,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
-import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
+import { H4Centered } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
-import { SmallCardForm } from '@/styles/containers';
+import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
@@ -76,12 +76,12 @@ export default function Login() {
 
   return (
     <SmallCardForm onSubmit={handleSignIn}>
-      <SpacerDiv $gap={0.625}>
+      <Flex $direction="column" $gap="10px">
         <H1>Log In</H1>
         {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
-      </SpacerDiv>
-      <SpacerDiv $gap={0.8125}>
-        <SpacerDiv>
+      </Flex>
+      <Flex $direction="column" $gap="13px">
+        <Flex $direction="column" $gap="20px">
           <TextInput
             label="Email"
             placeholder="email@example.com"
@@ -100,14 +100,14 @@ export default function Login() {
             value={password}
             setValue={setPassword}
           />
-        </SpacerDiv>
+        </Flex>
         <P>
           <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
             Forgot your password?
           </LinkColored>
         </P>
-      </SpacerDiv>
-      <SpacerDiv>
+      </Flex>
+      <Flex $direction="column" $gap="20px">
         <BigBlueButton type="submit">Log in</BigBlueButton>
         <H4Centered>
           Don’t have an account yet?{' '}
@@ -115,7 +115,7 @@ export default function Login() {
             Sign up
           </LinkColored>
         </H4Centered>
-      </SpacerDiv>
+      </Flex>
     </SmallCardForm>
   );
 }

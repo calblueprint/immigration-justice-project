@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { HorizontalDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { HorizontalDiv } from '@/app/(auth)/styles';
 import { BigBlueButton, Button } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
-import { SmallCardForm } from '@/styles/containers';
+import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, H2, H4, P } from '@/styles/text';
 
 export default function ForgotPassword() {
@@ -49,7 +49,7 @@ export default function ForgotPassword() {
     </SmallCardForm>
   ) : (
     <SmallCardForm onSubmit={handleForgotPassword}>
-      <SpacerDiv>
+      <Flex $direction="column" $gap="20px">
         <H2>A password reset link has been sent to your email.</H2>
         <H4 $color={COLORS.greyDark}>
           This link will direct you to the next step. If you didn’t receive an
@@ -67,7 +67,7 @@ export default function ForgotPassword() {
             <P $color={COLORS.greyMid}>Email has been resent!</P>
           )}
         </HorizontalDiv>
-      </SpacerDiv>
+      </Flex>
     </SmallCardForm>
   );
 }
