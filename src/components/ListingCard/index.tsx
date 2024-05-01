@@ -55,11 +55,6 @@ export default function ListingCard({
       tags.push(langTag);
     }
 
-    // case interpretation
-    if (listing.listing_type === 'CASE' && interpretation) {
-      tags.push('Case Interpretation');
-    }
-
     // limited case assignment
     if (listing.listing_type === 'LCA') {
       tags.push(listing.country);
@@ -69,11 +64,6 @@ export default function ListingCard({
     if (listing.listing_type === 'DOC') {
       const plural = listing.num_pages > 1 ? 's' : '';
       tags.push(`${listing.num_pages} page${plural}`);
-      tags.push('Document Translation');
-    }
-
-    if (listing.listing_type === 'INT') {
-      tags.push('Interpretation');
     }
 
     return tags;
@@ -119,12 +109,10 @@ export default function ListingCard({
           <P>{remoteInfo}</P>
         </Styles.IconTextGroup>
 
-        {listing.listing_type === 'CASE' &&
-        !interpretation &&
-        listing.adjudicating_agency ? (
+        {listing.listing_type === 'CASE' && !interpretation ? (
           <Styles.IconTextGroup>
             <Icon type="gavel" />
-            <P>{listing.adjudicating_agency}</P>
+            <P>{listing.adjudicating_agency ?? 'Not Available'}</P>
           </Styles.IconTextGroup>
         ) : null}
       </Flex>

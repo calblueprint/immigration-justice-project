@@ -1,14 +1,9 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H1, P } from '@/styles/text';
+import { P } from '@/styles/text';
 
-export const CaseDisplay = styled.aside`
-  position: relative;
-  width: 100%;
-`;
-
-export const CaseTitle = styled(H1)`
-  margin: 6.4px 6.4px;
+export const ListingDescription = styled(P)`
+  word-break: break-all;
 `;
 
 export const InfoContainer = styled.div`

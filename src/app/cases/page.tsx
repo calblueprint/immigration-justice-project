@@ -29,12 +29,12 @@ export default function Page() {
     })();
   }, []);
 
-  const agencyOptions: Map<string, string> = useMemo(
+  const agencyOptions: Set<string> = useMemo(
     () =>
-      new Map(
+      new Set(
         caseData
           .filter(c => c.adjudicating_agency)
-          .map(c => [c.adjudicating_agency ?? '', c.adjudicating_agency ?? '']),
+          .map(c => c.adjudicating_agency ?? ''),
       ),
     [caseData],
   );
