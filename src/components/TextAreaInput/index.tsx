@@ -49,14 +49,16 @@ export default function TextAreaInput({
 
   return (
     <Flex $direction="column" $gap="10px">
-      <InputLabel
-        as="label"
-        htmlFor={id}
-        $color={COLORS.greyDark}
-        $required={required}
-      >
-        {label}
-      </InputLabel>
+      {label && (
+        <InputLabel
+          as="label"
+          htmlFor={id}
+          $color={COLORS.greyDark}
+          $required={required}
+        >
+          {label}
+        </InputLabel>
+      )}
       <TextArea
         id={id}
         placeholder={placeholder}
