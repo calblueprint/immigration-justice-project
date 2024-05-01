@@ -54,24 +54,22 @@ const startDateMatch: MatchField<
           timestampStringToDate(date)
       : undefined;
   },
-  getText: (data, profileData, match) =>
-    match === undefined
-      ? `No information available about the ${
-          data.listing_type === 'CASE'
-            ? 'Next Court Hearing/Filing Date'
-            : 'Deadline'
-        }`
-      : `The ${
-          data.listing_type === 'CASE'
-            ? 'next court hearing/filing date'
-            : 'deadline'
-        } (${formatTimestamp(
-          data.listing_type === 'CASE' ? data.upcoming_date : data.deadline,
-        )}) is ${
+  getText: (data, profileData, match) => {
+    const dateName =
+      data.listing_type === 'CASE'
+        ? 'Next Court Hearing/Filing Date'
+        : 'Deadline';
+    const listingDate = formatTimestamp(
+      data.listing_type === 'CASE' ? data.upcoming_date : data.deadline,
+    );
+    return match === undefined
+      ? `No information available about the ${dateName}`
+      : `The ${dateName} (${listingDate}) is ${
           match ? 'after' : 'before'
         } your first available start date (${formatTimestamp(
           profileData.start_date,
-        )}).`,
+        )}).`;
+  },
 };
 
 const matchIcon = (match: boolean | undefined) => {
@@ -127,8 +125,8 @@ export default function ProfileMatch({
         renderIconGroup(startDateMatch as MatchField<Listing>)}
       <Flex $align="center" $gap="16px">
         <IconDiv>
-          {((listingData.listing_type === 'CASE' &&
-          !interpretation) || listingData.listing_type === 'LCA') &&
+          {((listingData.listing_type === 'CASE' && !interpretation) ||
+            listingData.listing_type === 'LCA') &&
           matchedLanguages.length === 0 ? (
             <Icon type="yellowExclamation" />
           ) : (
