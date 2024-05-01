@@ -1,9 +1,13 @@
 'use client';
 
+import { useMemo } from 'react';
 import Image from 'next/image';
 import { LinkButton } from '@/components/Buttons';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { H2, H3, H4 } from '@/styles/text';
+import { useAuth } from '@/utils/AuthProvider';
+import { useProfile } from '@/utils/ProfileProvider';
 import homepageImage from '~/public/images/homepage-image.webp';
 import secondImage from '~/public/images/homepage-second-image.webp';
 import * as Styles from './styles';
@@ -67,6 +71,20 @@ const renderService = (service: Service) => (
 );
 
 export default function Home() {
+  const auth = useAuth();
+  const profile = useProfile();
+
+  const volunteerLink = useMemo(() => {
+    if (!auth) throw new Error('Auth must be defined.');
+    if (!auth.userId) return '/login';
+    if (!profile) throw new Error('Profile must be defined.');
+    if (!profile.profileData) return CONFIG.onboardingHome;
+    if (profile.roles.map(r => r.role).includes('ATTORNEY')) return '/cases';
+    if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+      return '/limited-case-assignments';
+    return '/language-support';
+  }, [auth, profile]);
+
   return (
     <Styles.PageContainer>
       <Styles.TitleSection>
@@ -93,7 +111,7 @@ export default function Home() {
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
-              href="/login"
+              href={volunteerLink}
               style={{ fontSize: '1.5rem' }}
             >
               Volunteer Now
