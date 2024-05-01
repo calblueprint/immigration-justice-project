@@ -61,41 +61,39 @@ export default function ResetPassword() {
     }
   };
 
-  return (
-    canReset && (
-      <SmallCardForm onSubmit={handleResetPassword}>
-        <SpacerDiv $gap={10}>
-          <H1>Set New Password</H1>
-          {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
-        </SpacerDiv>
-        <SpacerDiv>
-          <SpacerDiv $gap={8}>
-            <TextInput
-              label="New Password"
-              placeholder="Password"
-              type="password"
-              id="newpass"
-              value={newPassword}
-              setValue={setNewPassword}
-            />
-            <PasswordComplexity
-              password={newPassword}
-              setComplexity={setPasswordComplexity}
-            />
-          </SpacerDiv>
+  return canReset ? (
+    <SmallCardForm onSubmit={handleResetPassword}>
+      <SpacerDiv $gap={10}>
+        <H1>Set New Password</H1>
+        {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+      </SpacerDiv>
+      <SpacerDiv>
+        <SpacerDiv $gap={8}>
           <TextInput
-            label="Confirm New Password"
+            label="New Password"
             placeholder="Password"
             type="password"
-            id="confirmnewpass"
-            value={newPassword2}
-            setValue={setNewPassword2}
+            id="newpass"
+            value={newPassword}
+            setValue={setNewPassword}
+          />
+          <PasswordComplexity
+            password={newPassword}
+            setComplexity={setPasswordComplexity}
           />
         </SpacerDiv>
-        <BigBlueButton type="submit">
-          <H4 $color="white">Set Password</H4>
-        </BigBlueButton>
-      </SmallCardForm>
-    )
-  );
+        <TextInput
+          label="Confirm New Password"
+          placeholder="Password"
+          type="password"
+          id="confirmnewpass"
+          value={newPassword2}
+          setValue={setNewPassword2}
+        />
+      </SpacerDiv>
+      <BigBlueButton type="submit">
+        <H4 $color="white">Set Password</H4>
+      </BigBlueButton>
+    </SmallCardForm>
+  ) : null;
 }

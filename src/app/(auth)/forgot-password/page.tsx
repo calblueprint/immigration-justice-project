@@ -31,48 +31,43 @@ export default function ForgotPassword() {
     setEmailSentCount(emailSentCount + 1);
   };
 
-  return (
-    <>
-      {!emailSentCount && (
-        <SmallCardForm onSubmit={handleForgotPassword}>
-          <H1>Forgot Password</H1>
-          <TextInput
-            label="Email"
-            placeholder="email@example.com"
-            type="email"
-            id="email"
-            errorText={emailError}
-            value={email}
-            setValue={setEmail}
-          />
-          <BigBlueButton type="submit">
-            <H4 $color="white">Send link to email</H4>
-          </BigBlueButton>
-        </SmallCardForm>
-      )}
-      {emailSentCount > 0 && (
-        <SmallCardForm onSubmit={handleForgotPassword}>
-          <SpacerDiv>
-            <H2>A password reset link has been sent to your email.</H2>
-            <H4 $color={COLORS.greyDark}>
-              This link will direct you to the next step. If you didn’t receive
-              an email, please click Resend Email.
-            </H4>
-            <HorizontalDiv>
-              <Button
-                type="submit"
-                $primaryColor={COLORS.blueMid}
-                $secondaryColor={COLORS.blueDark}
-              >
-                <H4 $color="white">Resend Email</H4>
-              </Button>
-              {emailSentCount > 1 && (
-                <P $color={COLORS.greyMid}>Email has been resent!</P>
-              )}
-            </HorizontalDiv>
-          </SpacerDiv>
-        </SmallCardForm>
-      )}
-    </>
+  return !emailSentCount ? (
+    <SmallCardForm onSubmit={handleForgotPassword}>
+      <H1>Forgot Password</H1>
+      <TextInput
+        label="Email"
+        placeholder="email@example.com"
+        type="email"
+        id="email"
+        errorText={emailError}
+        value={email}
+        setValue={setEmail}
+      />
+      <BigBlueButton type="submit">
+        <H4 $color="white">Send link to email</H4>
+      </BigBlueButton>
+    </SmallCardForm>
+  ) : (
+    <SmallCardForm onSubmit={handleForgotPassword}>
+      <SpacerDiv>
+        <H2>A password reset link has been sent to your email.</H2>
+        <H4 $color={COLORS.greyDark}>
+          This link will direct you to the next step. If you didn’t receive an
+          email, please click Resend Email.
+        </H4>
+        <HorizontalDiv>
+          <Button
+            type="submit"
+            $primaryColor={COLORS.blueMid}
+            $secondaryColor={COLORS.blueDark}
+          >
+            <H4 $color="white">Resend Email</H4>
+          </Button>
+          {emailSentCount > 1 && (
+            <P $color={COLORS.greyMid}>Email has been resent!</P>
+          )}
+        </HorizontalDiv>
+      </SpacerDiv>
+    </SmallCardForm>
   );
 }
