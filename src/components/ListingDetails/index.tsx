@@ -47,7 +47,7 @@ const caseFields: ListingField<CaseListing>[] = [
   // Relief sought
   {
     label: 'Relief Sought',
-    getValue: data => data.relief_codes.join(', ') || 'N/A',
+    getValue: data => data.relief_codes.join(', ') || 'Not Available',
   },
   // Time Commitment
   {
@@ -68,7 +68,9 @@ const caseFields: ListingField<CaseListing>[] = [
   {
     label: 'Adjudicating Agency',
     getValue: data =>
-      data.adjudicating_agency ? parseAgency(data.adjudicating_agency) : 'N/A',
+      data.adjudicating_agency
+        ? parseAgency(data.adjudicating_agency)
+        : 'Not Available',
   },
   // Client Languages
   {
@@ -78,7 +80,7 @@ const caseFields: ListingField<CaseListing>[] = [
   // Client Country of Origin
   {
     label: 'Client Country of Origin',
-    getValue: data => data.country || 'N/A',
+    getValue: data => data.country || 'Not Available',
   },
   // Client vs. Custody Location handled in Component
 ];
@@ -188,7 +190,7 @@ export default function ListingDetails({
               label: listingData.is_detained
                 ? 'Custody Location'
                 : 'Client Location',
-              getValue: data => data.client_location || 'N/A',
+              getValue: data => data.client_location || 'Not Available',
             },
           ]}
           listingData={listingData}
