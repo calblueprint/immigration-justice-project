@@ -38,8 +38,7 @@ export const NoUnderlineLink = styled(LinkColored)<{ isactive: boolean }>`
 `;
 
 export const ActiveUnderline = styled.hr<{ $isActive: boolean }>`
-  opacity: ${props => (props.$isActive ? 1 : 0)};
-  visibility: ${props => (props.$isActive ? 'visible' : 'hidden')};
+  visibility: ${({ $isActive }) => ($isActive ? 'visible' : 'hidden')};
   position: absolute;
   bottom: 0;
   width: 100%;
