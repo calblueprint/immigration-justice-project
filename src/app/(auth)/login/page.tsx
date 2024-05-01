@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
@@ -22,6 +22,18 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState('');
   const { push } = useRouter();
   const validEmail = (e: string) => e !== '' && isEmail(e);
+
+  useEffect(() => {
+    if (auth && auth.userId) {
+      if (profile && profile.profileData) {
+        if (profile.roles.map(r => r.role).includes('ATTORNEY')) push('/cases');
+        else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+          push('/limited-case-assignments');
+        else push('/language-support');
+      }
+      push(CONFIG.onboardingHome);
+    }
+  }, [auth, profile, push]);
 
   const handleSignIn = async () => {
     if (!auth) {
