@@ -103,7 +103,7 @@ export const parseTimeCommitment = (
     (hoursPerWeek === undefined || hoursPerWeek === null) &&
     (numWeeks === undefined || numWeeks === null)
   )
-    return 'N/A';
+    return 'Not Available';
   if (numWeeks === undefined || numWeeks === null)
     return `${hoursPerWeek} hours/week`;
 

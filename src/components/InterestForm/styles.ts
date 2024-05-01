@@ -6,10 +6,12 @@ import { P } from '@/styles/text';
 export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  float: right;
   gap: 16px;
-  margin-left: auto;
+  flex: 1 0 0;
+  align-items: flex-start;
+  /* justify-content: flex-end;
+  float: right;
+  margin-left: auto; */
 `;
 
 export const FormTextArea = styled.textarea`
