@@ -9,9 +9,6 @@ export const FormContainer = styled.div`
   gap: 16px;
   flex: 1 0 0;
   align-items: flex-start;
-  /* justify-content: flex-end;
-  float: right;
-  margin-left: auto; */
 `;
 
 export const FormTextArea = styled.textarea`
