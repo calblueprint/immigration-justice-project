@@ -22,7 +22,7 @@ export default function Page() {
       try {
         const cases = await getAllCases();
         setCaseData(cases);
-        setSelectedListing(cases[0]);
+        if (cases.length > 0) setSelectedListing(cases[0]);
       } catch (error) {
         console.error(error instanceof Error ? error.message : String(error));
       }

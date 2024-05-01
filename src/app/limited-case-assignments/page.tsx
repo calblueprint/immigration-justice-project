@@ -17,7 +17,7 @@ export default function Page() {
       try {
         const lcas = await getAllLCA();
         setLCAData(lcas);
-        setSelectedListing(lcas[0]);
+        if (lcas.length > 0) setSelectedListing(lcas[0]);
       } catch (error) {
         console.error(error instanceof Error ? error.message : String(error));
       }
