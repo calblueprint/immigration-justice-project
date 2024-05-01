@@ -62,6 +62,7 @@ export default function Page() {
         .filter(
           c =>
             languagesFilters.size === 0 ||
+            c.languages.length === 0 ||
             c.languages.find(l => languagesFilters.has(l)),
         )
         .filter(
@@ -83,6 +84,16 @@ export default function Page() {
             const bMissingRemote = nullOrUndefined(b.is_remote);
             if (aMissingRemote || bMissingRemote)
               return boolToInt(aMissingRemote) - boolToInt(bMissingRemote);
+          }
+
+          // if filtering languages
+          if (languagesFilters.size !== 0) {
+            const aMissingLanguages = a.languages.length === 0;
+            const bMissingLanguages = b.languages.length === 0;
+            if (aMissingLanguages || bMissingLanguages)
+              return (
+                boolToInt(aMissingLanguages) - boolToInt(bMissingLanguages)
+              );
           }
 
           // if filtering agency
