@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
 import { verifyUserPassword } from '@/api/supabase/queries/password';
-import { FormDiv, SpacerDiv } from '@/app/(auth)/styles';
+import { SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
+import { SmallCardForm } from '@/styles/containers';
 import { H1, H4, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 
@@ -62,43 +63,39 @@ export default function ResetPassword() {
 
   return (
     canReset && (
-      <form onSubmit={handleResetPassword}>
-        <FormDiv>
-          <SpacerDiv $gap={10}>
-            <H1>Set New Password</H1>
-            {errorMessage !== '' && (
-              <P $color={COLORS.redMid}>{errorMessage}</P>
-            )}
-          </SpacerDiv>
-          <SpacerDiv>
-            <SpacerDiv $gap={8}>
-              <TextInput
-                label="New Password"
-                placeholder="Password"
-                type="password"
-                id="newpass"
-                value={newPassword}
-                setValue={setNewPassword}
-              />
-              <PasswordComplexity
-                password={newPassword}
-                setComplexity={setPasswordComplexity}
-              />
-            </SpacerDiv>
+      <SmallCardForm onSubmit={handleResetPassword}>
+        <SpacerDiv $gap={10}>
+          <H1>Set New Password</H1>
+          {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+        </SpacerDiv>
+        <SpacerDiv>
+          <SpacerDiv $gap={8}>
             <TextInput
-              label="Confirm New Password"
+              label="New Password"
               placeholder="Password"
               type="password"
-              id="confirmnewpass"
-              value={newPassword2}
-              setValue={setNewPassword2}
+              id="newpass"
+              value={newPassword}
+              setValue={setNewPassword}
+            />
+            <PasswordComplexity
+              password={newPassword}
+              setComplexity={setPasswordComplexity}
             />
           </SpacerDiv>
-          <BigBlueButton type="submit">
-            <H4 $color="white">Set Password</H4>
-          </BigBlueButton>
-        </FormDiv>
-      </form>
+          <TextInput
+            label="Confirm New Password"
+            placeholder="Password"
+            type="password"
+            id="confirmnewpass"
+            value={newPassword2}
+            setValue={setNewPassword2}
+          />
+        </SpacerDiv>
+        <BigBlueButton type="submit">
+          <H4 $color="white">Set Password</H4>
+        </BigBlueButton>
+      </SmallCardForm>
     )
   );
 }

@@ -3,11 +3,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
-import { FormDiv, H4Centered, SpacerDiv } from '@/app/(auth)/styles';
+import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import { SmallCardForm } from '@/styles/containers';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
@@ -74,49 +75,47 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSignIn}>
-      <FormDiv>
-        <SpacerDiv $gap={0.625}>
-          <H1>Log In</H1>
-          {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
-        </SpacerDiv>
-        <SpacerDiv $gap={0.8125}>
-          <SpacerDiv>
-            <TextInput
-              label="Email"
-              placeholder="email@example.com"
-              errorText={emailError}
-              type="email"
-              id="email"
-              value={email}
-              setValue={setEmail}
-            />
-            <TextInput
-              label="Password"
-              placeholder="Password"
-              errorText={passwordError}
-              type="password"
-              id="password"
-              value={password}
-              setValue={setPassword}
-            />
-          </SpacerDiv>
-          <P>
-            <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
-              Forgot your password?
-            </LinkColored>
-          </P>
-        </SpacerDiv>
+    <SmallCardForm onSubmit={handleSignIn}>
+      <SpacerDiv $gap={0.625}>
+        <H1>Log In</H1>
+        {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+      </SpacerDiv>
+      <SpacerDiv $gap={0.8125}>
         <SpacerDiv>
-          <BigBlueButton type="submit">Log in</BigBlueButton>
-          <H4Centered>
-            Don’t have an account yet?{' '}
-            <LinkColored $color={COLORS.greyDark} href="/signup">
-              Sign up
-            </LinkColored>
-          </H4Centered>
+          <TextInput
+            label="Email"
+            placeholder="email@example.com"
+            errorText={emailError}
+            type="email"
+            id="email"
+            value={email}
+            setValue={setEmail}
+          />
+          <TextInput
+            label="Password"
+            placeholder="Password"
+            errorText={passwordError}
+            type="password"
+            id="password"
+            value={password}
+            setValue={setPassword}
+          />
         </SpacerDiv>
-      </FormDiv>
-    </form>
+        <P>
+          <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
+            Forgot your password?
+          </LinkColored>
+        </P>
+      </SpacerDiv>
+      <SpacerDiv>
+        <BigBlueButton type="submit">Log in</BigBlueButton>
+        <H4Centered>
+          Don’t have an account yet?{' '}
+          <LinkColored $color={COLORS.greyDark} href="/signup">
+            Sign up
+          </LinkColored>
+        </H4Centered>
+      </SpacerDiv>
+    </SmallCardForm>
   );
 }
