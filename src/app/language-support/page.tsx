@@ -71,6 +71,10 @@ export default function Page() {
     [lsData, typeFilters, languageFilters],
   );
 
+  useEffect(() => {
+    setSelectedListing(filteredLS.length > 0 ? filteredLS[0] : null);
+  }, [filteredLS]);
+
   const resetFilters = useCallback(() => {
     setTypeFilters(new Set());
     setLanguageFilters(new Set());

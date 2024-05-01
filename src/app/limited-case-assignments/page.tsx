@@ -47,6 +47,10 @@ export default function Page() {
     [lcaData, countryFilters, languageFilters],
   );
 
+  useEffect(() => {
+    setSelectedListing(filteredLCA.length > 0 ? filteredLCA[0] : null);
+  }, [filteredLCA]);
+
   const resetFilters = useCallback(() => {
     setCountryFilters(new Set());
     setLanguageFilters(new Set());

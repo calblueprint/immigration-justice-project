@@ -85,6 +85,10 @@ export default function Page() {
     ],
   );
 
+  useEffect(() => {
+    setSelectedListing(filteredCases.length > 0 ? filteredCases[0] : null);
+  }, [filteredCases]);
+
   const resetFilters = useCallback(() => {
     setRemoteFilters(new Set());
     setAgencyFilters(new Set());
