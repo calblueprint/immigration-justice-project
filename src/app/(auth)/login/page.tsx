@@ -6,6 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
@@ -44,7 +45,13 @@ export default function Login() {
     } else {
       profile?.loadProfile();
       setErrorMessage('');
-      push('/cases');
+      // conditional routing after log in
+      if (!profile?.profileData) push(CONFIG.onboardingHome);
+      else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
+        push('/cases');
+      else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+        push('/limited-case-assignments');
+      else push('/language-support');
     }
   };
 
