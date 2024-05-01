@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
 import Link from 'next/link';
-import { openSans } from '@/styles/fonts';
+import styled, { css } from 'styled-components';
+import { sans } from '@/styles/fonts';
 
 /* 
   FOR PRIMARY BUTTON USAGE:
@@ -25,12 +25,41 @@ import { openSans } from '@/styles/fonts';
         [Button text here]
       </Button>
  */
-const ButtonStyles = css<{
+const ButtonStyles = css<{ $primaryColor?: string; $secondaryColor: string }>`
+  ${sans.style}
+  appearance: none;
+  color: ${props => (props.$primaryColor ? 'white' : 'black')};
+  background: ${props => (props.$primaryColor ? props.$primaryColor : 'white')};
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.313rem; // 5px
+  border: 2px solid
+    ${props =>
+      props.$primaryColor ? props.$primaryColor : props.$secondaryColor};
+  cursor: pointer;
+  transition: 150ms ease-in-out;
+  font-size: 1rem;
+  font-weight: 600;
+  &:hover {
+    background: ${props => props.$secondaryColor};
+    color: white;
+    border-color: ${props => props.$secondaryColor};
+  }
+`;
+
+const Button = styled.button`
+  ${ButtonStyles}
+`;
+
+export const LinkButton = styled(Link)`
+  ${ButtonStyles}
+  text-decoration: none;
+`;
+const SmallButtonStyles = css<{
   $primaryColor?: string;
   $secondaryColor: string;
   $fontColor?: string;
 }>`
-  ${openSans.style}
+  ${sans.style}
   appearance: none;
   color: ${props => props.$fontColor || 'black'};
   background: ${props => (props.$primaryColor ? props.$primaryColor : 'white')};
@@ -49,14 +78,12 @@ const ButtonStyles = css<{
     border-color: ${props => props.$secondaryColor};
   }
 `;
-
-const SmallerButton = styled.button`
-  ${ButtonStyles}
+export const SmallerButton = styled.button`
+  ${SmallButtonStyles}
 `;
-
-export const LinkButton = styled(Link)`
-  ${ButtonStyles}
+export const SmallLinkButton = styled(Link)`
+  ${SmallButtonStyles}
   text-decoration: none;
 `;
 
-export default SmallerButton;
+export default Button;

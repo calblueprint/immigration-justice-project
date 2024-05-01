@@ -4,11 +4,11 @@ import { useContext, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProfileButton from '@/components/ProfileButton';
-import { LinkButton } from '@/components/SmallerButton';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
+import { SmallLinkButton } from '../Button';
 import * as Styles from './style';
 
 export default function NavBar() {
@@ -23,27 +23,27 @@ export default function NavBar() {
 
     return (
       <>
-        <LinkButton
+        <SmallLinkButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}
           $fontColor="white"
           href="/login"
         >
           Log In
-        </LinkButton>
-        <LinkButton
+        </SmallLinkButton>
+        <SmallLinkButton
           $primaryColor="white"
           $secondaryColor={COLORS.blueDark}
           $fontColor={COLORS.blueMid}
           href="/signup"
         >
           Sign Up
-        </LinkButton>
+        </SmallLinkButton>
       </>
     );
   }, [profile]);
 
-  function IsActive(path: string): boolean {
+  function useActiveStatus(path: string): boolean {
     const currentPath = usePathname();
     return currentPath.includes(path);
   }
@@ -53,27 +53,26 @@ export default function NavBar() {
     path: string;
     active: boolean;
   };
-  const navlink: NavLink[] = [
-    { name: 'Cases', path: '/cases', active: IsActive('/cases') },
+  const navlinks: NavLink[] = [
+    { name: 'Cases', path: '/cases', active: useActiveStatus('/cases') },
     {
       name: 'Limited Case Assignments',
       path: '/limited-case-assignments',
-      active: IsActive('/limited-case-assignments'),
+      active: useActiveStatus('/limited-case-assignments'),
     },
     {
       name: 'Language Support',
       path: '/language-support',
-      active: IsActive('/language-support'),
+      active: useActiveStatus('/language-support'),
     },
   ];
 
   const renderLink = (link: NavLink) => (
     <Styles.LinkContainer>
       <Flex
+        $direction="column"
+        $justify="center"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
           flex: 1,
         }}
       >
@@ -85,7 +84,7 @@ export default function NavBar() {
           {link.name}
         </Styles.NoUnderlineLink>
       </Flex>
-      <Styles.ActiveUnderline isActive={link.active} />
+      <Styles.ActiveUnderline $isActive={link.active} />
     </Styles.LinkContainer>
   );
 
@@ -100,7 +99,7 @@ export default function NavBar() {
         <Link href="/">
           <Icon type="logo" />
         </Link>
-        {navlink.map(NavLink => renderLink(NavLink))}
+        {navlinks.map(NavLink => renderLink(NavLink))}
       </Styles.NavBarSectionDiv>
       <Styles.NavBarSectionDiv>
         <Styles.AuthButtons>{AuthButtonView}</Styles.AuthButtons>
