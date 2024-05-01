@@ -19,7 +19,7 @@ const LCAInfo = {
   research_topic:
     'Cartel violence and operations in the area of Cuernavaca. Ties between cartel groups in the area and police/government. Police corruption and lack of investigation, impunity toward cartel groups that kidnap and murder in similar types of cases. Human rights violations in Mexico in general.',
   deliverable: 'Annotated Table of Contents with PDF of articles',
-  languages: ['English', 'Spanish'],
+  languages: ['French', 'Spanish'],
   listing_type: 'LCA',
   upload_date: '2024-03-16 19:47:39.385578+00',
 } as LimitedCaseAssignment;
@@ -70,7 +70,7 @@ export default function Page() {
     <Body>
       <CardColumn />
       <CaseDetailsContainer>
-        <ListingDetails listingData={InterpInfo} interpretation />
+        <ListingDetails listingData={LCAInfo} />
       </CaseDetailsContainer>
     </Body>
   );

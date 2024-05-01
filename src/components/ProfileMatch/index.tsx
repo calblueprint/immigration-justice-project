@@ -75,12 +75,8 @@ const startDateMatch: MatchField<
 };
 
 const matchIcon = (match: boolean | undefined) => {
-  if (match === undefined) {
-    return <Icon type="gray_dot" />;
-  }
-  if (match) {
-    return <Icon type="green_check" />; // rename to greenCheck later
-  }
+  if (match === undefined) return <Icon type="grayDot" />;
+  if (match) return <Icon type="greenCheck" />; // rename to greenCheck later
   return <Icon type="redCross" />;
 };
 
@@ -131,8 +127,8 @@ export default function ProfileMatch({
         renderIconGroup(startDateMatch as MatchField<Listing>)}
       <Flex $align="center" $gap="16px">
         <IconDiv>
-          {listingData.listing_type === 'CASE' &&
-          !interpretation &&
+          {((listingData.listing_type === 'CASE' &&
+          !interpretation) || listingData.listing_type === 'LCA') &&
           matchedLanguages.length === 0 ? (
             <Icon type="yellowExclamation" />
           ) : (

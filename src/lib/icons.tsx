@@ -87,7 +87,7 @@ export const IconSvgs = {
       />
     </svg>
   ),
-  green_check: (
+  greenCheck: (
     <svg
       width="17"
       height="12"
@@ -101,7 +101,7 @@ export const IconSvgs = {
       />
     </svg>
   ),
-  gray_dot: (
+  grayDot: (
     <svg
       fill="#818181"
       width="15"
