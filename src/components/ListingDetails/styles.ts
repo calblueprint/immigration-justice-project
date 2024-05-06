@@ -3,7 +3,7 @@ import COLORS from '@/styles/colors';
 import { P } from '@/styles/text';
 
 export const ListingDescription = styled(P)`
-  word-break: break-all;
+  overflow-wrap: break-word;
 `;
 
 export const InfoContainer = styled.div`

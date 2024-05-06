@@ -39,7 +39,7 @@ const timeCommitmentMatch: MatchField<CaseListing> = {
       ? `Your time commitment (${profileData.hours_per_month} hours/month) ${
           match ? 'meets' : 'does not meet'
         } the minimum for this case (${data.hours_per_week * 4} hours/month).`
-      : 'No information available about Time Commitment',
+      : 'No information available about time commitment',
 };
 
 const startDateMatch: MatchField<
@@ -149,7 +149,7 @@ export default function ProfileMatch({
           <Box $h="16px" $w="16px" $textAlign="center">
             <Icon type="grayDot" />
           </Box>
-          <P>No information aboue Languages</P>
+          <P>No information available about languages</P>
         </Flex>
       )}
       <P>

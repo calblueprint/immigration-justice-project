@@ -46,6 +46,7 @@ export const PageContainer = styled.div`
 
 export const ListingCount = styled(H4)`
   margin-bottom: 0.5rem;
+  font-weight: 400;
 `;
 
 export const CardColumnWrapper = styled.div`

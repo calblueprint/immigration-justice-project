@@ -82,7 +82,7 @@ const caseFields: ListingField<CaseListing>[] = [
 const caseInterpretationFields: ListingField<CaseListing>[] = [
   // Languages
   {
-    label: 'Language(s)',
+    label: 'Client Language(s)',
     getValue: data =>
       data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
@@ -106,7 +106,7 @@ const caseInterpretationFields: ListingField<CaseListing>[] = [
 const interpretationFields: ListingField<Interpretation>[] = [
   // Languages
   {
-    label: 'Language(s)',
+    label: 'Client Language(s)',
     getValue: data =>
       data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
