@@ -76,14 +76,15 @@ export default function Home() {
 
   const volunteerLink = useMemo(() => {
     if (!auth) throw new Error('Auth must be defined.');
-    if (!auth.userId) return '/login';
     if (!profile) throw new Error('Profile must be defined.');
+    if (!auth.userId) return profile.profileReady ? '/login' : '';
     if (profile.profileReady && !profile.profileData)
       return CONFIG.onboardingHome;
-    if (profile.roles.map(r => r.role).includes('ATTORNEY')) return '/cases';
+    if (profile.roles.map(r => r.role).includes('ATTORNEY'))
+      return CONFIG.cases;
     if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-      return '/limited-case-assignments';
-    return '/language-support';
+      return CONFIG.lca;
+    return CONFIG.languageSupport;
   }, [auth, profile]);
 
   return (

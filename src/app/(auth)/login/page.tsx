@@ -25,12 +25,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!auth || !auth.userId) return;
-    if (profile && profile.profileData) {
-      if (profile.roles.map(r => r.role).includes('ATTORNEY')) push('/cases');
-      else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-        push('/limited-case-assignments');
-      else push('/language-support');
-    } else push(CONFIG.onboardingHome);
+    push(CONFIG.settings);
   }, [auth, profile, push]);
 
   const handleSignIn = async () => {
