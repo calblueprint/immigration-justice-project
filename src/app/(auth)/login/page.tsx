@@ -24,15 +24,13 @@ export default function Login() {
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   useEffect(() => {
-    if (auth && auth.userId) {
-      if (profile && profile.profileData) {
-        if (profile.roles.map(r => r.role).includes('ATTORNEY')) push('/cases');
-        else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-          push('/limited-case-assignments');
-        else push('/language-support');
-      }
-      push(CONFIG.onboardingHome);
-    }
+    if (!auth || !auth.userId) return;
+    if (profile && profile.profileData) {
+      if (profile.roles.map(r => r.role).includes('ATTORNEY')) push('/cases');
+      else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+        push('/limited-case-assignments');
+      else push('/language-support');
+    } else push(CONFIG.onboardingHome);
   }, [auth, profile, push]);
 
   const handleSignIn = async () => {
@@ -60,10 +58,10 @@ export default function Login() {
       // conditional routing after log in
       if (!profile?.profileData) push(CONFIG.onboardingHome);
       else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
-        push('/cases');
+        push(CONFIG.cases);
       else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-        push('/limited-case-assignments');
-      else push('/language-support');
+        push(CONFIG.lca);
+      else push(CONFIG.languageSupport);
     }
   };
 
