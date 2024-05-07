@@ -24,8 +24,7 @@ export default function Login() {
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   useEffect(() => {
-    if (!auth || !auth.userId) return;
-    push(CONFIG.settings);
+    if (auth && auth.userId) push(CONFIG.settings);
   }, [auth, profile, push]);
 
   const handleSignIn = async () => {
@@ -50,7 +49,7 @@ export default function Login() {
     } else {
       profile?.loadProfile();
       setErrorMessage('');
-      // conditional routing after log in
+      // conditional routing after logging in
       if (!profile?.profileData) push(CONFIG.onboardingHome);
       else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
         push(CONFIG.cases);
