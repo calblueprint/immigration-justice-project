@@ -46,3 +46,10 @@ export const IconTextGroup = styled.div`
   gap: 8px;
   align-items: center;
 `;
+
+export const LanguageSupportLabel = styled.span`
+  ${sans.style}
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: ${COLORS.blueMid};
+`;

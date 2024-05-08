@@ -7,6 +7,23 @@ export const DropdownWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  ::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    position: relative;
+    width: 100%;
+    background: rgba(204, 204, 204, 0.75);
+    border: 5px solid white;
+    border-radius: 20px;
+
+    &:hover {
+      border: 4px solid white;
+      background: rgba(204, 204, 204, 0.9);
+    }
+  }
 `;
 
 const fadeInKeyframes = keyframes`

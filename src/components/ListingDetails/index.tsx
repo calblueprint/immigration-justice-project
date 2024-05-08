@@ -4,7 +4,7 @@ import Icon from '@/components/Icon';
 import InterestForm from '@/components/InterestForm';
 import ProfileMatch from '@/components/ProfileMatch';
 import COLORS from '@/styles/colors';
-import { Flex } from '@/styles/containers';
+import { Box, Flex } from '@/styles/containers';
 import { H2, H3, H4, P, StrongP } from '@/styles/text';
 import {
   CaseListing,
@@ -14,20 +14,16 @@ import {
   Listing,
 } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
-import {
-  formatTimestamp,
-  parseAgency,
-  parseTimeCommitment,
-} from '@/utils/helpers';
+import { formatTimestamp, parseTimeCommitment } from '@/utils/helpers';
 import { useProfile } from '@/utils/ProfileProvider';
 import {
   AuthButtons,
   BorderedSection,
-  CaseDisplay,
   FieldContainer,
   IconTextGroup,
   InfoContainer,
   InnerFieldContainer,
+  ListingDescription,
   Subheading,
 } from './styles';
 
@@ -67,15 +63,13 @@ const caseFields: ListingField<CaseListing>[] = [
   // Adjudicating Agency
   {
     label: 'Adjudicating Agency',
-    getValue: data =>
-      data.adjudicating_agency
-        ? parseAgency(data.adjudicating_agency)
-        : 'Not Available',
+    getValue: data => data.adjudicating_agency ?? 'Not Available',
   },
   // Client Languages
   {
     label: 'Client Language(s)',
-    getValue: data => data.languages.join(', '),
+    getValue: data =>
+      data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
   // Client Country of Origin
   {
@@ -88,8 +82,9 @@ const caseFields: ListingField<CaseListing>[] = [
 const caseInterpretationFields: ListingField<CaseListing>[] = [
   // Languages
   {
-    label: 'Language(s)',
-    getValue: data => data.languages.join(', '),
+    label: 'Client Language(s)',
+    getValue: data =>
+      data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
   // Time Commitment
   {
@@ -111,8 +106,9 @@ const caseInterpretationFields: ListingField<CaseListing>[] = [
 const interpretationFields: ListingField<Interpretation>[] = [
   // Languages
   {
-    label: 'Language(s)',
-    getValue: data => data.languages.join(', '),
+    label: 'Client Language(s)',
+    getValue: data =>
+      data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
   // Remote/In Person
   {
@@ -125,7 +121,8 @@ const docFields: ListingField<DocumentTranslation>[] = [
   // Languages
   {
     label: 'Language(s)',
-    getValue: data => data.languages.join(', '),
+    getValue: data =>
+      data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
   // Number of Pages
   {
@@ -143,7 +140,8 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
   // Language(s)
   {
     label: 'Language(s)',
-    getValue: data => data.languages.join(', '),
+    getValue: data =>
+      data.languages.length > 0 ? data.languages.join(', ') : 'Not Available',
   },
   // Expected Deliverable
   {
@@ -304,7 +302,7 @@ export default function ListingDetails({
   }, [auth, listingData, profile, interpretation]);
 
   return (
-    <CaseDisplay>
+    <Box $position="relative" $w="100%">
       <InfoContainer>
         <BorderedSection>
           {langSupportLabel}
@@ -324,7 +322,9 @@ export default function ListingDetails({
               <Icon type="research" />
               <H4>Research Topic(s)</H4>
             </IconTextGroup>
-            <P>{listingData.research_topic || 'Not Available'}</P>
+            <ListingDescription>
+              {listingData.research_topic || 'Not Available'}
+            </ListingDescription>
           </BorderedSection>
         )}
         <BorderedSection>
@@ -332,11 +332,13 @@ export default function ListingDetails({
             <Icon type="description" />
             <H4>Description</H4>
           </IconTextGroup>
-          <P>{listingData.summary || 'Not Available'}</P>
+          <ListingDescription>
+            {listingData.summary || 'Not Available'}
+          </ListingDescription>
         </BorderedSection>
       </InfoContainer>
       <BorderedSection>{interestSection}</BorderedSection>
-    </CaseDisplay>
+    </Box>
   );
 }
 

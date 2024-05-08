@@ -1,19 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getAllCases } from '@/api/supabase/queries/cases';
 import { getAllDocuments } from '@/api/supabase/queries/documentTranslation';
 import { getAllInterpretation } from '@/api/supabase/queries/interpretation';
-import { AllLanguageSupport } from '@/types/schema';
+import ListingPage from '@/components/ListingPage';
+import { LanguageSupport, Listing } from '@/types/schema';
 import { timestampStringToDate } from '@/utils/helpers';
 
-export default function Page() {
-  const [allLanguageSupport, setAllLanguageSupport] = useState<
-    AllLanguageSupport[]
-  >([]);
+const typeOptions = new Map([
+  ['DOC', 'Document Translation'],
+  ['INT', 'One-time Interpretation'],
+  ['CASE', 'Case Interpretation'],
+]);
 
+export default function Page() {
+  const [lsData, setLSData] = useState<LanguageSupport[]>([]);
+  const [typeFilters, setTypeFilters] = useState(new Set<string>());
+  const [languageFilters, setLanguageFilters] = useState(new Set<string>());
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
+
+  // load language support on first render
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       try {
         const [docListings, intListings, casesInterpretationListings] =
           await Promise.all([
@@ -21,107 +30,79 @@ export default function Page() {
             getAllInterpretation(),
             getAllCases(),
           ]);
+
         const sortedLS = [...docListings, ...intListings].sort(
           (a, b) =>
             timestampStringToDate(b.upload_date).getTime() -
             timestampStringToDate(a.upload_date).getTime(),
         );
-        setAllLanguageSupport([
+
+        const lsDataToSet = [
           ...casesInterpretationListings.filter(
             caseInterpretation => caseInterpretation.needs_interpreter === true,
           ),
           ...sortedLS,
-        ]);
+        ];
+
+        setLSData(lsDataToSet);
+        if (lsDataToSet.length > 0) setSelectedListing(lsDataToSet[0]);
       } catch (error) {
         console.error('(useEffect)[LanguageSupport]', error);
       }
-    };
-
-    fetchData();
+    })();
   }, []);
 
-  const getIsRemoteValue = (isRemote: boolean | undefined) => {
-    if (isRemote === true) {
-      return 'true';
-    }
-    if (isRemote === false) {
-      return 'false';
-    }
-    return 'null';
-  };
+  const languageOptions = useMemo(
+    () => new Set(lsData.flatMap(ls => ls.languages)),
+    [lsData],
+  );
 
-  const allLangSupportRow = (ls: AllLanguageSupport) => {
-    if (ls.listing_type === 'INT') {
-      return (
-        <tr key={ls.id}>
-          <td>{ls.id}</td>
-          <td>{ls.title}</td>
-          <td>{ls.summary}</td>
-          <td>{ls.languages.join(', ')}</td>
-          <td>{getIsRemoteValue(ls.is_remote)}</td>
-          <td>{ls.listing_type}</td>
-          <td>N/A</td>
-          <td>{ls.upload_date}</td>
-          <td>N/A</td>
-          <td>N/A</td>
-          <td>N/A</td>
-        </tr>
-      );
-    }
-    if (ls.listing_type === 'DOC') {
-      return (
-        <tr key={ls.id}>
-          <td>{ls.id}</td>
-          <td>{ls.title}</td>
-          <td>{ls.summary}</td>
-          <td>{ls.languages.join(', ')}</td>
-          <td>Asynchronous</td>
-          <td>{ls.listing_type}</td>
-          <td>{ls.deadline}</td>
-          <td>{ls.upload_date}</td>
-          <td>N/A</td>
-          <td>N/A</td>
-          <td>{ls.num_pages}</td>
-        </tr>
-      );
-    }
-    return (
-      <tr key={ls.id}>
-        <td>{ls.id}</td>
-        <td>{ls.title}</td>
-        <td>{ls.summary}</td>
-        <td>{ls.languages.join(', ')}</td>
-        <td>{getIsRemoteValue(ls.is_remote)}</td>
-        <td>Case Interpretation</td>
-        <td>N/A</td>
-        <td>{ls.upcoming_date}</td>
-        <td>{ls.num_weeks}</td>
-        <td>{ls.hours_per_week}</td>
-        <td>N/A</td>
-      </tr>
-    );
-  };
+  const filteredLS = useMemo(
+    () =>
+      lsData
+        .filter(
+          ls => typeFilters.size === 0 || typeFilters.has(ls.listing_type),
+        )
+        .filter(
+          ls =>
+            languageFilters.size === 0 ||
+            ls.languages.find(l => languageFilters.has(l)),
+        ),
+    [lsData, typeFilters, languageFilters],
+  );
+
+  useEffect(() => {
+    setSelectedListing(filteredLS.length > 0 ? filteredLS[0] : null);
+  }, [filteredLS]);
+
+  const resetFilters = useCallback(() => {
+    setTypeFilters(new Set());
+    setLanguageFilters(new Set());
+  }, []);
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>summary</th>
-            <th>language</th>
-            <th>is_remote</th>
-            <th>listing_type</th>
-            <th>deadline</th>
-            <th>upcoming_date</th>
-            <th>num_weeks</th>
-            <th>hours_per_week</th>
-            <th>num_pages</th>
-          </tr>
-        </thead>
-        <tbody>{allLanguageSupport.map(l => allLangSupportRow(l))}</tbody>
-      </table>
-    </div>
+    <ListingPage
+      filters={[
+        {
+          id: 'type',
+          options: typeOptions,
+          value: typeFilters,
+          onChange: newValue => setTypeFilters(newValue),
+          placeholder: 'Interpretation Type',
+        },
+        {
+          id: 'languages',
+          options: languageOptions,
+          value: languageFilters,
+          onChange: newValue => setLanguageFilters(newValue),
+          placeholder: 'Language(s)',
+        },
+      ]}
+      filteredListings={filteredLS}
+      resetFilters={resetFilters}
+      selectedListing={selectedListing}
+      setSelectedListing={listing => setSelectedListing(listing)}
+      interpretation
+    />
   );
 }

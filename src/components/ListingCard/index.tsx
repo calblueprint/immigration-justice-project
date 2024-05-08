@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 import { UUID } from 'crypto';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { H4, P } from '@/styles/text';
+import { H4, MediumSpan, P } from '@/styles/text';
 import { Listing } from '@/types/schema';
-import { formatTimestamp, parseAgency } from '@/utils/helpers';
+import { formatTimestamp } from '@/utils/helpers';
 import Icon from '../Icon';
 import * as Styles from './styles';
 
@@ -21,6 +21,14 @@ export default function ListingCard({
   onClick?: (id: UUID) => void;
   interpretation?: boolean;
 }) {
+  const interpretationType = useMemo(() => {
+    if (listing.listing_type === 'CASE' && listing.needs_interpreter)
+      return 'Case Interpretation';
+    if (listing.listing_type === 'DOC') return 'Document Translation';
+    if (listing.listing_type === 'INT') return 'One-time Interpretation';
+    return '';
+  }, [listing]);
+
   // list of tags to display
   const cardTags = useMemo(() => {
     const tags = [];
@@ -47,11 +55,6 @@ export default function ListingCard({
       tags.push(langTag);
     }
 
-    // case interpretation
-    if (listing.listing_type === 'CASE' && interpretation) {
-      tags.push('Case Interpretation');
-    }
-
     // limited case assignment
     if (listing.listing_type === 'LCA') {
       tags.push(listing.country);
@@ -61,11 +64,6 @@ export default function ListingCard({
     if (listing.listing_type === 'DOC') {
       const plural = listing.num_pages > 1 ? 's' : '';
       tags.push(`${listing.num_pages} page${plural}`);
-      tags.push('Document Translation');
-    }
-
-    if (listing.listing_type === 'INT') {
-      tags.push('Interpretation');
     }
 
     return tags;
@@ -87,6 +85,12 @@ export default function ListingCard({
       $selected={isSelected}
       onClick={() => onClick?.(listing.id)}
     >
+      {interpretation && (
+        <Styles.LanguageSupportLabel>
+          {interpretationType}
+        </Styles.LanguageSupportLabel>
+      )}
+
       <H4>{listing.title || 'Migrant seeking representation'}</H4>
 
       {cardTags.length > 0 && (
@@ -105,25 +109,23 @@ export default function ListingCard({
           <P>{remoteInfo}</P>
         </Styles.IconTextGroup>
 
-        {listing.listing_type === 'CASE' &&
-        !interpretation &&
-        listing.adjudicating_agency ? (
+        {listing.listing_type === 'CASE' && !interpretation ? (
           <Styles.IconTextGroup>
             <Icon type="gavel" />
-            <P>{parseAgency(listing.adjudicating_agency)}</P>
+            <P>{listing.adjudicating_agency ?? 'Not Available'}</P>
           </Styles.IconTextGroup>
         ) : null}
       </Flex>
 
       {listing.listing_type !== 'INT' ? (
-        <Flex $align="center" $gap="8px">
+        <Flex $gap="8px">
           <Icon type="calendar" />
           <P>
-            <strong>
+            <MediumSpan>
               {listing.listing_type === 'CASE'
                 ? 'Next Filing/Court Date:'
                 : 'Assignment Deadline:'}
-            </strong>
+            </MediumSpan>
             &nbsp;
             {listing.listing_type === 'CASE'
               ? formatTimestamp(listing.upcoming_date)

@@ -38,19 +38,6 @@ export const parseDateAlt = (d: Date): string =>
 export const isValidBarNumber = (b: string): boolean => /^\d{1,6}$/.test(b);
 
 /**
- * Parses the adjudicating agency to normal words & acronyms.
- * @param agency - a case's adjudicating agency.
- * @returns a correctly formatted string for the adjudicating agency
- */
-export const parseAgency = (agency: string): string =>
-  agency.length <= 5
-    ? agency.toUpperCase()
-    : agency
-        .split('_')
-        .map(w => w.charAt(0).toUpperCase() + w.toLowerCase().substring(1))
-        .join(' ');
-
-/**
  * @param d - string in date format (i.e. yyyy-mm-dd)
  * @returns JS Date in UTC-0 timezone
  */
@@ -199,3 +186,9 @@ export const parseDateString = (ds: string): Date => {
  */
 export const capitalize = (word: string): string =>
   `${word.at(0)?.toUpperCase()}${word.slice(1)}`;
+
+// checks if value is null or undefined
+export const nullOrUndefined = (x: unknown) => x === null || x === undefined;
+
+// parses bool to int
+export const boolToInt = (x: boolean) => (x ? 1 : 0);

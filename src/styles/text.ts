@@ -61,6 +61,10 @@ export const StrongP = styled(P)`
   font-weight: 700;
 `;
 
+export const MediumSpan = styled.span<TextProps>`
+  font-weight: 500;
+`;
+
 interface LabelProps extends TextProps {
   $required?: boolean;
 }

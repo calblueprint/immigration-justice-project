@@ -39,7 +39,7 @@ const timeCommitmentMatch: MatchField<CaseListing> = {
       ? `Your time commitment (${profileData.hours_per_month} hours/month) ${
           match ? 'meets' : 'does not meet'
         } the minimum for this case (${data.hours_per_week * 4} hours/month).`
-      : 'No information available about Time Commitment',
+      : 'No information available about time commitment',
 };
 
 const startDateMatch: MatchField<
@@ -56,8 +56,8 @@ const startDateMatch: MatchField<
   getText: (data, profileData, match) => {
     const dateName =
       data.listing_type === 'CASE'
-        ? 'Next Court Hearing/Filing Date'
-        : 'Deadline';
+        ? 'next court hearing/filing date'
+        : 'deadline';
     const listingDate = formatTimestamp(
       data.listing_type === 'CASE' ? data.upcoming_date : data.deadline,
     );
@@ -90,6 +90,7 @@ export default function ProfileMatch({
       'Profile must be complete before ProfileMatch is displayed.',
     );
   }
+
   const { languages, profileData } = profile;
   const matchedLanguages = useMemo(
     () =>
@@ -124,24 +125,33 @@ export default function ProfileMatch({
         renderIconGroup(timeCommitmentMatch as MatchField<Listing>)}
       {listingData.listing_type !== 'INT' &&
         renderIconGroup(startDateMatch as MatchField<Listing>)}
-      <Flex $align="center" $gap="16px">
-        <Box $h="16px" $w="16px" $textAlign="center">
-          {((listingData.listing_type === 'CASE' && !interpretation) ||
-            listingData.listing_type === 'LCA') &&
-          matchedLanguages.length === 0 ? (
-            <Icon type="yellowExclamation" />
-          ) : (
-            matchIcon(matchedLanguages.length > 0)
-          )}
-        </Box>
-        <P>
-          You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
-          {matchedLanguages.length > 0
-            ? formatEnumeration(matchedLanguages, 'and')
-            : formatEnumeration(listingData.languages, 'or')}{' '}
-          in your languages.
-        </P>
-      </Flex>
+      {listingData.languages.length > 0 ? (
+        <Flex $align="center" $gap="16px">
+          <Box $h="16px" $w="16px" $textAlign="center">
+            {((listingData.listing_type === 'CASE' && !interpretation) ||
+              listingData.listing_type === 'LCA') &&
+            matchedLanguages.length === 0 ? (
+              <Icon type="yellowExclamation" />
+            ) : (
+              matchIcon(matchedLanguages.length > 0)
+            )}
+          </Box>
+          <P>
+            You {matchedLanguages.length > 0 ? '' : "don't "}list{' '}
+            {matchedLanguages.length > 0
+              ? formatEnumeration(matchedLanguages, 'and')
+              : formatEnumeration(listingData.languages, 'or')}{' '}
+            in your languages.
+          </P>
+        </Flex>
+      ) : (
+        <Flex $align="center" $gap="16px">
+          <Box $h="16px" $w="16px" $textAlign="center">
+            <Icon type="grayDot" />
+          </Box>
+          <P>No information available about languages</P>
+        </Flex>
+      )}
       <P>
         Go to{' '}
         <LinkColored $color={COLORS.blueMid} href={CONFIG.settings}>
