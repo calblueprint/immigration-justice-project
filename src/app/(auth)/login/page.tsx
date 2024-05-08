@@ -1,11 +1,12 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
 import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
@@ -19,8 +20,14 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [finishLogin, setFinishLogin] = useState(false);
   const { push } = useRouter();
   const validEmail = (e: string) => e !== '' && isEmail(e);
+
+  useEffect(() => {
+    if (!auth) throw new Error('Auth must be defined');
+    if (auth.userId && !finishLogin) push(CONFIG.settings);
+  }, [auth, profile, push]);
 
   const handleSignIn = async () => {
     if (!auth) {
@@ -44,7 +51,17 @@ export default function Login() {
     } else {
       profile?.loadProfile();
       setErrorMessage('');
-      push('/cases');
+      setFinishLogin(true);
+
+      // conditional routing after logging in
+      if (profile?.profileReady) {
+        if (!profile?.profileData) push(CONFIG.onboardingHome);
+        else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
+          push(CONFIG.cases);
+        else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+          push(CONFIG.lca);
+        else push(CONFIG.languageSupport);
+      }
     }
   };
 
