@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { UUID } from 'crypto';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { H4, P } from '@/styles/text';
+import { H4, MediumSpan, P } from '@/styles/text';
 import { Listing } from '@/types/schema';
 import { formatTimestamp } from '@/utils/helpers';
 import Icon from '../Icon';
@@ -118,14 +118,14 @@ export default function ListingCard({
       </Flex>
 
       {listing.listing_type !== 'INT' ? (
-        <Flex $align="center" $gap="8px">
+        <Flex $gap="8px">
           <Icon type="calendar" />
           <P>
-            <strong>
+            <MediumSpan>
               {listing.listing_type === 'CASE'
                 ? 'Next Filing/Court Date:'
                 : 'Assignment Deadline:'}
-            </strong>
+            </MediumSpan>
             &nbsp;
             {listing.listing_type === 'CASE'
               ? formatTimestamp(listing.upcoming_date)
