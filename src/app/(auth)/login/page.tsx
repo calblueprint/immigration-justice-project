@@ -20,12 +20,13 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [finishLogin, setFinishLogin] = useState(false);
   const { push } = useRouter();
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   useEffect(() => {
     if (!auth) throw new Error('Auth must be defined');
-    if (auth.userId) push(CONFIG.settings);
+    if (auth.userId && !finishLogin) push(CONFIG.settings);
   }, [auth, profile, push]);
 
   const handleSignIn = async () => {
@@ -50,6 +51,8 @@ export default function Login() {
     } else {
       profile?.loadProfile();
       setErrorMessage('');
+      setFinishLogin(true);
+
       // conditional routing after logging in
       if (profile?.profileReady) {
         if (!profile?.profileData) push(CONFIG.onboardingHome);
