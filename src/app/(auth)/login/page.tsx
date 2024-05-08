@@ -24,7 +24,8 @@ export default function Login() {
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   useEffect(() => {
-    if (auth && auth.userId) push(CONFIG.settings);
+    if (!auth) throw new Error('Auth must be defined');
+    if (auth.userId) push(CONFIG.settings);
   }, [auth, profile, push]);
 
   const handleSignIn = async () => {
@@ -50,12 +51,14 @@ export default function Login() {
       profile?.loadProfile();
       setErrorMessage('');
       // conditional routing after logging in
-      if (!profile?.profileData) push(CONFIG.onboardingHome);
-      else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
-        push(CONFIG.cases);
-      else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-        push(CONFIG.lca);
-      else push(CONFIG.languageSupport);
+      if (profile?.profileReady) {
+        if (!profile?.profileData) push(CONFIG.onboardingHome);
+        else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
+          push(CONFIG.cases);
+        else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
+          push(CONFIG.lca);
+        else push(CONFIG.languageSupport);
+      }
     }
   };
 
