@@ -9,6 +9,7 @@ import { Flex } from '@/styles/containers';
 import { ProfileContext } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
 import { SmallLinkButton } from '../Button';
+import {LinkButton} from '../Buttons'
 import * as Styles from './style';
 
 export default function NavBar() {
@@ -23,22 +24,22 @@ export default function NavBar() {
 
     return (
       <>
-        <SmallLinkButton
+        <LinkButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}
-          $fontColor="white"
+          // $fontColor="white"
           href="/login"
         >
           Log In
-        </SmallLinkButton>
-        <SmallLinkButton
+        </LinkButton>
+        <LinkButton
           $primaryColor="white"
           $secondaryColor={COLORS.blueDark}
-          $fontColor={COLORS.blueMid}
+          // $fontColor={COLORS.blueMid}
           href="/signup"
         >
           Sign Up
-        </SmallLinkButton>
+        </LinkButton>
       </>
     );
   }, [profile]);
