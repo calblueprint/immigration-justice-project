@@ -2,17 +2,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { P, H3 } from '@/styles/text';
+import { P } from '@/styles/text';
 import { IconType } from '@/lib/icons';
 import { Flex } from '@/styles/containers';
 import FooterImage from '../../../public/images/footer-image.webp';
-import {
-  FooterContainer,
-  FooterSection,
-  FooterDiv,
-  IconDiv,
-  FooterLink,
-} from './styles';
+import * as Styles from './styles';
 import Icon from '../Icon';
 
 type SocialLink = {
@@ -35,9 +29,9 @@ const socialLinks: SocialLink[] = [
 
 export default function Footer() {
   return (
-    <FooterContainer>
-      <FooterDiv>
-        <FooterSection>
+    <Styles.FooterContainer>
+      <Styles.FooterDiv>
+        <Styles.FooterSection>
           <Image
             alt="footer image"
             src={FooterImage.src}
@@ -48,8 +42,10 @@ export default function Footer() {
             height={66}
           />
           <hr style={{ width: '160px' }} />
-          <P $color="white">2727 Camino del Rio S</P>
-          <P $color="white">©2024 by Immigration Justice Project Pro Bono</P>
+          <P $color="white">
+            2727 Camino del Rio South, Suite 320 San Diego, CA 92108
+          </P>
+          <P $color="white">©2024 by ABA Immigration Justice Project</P>
           <Flex
             $direction="row"
             $gap="10px"
@@ -57,46 +53,52 @@ export default function Footer() {
             $px="0px"
             $align="center"
           >
-            <FooterLink
+            <Styles.FooterLink
               $color="white"
               href="https://calblueprint.org/"
-              style={{ fontSize: '0.9rem' }}
+              style={{ fontSize: '0.938rem' }}
             >
               Made By Cal BluePrint
-            </FooterLink>
+            </Styles.FooterLink>
             <Icon type="blueprint" />
           </Flex>
-        </FooterSection>
-      </FooterDiv>
-      <FooterDiv>
-        <FooterSection>
-          <H3 $color="white">Resources</H3>
+        </Styles.FooterSection>
+      </Styles.FooterDiv>
+      <Styles.FooterDiv>
+        <Styles.FooterSection>
+          <Styles.Header>Resources</Styles.Header>
           <hr style={{ width: '40px' }} />
-          <FooterLink $color="white" href="https://www.americanbar.org/">
+          <Styles.FooterLink $color="white" href="https://www.americanbar.org/">
             ABA Website
-          </FooterLink>
-          <FooterLink
+          </Styles.FooterLink>
+          <Styles.FooterLink
             $color="white"
             href="https://www.americanbar.org/groups/public_interest/immigration/"
           >
-            IJP Commission
-          </FooterLink>
+            ABA Commission on Immigration
+          </Styles.FooterLink>
+          <Styles.FooterLink
+            $color="white"
+            href="https://www.americanbar.org/groups/public_interest/immigration/projects_initiatives/immigration-justice-project/"
+          >
+            ABA IJP Website
+          </Styles.FooterLink>
           <P $color="white">Hotline: 619-641-7510</P>
-        </FooterSection>
-        <FooterSection>
-          <H3 $color="white">Contact Us</H3>
+        </Styles.FooterSection>
+        <Styles.FooterSection>
+          <Styles.Header>Contact Us</Styles.Header>
           <hr style={{ width: '2.5rem' }} />
           <P $color="white">Email: probono@abaijp.org</P>
           <P $color="white">Phone: 619-255-8829</P>
-          <IconDiv>
+          <Styles.IconDiv>
             {socialLinks.map(({ href, type }) => (
               <Link key={type} href={href}>
                 <Icon type={type} />
               </Link>
             ))}
-          </IconDiv>
-        </FooterSection>
-      </FooterDiv>
-    </FooterContainer>
+          </Styles.IconDiv>
+        </Styles.FooterSection>
+      </Styles.FooterDiv>
+    </Styles.FooterContainer>
   );
 }

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { LinkColored } from '@/styles/text';
+import { openSans } from '@/styles/fonts';
 
 export const FooterContainer = styled.div`
   width: 100%;
@@ -15,6 +16,7 @@ export const FooterContainer = styled.div`
 
 export const FooterSection = styled.div`
   display: flex;
+  width: 16rem;
   flex-direction: column;
   gap: 10px;
 `;
@@ -33,6 +35,12 @@ export const IconDiv = styled.div`
 
 export const FooterLink = styled(LinkColored)`
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.938rem;
   font-weight: 400px;
+`;
+export const Header = styled.p`
+  ${openSans.style}
+  font-size: 1.25rem;
+  color: white;
+  font-weight: 600;
 `;
