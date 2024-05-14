@@ -22,7 +22,8 @@ export default function ForgotPassword() {
       return;
     }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:3000/reset-password', // TEMPORARY SWITCH BACK FOR TESTING
+      redirectTo:
+        'https://immigration-justice-project.vercel.app/reset-password',
     });
     if (error) {
       setEmailError('Something went wrong. Please try again later.');
