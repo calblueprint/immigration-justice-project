@@ -48,7 +48,7 @@ export const PCentered = styled(P)`
 `;
 
 export const AuthHeading = styled(H1)`
-  font-size: 48px;
+  font-size: 3rem;
   font-style: normal;
 `;
 
