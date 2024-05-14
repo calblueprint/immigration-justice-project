@@ -44,7 +44,7 @@ export default function SignUp() {
     }
     setEmailError('');
     setPasswordError('');
-    const error = await auth.signUp(email, password, {
+    const { error } = await auth.signUp(email, password, {
       emailRedirectTo:
         'https://immigration-justice-project.vercel.app/email-verified',
     });
@@ -74,82 +74,71 @@ export default function SignUp() {
     }
   };
 
-  return (
-    <>
-      {!emailSentCount && (
-        <SmallCardForm onSubmit={handleSignUp}>
-          <Flex $direction="column" $gap="10px">
-            <H1>Sign Up</H1>
-            {errorMessage !== '' && (
-              <P $color={COLORS.redMid}>{errorMessage}</P>
-            )}
-          </Flex>
-          <TextInput
-            label="Email"
-            placeholder="email@example.com"
-            errorText={emailError}
-            type="email"
-            id="email"
-            value={email}
-            setValue={setEmail}
-          />
-          <Flex $direction="column" $gap="8px">
-            <TextInput
-              label="Password"
-              placeholder="Password"
-              errorText={passwordError}
-              type="password"
-              id="password"
-              value={password}
-              setValue={setPassword}
-            />
-            <PasswordComplexity
-              password={password}
-              setComplexity={setPasswordComplexity}
-            />
-          </Flex>
-          <TextInput
-            label="Confirm Password"
-            placeholder="Confirm Password"
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            setValue={setConfirmPassword}
-          />
-          <Flex $direction="column" $gap="20px">
-            <BigBlueButton type="submit">Sign Up</BigBlueButton>
-            <H4Centered>
-              Have an account already?{' '}
-              <LinkColored $color={COLORS.greyDark} href="/login">
-                Log In
-              </LinkColored>
-            </H4Centered>
-          </Flex>
-        </SmallCardForm>
-      )}
-      {emailSentCount > 0 && (
-        <SmallCardForm onSubmit={handleSignUp}>
-          <Flex $direction="column" $gap="20px">
-            <H2>An email verification link has been sent.</H2>
-            <H4 $color={COLORS.greyDark}>
-              This link will direct you to the next step. If you didn’t receive
-              an email, please click Resend Email.
-            </H4>
-            <HorizontalDiv>
-              <Button
-                $primaryColor={COLORS.blueMid}
-                $secondaryColor={COLORS.blueDark}
-                onClick={handleResendEmail}
-              >
-                <H4 $color="white">Resend Email</H4>
-              </Button>
-              {emailSentCount > 1 && (
-                <P $color={COLORS.greyMid}>Email has been resent!</P>
-              )}
-            </HorizontalDiv>
-          </Flex>
-        </SmallCardForm>
-      )}
-    </>
+  return !emailSentCount ? (
+    <SmallCardForm onSubmit={handleSignUp}>
+      <Flex $direction="column" $gap="10px">
+        <H1>Sign Up</H1>
+        {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+      </Flex>
+      <TextInput
+        label="Email"
+        placeholder="email@example.com"
+        errorText={emailError}
+        type="email"
+        id="email"
+        value={email}
+        setValue={setEmail}
+      />
+      <Flex $direction="column" $gap="8px">
+        <TextInput
+          label="Password"
+          placeholder="Password"
+          errorText={passwordError}
+          type="password"
+          id="password"
+          value={password}
+          setValue={setPassword}
+        />
+        <PasswordComplexity
+          password={password}
+          setComplexity={setPasswordComplexity}
+        />
+      </Flex>
+      <TextInput
+        label="Confirm Password"
+        placeholder="Confirm Password"
+        type="password"
+        id="confirmPassword"
+        value={confirmPassword}
+        setValue={setConfirmPassword}
+      />
+      <Flex $direction="column" $gap="20px">
+        <BigBlueButton type="submit">Sign Up</BigBlueButton>
+        <H4Centered>
+          Have an account already?{' '}
+          <LinkColored $color={COLORS.greyDark} href="/login">
+            Log In
+          </LinkColored>
+        </H4Centered>
+      </Flex>
+    </SmallCardForm>
+  ) : (
+    <SmallCardForm onSubmit={handleResendEmail}>
+      <Flex $direction="column" $gap="20px">
+        <H2>An email verification link has been sent.</H2>
+        <H4 $color={COLORS.greyDark}>
+          This link will direct you to the next step. If you didn’t receive an
+          email, please click Resend Email.
+        </H4>
+        <HorizontalDiv>
+          <BigBlueButton type="submit">
+            <H4 $color="white">Resend Email</H4>
+          </BigBlueButton>
+          {emailSentCount > 1 && (
+            <P $color={COLORS.greyMid}>Email has been resent!</P>
+          )}
+        </HorizontalDiv>
+      </Flex>
+    </SmallCardForm>
   );
 }

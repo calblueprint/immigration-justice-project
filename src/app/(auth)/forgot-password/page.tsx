@@ -25,13 +25,13 @@ export default function ForgotPassword() {
       redirectTo: 'http://localhost:3000/reset-password', // TEMPORARY SWITCH BACK FOR TESTING
     });
     if (error) {
-      setEmailError(error.message);
+      setEmailError('Something went wrong. Please try again later.');
       return;
     }
     setEmailSentCount(emailSentCount + 1);
   };
 
-  return !emailSentCount ? (
+  return emailSentCount === 0 ? (
     <SmallCardForm onSubmit={handleForgotPassword}>
       <H1>Forgot Password</H1>
       <TextInput
@@ -56,13 +56,9 @@ export default function ForgotPassword() {
           email, please click Resend Email.
         </H4>
         <HorizontalDiv>
-          <Button
-            type="submit"
-            $primaryColor={COLORS.blueMid}
-            $secondaryColor={COLORS.blueDark}
-          >
+          <BigBlueButton type="submit">
             <H4 $color="white">Resend Email</H4>
-          </Button>
+          </BigBlueButton>
           {emailSentCount > 1 && (
             <P $color={COLORS.greyMid}>Email has been resent!</P>
           )}

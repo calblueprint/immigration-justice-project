@@ -19,7 +19,7 @@ const PasswordRequirementDiv = styled.div`
 
 const PasswordRequirementText = styled.p<{ $met: boolean }>`
   ${sans.style}
-  color: ${props => (props.$met ? COLORS.green : COLORS.greyMid)};
+  color: ${({ $met }) => ($met ? COLORS.green : COLORS.grayMid)};
 `;
 
 function PasswordRequirement({ met, text }: { met: boolean; text: string }) {

@@ -22,7 +22,7 @@ export interface AuthContextType {
     email: string,
     password: string,
     options: object,
-  ) => Promise<{ name: string; message: string } | null>;
+  ) => Promise<AuthResponse>;
 }
 
 export type SignUpOptions = {
@@ -95,33 +95,32 @@ export default function AuthProvider({
   // sign up and set the session, userId, and userEmail
   const signUp = useCallback(
     async (email: string, password: string, options: SignUpOptions) => {
-      const { data, error } = await supabase.auth.signUp({
+      const value = await supabase.auth.signUp({
         email,
         password,
         options,
       }); // will trigger onAuthStateChange to update the session
 
-      let authError = null;
-
       // This code is largely taken from https://github.com/orgs/supabase/discussions/1282#discussioncomment-5230475
 
       // User exists, but is fake. See https://supabase.com/docs/reference/javascript/auth-signup
       if (
-        data.user &&
-        data.user.identities &&
-        data.user.identities.length === 0
+        value.data.user &&
+        value.data.user.identities &&
+        value.data.user.identities.length === 0
       ) {
-        authError = {
-          name: 'auth api error',
-          message: 'A user account with this email already exists',
-        };
-      } else if (error) {
-        authError = {
-          name: error.name,
-          message: error.message,
-        };
+        const authError = new AuthError(
+          'A user account with this email already exists',
+        );
+        value.error = authError;
       }
-      return authError;
+      // } else if (error) {
+      //   authError = {
+      //     name: error.name,
+      //     message: error.message,
+      //   };
+      // }
+      return value;
     },
     [],
   );
