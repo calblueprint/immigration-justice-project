@@ -50,12 +50,10 @@ export default function AuthProvider({
   const setAll = useCallback((newSession: Session | null) => {
     if (!newSession) return;
     setSession(newSession);
-    if (newSession?.user?.id) {
-      const sessionUserId = newSession.user.id as UUID;
-      const sessionUserEmail = newSession.user.email;
-      setUserId(sessionUserId);
-      setUserEmail(sessionUserEmail);
-    }
+    const sessionUserId = (newSession.user.id as UUID) ?? undefined;
+    const sessionUserEmail = newSession.user.email ?? undefined;
+    setUserId(sessionUserId);
+    setUserEmail(sessionUserEmail);
   }, []);
 
   // on page load, check if there's a session and set it

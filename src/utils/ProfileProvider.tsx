@@ -9,6 +9,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { UUID } from 'crypto';
 import {
   deleteLanguages,
   deleteRoles,
@@ -30,6 +31,12 @@ import {
 } from '@/types/schema';
 import { useAuth } from '@/utils/AuthProvider';
 
+interface LoadedProfileData {
+  profileData: Profile | null;
+  languages: ProfileLanguage[];
+  roles: ProfileRole[];
+}
+
 interface ProfileContextType {
   profileData: Profile | null;
   languages: ProfileLanguage[];
@@ -43,7 +50,7 @@ interface ProfileContextType {
     languages: ProfileLanguage[],
     roles: ProfileRole[],
   ) => Promise<void>;
-  loadProfile: () => Promise<void>;
+  loadProfile: (id?: string) => Promise<LoadedProfileData | null>;
 }
 
 export const ProfileContext = createContext<ProfileContextType | undefined>(
@@ -63,22 +70,36 @@ export default function ProfileProvider({ children }: { children: ReactNode }) {
   const [profileRoles, setProfileRoles] = useState<ProfileRole[]>([]);
   const { userId } = auth;
 
-  const loadProfile = useCallback(async () => {
-    setProfileReady(false);
+  const loadProfile = useCallback(
+    async (id?: string) => {
+      setProfileReady(false);
 
-    if (!userId) {
+      if (!userId && !id) {
+        setProfileReady(true);
+        return null;
+      }
+
+      const fetchId = (id || userId) as UUID;
+
+      const [fetchedProfileData, languagesData, rolesData] = await Promise.all([
+        fetchProfileById(fetchId),
+        fetchLanguagesById(fetchId),
+        fetchRolesById(fetchId),
+      ]);
+
+      setProfileData(fetchedProfileData);
+      setProfileLangs(languagesData);
+      setProfileRoles(rolesData);
       setProfileReady(true);
-      return;
-    }
 
-    await Promise.all([
-      fetchProfileById(userId).then(data => setProfileData(data)),
-      fetchLanguagesById(userId).then(data => setProfileLangs(data)),
-      fetchRolesById(userId).then(data => setProfileRoles(data)),
-    ]);
-
-    setProfileReady(true);
-  }, [userId]);
+      return {
+        profileData: fetchedProfileData,
+        languages: languagesData,
+        roles: rolesData,
+      };
+    },
+    [userId],
+  );
 
   useEffect(() => {
     loadProfile();
