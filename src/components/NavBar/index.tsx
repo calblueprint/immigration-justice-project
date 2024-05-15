@@ -1,12 +1,11 @@
 'use client';
 
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ProfileButton from '@/components/ProfileButton';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
 import { LinkButton } from '../Buttons';
@@ -14,9 +13,8 @@ import * as Styles from './style';
 
 export default function NavBar() {
   const profile = useProfile();
-  const auth = useAuth();
   const AuthButtonView = useMemo(() => {
-    if (!auth && profile?.profileReady)
+    if (profile?.profileReady)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
