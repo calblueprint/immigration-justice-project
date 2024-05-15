@@ -6,16 +6,17 @@ import { usePathname } from 'next/navigation';
 import ProfileButton from '@/components/ProfileButton';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
-import { ProfileContext } from '@/utils/ProfileProvider';
+import { useAuth } from '@/utils/AuthProvider';
+import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
-import { SmallLinkButton } from '../Button';
-import {LinkButton} from '../Buttons'
+import { LinkButton } from '../Buttons';
 import * as Styles from './style';
 
 export default function NavBar() {
-  const profile = useContext(ProfileContext);
+  const profile = useProfile();
+  const auth = useAuth();
   const AuthButtonView = useMemo(() => {
-    if (profile?.profileReady)
+    if (!auth && profile?.profileReady)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
