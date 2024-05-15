@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { LinkColored } from '@/styles/text';
 import { sans } from '@/styles/fonts';
+import { LinkColored } from '@/styles/text';
 
 export const FooterContainer = styled.div`
   width: 100%;

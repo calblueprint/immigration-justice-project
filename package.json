@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@calblueprint/prettier-config": "^0.0.1",
-    "@hookform/resolvers": "^3.3.4",
+    "@hookform/resolvers": "^3.4.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.36.0",
     "@types/node": "20.6.3",
@@ -33,7 +33,7 @@
     "react-select-async-paginate": "^0.7.3",
     "styled-components": "^6.0.8",
     "validator": "^13.11.0",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@calblueprint/eslint-config-react": "^0.0.3",

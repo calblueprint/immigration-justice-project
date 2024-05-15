@@ -2,13 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { P } from '@/styles/text';
+import CONFIG from '@/lib/configs';
 import { IconType } from '@/lib/icons';
 import { Flex } from '@/styles/containers';
-import CONFIG from '@/lib/configs';
+import { P } from '@/styles/text';
 import FooterImage from '../../../public/images/footer-image.webp';
-import * as Styles from './styles';
 import Icon from '../Icon';
+import * as Styles from './styles';
 
 type SocialLink = {
   href: string;
