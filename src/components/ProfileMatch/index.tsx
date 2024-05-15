@@ -152,12 +152,12 @@ export default function ProfileMatch({
           <P>No information available about languages</P>
         </Flex>
       )}
-      <P>
+      <P $color={COLORS.greyMid}>
         Go to{' '}
         <LinkColored $color={COLORS.blueMid} href={CONFIG.settings}>
           Profile
         </LinkColored>{' '}
-        to update any information.
+        to update any information
       </P>
     </Flex>
   );

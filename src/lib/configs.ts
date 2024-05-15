@@ -4,7 +4,7 @@ const CONFIG = {
   pageSize: 20,
   settings: '/settings',
   cases: '/cases',
-  lca: '/limited-case-assistance',
+  lca: '/limited-case-assignments',
   languageSupport: '/language-support',
 };
 

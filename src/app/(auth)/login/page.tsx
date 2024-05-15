@@ -15,26 +15,25 @@ import { ProfileContext } from '@/utils/ProfileProvider';
 export default function Login() {
   const auth = useAuth();
   const profile = useContext(ProfileContext);
+  if (!auth || !profile) {
+    throw new Error('Page must have auth and profile context defined');
+  }
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [finishLogin, setFinishLogin] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   const { push } = useRouter();
   const validEmail = (e: string) => e !== '' && isEmail(e);
 
   useEffect(() => {
-    if (!auth) throw new Error('Auth must be defined');
-    if (auth.userId && !finishLogin) push(CONFIG.settings);
-  }, [auth, profile, push]);
+    if (auth.userId && !isLoggingIn) push(CONFIG.settings);
+  }, [auth, profile, push, isLoggingIn]);
 
   const handleSignIn = async () => {
-    if (!auth) {
-      setErrorMessage('');
-      return;
-    }
-
     setEmailError(validEmail(email) ? '' : 'Invalid Email');
     setPasswordError(password !== '' ? '' : 'Invalid Password');
     if (!validEmail(email) || password === '') {
@@ -42,26 +41,29 @@ export default function Login() {
       return;
     }
 
-    const { error } = await auth.signIn(email, password);
+    setIsLoggingIn(true);
+    const { error, data } = await auth.signIn(email, password);
 
     if (error) {
       setErrorMessage(error.message);
       // TODO: use error.status to check if it's an email-specific or password-specific error
       // then, raise the error in the TextInput component.
     } else {
-      profile?.loadProfile();
       setErrorMessage('');
-      setFinishLogin(true);
+      const loadedProfile = await profile.loadProfile(data.user?.id);
+
+      if (!loadedProfile) {
+        push(CONFIG.onboardingHome);
+        return;
+      }
 
       // conditional routing after logging in
-      if (profile?.profileReady) {
-        if (!profile?.profileData) push(CONFIG.onboardingHome);
-        else if (profile.roles.map(r => r.role).includes('ATTORNEY'))
-          push(CONFIG.cases);
-        else if (profile.roles.map(r => r.role).includes('LEGAL_FELLOW'))
-          push(CONFIG.lca);
-        else push(CONFIG.languageSupport);
-      }
+      if (!loadedProfile.profileData) push(CONFIG.onboardingHome);
+      else if (loadedProfile.roles.find(role => role.role === 'ATTORNEY'))
+        push(CONFIG.cases);
+      else if (loadedProfile.roles.find(role => role.role === 'LEGAL_FELLOW'))
+        push(CONFIG.lca);
+      else push(CONFIG.languageSupport);
     }
   };
 
