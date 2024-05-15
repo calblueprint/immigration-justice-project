@@ -108,7 +108,7 @@ export default function Login() {
         </P>
       </Flex>
       <Flex $direction="column" $gap="20px">
-        <BigBlueButton type="submit">Log in</BigBlueButton>
+        <BigBlueButton type="submit">Log In</BigBlueButton>
         <H4Centered>
           Don’t have an account yet?{' '}
           <LinkColored $color={COLORS.greyDark} href="/signup">

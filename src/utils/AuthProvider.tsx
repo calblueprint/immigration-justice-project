@@ -114,12 +114,6 @@ export default function AuthProvider({
         );
         value.error = authError;
       }
-      // } else if (error) {
-      //   authError = {
-      //     name: error.name,
-      //     message: error.message,
-      //   };
-      // }
       return value;
     },
     [],

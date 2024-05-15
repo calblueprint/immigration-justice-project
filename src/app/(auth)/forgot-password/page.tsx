@@ -18,7 +18,7 @@ export default function ForgotPassword() {
   const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isEmail(email)) {
-      setEmailError('Invalid email.');
+      setEmailError('Could not find email.');
       return;
     }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {

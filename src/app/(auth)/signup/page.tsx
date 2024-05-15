@@ -117,7 +117,7 @@ export default function SignUp() {
         <H4Centered>
           Have an account already?{' '}
           <LinkColored $color={COLORS.greyDark} href="/login">
-            Log In
+            Log in
           </LinkColored>
         </H4Centered>
       </Flex>
