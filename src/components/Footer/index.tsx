@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { P } from '@/styles/text';
 import { IconType } from '@/lib/icons';
 import { Flex } from '@/styles/containers';
+import CONFIG from '@/lib/configs';
 import FooterImage from '../../../public/images/footer-image.webp';
 import * as Styles from './styles';
 import Icon from '../Icon';
@@ -16,15 +17,15 @@ type SocialLink = {
 
 const socialLinks: SocialLink[] = [
   {
-    href: 'https://www.facebook.com/ImmigrationJusticeProjectOfSanDiego/',
+    href: CONFIG.facebook,
     type: 'facebook',
   },
-  { href: 'https://twitter.com/ijpsandiego?lang=en', type: 'x' },
+  { href: CONFIG.xTwitter, type: 'x' },
   {
-    href: 'https://www.linkedin.com/company/immigration-justice-project/',
+    href: CONFIG.linkedin,
     type: 'linkedin',
   },
-  { href: 'https://www.instagram.com/ijp.sandiego/', type: 'instagram' },
+  { href: CONFIG.instagram, type: 'instagram' },
 ];
 
 export default function Footer() {
@@ -58,7 +59,7 @@ export default function Footer() {
               href="https://calblueprint.org/"
               style={{ fontSize: '0.938rem' }}
             >
-              Made By Cal BluePrint
+              Made By Cal Blueprint
             </Styles.FooterLink>
             <Icon type="blueprint" />
           </Flex>

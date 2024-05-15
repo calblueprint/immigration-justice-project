@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { LinkColored } from '@/styles/text';
-import { openSans } from '@/styles/fonts';
+import { sans } from '@/styles/fonts';
 
 export const FooterContainer = styled.div`
   width: 100%;
@@ -39,7 +39,7 @@ export const FooterLink = styled(LinkColored)`
   font-weight: 400px;
 `;
 export const Header = styled.p`
-  ${openSans.style}
+  ${sans.style}
   font-size: 1.25rem;
   color: white;
   font-weight: 600;
