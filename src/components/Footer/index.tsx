@@ -42,7 +42,7 @@ export default function Footer() {
             width={168}
             height={66}
           />
-          <hr style={{ width: '160px' }} />
+          <hr style={{ width: '160px', color: 'white' }} />
           <P $color="white">
             2727 Camino del Rio South, Suite 320 San Diego, CA 92108
           </P>
@@ -68,7 +68,7 @@ export default function Footer() {
       <Styles.FooterDiv>
         <Styles.FooterSection>
           <Styles.Header>Resources</Styles.Header>
-          <hr style={{ width: '40px' }} />
+          <hr style={{ width: '40px', color: 'white' }} />
           <Styles.FooterLink $color="white" href="https://www.americanbar.org/">
             ABA Website
           </Styles.FooterLink>
@@ -84,13 +84,13 @@ export default function Footer() {
           >
             ABA IJP Website
           </Styles.FooterLink>
-          <P $color="white">Hotline: 619-641-7510</P>
         </Styles.FooterSection>
         <Styles.FooterSection>
           <Styles.Header>Contact Us</Styles.Header>
-          <hr style={{ width: '2.5rem' }} />
+          <hr style={{ width: '2.5rem', color: 'white' }} />
           <P $color="white">Email: probono@abaijp.org</P>
           <P $color="white">Phone: 619-255-8829</P>
+          <P $color="white">Office Phone: 619-255-8810</P>
           <Styles.IconDiv>
             {socialLinks.map(({ href, type }) => (
               <Link key={type} href={href}>

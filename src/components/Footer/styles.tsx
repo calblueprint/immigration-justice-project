@@ -35,7 +35,7 @@ export const IconDiv = styled.div`
 
 export const FooterLink = styled(LinkColored)`
   text-decoration: none;
-  font-size: 0.938rem;
+  font-size: 0.9375rem;
   font-weight: 400px;
 `;
 export const Header = styled.p`
