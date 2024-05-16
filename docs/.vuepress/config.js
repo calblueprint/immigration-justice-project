@@ -1,4 +1,5 @@
 import { viteBundler } from '@vuepress/bundler-vite';
+import { searchPlugin } from '@vuepress/plugin-search';
 import { defaultTheme } from '@vuepress/theme-default';
 import { defineUserConfig } from 'vuepress';
 
@@ -8,6 +9,8 @@ const globalNavbar = [
   { text: 'Developer Docs', link: '/dev/' },
   { text: 'Design Prototypes', link: '/design/' },
 ];
+
+const adminSidebar = ['/admin/', '/admin/retool', '/admin/legal-server'];
 
 export default defineUserConfig({
   title: 'Immigration Justice Project',
@@ -21,5 +24,9 @@ export default defineUserConfig({
     editLinkText: 'Edit this page on GitHub',
     editLink: true,
     navbar: globalNavbar,
+    sidebar: {
+      '/admin': adminSidebar,
+    },
   }),
+  plugins: [searchPlugin()],
 });

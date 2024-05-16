@@ -44,6 +44,9 @@
     "@types/validator": "^13.11.7",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "@vuepress/bundler-vite": "^2.0.0-rc.9",
+    "@vuepress/plugin-search": "^2.0.0-rc.28",
+    "@vuepress/theme-default": "^2.0.0-rc.28",
     "eslint": "^8.49.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.10.0",
@@ -53,8 +56,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.8",
     "typescript": "^4.9.5",
-    "@vuepress/bundler-vite": "^2.0.0-rc.9",
-    "@vuepress/theme-default": "^2.0.0-rc.28",
     "vuepress": "^2.0.0-rc.9"
   }
 }
