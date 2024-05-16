@@ -1,4 +1,5 @@
 import { viteBundler } from '@vuepress/bundler-vite';
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { searchPlugin } from '@vuepress/plugin-search';
 import { defaultTheme } from '@vuepress/theme-default';
 import { defineUserConfig } from 'vuepress';
@@ -27,6 +28,8 @@ export default defineUserConfig({
     sidebar: {
       '/admin': adminSidebar,
     },
+    logo: '/ijp_logo_black.png',
+    logoDark: '/ijp_logo_white.png',
   }),
-  plugins: [searchPlugin()],
+  plugins: [searchPlugin(), backToTopPlugin()],
 });
