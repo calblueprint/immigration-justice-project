@@ -8,13 +8,14 @@ import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { useProfile } from '@/utils/ProfileProvider';
 import Icon from '../../../assets/icons/Icon';
-import { LinkButton } from '../Buttons';
+import { SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
 
 export default function NavBar() {
   const profile = useProfile();
   const AuthButtonView = useMemo(() => {
-    if (profile?.profileReady)
+    if (!profile) throw new Error('Profile must be defined.');
+    if (profile.profileReady && profile?.profileData)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
@@ -23,22 +24,21 @@ export default function NavBar() {
 
     return (
       <>
-        <LinkButton
+        <SmallLinkButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}
-          // $fontColor="white"
           href="/login"
         >
           Log In
-        </LinkButton>
-        <LinkButton
+        </SmallLinkButton>
+        <SmallLinkButton
           $primaryColor="white"
           $secondaryColor={COLORS.blueDark}
-          // $fontColor={COLORS.blueMid}
           href="/signup"
+          style={{ color: COLORS.blueMid }}
         >
           Sign Up
-        </LinkButton>
+        </SmallLinkButton>
       </>
     );
   }, [profile]);

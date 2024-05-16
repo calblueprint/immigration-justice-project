@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 
 const ProfileButton = styled(Link)`

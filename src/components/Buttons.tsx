@@ -101,6 +101,19 @@ export const LinkButton = styled(Link)`
   ${ButtonStyles}
   text-decoration: none;
 `;
+export const SmallLinkButton = styled(Link)`
+  ${ButtonStyles}
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  font-weight: 400;
+  border-radius: 0.313rem; // 5px
+  border: 2px solid
+    ${props =>
+      props.$primaryColor ? props.$primaryColor : props.$secondaryColor};
+  &:hover {
+    color: white !important;
+  }
+`;
 
 export const BlueLinkButton = forwardRef<
   HTMLAnchorElement,
