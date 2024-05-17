@@ -57,7 +57,7 @@ highlights:
             link: /guide/
 
     - header: Editing this Site
-      description: This site is powered by <a href="https://v2.vuepress.vuejs.org/">VuePress</a> using the <a href="https://theme-hope.vuejs.press/">Hope Theme</a>. The Markdown sources can be found on our GitHub repo on the docs branch.<br/><br/>Run <code>npm docs:dev</code> to run the documentation site locally. By default, it will be hosted at <code>localhost:8080</code>, or whichever link the terminal displays.<br/><br/><b>Resources:</b>
+      description: This site is powered by <a href="https://v2.vuepress.vuejs.org/">VuePress</a> using <a href="https://theme-hope.vuejs.press/">Theme Hope</a>. The Markdown sources can be found on our <a href="https://github.com/calblueprint/immigration-justice-project/tree/docs" target="_blank">GitHub repo</a> on the docs branch.<br/><br/>Run <code>npm docs:dev</code> to run the documentation site locally. By default, it will be hosted at <code>localhost:8080</code>, or whichever link the terminal displays.<br/><br/><b>Resources:</b>
       image: /assets/image/blog.svg
       bgImage: https://theme-hope-assets.vuejs.press/bg/2-light.svg
       bgImageDark: https://theme-hope-assets.vuejs.press/bg/2-dark.svg
