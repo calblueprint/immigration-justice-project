@@ -7,10 +7,14 @@
     "build": "vuepress build docs"
   },
   "devDependencies": {
+    "@eslint/js": "^9.2.0",
     "@vuepress/bundler-vite": "^2.0.0-rc.9",
     "@vuepress/plugin-back-to-top": "^2.0.0-rc.28",
     "@vuepress/plugin-search": "^2.0.0-rc.28",
     "@vuepress/theme-default": "^2.0.0-rc.28",
+    "eslint": "^9.2.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "globals": "^15.2.0",
     "vuepress": "^2.0.0-rc.9"
   }
 }
