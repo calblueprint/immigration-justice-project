@@ -16,7 +16,7 @@ on:
 jobs:
   build:
     # Name the Job
-    name: Run ESLint, Prettier, and TypeScript compiler
+    name: Run ESLint and Prettier
     # Set the agent to run on
     runs-on: ubuntu-latest
 
