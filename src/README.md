@@ -14,12 +14,12 @@ tagline: Documentation for the user portal application developed by Cal Blueprin
 actions:
     - text: For Admins
       icon: user
-      link: ./guide/
+      link: ./admin/
       type: primary
 
     - text: For Developers
       icon: code
-      link: ./guide/
+      link: ./dev/
 
     - text: For Designers
       icon: pen-nib
