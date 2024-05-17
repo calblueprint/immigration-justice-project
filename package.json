@@ -1,20 +1,26 @@
 {
-  "name": "immigration-justice-project",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.2.0",
-    "@vuepress/bundler-vite": "^2.0.0-rc.9",
-    "@vuepress/plugin-back-to-top": "^2.0.0-rc.28",
-    "@vuepress/plugin-search": "^2.0.0-rc.28",
-    "@vuepress/theme-default": "^2.0.0-rc.28",
-    "eslint": "^9.2.0",
-    "eslint-plugin-vue": "^9.26.0",
-    "globals": "^15.2.0",
-    "vuepress": "^2.0.0-rc.9"
-  }
+    "name": "immigration-justice-project",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "lint:check": "npx eslint .",
+        "lint:fix": "npx eslint . --fix",
+        "prettier:check": "npx prettier --check .",
+        "prettier:fix": "npx prettier --write .",
+        "dev": "vuepress dev docs",
+        "build": "vuepress build docs"
+    },
+    "devDependencies": {
+        "@calblueprint/prettier-config": "^0.0.1",
+        "@eslint/js": "^9.2.0",
+        "@vuepress/bundler-vite": "^2.0.0-rc.9",
+        "@vuepress/plugin-back-to-top": "^2.0.0-rc.28",
+        "@vuepress/plugin-search": "^2.0.0-rc.28",
+        "@vuepress/theme-default": "^2.0.0-rc.28",
+        "eslint": "^9.2.0",
+        "eslint-plugin-vue": "^9.26.0",
+        "globals": "^15.2.0",
+        "prettier": "^3.2.5",
+        "vuepress": "^2.0.0-rc.9"
+    }
 }

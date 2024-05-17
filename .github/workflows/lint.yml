@@ -49,8 +49,3 @@ jobs:
       ################################
       - name: Run Prettier
         run: npx prettier --check .
-      ################################
-      # Check for TypeScript errors #
-      ################################
-      - name: Run TypeScript compiler (tsc)
-        run: npx tsc --noEmit
