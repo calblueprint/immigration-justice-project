@@ -42,7 +42,7 @@ Users can use the progress bar to quickly navigate to a previously completed ste
 Edge cases covered:
 
 - The user cannot use the progress bar to skip steps that they have not completed
-- If the user went back to an earlier step and modified their data to an invalid state, they cannot abuse the progress bar to submit their profile
+- If the user went back to an earlier step and modified their data to an invalid state, they cannot abuse the progress bar to skip to later steps
 
 ## Tools for Onboarding
 
@@ -84,7 +84,7 @@ This hook uses `useGuardedOnboarding` to provide the following useful helper var
 - `ebbTo(href: string)`: safely redirects to another URL only if the current form is valid, triggers the form validation otherwise to reveal existing errors
 - `backlinkHref`: the URL of the previous step in the onboarding flow
 
-## Zod and `react-hook-form`
+## Zod and react-hook-form
 
 ::: warning Credit where credit's due.
 This workflow is largely taken from [shadcn UI's form components](https://ui.shadcn.com/docs/components/form). We've simply styled it differently.

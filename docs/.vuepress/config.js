@@ -1,5 +1,4 @@
 import { viteBundler } from '@vuepress/bundler-vite';
-import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { searchPlugin } from '@vuepress/plugin-search';
 import { defaultTheme } from '@vuepress/theme-default';
 import { defineUserConfig } from 'vuepress';
@@ -54,5 +53,5 @@ export default defineUserConfig({
     logo: '/images/ijp_logo_black.png',
     logoDark: '/images/ijp_logo_white.png',
   }),
-  plugins: [searchPlugin(), backToTopPlugin()],
+  plugins: [searchPlugin()],
 });
