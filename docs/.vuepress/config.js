@@ -25,6 +25,7 @@ const devSidebar = [
       '/dev/app/onboarding',
       '/dev/app/listings',
       '/dev/app/settings',
+      '/dev/app/supabase',
     ],
   },
   '/dev/retool',
