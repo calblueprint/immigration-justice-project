@@ -11,16 +11,18 @@
         "build": "vuepress build docs"
     },
     "devDependencies": {
-        "@calblueprint/prettier-config": "^0.0.1",
         "@eslint/js": "^9.2.0",
         "@vuepress/bundler-vite": "^2.0.0-rc.9",
         "@vuepress/plugin-back-to-top": "^2.0.0-rc.28",
         "@vuepress/plugin-search": "^2.0.0-rc.28",
         "@vuepress/theme-default": "^2.0.0-rc.28",
-        "eslint": "^9.2.0",
+        "eslint": "^8.49.0",
         "eslint-plugin-vue": "^9.26.0",
         "globals": "^15.2.0",
-        "prettier": "^3.2.5",
+        "prettier": "^2.8.8",
         "vuepress": "^2.0.0-rc.9"
+    },
+    "dependencies": {
+        "@calblueprint/prettier-config": "^0.0.1"
     }
 }

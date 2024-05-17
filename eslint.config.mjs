@@ -10,7 +10,8 @@ export default [
         ignores: [
             "docs/.vuepress/.cache",
             "docs/.vuepress/.temp",
-            "docs/.vuepress/dist"
+            "docs/.vuepress/dist",
+            ".prettierrc.js"
         ]
     }
 ];
