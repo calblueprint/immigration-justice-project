@@ -13,7 +13,7 @@ import Select, {
 import COLORS from '@/styles/colors';
 import { P } from '@/styles/text';
 import { DropdownOption } from '@/types/dropdown';
-import { ErrorText, InputLabel } from '../TextInput/styles';
+import { InputLabel } from '../TextInput/styles';
 import { AnimatedWrapper, DropdownStyles, DropdownWrapper } from './styles';
 
 // for map: key is actual data stored, value is displayed
@@ -150,7 +150,6 @@ export default function InputDropdown({
         onChange={handleChange}
         onInputChange={handleInputChange}
       />
-      {error && <ErrorText>{error}</ErrorText>}
     </DropdownWrapper>
   );
 }

@@ -34,7 +34,6 @@ interface OnboardingContextType {
   roles: RoleEnum[];
   progress: number;
   flow: FlowData[];
-  canContinue: boolean;
   form?: OnboardingFormData;
   pushingData: boolean;
   setForm: Dispatch<SetStateAction<OnboardingFormData | undefined>>;
@@ -42,7 +41,6 @@ interface OnboardingContextType {
   removeFromProfile: (toClear: Array<keyof Profile>) => void;
   flushData: () => Promise<void>;
   setProgress: Dispatch<SetStateAction<number>>;
-  setCanContinue: Dispatch<SetStateAction<boolean>>;
   setFlow: Dispatch<SetStateAction<FlowData[]>>;
   setCanReads: Dispatch<SetStateAction<string[]>>;
   setCanSpeaks: Dispatch<SetStateAction<string[]>>;
@@ -66,7 +64,6 @@ export default function OnboardingProvider({
   const [canReads, setCanReads] = useState<string[]>([]);
   const [canSpeaks, setCanSpeaks] = useState<string[]>([]);
   const [roles, setRoles] = useState<RoleEnum[]>([]);
-  const [canContinue, setCanContinue] = useState<boolean>(false);
   const [form, setForm] = useState<OnboardingFormData>();
   const [pushingData, setPushingData] = useState<boolean>(false);
 
@@ -183,7 +180,6 @@ export default function OnboardingProvider({
       canSpeaks,
       roles,
       flow,
-      canContinue,
       form,
       pushingData,
       flushData,
@@ -195,7 +191,6 @@ export default function OnboardingProvider({
       setCanReads,
       setCanSpeaks,
       setRoles,
-      setCanContinue,
     }),
     [
       progress,
@@ -204,7 +199,6 @@ export default function OnboardingProvider({
       canSpeaks,
       roles,
       flow,
-      canContinue,
       pushingData,
       form,
       flushData,
