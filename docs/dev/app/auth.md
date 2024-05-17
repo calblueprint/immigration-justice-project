@@ -1,5 +1,5 @@
 ---
-prev: /dev/
+prev: /dev/app/
 ---
 
 # Authentication

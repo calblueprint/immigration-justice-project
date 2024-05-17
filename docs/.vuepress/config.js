@@ -16,24 +16,22 @@ const adminSidebar = ['/admin/', '/admin/retool', '/admin/legal-server'];
 const devSidebar = [
   '/dev/',
   {
-    text: 'Client Application',
+    text: 'Application',
+    link: '/dev/app/',
     collapsible: true,
     sidebarDepth: 2,
     children: [
-      '/dev/client/auth',
-      '/dev/client/onboarding',
-      '/dev/client/listings',
-      '/dev/client/settings',
+      '/dev/app/auth',
+      '/dev/app/onboarding',
+      '/dev/app/listings',
+      '/dev/app/settings',
     ],
   },
-  {
-    text: 'Backend',
-    collapsible: true,
-    sidebarDepth: 2,
-    children: ['/dev/backend/database.md', '/dev/backend/retool.md'],
-  },
+  '/dev/retool',
   '/dev/deployment',
 ];
+
+const designSidebar = ['/design/'];
 
 export default defineUserConfig({
   title: 'Immigration Justice Project',
@@ -50,9 +48,10 @@ export default defineUserConfig({
     sidebar: {
       '/admin': adminSidebar,
       '/dev': devSidebar,
+      '/design': designSidebar,
     },
-    logo: '/ijp_logo_black.png',
-    logoDark: '/ijp_logo_white.png',
+    logo: '/images/ijp_logo_black.png',
+    logoDark: '/images/ijp_logo_white.png',
   }),
   plugins: [searchPlugin(), backToTopPlugin()],
 });
