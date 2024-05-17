@@ -32,10 +32,6 @@ export default hopeTheme({
     },
 
     plugins: {
-        components: {
-            components: ["Badge", "VPCard"]
-        },
-
         searchPro: true,
 
         // All features are enabled for demo, only preserve features you need here
