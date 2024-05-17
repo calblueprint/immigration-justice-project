@@ -13,6 +13,28 @@ const globalNavbar = [
 
 const adminSidebar = ['/admin/', '/admin/retool', '/admin/legal-server'];
 
+const devSidebar = [
+  '/dev/',
+  {
+    text: 'Client Application',
+    collapsible: true,
+    sidebarDepth: 2,
+    children: [
+      '/dev/client/auth',
+      '/dev/client/onboarding',
+      '/dev/client/listings',
+      '/dev/client/settings',
+    ],
+  },
+  {
+    text: 'Backend',
+    collapsible: true,
+    sidebarDepth: 2,
+    children: ['/dev/backend/database.md', '/dev/backend/retool.md'],
+  },
+  '/dev/deployment',
+];
+
 export default defineUserConfig({
   title: 'Immigration Justice Project',
   description:
@@ -27,6 +49,7 @@ export default defineUserConfig({
     navbar: globalNavbar,
     sidebar: {
       '/admin': adminSidebar,
+      '/dev': devSidebar,
     },
     logo: '/ijp_logo_black.png',
     logoDark: '/ijp_logo_white.png',
