@@ -1,27 +1,20 @@
 {
-    "name": "immigration-justice-project",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "lint:check": "npx eslint .",
-        "lint:fix": "npx eslint . --fix",
-        "prettier:check": "npx prettier --check .",
-        "prettier:fix": "npx prettier --write .",
-        "dev": "vuepress dev docs",
-        "build": "vuepress build docs"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.2.0",
-        "@vuepress/bundler-vite": "^2.0.0-rc.9",
-        "@vuepress/plugin-search": "^2.0.0-rc.28",
-        "@vuepress/theme-default": "^2.0.0-rc.28",
-        "eslint": "^8.49.0",
-        "eslint-plugin-vue": "^9.26.0",
-        "globals": "^15.2.0",
-        "prettier": "^2.8.8",
-        "vuepress": "^2.0.0-rc.9"
-    },
-    "dependencies": {
-        "@calblueprint/prettier-config": "^0.0.1"
-    }
+  "name": "ijp-docs",
+  "version": "0.0.1",
+  "description": "Documentation for the Immigration Justice Project user portal",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "docs:build": "vuepress-vite build src",
+    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
+    "docs:dev": "vuepress-vite dev src",
+    "docs:update-package": "npx vp-update"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "2.0.0-rc.9",
+    "vue": "^3.4.27",
+    "vuepress": "2.0.0-rc.9",
+    "vuepress-plugin-search-pro": "^2.0.0-rc.43",
+    "vuepress-theme-hope": "2.0.0-rc.43"
+  }
 }
