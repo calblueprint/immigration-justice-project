@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { sans } from '@/styles/fonts';
+import { P } from '@/styles/text';
 import Icon from './Icon';
 
 const PasswordComplexityDiv = styled.div`
@@ -17,8 +17,7 @@ const PasswordRequirementDiv = styled.div`
   gap: 4px;
 `;
 
-const PasswordRequirementText = styled.p<{ $met: boolean }>`
-  ${sans.style}
+const PasswordRequirementText = styled(P)<{ $met: boolean }>`
   color: ${({ $met }) => ($met ? COLORS.green : COLORS.greyMid)};
 `;
 
@@ -54,15 +53,15 @@ export default function PasswordComplexity({
       <PasswordComplexityDiv>
         <PasswordRequirement
           met={/[A-Z]/.test(password)}
-          text="At least 1 uppercase character"
+          text="At least 1 uppercase letter"
         />
         <PasswordRequirement
           met={/[a-z]/.test(password)}
-          text="At least 1 lowercase character"
+          text="At least 1 lowercase letter"
         />
         <PasswordRequirement
           met={/\d/.test(password)}
-          text="At least 1 number"
+          text="At least 1 number (0-9)"
         />
         <PasswordRequirement
           met={password.length >= 8}

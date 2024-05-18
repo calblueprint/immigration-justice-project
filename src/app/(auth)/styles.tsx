@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
-import { H1, H4, P } from '@/styles/text';
+import { H2, H4, P } from '@/styles/text';
 
 export const OuterDiv = styled.div`
   display: flex;
@@ -47,16 +47,8 @@ export const PCentered = styled(P)`
   text-align: center;
 `;
 
-export const AuthHeading = styled(H1)`
-  font-size: 3rem;
-  font-style: normal;
-`;
-
-export const AuthSubHeading = styled.h2`
-  font-size: 2.25rem;
-  font-style: normal;
+export const AuthSubHeading = styled(H2)`
   font-weight: 400;
-  text-align: center;
 `;
 
 export const HorizontalDiv = styled.div`
