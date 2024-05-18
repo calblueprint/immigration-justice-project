@@ -7,7 +7,7 @@ import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { CenteringDiv, Flex, SmallCard } from '@/styles/containers';
 import { H2Centered, P } from '@/styles/text';
-import IJPLogo from '~/public/images/ijp_logo_blue.webp';
+import IJPLogo from '~/public/images/ijp-logo-blue.webp';
 
 export default function Page() {
   return (

@@ -4,12 +4,12 @@ import { sans } from '@/styles/fonts';
 import { LinkColored } from '@/styles/text';
 
 export const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   background-color: ${COLORS.blueMid};
   min-height: 290px;
-  grid-template-columns: 2fr 1fr;
   padding: 40px 100px 0px 100px;
-  display: grid;
 `;
 
 export const FooterSection = styled.div`
@@ -35,4 +35,9 @@ export const HorizontalLine = styled.hr<{ $width?: string }>`
   color: white;
   margin-bottom: 10px;
   width: ${({ $width }) => $width || '2.5rem'};
+`;
+
+export const FooterInfo = styled.div`
+  display: flex;
+  gap: 50px;
 `;
