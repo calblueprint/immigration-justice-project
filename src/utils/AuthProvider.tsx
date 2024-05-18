@@ -11,6 +11,7 @@ import {
 import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import type { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
+import { checkEmailExists } from '@/api/supabase/queries/email';
 
 export interface AuthContextType {
   session?: Session;
@@ -104,11 +105,7 @@ export default function AuthProvider({
       // This code is largely taken from https://github.com/orgs/supabase/discussions/1282#discussioncomment-5230475
 
       // User exists, but is fake. See https://supabase.com/docs/reference/javascript/auth-signup
-      if (
-        value.data.user &&
-        value.data.user.identities &&
-        value.data.user.identities.length === 0
-      ) {
+      if (await checkEmailExists(email)) {
         const authError = new AuthError(
           'A user account with this email already exists',
         );
