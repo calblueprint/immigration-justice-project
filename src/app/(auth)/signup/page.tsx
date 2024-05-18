@@ -28,8 +28,8 @@ export default function SignUp() {
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!auth) return;
-    setEmailError(validEmail(email) ? '' : 'Invalid email.');
-    setPasswordError(password !== '' ? '' : 'Invalid password.');
+    setEmailError(validEmail(email) ? '' : 'Invalid email');
+    setPasswordError(password !== '' ? '' : 'Invalid password');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
