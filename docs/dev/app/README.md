@@ -1,5 +1,6 @@
 ---
 next: /dev/app/auth
+icon: window-restore
 ---
 
 # Application

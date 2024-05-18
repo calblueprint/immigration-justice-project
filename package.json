@@ -1,20 +1,20 @@
 {
-  "name": "ijp-docs",
-  "version": "0.0.1",
-  "description": "Documentation for the Immigration Justice Project user portal",
-  "license": "MIT",
-  "type": "module",
-  "scripts": {
-    "docs:build": "vuepress-vite build src",
-    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
-    "docs:dev": "vuepress-vite dev src",
-    "docs:update-package": "npx vp-update"
-  },
-  "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.9",
-    "vue": "^3.4.27",
-    "vuepress": "2.0.0-rc.9",
-    "vuepress-plugin-search-pro": "^2.0.0-rc.43",
-    "vuepress-theme-hope": "2.0.0-rc.43"
-  }
+    "name": "ijp-docs",
+    "version": "0.0.1",
+    "description": "Documentation for the Immigration Justice Project user portal",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "docs:build": "vuepress-vite build docs",
+        "docs:clean-dev": "vuepress-vite dev docs --clean-cache",
+        "docs:dev": "vuepress-vite dev docs",
+        "docs:update-package": "npx vp-update"
+    },
+    "devDependencies": {
+        "@vuepress/bundler-vite": "2.0.0-rc.9",
+        "vue": "^3.4.27",
+        "vuepress": "2.0.0-rc.9",
+        "vuepress-plugin-search-pro": "^2.0.0-rc.43",
+        "vuepress-theme-hope": "2.0.0-rc.43"
+    }
 }

@@ -1,3 +1,7 @@
+---
+icon: book-open
+---
+
 # Project Overview
 
 The project can be split into two parts:

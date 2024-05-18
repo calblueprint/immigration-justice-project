@@ -86,7 +86,7 @@ This hook uses `useGuardedOnboarding` to provide the following useful helper var
 
 ## Zod and react-hook-form
 
-::: warning Credit where credit's due.
+::: info Credit where credit's due.
 This workflow is largely taken from [shadcn UI's form components](https://ui.shadcn.com/docs/components/form). We've simply styled it differently.
 :::
 

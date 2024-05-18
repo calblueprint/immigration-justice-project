@@ -9,7 +9,7 @@ Currently, we have the following sections:
 -   Availability
 -   Roles (and role-specific information)
 
-::: tip Account Section
+::: note Account Section
 The account section displays the user's email and a hardcoded obfuscated string to represent the password.
 
 Currently, we have not implemented the ability to edit the email or change password (through settings). This could be an area of future development if so desired!

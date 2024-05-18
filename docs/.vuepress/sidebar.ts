@@ -1,11 +1,11 @@
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
-    "/admin": ["/admin/", "/admin/retool", "/admin/legal-server"],
+    "/admin": ["/admin/intro", "/admin/retool", "/admin/legal-server"],
     "/dev": [
         {
             text: "Project Overview",
-            link: "/dev/",
+            link: "/dev/overview",
             icon: "book-open"
         },
         {

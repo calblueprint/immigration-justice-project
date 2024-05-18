@@ -1,3 +1,7 @@
+---
+icon: gauge
+---
+
 # Admin Dashboard
 
 ## Retool Apps
