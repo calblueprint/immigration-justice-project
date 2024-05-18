@@ -13,9 +13,10 @@ const CONFIG = {
   instagram: 'https://www.instagram.com/ijp.sandiego/',
   // website links
   ABA: 'https://www.americanbar.org/',
-  ABAComissions: 'https://www.americanbar.org/groups/public_interest/immigration/',
+  ABAComissions:
+    'https://www.americanbar.org/groups/public_interest/immigration/',
   IJP: 'https://www.americanbar.org/groups/public_interest/immigration/projects_initiatives/immigration-justice-project/',
-  blueprint: 'https://calblueprint.org/',  
+  blueprint: 'https://calblueprint.org/',
 };
 
 export default CONFIG;
