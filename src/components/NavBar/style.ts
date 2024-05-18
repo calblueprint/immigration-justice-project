@@ -29,11 +29,11 @@ export const AuthButtons = styled.div`
   top: 0;
   right: 0;
 `;
-export const NoUnderlineLink = styled(LinkColored)<{ isactive: boolean }>`
+export const NoUnderlineLink = styled(LinkColored)<{ $isActive: boolean }>`
   ${sans.style}
   text-decoration: none;
   margin: 10px;
-  font-weight: ${props => (props.isactive ? '600' : '400')};
+  font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
   cursor: pointer;
 `;
 

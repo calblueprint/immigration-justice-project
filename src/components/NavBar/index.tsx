@@ -3,12 +3,11 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import ProfileButton from '@/components/ProfileButton';
+import Icon from '@/components/Icon';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { useProfile } from '@/utils/ProfileProvider';
-import Icon from '../../../assets/icons/Icon';
-import { SmallLinkButton } from '../Buttons';
+import { ProfileButton, SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
 
 export default function NavBar() {
@@ -79,7 +78,7 @@ export default function NavBar() {
         <Styles.NoUnderlineLink
           href={link.path}
           $color="white"
-          isactive={link.active}
+          $isActive={link.active}
         >
           {link.name}
         </Styles.NoUnderlineLink>
@@ -97,7 +96,7 @@ export default function NavBar() {
     <Styles.NavBarContainer>
       <Styles.NavBarSectionDiv>
         <Link href="/">
-          <Icon type="logo" />
+          <Icon type="IJPLogo" />
         </Link>
         {navlinks.map(NavLink => renderLink(NavLink))}
       </Styles.NavBarSectionDiv>
