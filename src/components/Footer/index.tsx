@@ -43,7 +43,7 @@ export default function Footer() {
           </P>
           <P $color="white">©2024 by ABA Immigration Justice Project</P>
         </Styles.FooterSection>
-        <Styles.FooterInfo>
+        <Flex $gap="50px" $w="auto">
           <Styles.FooterSection>
             <Styles.Header>Resources</Styles.Header>
             <Styles.HorizontalLine />
@@ -73,7 +73,7 @@ export default function Footer() {
               ))}
             </Flex>
           </Styles.FooterSection>
-        </Styles.FooterInfo>
+        </Flex>
       </Flex>
       <Flex $direction="row" $gap="10px" $py="40px" $align="center">
         <Styles.FooterLink $color="white" href={CONFIG.blueprint}>

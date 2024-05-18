@@ -36,8 +36,3 @@ export const HorizontalLine = styled.hr<{ $width?: string }>`
   margin-bottom: 10px;
   width: ${({ $width }) => $width || '2.5rem'};
 `;
-
-export const FooterInfo = styled.div`
-  display: flex;
-  gap: 50px;
-`;
