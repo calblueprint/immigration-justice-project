@@ -6,10 +6,14 @@ import { LinkButton } from '@/components/Buttons';
 import Footer from '@/components/Footer';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import { Box } from '@/styles/containers';
 import { H2, H3, H4 } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
-import homepageImage from '~/public/images/homepage-image.webp';
+import graphicAssignment from '~/public/graphics/assignment.svg';
+import graphicCase from '~/public/graphics/briefcase.svg';
+import graphicLanguageSupport from '~/public/graphics/interpretation.svg';
+import heroImage from '~/public/images/hero.webp';
 import secondImage from '~/public/images/homepage-second-image.webp';
 import * as Styles from './styles';
 
@@ -19,10 +23,10 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { number: '180+', label: 'Pro Bono Cases' },
-  { number: '200+', label: 'Attorney Volunteers' },
-  { number: '65+', label: 'Interpreters & Translators' },
-  { number: '50+', label: 'Successful Outcomes' },
+  { number: '180+', label: 'Matched Cases' },
+  { number: '180+', label: 'Attorney' },
+  { number: '65+', label: 'Interpreters' },
+  { number: '45+', label: 'Successful Results' },
 ];
 
 const renderStat = (stat: Stat) => (
@@ -30,45 +34,6 @@ const renderStat = (stat: Stat) => (
     <H2 $color={COLORS.blueDark}>{stat.number}</H2>
     <Styles.StatLabel>{stat.label}</Styles.StatLabel>
   </Styles.StatContainer>
-);
-
-type Service = {
-  iconSrc: string;
-  title: string;
-  description: string;
-};
-
-const services: Service[] = [
-  {
-    iconSrc: 'An Icon will be Here',
-    title: 'Case Assistance',
-    description:
-      '<b>Attorneys</b> licensed in any state with or without immigration law experience can represent immigrants and asylum-seekers in removal proceeding before the Immigration Court, the Board of Immigration Appeals and the U.S. Court of Appeals for the Ninth Circuit.',
-  },
-  {
-    iconSrc: 'An Icon will be Here',
-    title: 'Limited Case Assignment',
-    description:
-      '<b>Law students</b> and <b>recent graduates</b> awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
-  },
-  {
-    iconSrc: 'An Icon will be Here',
-    title: 'Language Support',
-    description:
-      '<b>Interpreters</b> and <b>translators</b> can conduct volunteer translation and live interpertation. We have frequent need for individuals who speak Creole, Portuguese, Spanish, French, Arabic, and Russian',
-  },
-];
-
-const renderService = (service: Service) => (
-  <Styles.ServiceContainer key={service.title}>
-    <Styles.ServiceIcon src={service.iconSrc} alt={service.title} />
-    <H3 $color={COLORS.blueMid}>{service.title}</H3>
-    <H4
-      $color={COLORS.greyDark}
-      $fontWeight="400"
-      dangerouslySetInnerHTML={{ __html: service.description }}
-    />
-  </Styles.ServiceContainer>
 );
 
 export default function Home() {
@@ -94,9 +59,9 @@ export default function Home() {
         <Styles.ImageContainer>
           <Image
             alt="background"
-            src={homepageImage.src}
+            src={heroImage.src}
             placeholder="blur"
-            blurDataURL={homepageImage.src}
+            blurDataURL={heroImage.src}
             quality={100}
             style={{ objectFit: 'cover' }}
             fill
@@ -110,7 +75,7 @@ export default function Home() {
             and access to justice through the provision of high quality legal
             services on behalf of indigent immigrants and asylum seekers.
           </Styles.Subtitle>
-          <Styles.ButtonDiv>
+          <div>
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
@@ -119,18 +84,56 @@ export default function Home() {
             >
               Volunteer Now
             </LinkButton>
-          </Styles.ButtonDiv>
+          </div>
         </Styles.TextContainer>
       </Styles.TitleSection>
       <Styles.StatisticsSection>
-        {stats.map(stat => renderStat(stat))}
+        <Styles.StatInnerContainer>
+          {stats.map(stat => renderStat(stat))}
+        </Styles.StatInnerContainer>
       </Styles.StatisticsSection>
       <Styles.HowYouCanHelpContainer style={{ background: COLORS.background }}>
-        <H2 $color={COLORS.blueMid}>
-          HOW <span style={{ color: COLORS.goldMid }}>YOU</span> CAN HELP
+        <H2 $color={COLORS.blueMid} $fontWeight={400}>
+          HOW <strong style={{ color: COLORS.goldMid }}>YOU</strong> CAN HELP
         </H2>
         <Styles.ServicesDiv>
-          {services.map(Service => renderService(Service))}
+          <Styles.ServiceContainer>
+            <Styles.ServiceIcon src={graphicCase} alt="gavel and briefcase" />
+            <H3 $color={COLORS.blueMid}>Case Assistance</H3>
+            <H4 $color={COLORS.greyDark} $fontWeight="400">
+              <b>Attorneys</b> licensed in any state with or without immigration
+              law experience can represent immigrants and asylum-seekers in
+              removal proceeding before the Immigration Court, the Board of
+              Immigration Appeals and the U.S. Court of Appeals for the Ninth
+              Circuit.
+            </H4>
+          </Styles.ServiceContainer>
+          <Styles.ServiceContainer>
+            <Styles.ServiceIcon
+              src={graphicAssignment}
+              alt="letter from an envelope"
+            />
+            <H3 $color={COLORS.blueMid}>Limited Case Assignment</H3>
+            <H4 $color={COLORS.greyDark} $fontWeight="400">
+              <b>Law students, recent graduates, and attorneys</b> awaiting bar
+              results can assist attorneys to screen potential clients, conduct
+              legal and factual research and write motions and briefs in support
+              of on-going court cases.
+            </H4>
+          </Styles.ServiceContainer>
+          <Styles.ServiceContainer>
+            <Styles.ServiceIcon
+              src={graphicLanguageSupport}
+              alt="people in conversation"
+            />
+            <H3 $color={COLORS.blueMid}>Language Support</H3>
+            <H4 $color={COLORS.greyDark} $fontWeight="400">
+              <b>Interpreters</b> and <b>translators</b> can conduct volunteer
+              translation and live interpertation. We have frequent need for
+              individuals who speak Creole, Portuguese, Spanish, French, Arabic,
+              and Russian
+            </H4>
+          </Styles.ServiceContainer>
         </Styles.ServicesDiv>
       </Styles.HowYouCanHelpContainer>
       <Styles.MissionValuesContainer>
@@ -148,7 +151,7 @@ export default function Home() {
             navigating immigration legal proceedings in the San Diego,
             California border region.
           </H4>
-          <Styles.ButtonDiv>
+          <Box $mt="0.8rem" $h="max-content">
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
@@ -156,16 +159,16 @@ export default function Home() {
             >
               Learn More
             </LinkButton>
-          </Styles.ButtonDiv>
+          </Box>
         </Styles.MissionStatement>
         <Styles.ImageWrapper>
           <Image
             alt="Lawyer Image"
-            src={secondImage.src}
+            src={secondImage}
             placeholder="blur"
             blurDataURL={secondImage.src}
             quality={100}
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'cover' }}
             sizes="100%"
             fill
           />

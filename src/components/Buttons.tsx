@@ -99,6 +99,7 @@ export const Button = styled.button`
 
 export const LinkButton = styled(Link)`
   ${ButtonStyles}
+  display: inline-block;
   text-decoration: none;
 `;
 
