@@ -27,7 +27,7 @@ export const StatisticsSection = styled.div`
 `;
 
 export const StatInnerContainer = styled.div`
-  width: 62.5rem;
+  width: 75rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -96,6 +96,7 @@ export const MissionStatement = styled.div`
   justify-content: flex-end;
   gap: 10px;
   padding-bottom: 30px;
+  flex: 1;
 `;
 
 export const TextContainer = styled.div`
@@ -142,6 +143,7 @@ export const ImageWrapper = styled.div`
   position: relative;
   aspect-ratio: 638 / 415;
   width: 638px;
+  flex: 1;
 `;
 
 export const Subtitle = styled.h3`

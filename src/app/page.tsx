@@ -17,24 +17,66 @@ import heroImage from '~/public/images/hero.webp';
 import secondImage from '~/public/images/homepage-second-image.webp';
 import * as Styles from './styles';
 
-type Stat = {
+interface Stat {
   number: string;
   label: string;
-};
+}
+
+interface Service {
+  iconSrc: string;
+  iconAlt: string;
+  title: string;
+  description: React.ReactNode;
+}
 
 const stats: Stat[] = [
-  { number: '180+', label: 'Matched Cases' },
-  { number: '180+', label: 'Attorney' },
-  { number: '65+', label: 'Interpreters' },
-  { number: '45+', label: 'Successful Results' },
+  { number: '180+', label: 'Pro Bono Cases' },
+  { number: '200+', label: 'Attorney Volunteers' },
+  { number: '65+', label: 'Interpreters and Translators' },
+  { number: '50+', label: 'Successful Outcomes' },
 ];
 
-const renderStat = (stat: Stat) => (
-  <Styles.StatContainer key={stat.label}>
-    <H2 $color={COLORS.blueDark}>{stat.number}</H2>
-    <Styles.StatLabel>{stat.label}</Styles.StatLabel>
-  </Styles.StatContainer>
-);
+const services: Service[] = [
+  {
+    iconSrc: graphicCase,
+    iconAlt: 'gavel and briefcase',
+    title: 'Case Assistance',
+    description: (
+      <>
+        <b>Attorneys</b> in any state with or without immigration law experience
+        can represent immigrants and asylum-seekers in removal proceeding before
+        the Immigration Court, the Board of Immigration Appeals and the U.S.
+        Court of Appeals for the Ninth Circuit.
+      </>
+    ),
+  },
+  {
+    iconSrc: graphicAssignment,
+    iconAlt: 'letter from an envelope',
+    title: 'Limited Case Assignment',
+    description: (
+      <>
+        <b>Law students, recent graduates, and attorneys</b> awaiting bar
+        results can assist attorneys to screen potential clients, conduct legal
+        and factual research and write motions and briefs in support of on-going
+        court cases.
+      </>
+    ),
+  },
+  {
+    iconSrc: graphicLanguageSupport,
+    iconAlt: 'people in conversation',
+    title: 'Language Support',
+    description: (
+      <>
+        <b>Interpreters</b> and <b>translators</b> can conduct volunteer
+        translation and live interpertation. We have frequent need for
+        individuals who speak Creole, Portuguese, Spanish, French, Arabic, and
+        Russian
+      </>
+    ),
+  },
+];
 
 export default function Home() {
   const auth = useAuth();
@@ -89,7 +131,12 @@ export default function Home() {
       </Styles.TitleSection>
       <Styles.StatisticsSection>
         <Styles.StatInnerContainer>
-          {stats.map(stat => renderStat(stat))}
+          {stats.map(stat => (
+            <Styles.StatContainer key={stat.label}>
+              <H2 $color={COLORS.blueDark}>{stat.number}</H2>
+              <Styles.StatLabel>{stat.label}</Styles.StatLabel>
+            </Styles.StatContainer>
+          ))}
         </Styles.StatInnerContainer>
       </Styles.StatisticsSection>
       <Styles.HowYouCanHelpContainer style={{ background: COLORS.background }}>
@@ -97,51 +144,21 @@ export default function Home() {
           HOW <strong style={{ color: COLORS.goldMid }}>YOU</strong> CAN HELP
         </H2>
         <Styles.ServicesDiv>
-          <Styles.ServiceContainer>
-            <Styles.ServiceIcon src={graphicCase} alt="gavel and briefcase" />
-            <H3 $color={COLORS.blueMid}>Case Assistance</H3>
-            <H4 $color={COLORS.greyDark} $fontWeight="400">
-              <b>Attorneys</b> licensed in any state with or without immigration
-              law experience can represent immigrants and asylum-seekers in
-              removal proceeding before the Immigration Court, the Board of
-              Immigration Appeals and the U.S. Court of Appeals for the Ninth
-              Circuit.
-            </H4>
-          </Styles.ServiceContainer>
-          <Styles.ServiceContainer>
-            <Styles.ServiceIcon
-              src={graphicAssignment}
-              alt="letter from an envelope"
-            />
-            <H3 $color={COLORS.blueMid}>Limited Case Assignment</H3>
-            <H4 $color={COLORS.greyDark} $fontWeight="400">
-              <b>Law students, recent graduates, and attorneys</b> awaiting bar
-              results can assist attorneys to screen potential clients, conduct
-              legal and factual research and write motions and briefs in support
-              of on-going court cases.
-            </H4>
-          </Styles.ServiceContainer>
-          <Styles.ServiceContainer>
-            <Styles.ServiceIcon
-              src={graphicLanguageSupport}
-              alt="people in conversation"
-            />
-            <H3 $color={COLORS.blueMid}>Language Support</H3>
-            <H4 $color={COLORS.greyDark} $fontWeight="400">
-              <b>Interpreters</b> and <b>translators</b> can conduct volunteer
-              translation and live interpertation. We have frequent need for
-              individuals who speak Creole, Portuguese, Spanish, French, Arabic,
-              and Russian
-            </H4>
-          </Styles.ServiceContainer>
+          {services.map(service => (
+            <Styles.ServiceContainer key={service.title}>
+              <Styles.ServiceIcon src={service.iconSrc} alt={service.iconAlt} />
+              <H3 $color={COLORS.blueMid}>{service.title}</H3>
+              <H4 $color={COLORS.greyDark} $fontWeight="400">
+                {service.description}
+              </H4>
+            </Styles.ServiceContainer>
+          ))}
         </Styles.ServicesDiv>
       </Styles.HowYouCanHelpContainer>
       <Styles.MissionValuesContainer>
         <Styles.MissionStatement>
-          <H2 $color={COLORS.blueMid} style={{ maxWidth: '500px' }}>
-            OUR MISSION VALUES
-          </H2>
-          <H4 $fontWeight="400" style={{ maxWidth: '500px' }}>
+          <H2 $color={COLORS.blueMid}>OUR MISSION VALUES</H2>
+          <H4 $fontWeight="400">
             The mission of the Immigration Justice Project (IJP) is to improve
             public awareness of the legal system, to promote the administration
             of justice, and to deliver high-quality legal services. IJP’s goals
