@@ -83,7 +83,7 @@ highlights:
             link: https://commonmark.org/help/
 
     - header: About
-      description: This project was built by <a href="https://calblueprint.org/">Cal Blueprint</a>'s team during the 2023-2024 school year.
+      description: This project was built by one of <a href="https://calblueprint.org/">Cal Blueprint</a>'s team during the 2023-2024 school year.
       image: /assets/image/advanced.svg
       features:
           - title:
