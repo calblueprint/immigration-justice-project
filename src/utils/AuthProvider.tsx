@@ -101,11 +101,8 @@ export default function AuthProvider({
         password,
         options,
       }); // will trigger onAuthStateChange to update the session
-
-      // This code is largely taken from https://github.com/orgs/supabase/discussions/1282#discussioncomment-5230475
-
-      // User exists, but is fake. See https://supabase.com/docs/reference/javascript/auth-signup
-      if (await checkEmailExists(email)) {
+      const emailExists = await checkEmailExists(email);
+      if (emailExists) {
         const authError = new AuthError(
           'A user account with this email already exists',
         );
