@@ -41,8 +41,8 @@ export default function Login() {
       return;
     }
 
-    setEmailError(validEmail(email) ? '' : 'Invalid email.');
-    setPasswordError(password !== '' ? '' : 'Invalid password.');
+    setEmailError(validEmail(email) ? '' : 'Email not found.');
+    setPasswordError(password !== '' ? '' : 'Password is incorrect.');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
