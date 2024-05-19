@@ -7,7 +7,7 @@ import CONFIG from '@/lib/configs';
 import { useAuth } from '@/utils/AuthProvider';
 import { useGuardedOnboarding, useOnboardingNavigation } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
-import IJPLogoBlue from '~/public/images/ijp_logo_blue.webp';
+import IJPLogoBlue from '~/public/images/ijp-logo-blue.webp';
 import { UnstyledButton } from './Buttons';
 import ProgressBar from './ProgressBar';
 
