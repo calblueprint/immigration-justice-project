@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { LinkColored } from '@/styles/text';
-import { boolean } from 'zod';
 
 export const NavBarContainer = styled.div`
   display: flex;
@@ -40,14 +39,15 @@ export const NoUnderlineLink = styled(LinkColored)<{ $isActive: boolean }>`
   cursor: pointer;
 `;
 
-export const DisplayText = styled.span<{$isActive: boolean}>`
+export const DisplayText = styled.span<{ $isActive: boolean }>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')}; /* Conditional bolding */
+  font-weight: ${({ $isActive }) =>
+    $isActive ? '600' : '400'}; 
   color: white;
-`
+`;
 
 export const ActiveUnderline = styled.hr<{ $isActive: boolean }>`
   visibility: ${({ $isActive }) => ($isActive ? 'visible' : 'hidden')};

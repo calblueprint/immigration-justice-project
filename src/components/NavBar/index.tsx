@@ -96,7 +96,6 @@ export default function NavBar() {
   }
 
   return (
-    
     <Styles.NavBarContainer>
       <Styles.NavBarSectionDiv>
         <Link href="/">
