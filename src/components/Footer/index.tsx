@@ -75,11 +75,11 @@ export default function Footer() {
           </Styles.FooterSection>
         </Flex>
       </Flex>
-      <Flex $direction="row" $gap="10px" $py="40px" $align="center">
+      <Flex $direction="row" $py="40px">
         <Styles.FooterLink $color="white" href={CONFIG.blueprint}>
           Made by Cal Blueprint
+          <Icon type="blueprint" />
         </Styles.FooterLink>
-        <Icon type="blueprint" />
       </Flex>
     </Styles.Footer>
   );

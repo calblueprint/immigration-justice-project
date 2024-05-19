@@ -22,6 +22,9 @@ export const FooterLink = styled(LinkColored)`
   text-decoration: none;
   font-size: 0.9375rem;
   font-weight: 400px;
+  gap: 10px;
+  display: flex;
+  align-items: center;
 `;
 
 export const Header = styled.p`
