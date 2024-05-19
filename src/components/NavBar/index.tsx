@@ -80,6 +80,9 @@ export default function NavBar() {
           $color="white"
           $isActive={link.active}
         >
+          <Styles.DisplayText $isActive={link.active}>
+            {link.name}
+          </Styles.DisplayText>
           {link.name}
         </Styles.NoUnderlineLink>
       </Flex>
@@ -93,6 +96,7 @@ export default function NavBar() {
   }
 
   return (
+    
     <Styles.NavBarContainer>
       <Styles.NavBarSectionDiv>
         <Link href="/">
