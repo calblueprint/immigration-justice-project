@@ -28,23 +28,30 @@ export default function SignUp() {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!auth) return;
+
     setEmailError(validEmail(email) ? '' : 'Invalid email');
     setPasswordError(password !== '' ? '' : 'Invalid password');
+
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
     }
+
     if (!passwordComplexity) {
       setPasswordError('Password must meet complexity requirements.');
       return;
     }
+
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
       return;
     }
+
     setEmailError('');
     setPasswordError('');
+
     const { error } = await auth.signUp(email, password, {
       emailRedirectTo:
         'https://immigration-justice-project.vercel.app/email-verified',
@@ -58,7 +65,10 @@ export default function SignUp() {
       setErrorMessage('');
     }
   };
-  const handleResendEmail = async () => {
+
+  const handleResendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
@@ -67,6 +77,7 @@ export default function SignUp() {
           'https://immigration-justice-project.vercel.app/email-verified',
       },
     });
+
     if (error) {
       setErrorMessage(error.message);
     } else {
@@ -125,7 +136,7 @@ export default function SignUp() {
     </SmallCardForm>
   ) : (
     <SmallCardForm onSubmit={handleResendEmail}>
-      <Flex $direction="column" $gap="20px">
+      <Flex $direction="column" $align="center" $gap="20px">
         <Icon type="email" />
         <AuthSubHeading>Verification email sent!</AuthSubHeading>
         <H4Centered $color={COLORS.greyDark}>

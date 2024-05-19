@@ -51,8 +51,8 @@ export default function ForgotPassword() {
           </BigBlueButton>
         </>
       ) : (
-        <Flex $direction="column" $gap="20px">
-          <AuthSubHeading>
+        <Flex $direction="column" $align="center" $gap="20px">
+          <AuthSubHeading $align="center">
             A password reset link has been sent to your email.
           </AuthSubHeading>
           <H4Centered $color={COLORS.greyDark}>
