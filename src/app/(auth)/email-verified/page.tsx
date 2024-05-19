@@ -1,16 +1,19 @@
 'use client';
 
-import { SpacerDiv } from '@/app/(auth)/styles';
 import { BigBlueLinkButton } from '@/components/Buttons';
-import { H2Centered } from '@/styles/text';
+import CONFIG from '@/lib/configs';
+import { Flex, SmallCard } from '@/styles/containers';
+import { H2 } from '@/styles/text';
 
 export default function EmailVerified() {
   return (
-    <SpacerDiv>
-      <H2Centered>Your email has been verified!</H2Centered>
-      <BigBlueLinkButton type="button" href="/onboarding/roles">
-        Go to Onboarding
-      </BigBlueLinkButton>
-    </SpacerDiv>
+    <SmallCard>
+      <Flex $direction="column" $gap="20px">
+        <H2>Your email has been verified!</H2>
+        <BigBlueLinkButton type="button" href={CONFIG.onboardingHome}>
+          Go to Onboarding
+        </BigBlueLinkButton>
+      </Flex>
+    </SmallCard>
   );
 }

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
@@ -11,22 +11,22 @@ const PasswordComplexityDiv = styled.div`
   gap: 4px;
 `;
 
-const PasswordRequirementDiv = styled.div<{ met: boolean }>`
+const PasswordRequirementDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-const PasswordRequirementText = styled.p<{ met: boolean }>`
+const PasswordRequirementText = styled.p<{ $met: boolean }>`
   ${sans.style}
-  color: ${props => (props.met ? COLORS.green : COLORS.greyMid)};
+  color: ${({ $met }) => ($met ? COLORS.green : COLORS.greyMid)};
 `;
 
 function PasswordRequirement({ met, text }: { met: boolean; text: string }) {
   return (
-    <PasswordRequirementDiv met={met}>
+    <PasswordRequirementDiv>
       <Icon type={met ? 'greenCheck' : 'grayDot'} />
-      <PasswordRequirementText met={met}>{text}</PasswordRequirementText>
+      <PasswordRequirementText $met={met}>{text}</PasswordRequirementText>
     </PasswordRequirementDiv>
   );
 }
@@ -38,30 +38,36 @@ export default function PasswordComplexity({
   password: string;
   setComplexity: Dispatch<SetStateAction<boolean>>;
 }) {
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const longEnough = password.length >= 8;
+  useEffect(() => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const longEnough = password.length >= 8;
 
-  if (hasUpperCase && hasLowerCase && hasNumber && longEnough) {
-    setComplexity(true);
-  } else {
-    setComplexity(false);
-  }
+    const isComplex = hasUpperCase && hasLowerCase && hasNumber && longEnough;
+
+    setComplexity(isComplex);
+  }, [password, setComplexity]);
 
   if (password.length > 0) {
     return (
       <PasswordComplexityDiv>
         <PasswordRequirement
-          met={hasUpperCase}
+          met={/[A-Z]/.test(password)}
           text="At least 1 uppercase character"
         />
         <PasswordRequirement
-          met={hasLowerCase}
+          met={/[a-z]/.test(password)}
           text="At least 1 lowercase character"
         />
-        <PasswordRequirement met={hasNumber} text="At least 1 number" />
-        <PasswordRequirement met={longEnough} text="At least 8 characters" />
+        <PasswordRequirement
+          met={/\d/.test(password)}
+          text="At least 1 number"
+        />
+        <PasswordRequirement
+          met={password.length >= 8}
+          text="At least 8 characters"
+        />
       </PasswordComplexityDiv>
     );
   }

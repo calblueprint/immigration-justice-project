@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
-import { SpacerDiv } from '@/app/(auth)/styles';
+import { verifyUserPassword } from '@/api/supabase/queries/password';
 import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
 import COLORS from '@/styles/colors';
+import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, H4, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 
@@ -28,19 +29,26 @@ export default function ResetPassword() {
     });
   }, []);
 
-  const resetPassword = async () => {
+  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!passwordComplexity) {
-      setErrorMessage('Password must meet complexity requirements');
+      setErrorMessage('Password must meet complexity requirements.');
       return;
     }
     if (newPassword !== newPassword2) {
       setErrorMessage('Passwords do not match.');
       return;
     }
+    if (!verifyUserPassword(newPassword)) {
+      setErrorMessage(
+        'Password cannot be the same as your previous password. Please choose a different password.',
+      );
+      return;
+    }
     setErrorMessage('');
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
-      setErrorMessage(error.message);
+      setErrorMessage('Something went wrong. Please try again later.');
     } else {
       const signOutError = await auth?.signOut();
       if (signOutError) {
@@ -52,41 +60,39 @@ export default function ResetPassword() {
     }
   };
 
-  return (
-    canReset && (
-      <>
-        <SpacerDiv $gap={0.625}>
-          <H1>Set New Password</H1>
-          {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
-        </SpacerDiv>
-        <SpacerDiv>
-          <SpacerDiv $gap={0.5}>
-            <TextInput
-              label="New Password"
-              placeholder="Password"
-              type="password"
-              id="newpass"
-              value={newPassword}
-              setValue={setNewPassword}
-            />
-            <PasswordComplexity
-              password={newPassword}
-              setComplexity={setPasswordComplexity}
-            />
-          </SpacerDiv>
+  return canReset ? (
+    <SmallCardForm onSubmit={handleResetPassword}>
+      <Flex $direction="column" $gap="10px">
+        <H1>Set New Password</H1>
+        {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
+      </Flex>
+      <Flex $direction="column" $gap="20px">
+        <Flex $direction="column" $gap="8px">
           <TextInput
-            label="Confirm New Password"
+            label="New Password"
             placeholder="Password"
             type="password"
-            id="confirmnewpass"
-            value={newPassword2}
-            setValue={setNewPassword2}
+            id="newpass"
+            value={newPassword}
+            setValue={setNewPassword}
           />
-        </SpacerDiv>
-        <BigBlueButton type="button" onClick={resetPassword}>
-          <H4 $color="white">Set Password</H4>
-        </BigBlueButton>
-      </>
-    )
-  );
+          <PasswordComplexity
+            password={newPassword}
+            setComplexity={setPasswordComplexity}
+          />
+        </Flex>
+        <TextInput
+          label="Confirm New Password"
+          placeholder="Password"
+          type="password"
+          id="confirmnewpass"
+          value={newPassword2}
+          setValue={setNewPassword2}
+        />
+      </Flex>
+      <BigBlueButton type="submit">
+        <H4 $color="white">Set Password</H4>
+      </BigBlueButton>
+    </SmallCardForm>
+  ) : null;
 }

@@ -3,11 +3,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import isEmail from 'validator/lib/isEmail';
-import { H4Centered, SpacerDiv } from '@/app/(auth)/styles';
+import { H4Centered } from '@/app/(auth)/styles';
 import { BigBlueButton } from '@/components/Buttons';
 import TextInput from '@/components/TextInput/index';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { ProfileContext } from '@/utils/ProfileProvider';
@@ -33,9 +34,15 @@ export default function Login() {
     if (auth.userId && !isLoggingIn) push(CONFIG.settings);
   }, [auth, profile, push, isLoggingIn]);
 
-  const handleSignIn = async () => {
-    setEmailError(validEmail(email) ? '' : 'Invalid Email');
-    setPasswordError(password !== '' ? '' : 'Invalid Password');
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!auth) {
+      setErrorMessage('');
+      return;
+    }
+
+    setEmailError(validEmail(email) ? '' : 'Email not found');
+    setPasswordError(password !== '' ? '' : 'Password is incorrect');
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
@@ -68,13 +75,13 @@ export default function Login() {
   };
 
   return (
-    <>
-      <SpacerDiv $gap={0.625}>
+    <SmallCardForm onSubmit={handleSignIn}>
+      <Flex $direction="column" $gap="10px">
         <H1>Log In</H1>
         {errorMessage !== '' && <P $color={COLORS.redMid}>{errorMessage}</P>}
-      </SpacerDiv>
-      <SpacerDiv $gap={0.8125}>
-        <SpacerDiv>
+      </Flex>
+      <Flex $direction="column" $gap="13px">
+        <Flex $direction="column" $gap="20px">
           <TextInput
             label="Email"
             placeholder="email@example.com"
@@ -93,24 +100,22 @@ export default function Login() {
             value={password}
             setValue={setPassword}
           />
-        </SpacerDiv>
+        </Flex>
         <P>
           <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
             Forgot your password?
           </LinkColored>
         </P>
-      </SpacerDiv>
-      <SpacerDiv>
-        <BigBlueButton type="button" onClick={handleSignIn}>
-          Log in
-        </BigBlueButton>
+      </Flex>
+      <Flex $direction="column" $gap="20px">
+        <BigBlueButton type="submit">Log In</BigBlueButton>
         <H4Centered>
           Don’t have an account yet?{' '}
           <LinkColored $color={COLORS.greyDark} href="/signup">
             Sign up
           </LinkColored>
         </H4Centered>
-      </SpacerDiv>
-    </>
+      </Flex>
+    </SmallCardForm>
   );
 }

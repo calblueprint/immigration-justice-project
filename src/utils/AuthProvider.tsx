@@ -11,6 +11,7 @@ import {
 import { AuthError, AuthResponse, Session } from '@supabase/supabase-js';
 import type { UUID } from 'crypto';
 import supabase from '@/api/supabase/createClient';
+import { checkEmailExists } from '@/api/supabase/queries/email';
 
 export interface AuthContextType {
   session?: Session;
@@ -100,7 +101,13 @@ export default function AuthProvider({
         password,
         options,
       }); // will trigger onAuthStateChange to update the session
-
+      const emailExists = await checkEmailExists(email);
+      if (emailExists) {
+        const authError = new AuthError(
+          'A user account with this email already exists',
+        );
+        value.error = authError;
+      }
       return value;
     },
     [],
