@@ -10,7 +10,7 @@ export default function EmailVerified() {
   return (
     <SmallCard>
       <Flex $direction="column" $align="center" $gap="20px">
-        <Icon type="blue_check" />
+        <Icon type="blueCheck" />
         <AuthSubHeading>Your email has been verified!</AuthSubHeading>
         <BigBlueLinkButton type="button" href={CONFIG.onboardingHome}>
           Go to Onboarding

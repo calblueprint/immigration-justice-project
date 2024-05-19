@@ -150,7 +150,7 @@ export default function SignUp() {
         {emailSentCount > 1 && (
           <P $color={COLORS.greyDark}>
             Email has been sent to
-            <span style={{ color: COLORS.blueDark }}>{email}</span>
+            <span style={{ color: COLORS.blueDark }}> {email}</span>
           </P>
         )}
       </Flex>

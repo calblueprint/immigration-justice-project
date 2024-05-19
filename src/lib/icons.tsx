@@ -357,7 +357,7 @@ export const IconSvgs = {
       />
     </svg>
   ),
-  blue_check: (
+  blueCheck: (
     <svg
       width="75"
       height="76"
