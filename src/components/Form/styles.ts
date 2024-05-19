@@ -20,3 +20,9 @@ export const Label = styled(H4)<{ $required?: boolean }>`
 export const Message = styled(P)<{ $hasError?: boolean }>`
   color: ${({ $hasError }) => ($hasError ? COLORS.redMid : COLORS.greyDark)};
 `;
+
+export const Description = styled(P)`
+  color: ${COLORS.greyMid};
+  font-size: 0.875rem;
+  margin: 0.625rem 0;
+`;

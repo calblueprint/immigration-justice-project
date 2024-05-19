@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { BigBlueButton, BigButton } from '@/components/Buttons';
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -106,6 +107,10 @@ export default function Page() {
                     placeholder="Start typing to filter states..."
                   />
                 </FormControl>
+                <FormDescription>
+                  If you are barred in multiple states, choose your preferred
+                  state
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

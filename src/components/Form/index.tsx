@@ -154,3 +154,12 @@ export const FormMessage = forwardRef<
   );
 });
 FormMessage.displayName = 'FormMessage';
+
+export const FormDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>((props, ref) => {
+  const { formDescriptionId } = useFormField();
+  return <Styles.Description ref={ref} id={formDescriptionId} {...props} />;
+});
+FormDescription.displayName = 'FormDescription';
