@@ -147,7 +147,10 @@ export default function SignUp() {
           <H4 $color="white">Resend Email</H4>
         </BigBlueButton>
         {emailSentCount > 1 && (
-          <P $color={COLORS.blueMid}>Email has been resent!</P>
+          <P $color={COLORS.greyDark}>
+            Email has been sent to
+            <span style={{ color: COLORS.blueDark }}>{email}</span>
+          </P>
         )}
       </Flex>
     </SmallCardForm>
