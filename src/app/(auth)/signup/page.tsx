@@ -8,6 +8,7 @@ import { BigBlueButton } from '@/components/Buttons';
 import Icon from '@/components/Icon';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { Flex, SmallCardForm } from '@/styles/containers';
 import { H1, H4, LinkColored, P } from '@/styles/text';
@@ -128,7 +129,7 @@ export default function SignUp() {
         <BigBlueButton type="submit">Sign Up</BigBlueButton>
         <PCentered>
           Have an account already?{' '}
-          <LinkColored $color={COLORS.blueMid} href="/login">
+          <LinkColored $color={COLORS.blueMid} href={CONFIG.login}>
             Log in
           </LinkColored>
         </PCentered>

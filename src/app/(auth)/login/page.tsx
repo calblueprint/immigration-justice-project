@@ -102,7 +102,7 @@ export default function Login() {
           />
         </Flex>
         <P>
-          <LinkColored href="/forgot-password" $color={COLORS.greyMid}>
+          <LinkColored href={CONFIG.forgotPassword} $color={COLORS.greyMid}>
             Forgot your password?
           </LinkColored>
         </P>
@@ -111,7 +111,7 @@ export default function Login() {
         <BigBlueButton type="submit">Log In</BigBlueButton>
         <PCentered>
           Don’t have an account yet?{' '}
-          <LinkColored $color={COLORS.blueMid} href="/signup">
+          <LinkColored $color={COLORS.blueMid} href={CONFIG.signup}>
             Sign up
           </LinkColored>
         </PCentered>

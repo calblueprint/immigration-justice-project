@@ -6,6 +6,9 @@ const CONFIG = {
   cases: '/cases',
   lca: '/limited-case-assignments',
   languageSupport: '/language-support',
+  forgotPassword: '/forgot-password',
+  login: '/login',
+  signup: '/signup',
   // social media links
   facebook: 'https://www.facebook.com/ImmigrationJusticeProjectOfSanDiego/',
   xTwitter: 'https://twitter.com/ijpsandiego?lang=en',
