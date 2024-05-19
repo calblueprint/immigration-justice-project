@@ -1,20 +1,26 @@
 'use client';
 
 import { useMemo } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Icon from '@/components/Icon';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
+import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
+import IJPlogo from '~/public/images/ijp-logo.webp';
 import { ProfileButton, SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
 
 export default function NavBar() {
   const profile = useProfile();
+  if (!profile) throw new Error('Profile must be defined.');
+
+  const auth = useAuth();
+  if (!auth) throw new Error('Auth Must be defined.');
+
   const AuthButtonView = useMemo(() => {
-    if (!profile) throw new Error('Profile must be defined.');
-    if (profile.profileReady && profile?.profileData)
+    if (profile.profileReady && auth.userId)
       return (
         <ProfileButton href="/settings">
           {profile.profileData?.first_name || 'Profile'}
@@ -67,7 +73,7 @@ export default function NavBar() {
   ];
 
   const renderLink = (link: NavLink) => (
-    <Styles.LinkContainer>
+    <Styles.LinkContainer key={link.path}>
       <Flex
         $direction="column"
         $justify="center"
@@ -91,7 +97,7 @@ export default function NavBar() {
   );
 
   const currentPath = usePathname();
-  if (currentPath.includes('/onboarding')) {
+  if (currentPath.includes('/onboarding') && !currentPath.includes('/roles')) {
     return null;
   }
 
@@ -99,9 +105,17 @@ export default function NavBar() {
     <Styles.NavBarContainer>
       <Styles.NavBarSectionDiv>
         <Link href="/">
-          <Icon type="IJPLogo" />
+          <Image
+            alt="background"
+            src={IJPlogo.src}
+            placeholder="blur"
+            blurDataURL={IJPlogo.src}
+            quality={100}
+            width={47}
+            height={47}
+          />
         </Link>
-        {navlinks.map(NavLink => renderLink(NavLink))}
+        {navlinks.map(renderLink)}
       </Styles.NavBarSectionDiv>
       <Styles.NavBarSectionDiv>
         <Styles.AuthButtons>{AuthButtonView}</Styles.AuthButtons>

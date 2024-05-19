@@ -44,8 +44,7 @@ export const DisplayText = styled.span<{ $isActive: boolean }>`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-weight: ${({ $isActive }) =>
-    $isActive ? '600' : '400'}; 
+  font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
   color: white;
 `;
 
