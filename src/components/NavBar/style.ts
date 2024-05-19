@@ -11,15 +11,14 @@ export const NavBarContainer = styled.div`
   z-index: 1000;
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
+  padding: 0px 34px;
 `;
 
 export const NavBarSectionDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 18px;
-  margin-left: 34px;
-  margin-right: 34px;
+  gap: 12px;
 `;
 
 export const AuthButtons = styled.div`
@@ -29,7 +28,7 @@ export const AuthButtons = styled.div`
   top: 0;
   right: 0;
 `;
-export const NoUnderlineLink = styled(LinkColored)<{ $isActive: boolean }>`
+export const NoUnderlineLink = styled(LinkColored)`
   ${sans.style}
   text-decoration: none;
   margin: 10px;
@@ -64,7 +63,6 @@ export const LinkContainer = styled.div`
   display: flex;
   position: relative;
   height: 100%;
-  margin: 5px;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;

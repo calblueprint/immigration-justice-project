@@ -47,7 +47,7 @@ const ButtonStyles = css<ButtonProps>`
   appearance: none;
   color: ${({ $primaryColor }) => ($primaryColor ? 'white' : COLORS.blueMid)};
   background: ${({ $primaryColor }) => $primaryColor || 'white'};
-  padding: 0.625rem 1.25rem;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: 150ms ease-in-out;
@@ -105,9 +105,9 @@ export const LinkButton = styled(Link)`
 export const SmallLinkButton = styled(Link)`
   ${ButtonStyles}
   text-decoration: none;
-  padding: 0.25rem 0.75rem;
+  padding: 4px 12px;
   font-weight: 400;
-  border-radius: 0.313rem; // 5px
+  border-radius: 5px;
   border: 2px solid
     ${({ $primaryColor, $secondaryColor }) => $primaryColor || $secondaryColor};
   &:hover {
@@ -176,7 +176,7 @@ RedButton.displayName = 'RedButton';
 const BigButtonStyles = css<ButtonProps>`
   ${ButtonStyles}
 
-  padding: .9375rem 0;
+  padding: 15px 0;
   width: 100%;
 
   &:active {

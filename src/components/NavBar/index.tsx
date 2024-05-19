@@ -7,19 +7,26 @@ import { usePathname } from 'next/navigation';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { useAuth } from '@/utils/AuthProvider';
+import { useActiveStatus } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
 import IJPlogo from '~/public/images/ijp-logo.webp';
 import { ProfileButton, SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
+
+type NavLink = {
+  name: string;
+  path: string;
+  active: boolean;
+};
 
 export default function NavBar() {
   const profile = useProfile();
   if (!profile) throw new Error('Profile must be defined.');
 
   const auth = useAuth();
-  if (!auth) throw new Error('Auth Must be defined.');
+  if (!auth) throw new Error('Auth must be defined.');
 
-  const AuthButtonView = useMemo(() => {
+  const authButtonView = useMemo(() => {
     if (profile.profileReady && auth.userId)
       return (
         <ProfileButton href="/settings">
@@ -46,18 +53,8 @@ export default function NavBar() {
         </SmallLinkButton>
       </>
     );
-  }, [profile]);
+  }, [profile, auth.userId]);
 
-  function useActiveStatus(path: string): boolean {
-    const currentPath = usePathname();
-    return currentPath.includes(path);
-  }
-
-  type NavLink = {
-    name: string;
-    path: string;
-    active: boolean;
-  };
   const navlinks: NavLink[] = [
     { name: 'Cases', path: '/cases', active: useActiveStatus('/cases') },
     {
@@ -81,11 +78,7 @@ export default function NavBar() {
           flex: 1,
         }}
       >
-        <Styles.NoUnderlineLink
-          href={link.path}
-          $color="white"
-          $isActive={link.active}
-        >
+        <Styles.NoUnderlineLink href={link.path} $color="white">
           <Styles.DisplayText $isActive={link.active}>
             {link.name}
           </Styles.DisplayText>
@@ -118,7 +111,7 @@ export default function NavBar() {
         {navlinks.map(renderLink)}
       </Styles.NavBarSectionDiv>
       <Styles.NavBarSectionDiv>
-        <Styles.AuthButtons>{AuthButtonView}</Styles.AuthButtons>
+        <Styles.AuthButtons>{authButtonView}</Styles.AuthButtons>
       </Styles.NavBarSectionDiv>
     </Styles.NavBarContainer>
   );
