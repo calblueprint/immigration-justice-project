@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 
@@ -11,7 +12,7 @@ export const PageContainer = styled.div`
 export const TitleSection = styled.div`
   position: relative;
   width: 100%;
-  height: 100svh;
+  height: calc(100svh - ${CONFIG.navbarHeight}px);
   display: flex;
   flex-direction: column;
 `;
@@ -124,7 +125,7 @@ export const ImageBackground = styled.div`
 export const ImageContainer = styled.div`
   position: absolute;
   width: 100%;
-  height: 100svh;
+  height: calc(100svh - ${CONFIG.navbarHeight}px);
   top: 0;
   left: 0;
 `;

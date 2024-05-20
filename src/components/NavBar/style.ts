@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { LinkColored } from '@/styles/text';
@@ -6,7 +7,7 @@ import { LinkColored } from '@/styles/text';
 export const NavBarContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 78px;
+  height: ${CONFIG.navbarHeight}px;
   background: ${COLORS.blueMid};
   z-index: 1000;
   box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
