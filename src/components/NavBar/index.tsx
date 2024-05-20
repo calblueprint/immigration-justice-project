@@ -9,7 +9,7 @@ import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
-import IJPlogo from '~/public/images/ijp-logo-small.webp';
+import ijpLogo from '~/public/images/ijp-logo-small.webp';
 import { ProfileButton, SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
 
@@ -97,13 +97,9 @@ export default function NavBar() {
       <Styles.NavBarSectionDiv>
         <Link href="/">
           <Image
-            alt="background"
-            src={IJPlogo.src}
-            placeholder="blur"
-            blurDataURL={IJPlogo.src}
-            quality={100}
-            width={47}
-            height={47}
+            alt="logo"
+            src={ijpLogo}
+            style={{ width: '47px', height: '47px' }}
           />
         </Link>
         {navlinks.map(renderLink)}
