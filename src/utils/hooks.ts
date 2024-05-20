@@ -129,7 +129,3 @@ export const useOnboardingNavigation = () => {
   return { flowAt, ebbTo, backlinkHref, pageProgress };
 };
 
-export const useActiveStatus = (path: string): boolean => {
-  const currentPath = usePathname();
-  return currentPath.includes(path);
-};

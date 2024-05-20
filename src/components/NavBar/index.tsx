@@ -4,24 +4,37 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { useAuth } from '@/utils/AuthProvider';
-import { useActiveStatus } from '@/utils/hooks';
 import { useProfile } from '@/utils/ProfileProvider';
-import IJPlogo from '~/public/images/ijp-logo.webp';
+import IJPlogo from '~/public/images/ijp-logo-small.webp';
 import { ProfileButton, SmallLinkButton } from '../Buttons';
 import * as Styles from './style';
 
 type NavLink = {
   name: string;
   path: string;
-  active: boolean;
 };
+
+const navlinks: NavLink[] = [
+  { name: 'Cases', path: CONFIG.cases },
+  {
+    name: 'Limited Case Assignments',
+    path: CONFIG.lca,
+  },
+  {
+    name: 'Language Support',
+    path: CONFIG.languageSupport,
+  },
+];
 
 export default function NavBar() {
   const profile = useProfile();
   if (!profile) throw new Error('Profile must be defined.');
+
+  const currentPath = usePathname();
 
   const auth = useAuth();
   if (!auth) throw new Error('Auth must be defined.');
@@ -39,14 +52,14 @@ export default function NavBar() {
         <SmallLinkButton
           $primaryColor={COLORS.blueMid}
           $secondaryColor={COLORS.blueDark}
-          href="/login"
+          href={CONFIG.login}
         >
           Log In
         </SmallLinkButton>
         <SmallLinkButton
           $primaryColor="white"
           $secondaryColor={COLORS.blueDark}
-          href="/signup"
+          href={CONFIG.signup}
           style={{ color: COLORS.blueMid }}
         >
           Sign Up
@@ -54,20 +67,6 @@ export default function NavBar() {
       </>
     );
   }, [profile, auth.userId]);
-
-  const navlinks: NavLink[] = [
-    { name: 'Cases', path: '/cases', active: useActiveStatus('/cases') },
-    {
-      name: 'Limited Case Assignments',
-      path: '/limited-case-assignments',
-      active: useActiveStatus('/limited-case-assignments'),
-    },
-    {
-      name: 'Language Support',
-      path: '/language-support',
-      active: useActiveStatus('/language-support'),
-    },
-  ];
 
   const renderLink = (link: NavLink) => (
     <Styles.LinkContainer key={link.path}>
@@ -79,17 +78,16 @@ export default function NavBar() {
         }}
       >
         <Styles.NoUnderlineLink href={link.path} $color="white">
-          <Styles.DisplayText $isActive={link.active}>
+          <Styles.DisplayText $isActive={currentPath === link.path}>
             {link.name}
           </Styles.DisplayText>
           {link.name}
         </Styles.NoUnderlineLink>
       </Flex>
-      <Styles.ActiveUnderline $isActive={link.active} />
+      <Styles.ActiveUnderline $isActive={currentPath === link.path} />
     </Styles.LinkContainer>
   );
 
-  const currentPath = usePathname();
   if (currentPath.includes('/onboarding') && !currentPath.includes('/roles')) {
     return null;
   }
