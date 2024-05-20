@@ -54,8 +54,7 @@ export default function SignUp() {
     setPasswordError('');
 
     const { error } = await auth.signUp(email, password, {
-      emailRedirectTo:
-        'https://immigration-justice-project.vercel.app/email-verified',
+      emailRedirectTo: CONFIG.emailVerified,
     });
 
     if (error) {
@@ -74,8 +73,7 @@ export default function SignUp() {
       type: 'signup',
       email,
       options: {
-        emailRedirectTo:
-          'https://immigration-justice-project.vercel.app/email-verified',
+        emailRedirectTo: CONFIG.emailVerified,
       },
     });
 

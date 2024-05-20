@@ -6,9 +6,10 @@ const CONFIG = {
   cases: '/cases',
   lca: '/limited-case-assignments',
   languageSupport: '/language-support',
-  forgotPassword: '/forgot-password',
   login: '/login',
-  signup: '/signup',
+  signup: '/signup',  
+  emailVerified: 'https://immigration-justice-project.vercel.app/email-verified',
+  forgotPassword: '/forgot-password',
   // social media links
   facebook: 'https://www.facebook.com/ImmigrationJusticeProjectOfSanDiego/',
   xTwitter: 'https://twitter.com/ijpsandiego?lang=en',
