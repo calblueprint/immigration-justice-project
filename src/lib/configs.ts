@@ -1,5 +1,6 @@
 const CONFIG = {
   pageSize: 20,
+  navbarHeight: 78,
   homepage: '/',
   onboardingHome: '/onboarding/roles',
   settings: '/settings',

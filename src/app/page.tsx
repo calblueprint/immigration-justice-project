@@ -6,70 +6,77 @@ import { LinkButton } from '@/components/Buttons';
 import Footer from '@/components/Footer';
 import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
+import { Box } from '@/styles/containers';
 import { H2, H3, H4 } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 import { useProfile } from '@/utils/ProfileProvider';
-import homepageImage from '~/public/images/homepage-image.webp';
+import graphicAssignment from '~/public/graphics/assignment.svg';
+import graphicCase from '~/public/graphics/briefcase.svg';
+import graphicLanguageSupport from '~/public/graphics/interpretation.svg';
+import heroImage from '~/public/images/hero.webp';
 import secondImage from '~/public/images/homepage-second-image.webp';
 import * as Styles from './styles';
 
-type Stat = {
+interface Stat {
   number: string;
   label: string;
-};
+}
+
+interface Service {
+  iconSrc: string;
+  iconAlt: string;
+  title: string;
+  description: React.ReactNode;
+}
 
 const stats: Stat[] = [
   { number: '180+', label: 'Pro Bono Cases' },
   { number: '200+', label: 'Attorney Volunteers' },
-  { number: '65+', label: 'Interpreters & Translators' },
+  { number: '65+', label: 'Interpreters and Translators' },
   { number: '50+', label: 'Successful Outcomes' },
 ];
 
-const renderStat = (stat: Stat) => (
-  <Styles.StatContainer key={stat.label}>
-    <H2 $color={COLORS.blueDark}>{stat.number}</H2>
-    <Styles.StatLabel>{stat.label}</Styles.StatLabel>
-  </Styles.StatContainer>
-);
-
-type Service = {
-  iconSrc: string;
-  title: string;
-  description: string;
-};
-
 const services: Service[] = [
   {
-    iconSrc: 'An Icon will be Here',
+    iconSrc: graphicCase,
+    iconAlt: 'gavel and briefcase',
     title: 'Case Assistance',
-    description:
-      '<b>Attorneys</b> licensed in any state with or without immigration law experience can represent immigrants and asylum-seekers in removal proceeding before the Immigration Court, the Board of Immigration Appeals and the U.S. Court of Appeals for the Ninth Circuit.',
+    description: (
+      <>
+        <b>Attorneys</b> in any state with or without immigration law experience
+        can represent immigrants and asylum-seekers in removal proceeding before
+        the Immigration Court, the Board of Immigration Appeals and the U.S.
+        Court of Appeals for the Ninth Circuit.
+      </>
+    ),
   },
   {
-    iconSrc: 'An Icon will be Here',
+    iconSrc: graphicAssignment,
+    iconAlt: 'letter from an envelope',
     title: 'Limited Case Assignment',
-    description:
-      '<b>Law students</b> and <b>recent graduates</b> awaiting bar results can assist attorneys to screen potential clients, conduct legal and factual research and write motions and briefs in support of on-going court cases.',
+    description: (
+      <>
+        <b>Law students, recent graduates, and attorneys</b> awaiting bar
+        results can assist attorneys to screen potential clients, conduct legal
+        and factual research and write motions and briefs in support of on-going
+        court cases.
+      </>
+    ),
   },
   {
-    iconSrc: 'An Icon will be Here',
+    iconSrc: graphicLanguageSupport,
+    iconAlt: 'people in conversation',
     title: 'Language Support',
-    description:
-      '<b>Interpreters</b> and <b>translators</b> can conduct volunteer translation and live interpertation. We have frequent need for individuals who speak Creole, Portuguese, Spanish, French, Arabic, and Russian',
+    description: (
+      <>
+        <b>Interpreters</b> and <b>translators</b> can conduct volunteer
+        translation and live interpertation. We have frequent need for
+        individuals who speak Creole, Portuguese, Spanish, French, Arabic, and
+        Russian
+      </>
+    ),
   },
 ];
-
-const renderService = (service: Service) => (
-  <Styles.ServiceContainer key={service.title}>
-    <Styles.ServiceIcon src={service.iconSrc} alt={service.title} />
-    <H3 $color={COLORS.blueMid}>{service.title}</H3>
-    <H4
-      $color={COLORS.greyDark}
-      $fontWeight="400"
-      dangerouslySetInnerHTML={{ __html: service.description }}
-    />
-  </Styles.ServiceContainer>
-);
 
 export default function Home() {
   const auth = useAuth();
@@ -94,9 +101,9 @@ export default function Home() {
         <Styles.ImageContainer>
           <Image
             alt="background"
-            src={homepageImage.src}
+            src={heroImage.src}
             placeholder="blur"
-            blurDataURL={homepageImage.src}
+            blurDataURL={heroImage.src}
             quality={100}
             style={{ objectFit: 'cover' }}
             fill
@@ -110,7 +117,7 @@ export default function Home() {
             and access to justice through the provision of high quality legal
             services on behalf of indigent immigrants and asylum seekers.
           </Styles.Subtitle>
-          <Styles.ButtonDiv>
+          <div>
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
@@ -119,26 +126,39 @@ export default function Home() {
             >
               Volunteer Now
             </LinkButton>
-          </Styles.ButtonDiv>
+          </div>
         </Styles.TextContainer>
       </Styles.TitleSection>
       <Styles.StatisticsSection>
-        {stats.map(stat => renderStat(stat))}
+        <Styles.StatInnerContainer>
+          {stats.map(stat => (
+            <Styles.StatContainer key={stat.label}>
+              <H2 $color={COLORS.blueDark}>{stat.number}</H2>
+              <Styles.StatLabel>{stat.label}</Styles.StatLabel>
+            </Styles.StatContainer>
+          ))}
+        </Styles.StatInnerContainer>
       </Styles.StatisticsSection>
       <Styles.HowYouCanHelpContainer style={{ background: COLORS.background }}>
-        <H2 $color={COLORS.blueMid}>
-          HOW <span style={{ color: COLORS.goldMid }}>YOU</span> CAN HELP
+        <H2 $color={COLORS.blueMid} $fontWeight={400}>
+          HOW <strong style={{ color: COLORS.goldMid }}>YOU</strong> CAN HELP
         </H2>
         <Styles.ServicesDiv>
-          {services.map(Service => renderService(Service))}
+          {services.map(service => (
+            <Styles.ServiceContainer key={service.title}>
+              <Styles.ServiceIcon src={service.iconSrc} alt={service.iconAlt} />
+              <H3 $color={COLORS.blueMid}>{service.title}</H3>
+              <H4 $color={COLORS.greyDark} $fontWeight="400">
+                {service.description}
+              </H4>
+            </Styles.ServiceContainer>
+          ))}
         </Styles.ServicesDiv>
       </Styles.HowYouCanHelpContainer>
       <Styles.MissionValuesContainer>
         <Styles.MissionStatement>
-          <H2 $color={COLORS.blueMid} style={{ maxWidth: '500px' }}>
-            OUR MISSION VALUES
-          </H2>
-          <H4 $fontWeight="400" style={{ maxWidth: '500px' }}>
+          <H2 $color={COLORS.blueMid}>OUR MISSION VALUES</H2>
+          <H4 $fontWeight="400">
             The mission of the Immigration Justice Project (IJP) is to improve
             public awareness of the legal system, to promote the administration
             of justice, and to deliver high-quality legal services. IJP’s goals
@@ -148,7 +168,7 @@ export default function Home() {
             navigating immigration legal proceedings in the San Diego,
             California border region.
           </H4>
-          <Styles.ButtonDiv>
+          <Box $mt="0.8rem" $h="max-content">
             <LinkButton
               $primaryColor={COLORS.goldMid}
               $secondaryColor={COLORS.goldDark}
@@ -156,16 +176,16 @@ export default function Home() {
             >
               Learn More
             </LinkButton>
-          </Styles.ButtonDiv>
+          </Box>
         </Styles.MissionStatement>
         <Styles.ImageWrapper>
           <Image
             alt="Lawyer Image"
-            src={secondImage.src}
+            src={secondImage}
             placeholder="blur"
             blurDataURL={secondImage.src}
             quality={100}
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'cover' }}
             sizes="100%"
             fill
           />
