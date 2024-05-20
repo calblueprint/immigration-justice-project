@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { sans } from '@/styles/fonts';
 import { H4 } from '@/styles/text';
@@ -20,7 +21,7 @@ export const FiltersContainer = styled.div`
 `;
 
 export const PageContainer = styled.div`
-  height: 100svh;
+  height: calc(100svh - ${CONFIG.navbarHeight}px);
   width: 100%;
   display: flex;
   flex-direction: column;
