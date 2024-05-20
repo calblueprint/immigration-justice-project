@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import supabase from '@/api/supabase/createClient';
-import { H4Centered, HorizontalDiv } from '@/app/(auth)/styles';
-import { BigBlueButton, Button } from '@/components/Buttons';
+import { AuthSubHeading, H4Centered, PCentered } from '@/app/(auth)/styles';
+import { BigBlueButton } from '@/components/Buttons';
+import Icon from '@/components/Icon';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
+import CONFIG from '@/lib/configs';
 import COLORS from '@/styles/colors';
 import { Flex, SmallCardForm } from '@/styles/containers';
-import { H1, H2, H4, LinkColored, P } from '@/styles/text';
+import { H1, H4, LinkColored, P } from '@/styles/text';
 import { useAuth } from '@/utils/AuthProvider';
 
 export default function SignUp() {
@@ -27,26 +29,32 @@ export default function SignUp() {
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!auth) return;
+
     setEmailError(validEmail(email) ? '' : 'Invalid email');
     setPasswordError(password !== '' ? '' : 'Invalid password');
+
     if (!validEmail(email) || password === '') {
       setErrorMessage('');
       return;
     }
+
     if (!passwordComplexity) {
       setPasswordError('Password must meet complexity requirements.');
       return;
     }
+
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match.');
       return;
     }
+
     setEmailError('');
     setPasswordError('');
+
     const { error } = await auth.signUp(email, password, {
-      emailRedirectTo:
-        'https://immigration-justice-project.vercel.app/email-verified',
+      emailRedirectTo: CONFIG.emailVerified,
     });
 
     if (error) {
@@ -57,15 +65,18 @@ export default function SignUp() {
       setErrorMessage('');
     }
   };
-  const handleResendEmail = async () => {
+
+  const handleResendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
       options: {
-        emailRedirectTo:
-          'https://immigration-justice-project.vercel.app/email-verified',
+        emailRedirectTo: CONFIG.emailVerified,
       },
     });
+
     if (error) {
       setErrorMessage(error.message);
     } else {
@@ -74,7 +85,7 @@ export default function SignUp() {
     }
   };
 
-  return !emailSentCount ? (
+  return emailSentCount === 0 ? (
     <SmallCardForm onSubmit={handleSignUp}>
       <Flex $direction="column" $gap="10px">
         <H1>Sign Up</H1>
@@ -114,30 +125,32 @@ export default function SignUp() {
       />
       <Flex $direction="column" $gap="20px">
         <BigBlueButton type="submit">Sign Up</BigBlueButton>
-        <H4Centered>
+        <PCentered>
           Have an account already?{' '}
-          <LinkColored $color={COLORS.greyDark} href="/login">
+          <LinkColored $color={COLORS.blueMid} href={CONFIG.login}>
             Log in
           </LinkColored>
-        </H4Centered>
+        </PCentered>
       </Flex>
     </SmallCardForm>
   ) : (
     <SmallCardForm onSubmit={handleResendEmail}>
-      <Flex $direction="column" $gap="20px">
-        <H2>An email verification link has been sent.</H2>
-        <H4 $color={COLORS.greyDark}>
+      <Flex $direction="column" $align="center" $gap="20px">
+        <Icon type="email" />
+        <AuthSubHeading>Verification email sent!</AuthSubHeading>
+        <H4Centered $color={COLORS.greyDark}>
           This link will direct you to the next step. If you didn’t receive an
           email, please click Resend Email.
-        </H4>
-        <HorizontalDiv>
-          <BigBlueButton type="submit">
-            <H4 $color="white">Resend Email</H4>
-          </BigBlueButton>
-          {emailSentCount > 1 && (
-            <P $color={COLORS.greyMid}>Email has been resent!</P>
-          )}
-        </HorizontalDiv>
+        </H4Centered>
+        <BigBlueButton type="submit">
+          <H4 $color="white">Resend Email</H4>
+        </BigBlueButton>
+        {emailSentCount > 1 && (
+          <P $color={COLORS.greyDark}>
+            Email has been sent to
+            <span style={{ color: COLORS.blueDark }}> {email}</span>
+          </P>
+        )}
       </Flex>
     </SmallCardForm>
   );

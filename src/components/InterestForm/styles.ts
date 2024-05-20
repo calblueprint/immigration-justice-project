@@ -87,3 +87,8 @@ export const FormWarning = styled(P)`
 export const EmptySpace = styled.div`
   padding-bottom: 200px;
 `;
+
+export const ErrorText = styled(P)`
+  color: ${COLORS.redMid};
+  ${sans.style}
+`;
