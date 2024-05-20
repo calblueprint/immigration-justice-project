@@ -10,7 +10,7 @@ import AvailabilitySection from '@/components/SettingsSection/AvailabilitySectio
 import BasicInformationSection from '@/components/SettingsSection/BasicInformationSection';
 import RolesSection from '@/components/SettingsSection/RolesSection';
 import { Flex } from '@/styles/containers';
-import { BackLink, H1 } from '@/styles/text';
+import { H1 } from '@/styles/text';
 import { useProfileAuth } from '@/utils/hooks';
 import * as Styles from './styles';
 
@@ -28,7 +28,6 @@ export default function Page() {
 
   return (
     <Styles.PageContainer>
-      <BackLink href="/">Back</BackLink>
       <Styles.ContentContainer>
         <H1>Your Profile</H1>
 

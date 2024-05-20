@@ -5,6 +5,7 @@ import { sans } from '@/styles/fonts';
 import AuthProvider from '@/utils/AuthProvider';
 import ProfileProvider from '@/utils/ProfileProvider';
 import './globals.css';
+import NavBar from '@/components/NavBar';
 
 export const metadata: Metadata = {
   title: 'Immigration Justice Project',
@@ -25,7 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <ProfileProvider>
             <StyledComponentsRegistry>
-              {/* nav bar */}
+              <NavBar />
               {children}
             </StyledComponentsRegistry>
           </ProfileProvider>
