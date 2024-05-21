@@ -55,7 +55,7 @@ const caseFields: ListingField<CaseListing>[] = [
     label: 'Remote/In Person',
     getValue: data => {
       if (data.is_remote === null || data.is_remote === undefined) {
-        return 'Not Available';
+        return 'To Be Determined';
       }
       return data.is_remote ? 'Remote' : 'In Person';
     },
