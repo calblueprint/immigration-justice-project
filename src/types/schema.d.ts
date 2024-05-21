@@ -27,6 +27,7 @@ export interface ProfileToUpload
     | 'state_barred'
     | 'eoir_registered'
     | 'bar_number'
+    | 'legal_credential_comment'
   > {
   start_date: Date;
   expected_bar_date?: Date | null;
@@ -34,6 +35,7 @@ export interface ProfileToUpload
   state_barred?: string | null;
   eoir_registered?: boolean | null;
   bar_number?: string | null;
+  legal_credential_comment?: string | null;
 }
 
 // only used for ProfileRoles

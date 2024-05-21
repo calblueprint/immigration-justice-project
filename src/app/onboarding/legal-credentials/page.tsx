@@ -51,7 +51,7 @@ export default function Page() {
       barred:
         onboarding.profile.bar_number === undefined
           ? undefined
-          : onboarding.profile.bar_number === 'Not Barred',
+          : onboarding.profile.bar_number !== 'Not Barred',
     },
   });
 

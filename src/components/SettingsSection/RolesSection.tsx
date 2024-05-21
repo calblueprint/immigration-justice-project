@@ -24,6 +24,7 @@ import DateInput from '../DateInput';
 import { FormMessage } from '../Form';
 import InputDropdown from '../InputDropdown';
 import RadioGroup from '../RadioGroup';
+import TextAreaInput from '../TextAreaInput';
 import TextInput from '../TextInput';
 
 const getFormDefaults = (
@@ -50,6 +51,11 @@ const getFormDefaults = (
       : undefined,
     stateBarred: profile.state_barred,
     roles: defaultRole,
+    barred:
+      profile.bar_number === undefined
+        ? undefined
+        : profile.bar_number !== 'Not Barred',
+    legalCredentialComment: profile.legal_credential_comment,
   };
 
   return defaultValue;
@@ -104,6 +110,7 @@ export default function RolesSection() {
         eoir_registered:
           isAttorney || isLegalFellow ? values.eoirRegistered : null,
         expected_bar_date: isLegalFellow ? values.expectedBarDate : null,
+        legal_credential_comment: values.legalCredentialComment || null,
       }),
       profile.setRoles(rolesToUpdate),
     ]);
@@ -111,7 +118,7 @@ export default function RolesSection() {
     setIsEditing(false);
   };
 
-  const { roles } = form.watch();
+  const { roles, barred } = form.watch();
   const isAttorney = roles === 'ATTORNEY' || roles === 'ATTORNEY,INTERPRETER';
   const isLegalFellow =
     roles === 'LEGAL_FELLOW' || roles === 'LEGAL_FELLOW,INTERPRETER';
@@ -227,18 +234,46 @@ export default function RolesSection() {
 
                 <SettingField
                   control={form.control}
-                  name="barNumber"
-                  label="Attorney Bar Number"
+                  name="barred"
+                  label="Has Bar Number"
+                  extractValue={v => formatTruthy(v, 'Yes', 'No', 'N/A')}
                   render={({ field, fieldState }) => (
-                    <TextInput
-                      errorText={fieldState.error?.message}
-                      placeholder="123456"
-                      type="text"
-                      defaultValue={field.value ?? ''}
-                      onChange={field.onChange}
+                    <RadioGroup
+                      name="barred"
+                      defaultValue={formatTruthy(
+                        field.value,
+                        'Yes',
+                        'No',
+                        undefined,
+                      )}
+                      options={['Yes', 'No']}
+                      error={fieldState.error?.message}
+                      onChange={newValue => {
+                        const bool = newValue === 'Yes';
+                        const barNum = bool ? '' : 'Not Barred';
+                        form.setValue('barNumber', barNum);
+                        field.onChange(bool);
+                      }}
                     />
                   )}
                 />
+
+                {barred && (
+                  <SettingField
+                    control={form.control}
+                    name="barNumber"
+                    label="Attorney Bar Number"
+                    render={({ field, fieldState }) => (
+                      <TextInput
+                        errorText={fieldState.error?.message}
+                        placeholder="123456"
+                        type="text"
+                        defaultValue={field.value ?? ''}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                )}
               </>
             )}
 
@@ -300,6 +335,30 @@ export default function RolesSection() {
                 )}
               />
             ) : null}
+
+            {isAttorney && (
+              <SettingField
+                control={form.control}
+                name="legalCredentialComment"
+                label={
+                  barred
+                    ? 'Additional Information (optional)'
+                    : 'Additional Information'
+                }
+                required={!barred}
+                extractValue={v => v ?? 'N/A'}
+                render={({ field, fieldState }) => (
+                  <TextAreaInput
+                    placeholder="There are some extenuating circumstances with..."
+                    defaultValue={field.value ?? ''}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      field.onChange(newValue);
+                    }}
+                  />
+                )}
+              />
+            )}
           </SettingSection>
         </form>
       </FormProvider>

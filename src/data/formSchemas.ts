@@ -154,6 +154,12 @@ export const roleAndLegalSchema = z
       })
       .optional()
       .nullable(),
+    barred: z.boolean().optional().nullable(),
+    legalCredentialComment: z
+      .string()
+      .max(400, 'Please keep it under 400 characters')
+      .optional()
+      .nullable(),
   })
   .superRefine((input, ctx) => {
     // attorney or legal fellow must fill out EOIR registered
@@ -180,6 +186,12 @@ export const roleAndLegalSchema = z
           code: z.ZodIssueCode.custom,
           message: 'Please include a state',
           path: ['stateBarred'],
+        });
+      if (!input.barred && !input.legalCredentialComment)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Please provide some additional information',
+          path: ['legalCredentialComment'],
         });
     }
 
