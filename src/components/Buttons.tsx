@@ -45,7 +45,8 @@ interface ButtonProps {
 const ButtonStyles = css<ButtonProps>`
   ${sans.style}
   appearance: none;
-  color: ${({ $primaryColor }) => ($primaryColor ? 'white' : COLORS.blueMid)};
+  color: ${({ $primaryColor, $secondaryColor }) =>
+    $primaryColor ? 'white' : $secondaryColor || COLORS.blueMid};
   background: ${({ $primaryColor }) => $primaryColor || 'white'};
   padding: 10px 20px;
   border-radius: 5px;

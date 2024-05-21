@@ -195,7 +195,7 @@ export default function Page() {
                 </FormLabel>
                 <FormControl>
                   <RadioGroup
-                    name="registered"
+                    name="eoirRegistered"
                     defaultValue={formatTruthy(
                       field.value,
                       'Yes',
