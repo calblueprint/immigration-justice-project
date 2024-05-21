@@ -11,7 +11,7 @@ export const languages = iso6393
   .sort((l1, l2) => l1.localeCompare(l2));
 
 export const optionalLanguages: DropdownOption[] = [
-  { label: 'N/A', value: 'N/A' },
+  { label: 'Not Applicable', value: 'Not Applicable' },
   ...languages.map(l => ({ label: l, value: l })),
 ];
 

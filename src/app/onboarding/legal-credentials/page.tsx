@@ -17,6 +17,7 @@ import {
 import Icon from '@/components/Icon';
 import InputDropdown from '@/components/InputDropdown';
 import RadioGroup from '@/components/RadioGroup';
+import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
 import { usStates } from '@/data/citiesAndStates';
 import { attorneyCredentialSchema } from '@/data/formSchemas';
@@ -45,6 +46,12 @@ export default function Page() {
       stateBarred: onboarding.profile.state_barred ?? undefined,
       barNumber: onboarding.profile.bar_number ?? undefined,
       eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
+      legalCredentialComment:
+        onboarding.profile.legal_credential_comment ?? undefined,
+      barred:
+        onboarding.profile.bar_number === undefined
+          ? undefined
+          : onboarding.profile.bar_number === 'Not Barred',
     },
   });
 
@@ -52,7 +59,8 @@ export default function Page() {
   const isEmpty = useMemo(
     () =>
       !(formValues.stateBarred && formValues.barNumber) ||
-      formValues.eoirRegistered === undefined,
+      formValues.eoirRegistered === undefined ||
+      (!formValues.barred && !formValues.legalCredentialComment),
     [formValues],
   );
 
@@ -108,8 +116,8 @@ export default function Page() {
                   />
                 </FormControl>
                 <FormDescription>
-                  If you are barred in multiple states, choose your preferred
-                  state
+                  If you are barred in multiple states, please choose your
+                  preferred state
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -118,29 +126,63 @@ export default function Page() {
 
           <FormField
             control={form.control}
-            name="barNumber"
+            name="barred"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>
-                  What is your attorney bar number in this state?
-                </FormLabel>
+                <FormLabel>Do you have a bar number in this state?</FormLabel>
                 <FormControl>
-                  <TextInput
-                    errorText={fieldState.error?.message}
-                    placeholder="123456"
-                    type="text"
-                    defaultValue={field.value}
+                  <RadioGroup
+                    name="barred"
+                    defaultValue={formatTruthy(
+                      field.value,
+                      'Yes',
+                      'No',
+                      undefined,
+                    )}
+                    options={['Yes', 'No']}
+                    error={fieldState.error?.message}
                     onChange={newValue => {
+                      const bool = newValue === 'Yes';
+                      const barNum = bool ? '' : 'Not Barred';
                       onboarding.updateProfile({
-                        bar_number: newValue,
+                        bar_number: barNum,
                       });
-                      field.onChange(newValue);
+                      form.setValue('barNumber', barNum);
+                      field.onChange(bool);
                     }}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
+
+          {formValues.barred && (
+            <FormField
+              control={form.control}
+              name="barNumber"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>
+                    What is your attorney bar number in this state?
+                  </FormLabel>
+                  <FormControl>
+                    <TextInput
+                      errorText={fieldState.error?.message}
+                      placeholder="123456"
+                      type="text"
+                      defaultValue={field.value}
+                      onChange={newValue => {
+                        onboarding.updateProfile({
+                          bar_number: newValue,
+                        });
+                        field.onChange(newValue);
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
@@ -169,6 +211,35 @@ export default function Page() {
                     }}
                   />
                 </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="legalCredentialComment"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel $required={!formValues.barred}>
+                  Is there anything about your bar status we should know?
+                  {formValues.barred && ' (optional)'}
+                </FormLabel>
+                <FormControl>
+                  <TextAreaInput
+                    placeholder="There are some extenuating circumstances with..."
+                    defaultValue={field.value ?? ''}
+                    error={fieldState.error?.message}
+                    onChange={newValue => {
+                      onboarding.updateProfile({
+                        legal_credential_comment: newValue,
+                      });
+                      field.onChange(newValue);
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  For example, if you were formerly barred but is not currently.
+                </FormDescription>
               </FormItem>
             )}
           />

@@ -15,6 +15,7 @@ export interface Profile {
   city: string;
   phone_number: string;
   state_barred?: string;
+  legal_credential_comment?: string;
 }
 
 export interface ProfileToUpload

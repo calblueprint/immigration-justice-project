@@ -148,6 +148,7 @@ export default function OnboardingProvider({
       eoir_registered: userProfile.eoir_registered,
       user_id: uid,
       phone_number: userProfile.phone_number,
+      legal_credential_comment: userProfile.legal_credential_comment,
     };
 
     const userLangs = new Set(canReads.concat(canSpeaks));
