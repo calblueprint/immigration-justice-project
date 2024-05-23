@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -35,6 +35,7 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+  const [commentError, setCommentError] = useState('');
 
   // scroll to top
   useScrollToTop();
@@ -228,8 +229,13 @@ export default function Page() {
                   <TextAreaInput
                     placeholder="There are some extenuating circumstances with..."
                     defaultValue={field.value ?? ''}
-                    error={fieldState.error?.message}
+                    error={fieldState.error?.message ?? commentError}
                     onChange={newValue => {
+                      setCommentError(
+                        newValue.length > 400
+                          ? 'Please keep it within 400 characters'
+                          : '',
+                      );
                       onboarding.updateProfile({
                         legal_credential_comment: newValue,
                       });
