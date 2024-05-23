@@ -2,6 +2,7 @@
 
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import CONFIG from '@/lib/configs';
 import { useAuth } from './AuthProvider';
 import { OnboardingContext } from './OnboardingProvider';
 import { useProfile } from './ProfileProvider';
@@ -48,6 +49,8 @@ export const useScrollToTop = () => {
  */
 export const useGuardedOnboarding = () => {
   const onboarding = useContext(OnboardingContext);
+  const pathname = usePathname();
+
   if (!onboarding)
     throw new Error(
       'Component should be wrapped inside the onboarding context',
@@ -57,8 +60,9 @@ export const useGuardedOnboarding = () => {
   const { push } = useRouter();
 
   useEffect(() => {
-    if (flow.length === 0) push('/onboarding/');
-  }, [flow, push]);
+    if (flow.length === 0 && pathname !== CONFIG.onboardingHome)
+      push('/onboarding/');
+  }, [flow, push, pathname]);
 
   return { flow, ...rest };
 };
