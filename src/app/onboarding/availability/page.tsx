@@ -31,6 +31,7 @@ export default function Page() {
   const onboarding = useGuardedOnboarding();
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
+  const [availabilityError, setAvailabilityError] = useState('');
 
   // scroll to top
   useScrollToTop();
@@ -184,8 +185,13 @@ export default function Page() {
                   <TextAreaInput
                     placeholder="I won't be available from..."
                     defaultValue={field.value ?? ''}
-                    error={fieldState.error?.message}
+                    error={fieldState.error?.message ?? availabilityError}
                     onChange={newValue => {
+                      setAvailabilityError(
+                        newValue.length > 400
+                          ? 'Please keep it within 400 characters'
+                          : '',
+                      );
                       onboarding.updateProfile({
                         availability_description: newValue,
                       });
