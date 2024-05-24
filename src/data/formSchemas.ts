@@ -1,7 +1,7 @@
 import z from 'zod';
 import { getCurrentDate } from '@/utils/helpers';
 
-export const CHAR_LIMIT_MSG = 'Your text exceeds the 400-character limit.';
+export const CHAR_LIMIT_MSG = 'Your text exceeds the 400-character limit';
 
 const zodDropdownOption = {
   label: z.string(),
