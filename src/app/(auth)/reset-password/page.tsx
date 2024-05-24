@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '@/api/supabase/createClient';
-import { verifyUserPassword } from '@/api/supabase/queries/password';
+import { verifyNewPassword } from '@/api/supabase/queries/password';
 import { BigBlueButton } from '@/components/Buttons';
 import PasswordComplexity from '@/components/PasswordComplexity';
 import TextInput from '@/components/TextInput/index';
@@ -39,7 +39,7 @@ export default function ResetPassword() {
       setErrorMessage('Passwords do not match.');
       return;
     }
-    if (await verifyUserPassword(newPassword)) {
+    if (await verifyNewPassword(newPassword)) {
       setErrorMessage('New password must be different from the old password.');
       return;
     }
