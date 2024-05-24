@@ -1,6 +1,8 @@
 import z from 'zod';
 import { getCurrentDate } from '@/utils/helpers';
 
+export const CHAR_LIMIT_MSG = 'Your text exceeds the 400-character limit';
+
 const zodDropdownOption = {
   label: z.string(),
   value: z.string(),
@@ -73,29 +75,44 @@ export const availabilitySchema = z.object({
       required_error:
         'Please include your estimated availability in hours per month',
     })
-    .nonnegative({ message: 'This value must be nonnegative' })
-    .max(744, { message: 'Please enter a valid hours per month' }),
+    .nonnegative({ message: 'This value must be nonnegative' }),
   startDate: z
     .date({
       required_error:
         'Please include your estimated starting date of availability',
     })
     .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  availability: z.string().optional().nullable(),
+  availability: z.string().max(400, CHAR_LIMIT_MSG).optional().nullable(),
 });
 
-export const attorneyCredentialSchema = z.object({
-  stateBarred: z
-    .string({
-      required_error: 'Please include a state',
-      invalid_type_error: 'Please include a state',
-    })
-    .min(1, { message: 'Please include a state' }),
-  barNumber: z
-    .string({ required_error: 'Please include your attorney bar number' })
-    .min(1, { message: 'Please include your attorney bar number' }),
-  eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
-});
+export const attorneyCredentialSchema = z
+  .object({
+    stateBarred: z
+      .string({
+        required_error: 'Please include a state',
+        invalid_type_error: 'Please include a state',
+      })
+      .min(1, { message: 'Please include a state' }),
+    barred: z.boolean(),
+    barNumber: z
+      .string({ required_error: 'Please include your attorney bar number' })
+      .min(1, { message: 'Please include your attorney bar number' }),
+    eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
+    legalCredentialComment: z
+      .string()
+      .max(400, CHAR_LIMIT_MSG)
+      .optional()
+      .nullable(),
+  })
+  .superRefine((input, ctx) => {
+    if (!input.barred && !input.legalCredentialComment)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Please provide some additional information',
+        path: ['legalCredentialComment'],
+      });
+    return ctx;
+  });
 
 export const legalFellowCredentialSchema = z.object({
   expectedBarDate: z
@@ -135,6 +152,12 @@ export const roleAndLegalSchema = z
       })
       .optional()
       .nullable(),
+    barred: z.boolean().optional().nullable(),
+    legalCredentialComment: z
+      .string()
+      .max(400, CHAR_LIMIT_MSG)
+      .optional()
+      .nullable(),
   })
   .superRefine((input, ctx) => {
     // attorney or legal fellow must fill out EOIR registered
@@ -161,6 +184,12 @@ export const roleAndLegalSchema = z
           code: z.ZodIssueCode.custom,
           message: 'Please include a state',
           path: ['stateBarred'],
+        });
+      if (!input.barred && !input.legalCredentialComment)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Please provide some additional information',
+          path: ['legalCredentialComment'],
         });
     }
 

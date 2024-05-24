@@ -3,7 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { usStates } from '@/data/citiesAndStates';
-import { FormRoleEnum, roleAndLegalSchema } from '@/data/formSchemas';
+import {
+  CHAR_LIMIT_MSG,
+  FormRoleEnum,
+  roleAndLegalSchema,
+} from '@/data/formSchemas';
 import { roleOptions } from '@/data/roles';
 import { Box } from '@/styles/containers';
 import { H3 } from '@/styles/text';
@@ -24,6 +28,7 @@ import DateInput from '../DateInput';
 import { FormMessage } from '../Form';
 import InputDropdown from '../InputDropdown';
 import RadioGroup from '../RadioGroup';
+import TextAreaInput from '../TextAreaInput';
 import TextInput from '../TextInput';
 
 const getFormDefaults = (
@@ -50,6 +55,8 @@ const getFormDefaults = (
       : undefined,
     stateBarred: profile.state_barred,
     roles: defaultRole,
+    barred: profile.has_bar_number,
+    legalCredentialComment: profile.legal_credential_comment,
   };
 
   return defaultValue;
@@ -63,6 +70,7 @@ const getDateDefault = (profile: Partial<Profile>): string =>
 export default function RolesSection() {
   const { profile, auth } = useProfileAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const [commentError, setCommentError] = useState('');
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
     getDateDefault(profile.profileData ?? {}),
@@ -104,6 +112,10 @@ export default function RolesSection() {
         eoir_registered:
           isAttorney || isLegalFellow ? values.eoirRegistered : null,
         expected_bar_date: isLegalFellow ? values.expectedBarDate : null,
+        legal_credential_comment: isAttorney
+          ? values.legalCredentialComment
+          : null,
+        has_bar_number: isAttorney ? values.barred : null,
       }),
       profile.setRoles(rolesToUpdate),
     ]);
@@ -111,7 +123,7 @@ export default function RolesSection() {
     setIsEditing(false);
   };
 
-  const { roles } = form.watch();
+  const { roles, barred } = form.watch();
   const isAttorney = roles === 'ATTORNEY' || roles === 'ATTORNEY,INTERPRETER';
   const isLegalFellow =
     roles === 'LEGAL_FELLOW' || roles === 'LEGAL_FELLOW,INTERPRETER';
@@ -169,6 +181,7 @@ export default function RolesSection() {
                 getFormDefaults(profile.roles, profile.profileData ?? {}),
               );
               setExpectedBarDate(getDateDefault(profile.profileData ?? {}));
+              setCommentError('');
             }}
           >
             <SettingField
@@ -227,18 +240,46 @@ export default function RolesSection() {
 
                 <SettingField
                   control={form.control}
-                  name="barNumber"
-                  label="Attorney Bar Number"
+                  name="barred"
+                  label="Has Bar Number"
+                  extractValue={v => formatTruthy(v, 'Yes', 'No', 'N/A')}
                   render={({ field, fieldState }) => (
-                    <TextInput
-                      errorText={fieldState.error?.message}
-                      placeholder="123456"
-                      type="text"
-                      defaultValue={field.value ?? ''}
-                      onChange={field.onChange}
+                    <RadioGroup
+                      name="barred"
+                      defaultValue={formatTruthy(
+                        field.value,
+                        'Yes',
+                        'No',
+                        undefined,
+                      )}
+                      options={['Yes', 'No']}
+                      error={fieldState.error?.message}
+                      onChange={newValue => {
+                        const bool = newValue === 'Yes';
+                        const barNum = bool ? '' : 'N/A';
+                        form.setValue('barNumber', barNum);
+                        field.onChange(bool);
+                      }}
                     />
                   )}
                 />
+
+                {barred && (
+                  <SettingField
+                    control={form.control}
+                    name="barNumber"
+                    label="Attorney Bar Number"
+                    render={({ field, fieldState }) => (
+                      <TextInput
+                        errorText={fieldState.error?.message}
+                        placeholder="123456"
+                        type="text"
+                        defaultValue={field.value ?? ''}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                )}
               </>
             )}
 
@@ -300,6 +341,33 @@ export default function RolesSection() {
                 )}
               />
             ) : null}
+
+            {isAttorney && (
+              <SettingField
+                control={form.control}
+                name="legalCredentialComment"
+                label={
+                  barred
+                    ? 'Additional Information (optional)'
+                    : 'Additional Information'
+                }
+                required={!barred}
+                extractValue={v => v ?? 'N/A'}
+                render={({ field, fieldState }) => (
+                  <TextAreaInput
+                    placeholder="There are some extenuating circumstances with..."
+                    defaultValue={field.value ?? ''}
+                    error={fieldState.error?.message ?? commentError}
+                    onChange={newValue => {
+                      setCommentError(
+                        newValue.length > 400 ? CHAR_LIMIT_MSG : '',
+                      );
+                      field.onChange(newValue);
+                    }}
+                  />
+                )}
+              />
+            )}
           </SettingSection>
         </form>
       </FormProvider>

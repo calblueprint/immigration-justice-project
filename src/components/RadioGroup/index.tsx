@@ -54,13 +54,13 @@ export default function RadioGroup({
       )}
       <GroupContainer>
         {options.map(o => (
-          <RadioLabel key={o} htmlFor={o}>
+          <RadioLabel key={o} htmlFor={`${name}${o}`}>
             <RadioInput
               type="radio"
-              id={o}
+              id={`${name}${o}`}
               name={name}
-              value={value}
-              checked={value ? value === o : undefined}
+              value={`${name}${o}`}
+              checked={value ? value === `${name}${o}` : undefined}
               defaultChecked={defaultValue === o}
               onChange={() => handleChange(o)}
             />

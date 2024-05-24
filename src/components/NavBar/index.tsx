@@ -32,12 +32,12 @@ const navlinks: NavLink[] = [
 
 export default function NavBar() {
   const profile = useProfile();
-  if (!profile) throw new Error('Profile must be defined.');
+  if (!profile) throw new Error('Profile must be defined');
 
   const currentPath = usePathname();
 
   const auth = useAuth();
-  if (!auth) throw new Error('Auth must be defined.');
+  if (!auth) throw new Error('Auth must be defined');
 
   const authButtonView = useMemo(() => {
     if (profile.profileReady && auth.userId)

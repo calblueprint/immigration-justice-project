@@ -153,10 +153,18 @@ export default function Page() {
             </Flex>
             <Flex>
               <Styles.SectionField>
-                <H4>What is your attorney bar number?</H4>
-                <P>{onboarding.profile.bar_number || 'N/A'}</P>
+                <H4>Do you have a bar number in this state?</H4>
+                <P>{onboarding.profile.has_bar_number ? 'Yes' : 'No'}</P>
               </Styles.SectionField>
             </Flex>
+            {onboarding.profile.has_bar_number && (
+              <Flex>
+                <Styles.SectionField>
+                  <H4>What is your attorney bar number?</H4>
+                  <P>{onboarding.profile.bar_number || 'N/A'}</P>
+                </Styles.SectionField>
+              </Flex>
+            )}
             <Flex>
               <Styles.SectionField>
                 <H4>
@@ -171,6 +179,12 @@ export default function Page() {
                     'N/A',
                   )}
                 </P>
+              </Styles.SectionField>
+            </Flex>
+            <Flex>
+              <Styles.SectionField>
+                <H4>Is there anything about your bar status we should know?</H4>
+                <P>{onboarding.profile.legal_credential_comment ?? 'N/A'}</P>
               </Styles.SectionField>
             </Flex>
           </Styles.SectionBox>

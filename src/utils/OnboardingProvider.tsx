@@ -113,7 +113,11 @@ export default function OnboardingProvider({
     if (roles.length === 0) throw new Error('Error: could not determine role!');
 
     if (roles.includes('ATTORNEY')) {
-      if (!userProfile.bar_number) throw new Error('Bar number is required!');
+      if (userProfile.has_bar_number && !userProfile.bar_number)
+        throw new Error('Bar number is required!');
+
+      if (!userProfile.has_bar_number && !userProfile.legal_credential_comment)
+        throw new Error('Comment is required in the absence of bar number!');
 
       if (!userProfile.state_barred)
         throw new Error('State barred is required!');
@@ -148,6 +152,8 @@ export default function OnboardingProvider({
       eoir_registered: userProfile.eoir_registered,
       user_id: uid,
       phone_number: userProfile.phone_number,
+      legal_credential_comment: userProfile.legal_credential_comment,
+      has_bar_number: userProfile.has_bar_number,
     };
 
     const userLangs = new Set(canReads.concat(canSpeaks));

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { availabilitySchema } from '@/data/formSchemas';
+import { availabilitySchema, CHAR_LIMIT_MSG } from '@/data/formSchemas';
 import { Box } from '@/styles/containers';
 import { Profile } from '@/types/schema';
 import {
@@ -37,6 +37,7 @@ export default function AvailabilitySection() {
   const [startDate, setStartDate] = useState<string>(
     getDateDefault(profile.profileData ?? {}),
   );
+  const [availabilityError, setAvailabilityError] = useState('');
 
   const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
@@ -65,6 +66,7 @@ export default function AvailabilitySection() {
               setIsEditing(false);
               form.reset(getFormDefaults(profile.profileData ?? {}));
               setStartDate(getDateDefault(profile.profileData ?? {}));
+              setAvailabilityError('');
             }}
             isSubmitting={form.formState.isSubmitting}
           >
@@ -123,8 +125,13 @@ export default function AvailabilitySection() {
                 <TextAreaInput
                   placeholder="I won't be available from..."
                   defaultValue={field.value ?? ''}
-                  error={fieldState.error?.message}
-                  onChange={field.onChange}
+                  error={fieldState.error?.message ?? availabilityError}
+                  onChange={newValue => {
+                    setAvailabilityError(
+                      newValue.length > 400 ? CHAR_LIMIT_MSG : '',
+                    );
+                    field.onChange(newValue);
+                  }}
                 />
               )}
             />

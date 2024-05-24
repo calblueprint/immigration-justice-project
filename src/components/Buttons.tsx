@@ -45,7 +45,8 @@ interface ButtonProps {
 const ButtonStyles = css<ButtonProps>`
   ${sans.style}
   appearance: none;
-  color: ${({ $primaryColor }) => ($primaryColor ? 'white' : COLORS.blueMid)};
+  color: ${({ $primaryColor, $secondaryColor }) =>
+    $primaryColor ? 'white' : $secondaryColor || COLORS.blueMid};
   background: ${({ $primaryColor }) => $primaryColor || 'white'};
   padding: 10px 20px;
   border-radius: 5px;
@@ -85,9 +86,9 @@ const ButtonStyles = css<ButtonProps>`
     }
 
     &:active {
-      color: ${COLORS.greyMid};
-      border-color: ${COLORS.greyLight};
-      background: ${COLORS.greyLight};
+      color: ${COLORS.greyMid} !important;
+      border-color: ${COLORS.greyLight} !important;
+      background: ${COLORS.greyLight} !important;
     }
   `
       : null};

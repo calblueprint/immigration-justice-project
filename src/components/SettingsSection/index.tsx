@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
+import COLORS from '@/styles/colors';
 import { Flex } from '@/styles/containers';
 import { Spinner } from '@/styles/spinner';
 import { H2, P } from '@/styles/text';
@@ -54,7 +55,12 @@ export function SettingSection({
 
         {isEditing ? (
           <Flex $gap="1.25rem" $justify="end">
-            <Button type="button" onClick={() => cancelEdit?.()}>
+            <Button
+              type="button"
+              $secondaryColor={COLORS.redMid}
+              $tertiaryColor={COLORS.redDark}
+              onClick={() => cancelEdit?.()}
+            >
               Discard Changes
             </Button>
             <BlueButton type="submit" disabled={isSubmitting}>
