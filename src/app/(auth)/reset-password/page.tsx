@@ -39,10 +39,8 @@ export default function ResetPassword() {
       setErrorMessage('Passwords do not match.');
       return;
     }
-    if (!verifyUserPassword(newPassword)) {
-      setErrorMessage(
-        'Password cannot be the same as your previous password. Please choose a different password.',
-      );
+    if (await verifyUserPassword(newPassword)) {
+      setErrorMessage('New password must be different from the old password.');
       return;
     }
     setErrorMessage('');
