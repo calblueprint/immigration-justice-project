@@ -95,6 +95,7 @@ export const Flex = styled.div<FlexProps>`
 
 export const Fill = styled.div`
   width: 100%;
+  overflow-wrap: break-word;
 `;
 
 const CardStyles = css`

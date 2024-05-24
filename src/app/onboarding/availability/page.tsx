@@ -11,7 +11,7 @@ import { FormControl, FormField, FormItem, FormLabel } from '@/components/Form';
 import Icon from '@/components/Icon';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
-import { availabilitySchema } from '@/data/formSchemas';
+import { availabilitySchema, CHAR_LIMIT_MSG } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import {
@@ -32,6 +32,7 @@ export default function Page() {
   const { backlinkHref, ebbTo, pageProgress } = useOnboardingNavigation();
   const { push } = useRouter();
   const [availabilityError, setAvailabilityError] = useState('');
+  const [hoursError, setHoursError] = useState('');
 
   // scroll to top
   useScrollToTop();
@@ -107,7 +108,7 @@ export default function Page() {
                 </FormLabel>
                 <FormControl>
                   <TextInput
-                    errorText={fieldState.error?.message}
+                    errorText={fieldState.error?.message ?? hoursError}
                     placeholder="x hours per month"
                     inputMode="numeric"
                     defaultValue={
@@ -119,11 +120,20 @@ export default function Page() {
                         onboarding.updateProfile({
                           hours_per_month: undefined,
                         });
+                        setHoursError('');
                         return;
                       }
 
                       const toNum = z.coerce.number().safeParse(newValue);
                       const num = toNum.success ? toNum.data : undefined;
+
+                      if (num === undefined) {
+                        setHoursError('Hours per month must be a number.');
+                      } else if (num < 0) {
+                        setHoursError('Hours per month cannot be negative.');
+                      } else {
+                        setHoursError('');
+                      }
 
                       field.onChange(num);
                       onboarding.updateProfile({
@@ -188,9 +198,7 @@ export default function Page() {
                     error={fieldState.error?.message ?? availabilityError}
                     onChange={newValue => {
                       setAvailabilityError(
-                        newValue.length > 400
-                          ? 'Please keep it within 400 characters'
-                          : '',
+                        newValue.length > 400 ? CHAR_LIMIT_MSG : '',
                       );
                       onboarding.updateProfile({
                         availability_description: newValue,

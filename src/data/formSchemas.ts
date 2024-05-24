@@ -1,6 +1,8 @@
 import z from 'zod';
 import { getCurrentDate } from '@/utils/helpers';
 
+export const CHAR_LIMIT_MSG = 'Your text exceeds the 400-character limit.';
+
 const zodDropdownOption = {
   label: z.string(),
   value: z.string(),
@@ -80,11 +82,7 @@ export const availabilitySchema = z.object({
         'Please include your estimated starting date of availability',
     })
     .min(getCurrentDate(), { message: 'Must select a current or future date' }),
-  availability: z
-    .string()
-    .max(400, 'Please keep it within 400 characters')
-    .optional()
-    .nullable(),
+  availability: z.string().max(400, CHAR_LIMIT_MSG).optional().nullable(),
 });
 
 export const attorneyCredentialSchema = z
@@ -102,7 +100,7 @@ export const attorneyCredentialSchema = z
     eoirRegistered: z.boolean({ required_error: 'Must select one option' }),
     legalCredentialComment: z
       .string()
-      .max(400, 'Please keep it within 400 characters')
+      .max(400, CHAR_LIMIT_MSG)
       .optional()
       .nullable(),
   })
@@ -157,7 +155,7 @@ export const roleAndLegalSchema = z
     barred: z.boolean().optional().nullable(),
     legalCredentialComment: z
       .string()
-      .max(400, 'Please keep it under 400 characters')
+      .max(400, CHAR_LIMIT_MSG)
       .optional()
       .nullable(),
   })

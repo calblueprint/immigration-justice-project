@@ -57,8 +57,8 @@ export function SettingSection({
           <Flex $gap="1.25rem" $justify="end">
             <Button
               type="button"
-              $secondaryColor={COLORS.redDark}
-              $tertiaryColor={COLORS.redDarker}
+              $secondaryColor={COLORS.redMid}
+              $tertiaryColor={COLORS.redDark}
               onClick={() => cancelEdit?.()}
             >
               Discard Changes

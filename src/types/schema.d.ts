@@ -16,6 +16,7 @@ export interface Profile {
   phone_number: string;
   state_barred?: string;
   legal_credential_comment?: string;
+  has_bar_number?: boolean;
 }
 
 export interface ProfileToUpload
@@ -28,6 +29,7 @@ export interface ProfileToUpload
     | 'eoir_registered'
     | 'bar_number'
     | 'legal_credential_comment'
+    | 'has_bar_number'
   > {
   start_date: Date;
   expected_bar_date?: Date | null;
@@ -36,6 +38,7 @@ export interface ProfileToUpload
   eoir_registered?: boolean | null;
   bar_number?: string | null;
   legal_credential_comment?: string | null;
+  has_bar_number?: boolean | null;
 }
 
 // only used for ProfileRoles

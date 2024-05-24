@@ -3,7 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { usStates } from '@/data/citiesAndStates';
-import { FormRoleEnum, roleAndLegalSchema } from '@/data/formSchemas';
+import {
+  CHAR_LIMIT_MSG,
+  FormRoleEnum,
+  roleAndLegalSchema,
+} from '@/data/formSchemas';
 import { roleOptions } from '@/data/roles';
 import { Box } from '@/styles/containers';
 import { H3 } from '@/styles/text';
@@ -51,10 +55,7 @@ const getFormDefaults = (
       : undefined,
     stateBarred: profile.state_barred,
     roles: defaultRole,
-    barred:
-      profile.bar_number === undefined
-        ? undefined
-        : profile.bar_number !== 'Not Barred',
+    barred: profile.has_bar_number,
     legalCredentialComment: profile.legal_credential_comment,
   };
 
@@ -69,6 +70,7 @@ const getDateDefault = (profile: Partial<Profile>): string =>
 export default function RolesSection() {
   const { profile, auth } = useProfileAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const [commentError, setCommentError] = useState('');
 
   const [expectedBarDate, setExpectedBarDate] = useState<string>(
     getDateDefault(profile.profileData ?? {}),
@@ -110,7 +112,10 @@ export default function RolesSection() {
         eoir_registered:
           isAttorney || isLegalFellow ? values.eoirRegistered : null,
         expected_bar_date: isLegalFellow ? values.expectedBarDate : null,
-        legal_credential_comment: values.legalCredentialComment || null,
+        legal_credential_comment: isAttorney
+          ? values.legalCredentialComment
+          : null,
+        has_bar_number: isAttorney ? values.barred : null,
       }),
       profile.setRoles(rolesToUpdate),
     ]);
@@ -176,6 +181,7 @@ export default function RolesSection() {
                 getFormDefaults(profile.roles, profile.profileData ?? {}),
               );
               setExpectedBarDate(getDateDefault(profile.profileData ?? {}));
+              setCommentError('');
             }}
           >
             <SettingField
@@ -250,7 +256,7 @@ export default function RolesSection() {
                       error={fieldState.error?.message}
                       onChange={newValue => {
                         const bool = newValue === 'Yes';
-                        const barNum = bool ? '' : 'Not Barred';
+                        const barNum = bool ? '' : 'N/A';
                         form.setValue('barNumber', barNum);
                         field.onChange(bool);
                       }}
@@ -351,8 +357,11 @@ export default function RolesSection() {
                   <TextAreaInput
                     placeholder="There are some extenuating circumstances with..."
                     defaultValue={field.value ?? ''}
-                    error={fieldState.error?.message}
+                    error={fieldState.error?.message ?? commentError}
                     onChange={newValue => {
+                      setCommentError(
+                        newValue.length > 400 ? CHAR_LIMIT_MSG : '',
+                      );
                       field.onChange(newValue);
                     }}
                   />

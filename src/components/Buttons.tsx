@@ -86,9 +86,9 @@ const ButtonStyles = css<ButtonProps>`
     }
 
     &:active {
-      color: ${COLORS.greyMid};
-      border-color: ${COLORS.greyLight};
-      background: ${COLORS.greyLight};
+      color: ${COLORS.greyMid} !important;
+      border-color: ${COLORS.greyLight} !important;
+      background: ${COLORS.greyLight} !important;
     }
   `
       : null};

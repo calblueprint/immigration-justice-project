@@ -52,6 +52,7 @@ export const SectionField = styled.div<{ $optional?: boolean }>`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  overflow-wrap: break-word;
 
   & > h4 {
     ${({ $optional }) =>

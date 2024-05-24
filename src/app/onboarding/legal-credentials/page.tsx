@@ -20,7 +20,7 @@ import RadioGroup from '@/components/RadioGroup';
 import TextAreaInput from '@/components/TextAreaInput';
 import TextInput from '@/components/TextInput';
 import { usStates } from '@/data/citiesAndStates';
-import { attorneyCredentialSchema } from '@/data/formSchemas';
+import { attorneyCredentialSchema, CHAR_LIMIT_MSG } from '@/data/formSchemas';
 import { CardForm, Flex } from '@/styles/containers';
 import { H1Centered } from '@/styles/text';
 import { formatTruthy, identity } from '@/utils/helpers';
@@ -49,10 +49,7 @@ export default function Page() {
       eoirRegistered: onboarding.profile.eoir_registered ?? undefined,
       legalCredentialComment:
         onboarding.profile.legal_credential_comment ?? undefined,
-      barred:
-        onboarding.profile.bar_number === undefined
-          ? undefined
-          : onboarding.profile.bar_number !== 'Not Barred',
+      barred: onboarding.profile.has_bar_number ?? undefined,
     },
   });
 
@@ -144,8 +141,9 @@ export default function Page() {
                     error={fieldState.error?.message}
                     onChange={newValue => {
                       const bool = newValue === 'Yes';
-                      const barNum = bool ? '' : 'Not Barred';
+                      const barNum = bool ? '' : 'N/A';
                       onboarding.updateProfile({
+                        has_bar_number: bool,
                         bar_number: barNum,
                       });
                       form.setValue('barNumber', barNum);
@@ -232,9 +230,7 @@ export default function Page() {
                     error={fieldState.error?.message ?? commentError}
                     onChange={newValue => {
                       setCommentError(
-                        newValue.length > 400
-                          ? 'Please keep it within 400 characters'
-                          : '',
+                        newValue.length > 400 ? CHAR_LIMIT_MSG : '',
                       );
                       onboarding.updateProfile({
                         legal_credential_comment: newValue,
@@ -244,7 +240,8 @@ export default function Page() {
                   />
                 </FormControl>
                 <FormDescription>
-                  For example, if you were formerly barred but is not currently.
+                  For example, if you were formerly barred but are not
+                  currently; or, if your state does not have a bar number.
                 </FormDescription>
               </FormItem>
             )}
