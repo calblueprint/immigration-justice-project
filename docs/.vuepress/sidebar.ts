@@ -1,11 +1,11 @@
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
-    "/admin": ["/admin/intro", "/admin/retool", "/admin/legal-server"],
+    "/admin": ["/admin/", "/admin/retool", "/admin/legal-server"],
     "/dev": [
         {
             text: "Project Overview",
-            link: "/dev/overview",
+            link: "/dev/",
             icon: "book-open"
         },
         {
@@ -16,9 +16,11 @@ export default sidebar({
             children: ["auth", "onboarding", "listings", "settings", "supabase"]
         },
         {
-            text: "Admin Dashboard",
-            link: "/dev/retool",
-            icon: "gauge"
+            text: "Retool",
+            prefix: "/dev/retool",
+            link: "/dev/retool/",
+            icon: "wrench",
+            children: ["app", "workflow"]
         },
         {
             text: "Deployment",

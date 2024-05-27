@@ -4,12 +4,12 @@ export default navbar([
     {
         text: "Admins",
         icon: "user",
-        link: "/admin/intro"
+        link: "/admin/"
     },
     {
         text: "Developers",
         icon: "code",
-        link: "/dev/overview"
+        link: "/dev/"
     },
     {
         text: "Designers",
