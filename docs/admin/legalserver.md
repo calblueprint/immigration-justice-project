@@ -2,4 +2,5 @@
 icon: briefcase
 ---
 
-# Legal Server
+# LegalServer
+
