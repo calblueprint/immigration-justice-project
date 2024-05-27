@@ -70,3 +70,5 @@ URL: .../v1/<table_name>?<column_name>=<filter>.<value>
 ### More Resources
 
 For more information, refer to the official Supabase documentations on [creating REST API routes](https://supabase.com/docs/guides/api/creating-routes). Another tool that may be helpful is the [official SQL to REST API Translator](https://supabase.com/docs/guides/api/sql-to-rest) provided by Supabase.
+
+Another helpful way to figure out how to structure your REST API call is to structure your action using the [JavaScript client library](https://supabase.com/docs/reference/javascript/start), then view the network requests the library makes using the network tab in your browser dev tools.
