@@ -153,48 +153,16 @@ interface Filter {
 
 ## Cases
 ### Frontend
-- Filters
-    - Remote/In Person
-    - Languages
-    - Adjudicating Agency
-    - Country of Origin
-- Listing Detail Display
-    - **Case Title**
-        - Next Court/Filing Date 
-    - **Highlights**
-        - Relief Sought
-        - Time Commitment 
-        - Remote/In Person
-        - Adjudicating Agency
-        - Client Language(s)
-        - Client Country of Origin
-        - Client Location / Custody Location
-            - If the client is in custody (`is_detained`, pulled from LegalServer, is `true`), this field appears as Custody Location. Otherwise, it appears as Client Location.
-    - **Description**
+- Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
 ### Backend
 - `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
 
 ## Limited Case Assignments
 ### Frontend
-- Filters 
-    - Country Field
-    - Language(s)
-- Listing Detail Display
-    - **Title**
-        - Deadline
-    - **Highlights**
-        - Country
-        - Language(s)
-        - Expected Deliverable
-    - **Description**
-    - **Research Topic**
+
 ### Backend
 - `getAllLCA` queries the database to retrieve all Limited Case Assignment listings from the `limited_case_assignments`, `lca-languages` tables.
 ## Language Support
-- Filters 
-    - Listing Type
-    - Language(s)
-
 ### Backend
 - `getAllDocuments` queries the database to retrieve all Document Translation listings from the `document_translation`, `document_translation-languages` tables. 
 - `getAllInterpretation` queries the database to retrieve all Interpretation listings from the `interpretation`, `interpretation-languages` tables. 
@@ -202,27 +170,7 @@ interface Filter {
     - The cases are filtered (by `needs_interepreter`) so that only the Case Interpretations are left.
 
 ### Document Translation
-Listing Detail Display
-- **Title**
-    - Deadline 
-- **Highlights**
-    - Language(s)
-    - Number of Pages
-- **Description**
+
 ### One-time Interpretation
-Listing Detail Display
-- **Title**
-- **Highlights**
-    - Language(s)
-    - Remote/In Person
-- **Description**
 
 ### Case Interpretation
-Listing Detail Display
-- **Title**
-    - Next Court/Hearing Date 
-- **Highlights**
-    - Language(s)
-    - Time Commitment 
-    - Remote/In Person
-- **Description**
