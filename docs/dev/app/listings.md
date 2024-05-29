@@ -92,7 +92,7 @@ function Page() {
 }
 ```
 
-**ListingPage Parameters**
+**ListingPage Props**
 
 ListingPage component has the following arguments with the following types: 
 - `filters`: *Filter[]*. A list of filters (see following section on customizing filters). Each filter in the list creates a new dropdown filter button. 
@@ -128,7 +128,7 @@ interface Filter {
 ### `ListingCard` 
 - ListingCard renders each listing card, containing the condensed listing information.
 
-**ListingCard Parameters**
+**ListingCard Props**
 - `listing`: *Listing*. The listing whose ListingCard will be rendered. The rendering of fields is dependent on the `listing_type` of `listing`. 
 - (optional) `isSelected`: *boolean*. Default value: false. If true, the card will be highlighted. 
 - (optional) `onClick`: *(id: UUID) => void*. An additional event handler triggered when the ListingCard is clicked. 
@@ -142,7 +142,7 @@ interface Filter {
 - ListingDetails displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
 
-**ListingDetails Parameters**
+**ListingDetails Props**
 - `listingData`: *Listing*. The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
@@ -243,7 +243,7 @@ const newIcon = <Icon type="newIcon" />
 - `renderIconGroup` renders the icon and text for a match-field. It takes in the argument `fields` of type `MatchField`. However, for fields that require the `yellowExclaimation` icon, `renderIconGroup` is not used. 
     - The `yellowExclaimation` icon indicates that the user's data does not match a listing's details, but it is not a strict requirement. In particular, `yellowExclaimation` is used when an attorney does not match the language for the case.
 
-**ProfileMatch Parameters**
+**ProfileMatch Props**
 - `listingData`: *Listing*. The listing whose ProfileMatch will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
@@ -286,7 +286,7 @@ export default function ProfileMatch(...) {
 - For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. 
 - `handleInsert` is used to handle the insertion of the user's responses to the interest form into the `interests table`. After error-checking that all required fields (according to listing type) are valid and filled out, the user's responses are upserted. If the a user submits multiple forms for one case, only the most recent response will be saved on the `interests` table.
 
-**InterestForm Parameters**
+**InterestForm Props**
 - `listingData`: *Listing*. The listing whose InterestForm will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
