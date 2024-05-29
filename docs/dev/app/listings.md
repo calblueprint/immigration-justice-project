@@ -123,7 +123,7 @@ interface Filter {
 - `placeholder`: The placeholder display text on the filter dropdown when no values of the current filter are selected. 
 - `value`: The selected values of the filter. This should be tracked as a state in the main component, and its corresponding setState function should be passed into `onChange` below.
 - `onChange`: Usually of the form `newValue => setFieldFilters(newValue)`. This function is called when the values of the filter dropdown is changed, i.e. when the user selects/deselects a value of a the current filter. 
-- (optional) `fullText` (!! not sure?)
+- (optional) `fullText`: A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
 
 ### `ListingCard` 
 - ListingCard renders each listing card, containing the condensed listing information.
