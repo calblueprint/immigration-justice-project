@@ -128,6 +128,16 @@ interface Filter {
 ### `ListingCard` 
 - ListingCard renders each listing card, containing the condensed listing information.
 
+**ListingCard Parameters**
+- `listing`: *Listing*. The listing whose ListingCard will be rendered. The rendering of fields is dependent on the `listing_type` of `listing`. 
+- (optional) `isSelected`: *boolean*. Default value: false. If true, the card will be highlighted. 
+- (optional) `onClick`: *(id: UUID) => void*. An additional event handler triggered when the ListingCard is clicked. 
+- (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
+
+**Example Usage**
+- Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} interpretation />`
+- Non-Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} />`
+
 ### `ListingDetails`
 - ListingDetails displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
@@ -135,8 +145,10 @@ interface Filter {
 **ListingDetails Parameters**
 - `listingData`: *Listing*. The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
-- Example usage for Langauge Support listings: `<ListingDetails listingData={listingData} interpretation />`
-- Example usage for non-Langauge Support listings: `<ListingDetails listingData={listingData} />`
+
+**Example Usage**
+- Langauge Support listings: `<ListingDetails listingData={listingData} interpretation />`
+- Non-Langauge Support listings: `<ListingDetails listingData={listingData} />`
 
 #### How to Customize Fields In ListingDetails 
 **Customizing Fields for Existing Listing Types (i.e. LCA, Language Support or Cases)**
@@ -234,8 +246,10 @@ const newIcon = <Icon type="newIcon" />
 **ProfileMatch Parameters**
 - `listingData`: *Listing*. The listing whose ProfileMatch will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
-- Example usage for Langauge Support listings: `<ProfileMatch listingData={listingData} interpretation />`
-- Example usage for non-Langauge Support listings: `<ProfileMatch listingData={listingData} />`
+
+**Example Usage**
+- Langauge Support listings: `<ProfileMatch listingData={listingData} interpretation />`
+- Non-Langauge Support listings: `<ProfileMatch listingData={listingData} />`
 #### How to Customize ProfileMatch Fields 
 The easiest way to create a new profile match field is to create a new constant of type `MatchField` as defined below. 
 ```ts
@@ -275,8 +289,10 @@ export default function ProfileMatch(...) {
 **InterestForm Parameters**
 - `listingData`: *Listing*. The listing whose InterestForm will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
-- Example usage for Langauge Support listings: `<InterestForm listingData={listingData} interpretation />`
-- Example usage for non-Langauge Support listings: `<InterestForm listingData={listingData} />`
+
+**Example Usage**
+- Langauge Support listings: `<InterestForm listingData={listingData} interpretation />`
+- Non-Langauge Support listings: `<InterestForm listingData={listingData} />`
 
 #### How to Customize InterestForm Questions 
 **Creating a New Question**
