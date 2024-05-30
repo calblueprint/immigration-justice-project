@@ -14,7 +14,9 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
 
 ### `ListingPage`
 
-- The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
+::: tip Description
+The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
+:::
 
 **ListingPage Props**
 
@@ -47,7 +49,7 @@ ListingPage component has the following arguments with the following types:
 
 Here is an an example implementation of the ListingPage component, roughly based on the LCA page. `filter1` is used as a stand-in for a generic filter. By specifying a ListingType, a new ListingPage can be created for any listing type. 
 
-```tsx
+``` tsx
 import { useState, useMemo, useCallback } from 'react';
 import ListingPage from '@/components/ListingPage';
 import { Listing, ListingType } from '@/types/schema'; // replace ListingType with desired listing type 
@@ -127,20 +129,7 @@ function Page() {
 
 #### Customizing Filters 
 
-It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` parameter of the `ListingPage` component.
-
-Filters must be of the following custom type:
-
-```ts
-interface Filter {
-  id: string;
-  options: Set<string> | Map<string, string>;
-  placeholder: string;
-  value: Set<string>;
-  onChange: (newValue: Set<string>) => void; 
-  fullText?: string;
-}
-```
+It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an arra of `Filter`s. The fields of the custom type `Filter` are defined below and are also defined in the `ListingPage` codebase. 
 
 **Fields of a Filter**
 
@@ -153,7 +142,9 @@ interface Filter {
 
 ### `ListingCard` 
 
-- ListingCard renders each listing card, containing the condensed listing information.
+::: tip Description
+ListingCard renders each listing card, containing the condensed listing information.
+:::
 
 **ListingCard Props**
 
@@ -168,8 +159,10 @@ interface Filter {
 - Non-Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} />`
 
 ### `ListingDetails`
+::: tip Description
+`ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
+:::
 
-- ListingDetails displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
 
 **ListingDetails Props**
@@ -188,7 +181,7 @@ interface Filter {
 
 All fields are of type `ListingField<T>[]` (i.e. an array of `ListingField`s), where `ListingField` is defined below: 
 
-```ts
+``` ts
 interface ListingField<T extends Listing> {
   label: string;
   getValue: (data: T) => string;
@@ -204,7 +197,7 @@ To customize fields for existing listing types, modify the array of fields for t
 
 For example, below is how you would add a new field to `lcaFields`. Note that the order of the array determines the order that the fields are rendered. 
 
-```ts
+``` ts
 const lcaFields: ListingField<LimitedCaseAssignment>[] = [
     // existing fields ...
     
@@ -222,7 +215,7 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
 
 - Create a a new array of fields of type `ListingField<NewListingType>[]`,where `NewListingType` is a placeholder for the actual listing type.  
 - Add a type check to ensure that `listingFields` returns the fields for your desired listing. 
-```tsx
+``` tsx
 const newListingFields: ListingField<NewListingType>[] = [
     // example field 
     {
@@ -255,19 +248,30 @@ export default function ListingDetails( ... ) {
 ```
 
 ### `ProfileMatch`
-- For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing.
+::: tip Description
+For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
+::: 
+
 - `matchIcon` conditionally renders the match icon based on the value of the argument, `match`, of type `boolean | undefined`. If `match` is undefined, the `grayDot` icon is returned, indicating that the listing does not include information about a given field. 
 - `renderIconGroup` renders the icon and text for a match-field. It takes in the argument `fields` of type `MatchField`. However, for fields that require the `yellowExclaimation` icon, `renderIconGroup` is not used. 
     - The `yellowExclaimation` icon indicates that the user's data does not match a listing's details, but it is not a strict requirement. In particular, `yellowExclaimation` is used when an attorney does not match the language for the case.
 
 **ProfileMatch Props**
-- `listingData`: *Listing*. The listing whose ProfileMatch will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
-- (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
+- `listingData`: *Listing*. 
+
+    The listing whose ProfileMatch will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
+
+- (optional) `interpretation`: *boolean*. 
+
+    Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
+
 - Langauge Support listings: `<ProfileMatch listingData={listingData} interpretation />`
 - Non-Langauge Support listings: `<ProfileMatch listingData={listingData} />`
-#### How to Customize ProfileMatch Fields 
+
+#### How to Customize ProfileMatch Fields
+
 The easiest way to create a new profile match field is to create a new constant of type `MatchField` as defined below. 
 ```ts
 interface MatchField<T extends Listing> {
@@ -300,7 +304,10 @@ export default function ProfileMatch(...) {
 ```
 
 ### `InterestForm`
-- For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. 
+::: tip Description
+For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. For a not logged in and onboarded user, `InterestForm` will not render. 
+::: 
+
 - `handleInsert` is used to handle the insertion of the user's responses to the interest form into the `interests table`. After error-checking that all required fields (according to listing type) are valid and filled out, the user's responses are upserted. If the a user submits multiple forms for one case, only the most recent response will be saved on the `interests` table.
 
 **InterestForm Props**
@@ -381,18 +388,15 @@ export default function InterestForm( ... ) {
 ```
 
 ## Cases
-### Frontend
 - Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
-### Backend
+
 - `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
 
 ## Limited Case Assignments
-### Frontend
 
-### Backend
 - `getAllLCA` queries the database to retrieve all Limited Case Assignment listings from the `limited_case_assignments`, `lca-languages` tables.
 ## Language Support
-### Backend
+
 - `getAllDocuments` queries the database to retrieve all Document Translation listings from the `document_translation`, `document_translation-languages` tables. 
 - `getAllInterpretation` queries the database to retrieve all Interpretation listings from the `interpretation`, `interpretation-languages` tables. 
 - `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
