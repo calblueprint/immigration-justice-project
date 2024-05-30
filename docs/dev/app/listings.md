@@ -3,7 +3,9 @@
 All three listing pages contain a filter bar at the top, a scrollable list of Listing Cards on the left, and the Listing Details of the currently selected listing card on the right. 
 
 ## Components
+
 **Components Used**
+
 - `ListingPage`
     - `ListingCard` 
     - `ListingDetails`
@@ -11,10 +13,40 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
         - `InterestForm`
 
 ### `ListingPage`
-- The listing pages are all instances of `ListingPage`. The ListingPage contains a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right. 
+
+- The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
+
+**ListingPage Props**
+
+ListingPage component has the following arguments with the following types: 
+- `filters`: *Filter[]*
+
+    A list of filters (see following section on customizing filters). Each filter in the list creates a new dropdown filter button. 
+
+- `resetFilters`: *() => void*
+
+    A no-argument function that clears all filters, triggered when "Reset Filters" is clicked. 
+
+- `filteredListings`: *Listing[]*
+    
+    A list of listings, filtered by the currenlty selected filter options. This should be a memoized constant dependent on selected filters and listing data. 
+
+- `selectedListing`: *Listing | null*
+
+    The currently selected listing whose ListingDetails will be displayed and whose ListingCard will be highlighted. In the above example, the defualt `selectedListing` is the first item of the `filteredListings` if one exists. 
+
+- `setSelectedListing`: *(listing: Listing | null) => void*
+
+    Of the form `lisitng => setSelectedListing(listing)` as above, this function is used to set/update the selectedListing when it changes, i.e. when the user clicks on a new listing. 
+
+-  (optional)`interpretation`: *boolean*
+
+    Default value, false. A boolean specifying whether the current listing page is for interpretations or not. Used to differentiate between CaseInterpretations and Cases. 
 
 #### How to Create a New ListingPage
+
 Here is an an example implementation of the ListingPage component, roughly based on the LCA page. `filter1` is used as a stand-in for a generic filter. By specifying a ListingType, a new ListingPage can be created for any listing type. 
+
 ```tsx
 import { useState, useMemo, useCallback } from 'react';
 import ListingPage from '@/components/ListingPage';
@@ -49,7 +81,8 @@ function Page() {
     );
 
     // update filteredListings based on filter options  
-    const filteredListings = useMemo( () => {...},
+    const filteredListings = useMemo( 
+        () => {...},
         [listingData, filter1Filters, languageFilters]
     )
 
@@ -92,20 +125,12 @@ function Page() {
 }
 ```
 
-**ListingPage Props**
-
-ListingPage component has the following arguments with the following types: 
-- `filters`: *Filter[]*. A list of filters (see following section on customizing filters). Each filter in the list creates a new dropdown filter button. 
-- `resetFilters`: *() => void*. A no-argument function that clears all filters, triggered when "Reset Filters" is clicked. 
-- `filteredListings`: *Listing[]*. A list of listings, filtered by the currenlty selected filter options. This should be a memoized constant dependent on selected filters and listing data. 
-- `selectedListing`: *Listing | null*. The currently selected listing whose ListingDetails will be displayed and whose ListingCard will be highlighted. In the above example, the defualt `selectedListin` is the first item of the `filteredListings` if one exists. 
-- `setSelectedListing`: *(listing: Listing | null) => void*. Of the form `lisitng => setSelectedListing(listing)` as above, this function is used to set/update the selectedListing when it changes, i.e. when the user clicks on a new listing. 
--  (optional)`interpretation`: *boolean*. Default value, false. A boolean specifying whether the current listing page is for interpretations or not. Used to differentiate between CaseInterpretations and Cases. 
-
 #### Customizing Filters 
+
 It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` parameter of the `ListingPage` component.
 
 Filters must be of the following custom type:
+
 ```ts
 interface Filter {
   id: string;
@@ -118,6 +143,7 @@ interface Filter {
 ```
 
 **Fields of a Filter**
+
 - `id`: unique identifier of the filter's dropwdown button
 - `options`: All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. For the map, keys are the actual values stored, and values are the displayed value
 - `placeholder`: The placeholder display text on the filter dropdown when no values of the current filter are selected. 
@@ -126,31 +152,38 @@ interface Filter {
 - (optional) `fullText`: A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
 
 ### `ListingCard` 
+
 - ListingCard renders each listing card, containing the condensed listing information.
 
 **ListingCard Props**
+
 - `listing`: *Listing*. The listing whose ListingCard will be rendered. The rendering of fields is dependent on the `listing_type` of `listing`. 
 - (optional) `isSelected`: *boolean*. Default value: false. If true, the card will be highlighted. 
 - (optional) `onClick`: *(id: UUID) => void*. An additional event handler triggered when the ListingCard is clicked. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
+
 - Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} interpretation />`
 - Non-Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} />`
 
 ### `ListingDetails`
+
 - ListingDetails displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
 
 **ListingDetails Props**
+
 - `listingData`: *Listing*. The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 - (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
+
 - Langauge Support listings: `<ListingDetails listingData={listingData} interpretation />`
 - Non-Langauge Support listings: `<ListingDetails listingData={listingData} />`
 
 #### How to Customize Fields In ListingDetails 
+
 **Customizing Fields for Existing Listing Types (i.e. LCA, Language Support or Cases)**
 
 All fields are of type `ListingField<T>[]` (i.e. an array of `ListingField`s), where `ListingField` is defined below: 
@@ -170,6 +203,7 @@ To customize fields for existing listing types, modify the array of fields for t
 - Limited Case Assignments: `lcaFields`
 
 For example, below is how you would add a new field to `lcaFields`. Note that the order of the array determines the order that the fields are rendered. 
+
 ```ts
 const lcaFields: ListingField<LimitedCaseAssignment>[] = [
     // existing fields ...
@@ -185,6 +219,7 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
 ```
 
 **Customize Fields for a New Listing Type**
+
 - Create a a new array of fields of type `ListingField<NewListingType>[]`,where `NewListingType` is a placeholder for the actual listing type.  
 - Add a type check to ensure that `listingFields` returns the fields for your desired listing. 
 ```tsx
@@ -217,24 +252,6 @@ export default function ListingDetails( ... ) {
 
     // ... 
 }
-```
-
-#### Changing/Adding Icons 
-- Add a new icon in `src/lib/icons.tsx` as below
-```ts
-export const IconSvgs = {
-    newIcon: (
-        // svg icon
-    ),
-    
-    // other svg icons 
-}
-```
-- Access the icon in the component, referenced by the type attribute
-```tsx
-import Icon from '@/components/Icon';
-// ... 
-const newIcon = <Icon type="newIcon" />
 ```
 
 ### `ProfileMatch`

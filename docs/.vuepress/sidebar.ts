@@ -13,7 +13,7 @@ export default sidebar({
             icon: "window-restore",
             prefix: "/dev/app/",
             link: "/dev/app/",
-            children: ["auth", "onboarding", "listings", "settings", "supabase"]
+            children: ["auth", "onboarding", "listings", "settings", "supabase", "misc"]
         },
         {
             text: "Admin Dashboard",
