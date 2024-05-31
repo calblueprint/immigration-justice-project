@@ -1,10 +1,17 @@
 # Listing Pages
 
-All three listing pages contain a filter bar at the top, a scrollable list of Listing Cards on the left, and the Listing Details of the currently selected listing card on the right. 
+All three listing pages contain a filter bar at the top, a scrollable list of Listing Cards on the left, and the Listing Details of the currently selected listing card on the right. Differences in display between listing pages are listed below. Then, the usage and functionality of components used to bulid the listing pages are explained. 
 
-## Components
+## Listing Page Comparison 
 
-**Components Used**
+| Listing Page | Case | Limited Case Assignments | Language Support |
+|--------------|------|---------------------|------------------------------|
+| Filters | 1. Remote/In Person <br/> 2. Languages  <br/> 3. Adjudicating Agency <br/> 4. Country of Origin | 1. Country Field <br/> 2. Language(s) | 1. Listing Type <br/> 2. Language(s) |
+| Listing Highlights | 1. Relief sought <br/> 2. Time Commitment <br/> 3. Remote/In Person <br/> 4. Adjudicating Agency <br/> 5. Client Languages <br/> 6. Client Country of Origin <br/> 7. Client Location* | 1. Country Field <br/> 2. Language(s) <br/> 3. Expected Deliverable | **DOC** <br/> 1. Language(s) <br/> 2. Number of Pages  <br/>  <br/> **CASE_INT** <br/> 1. Language(s)  <br/> 2. Time Commitment  <br/> 3. Remote/In Person  <br/>  <br/> **INT**  <br/> 1. Language(s) <br/> 2. Remote/In Person |
+
+(*) Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
+
+## **Components Used**
 
 - `ListingPage`
     - `ListingCard` 
@@ -12,7 +19,7 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
         - `ProfileMatch`
         - `InterestForm`
 
-### `ListingPage`
+## `ListingPage`
 
 ::: note Description
 The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
@@ -45,11 +52,11 @@ ListingPage component has the following arguments with the following types:
 
     Default value, false. A boolean specifying whether the current listing page is for interpretations or not. Used to differentiate between CaseInterpretations and Cases. 
 
-#### Create a New ListingPage
+### Create a New ListingPage
 
 See the codebase for an implementation example of a listing page, using the `ListingPage` component. The `limited-case-assignments` page may be the most straightforward example. 
 
-#### Customizing Filters 
+### Customizing Filters 
 
 It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an array of `Filter`'s. The fields of the custom type `Filter` are defined below. See any of the listing pages in the code base for an example implementation. 
 
@@ -133,10 +140,11 @@ function Page() {
 }
 ```
 
-### `ListingCard` 
+## `ListingCard` 
 
 ::: note Description
-ListingCard renders each listing card, containing the condensed listing information.
+ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. ![Example ListingCard](/assets/image/example_ListingCard.png)
+
 :::
 
 **ListingCard Props**
@@ -168,7 +176,7 @@ ListingCard renders each listing card, containing the condensed listing informat
 <ListingCard listing={listingData} isSelected={isSelected} />
 ```
 
-### `ListingDetails`
+## `ListingDetails`
 ::: note Description
 `ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 :::
@@ -196,7 +204,7 @@ ListingCard renders each listing card, containing the condensed listing informat
 <ListingDetails listingData={listingData} />
 ```
 
-#### How to Customize Fields In ListingDetails 
+### How to Customize Fields In ListingDetails 
 
 **For Existing Listing Types**
 
@@ -267,7 +275,7 @@ export default function ListingDetails( ... ) {
 }
 ```
 
-### `ProfileMatch`
+## `ProfileMatch`
 
 ::: note Description
 For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
@@ -298,7 +306,7 @@ For a logged in and onboarded user, `ProfileMatch` indicates aspects of their pr
 <ProfileMatch listingData={listingData} />
 ```
 
-#### How to Customize ProfileMatch Fields
+### How to Customize ProfileMatch Fields
 
 The easiest way to create a new profile match field is to create a new constant of type `MatchField` as defined below. 
 ```ts
@@ -331,7 +339,7 @@ export default function ProfileMatch(...) {
 }
 ```
 
-### `InterestForm`
+## `InterestForm`
 ::: note Description
 For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. For a not logged in and onboarded user, `InterestForm` will not render. 
 ::: 
@@ -359,7 +367,7 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 <InterestForm listingData={listingData} />
 ```
 
-#### How to Customize InterestForm Questions 
+### How to Customize InterestForm Questions 
 
 **Creating a New Question**
 
@@ -386,25 +394,3 @@ interface Responses {
 3. In `handleInsert`, add an error check if this new field is required for certain listing types 
 
 4. In `handleInsert`, conditionally add the new input to `responses` to be inserted into supabase
-
-## Cases
-
-- Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
-
-- `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
-
-## Limited Case Assignments
-
-- `getAllLCA` queries the database to retrieve all Limited Case Assignment listings from the `limited_case_assignments`, `lca-languages` tables.
-## Language Support
-
-- `getAllDocuments` queries the database to retrieve all Document Translation listings from the `document_translation`, `document_translation-languages` tables. 
-- `getAllInterpretation` queries the database to retrieve all Interpretation listings from the `interpretation`, `interpretation-languages` tables. 
-- `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
-    - The cases are filtered (by `needs_interepreter`) so that only the Case Interpretations are left.
-
-### Document Translation
-
-### One-time Interpretation
-
-### Case Interpretation
