@@ -14,7 +14,7 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
 
 ### `ListingPage`
 
-::: tip Description
+::: note Description
 The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
 :::
 
@@ -45,91 +45,13 @@ ListingPage component has the following arguments with the following types:
 
     Default value, false. A boolean specifying whether the current listing page is for interpretations or not. Used to differentiate between CaseInterpretations and Cases. 
 
-#### How to Create a New ListingPage
+#### Create a New ListingPage
 
-Here is an an example implementation of the ListingPage component, roughly based on the LCA page. `filter1` is used as a stand-in for a generic filter. By specifying a ListingType, a new ListingPage can be created for any listing type. 
-
-``` tsx
-import { useState, useMemo, useCallback } from 'react';
-import ListingPage from '@/components/ListingPage';
-import { Listing, ListingType } from '@/types/schema'; // replace ListingType with desired listing type 
-// import database query function 
-
-function Page() {
-    const [listingData, setListingData] = useState<ListingType[]>([]);
-    const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
-    const [languageFilters, setLanguageFilters] = useState(new Set<string>());
-    const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-
-    // load listing data 
-    useEffect(
-        () => {
-            // get data using database query function
-            // ... 
-            // setListingData(data) 
-         }, []
-    )
-
-    // update filter1Options based on listingData
-    const filter1Options = useMemo(
-        () => {...} // get filter options from listingData 
-        [listingData],
-    );
-
-    // update languageOptions (filter options) based on listingData
-    const languageOptions = useMemo(
-        () => new Set(listingData.flatMap(listing => listing.languages)),
-        [listingData],
-    );
-
-    // update filteredListings based on filter options  
-    const filteredListings = useMemo( 
-        () => {...},
-        [listingData, filter1Filters, languageFilters]
-    )
-
-    // set selectedListing based on filteredLCA
-    useEffect(() => {
-        setSelectedListing(filteredListings.length > 0 ? filteredListings[0] : null);
-    }, [filteredListings]);
-
-    // define resetFilters function to clear all filters 
-    const resetFilters = useCallback(() => {
-        setFilter1Filters(new Set());
-        setLanguageFilters(new Set());
-    }, []);
-
-    return (
-        <ListingPage 
-            filters= {[
-                {
-                    id: 'filter1',
-                    options: filter1Options,
-                    value: filter1Filters,
-                    onChange: newValue => setFilter1Filters(newValue),
-                    placeholder: 'Filter1',
-                },
-                {
-                    id: 'languages',
-                    options: languageOptions,
-                    value: languageFilters,
-                    onChange: newValue => setLanguageFilters(newValue),
-                    placeholder: 'Language(s)',
-                },
-            ]}
-            resetFilters={resetFilters}
-            filteredListings={filteredListings}
-            selectedListing={selectedListing}
-            setSelectedListing={lisitng => setSelectedListing(listing)}
-            interpretation
-        />
-    );
-}
-```
+See the codebase for an implementation example of a listing page, using the `ListingPage` component. The `limited-case-assignments` page may be the most straightforward example. 
 
 #### Customizing Filters 
 
-It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an arra of `Filter`s. The fields of the custom type `Filter` are defined below and are also defined in the `ListingPage` codebase. 
+It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an array of `Filter`'s. The fields of the custom type `Filter` are defined below. See any of the listing pages in the code base for an example implementation. 
 
 **Fields of a Filter**
 
@@ -139,7 +61,7 @@ It is possible to modify the display of the existing filters or add/delete fitle
 
 - `options`: **`Set<string> | Map<string, string>`**
 
-    All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. For the map, keys are the actual values stored, and values are the displayed value.
+    All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. If a map is used, the keys are the actual values stored, while values are the displayed value.
 
 - `placeholder`: **`string`**
 
@@ -157,9 +79,63 @@ It is possible to modify the display of the existing filters or add/delete fitle
     
     A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
 
+**Adding a New Filter** 
+
+1. Create a new state to track the filter's selected values. 
+    - Make sure to reset the filter's state in the `resetFilters` function.
+2. Define the filter's possible options. 
+    - Many of the filters in the codebase use `useMemo`, with a dependency on `listingData` since the filter options (e.g. for langauges) are dependent on the options from listings. 
+3. For the `filters` prop, add a new `Filter` object in the array. 
+4. Update `filteredListings` by adding an additional filter for the current filter's values. 
+
+Below is an example of adding a new filter called `filter1`. 
+
+``` tsx
+function Page() {
+    const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
+    // other filter states etc ... 
+
+    // Create a list of filter value options (2) 
+    const filter1Options = useMemo(
+        () => {...} // get filter options from listingData 
+        [listingData],
+    );
+
+    // update filteredListings based on filter options  (4)
+    const filteredListings = useMemo( 
+        () => {...},
+        [listingData, filter1Filters, languageFilters]
+    )
+
+    // Clear all filters (1)
+    const resetFilters = useCallback(() => {
+        setFilter1Filters(new Set());
+        // reset other filters ... 
+    }, []);
+
+    // ... 
+
+    return (
+        <ListingPage 
+            filters= {[
+                {
+                    id: 'filter1',
+                    options: filter1Options,
+                    value: filter1Filters,
+                    onChange: newValue => setFilter1Filters(newValue),
+                    placeholder: 'Filter1',
+                },
+                // other filters ... 
+            ]}
+            // other props 
+        />
+    );
+}
+```
+
 ### `ListingCard` 
 
-::: tip Description
+::: note Description
 ListingCard renders each listing card, containing the condensed listing information.
 :::
 
@@ -193,7 +169,7 @@ ListingCard renders each listing card, containing the condensed listing informat
 ```
 
 ### `ListingDetails`
-::: tip Description
+::: note Description
 `ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 :::
 
@@ -222,7 +198,14 @@ ListingCard renders each listing card, containing the condensed listing informat
 
 #### How to Customize Fields In ListingDetails 
 
-**Customizing Fields for Existing Listing Types (i.e. LCA, Language Support or Cases)**
+**For Existing Listing Types**
+
+To customize fields for existing listing types, modify the array of fields for the corresponding listing type. 
+- Cases: `caseFields`
+- Case Interpretation: `caseInterpretationFields`
+- Interpretation: `interpretationFields`
+- Document Translation: `docFields`
+- Limited Case Assignments: `lcaFields`
 
 All fields are of type `ListingField<T>[]` (i.e. an array of `ListingField`s), where `ListingField` is defined below: 
 
@@ -232,13 +215,6 @@ interface ListingField<T extends Listing> {
   getValue: (data: T) => string;
 }
 ```
-
-To customize fields for existing listing types, modify the array of fields for the corresponding listing type. 
-- Cases: `caseFields`
-- Case Interpretation: `caseInterpretationFields`
-- Interpretation: `interpretationFields`
-- Document Translation: `docFields`
-- Limited Case Assignments: `lcaFields`
 
 For example, below is how you would add a new field to `lcaFields`. Note that the order of the array determines the order that the fields are rendered. 
 
@@ -256,11 +232,10 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
 ];
 ```
 
-**Customize Fields for a New Listing Type**
+**For a New Listing Type**
 
-- Create a a new array of fields of type `ListingField<NewListingType>[]`,where `NewListingType` is a placeholder for the actual listing type.  
-- Add a type check to ensure that `listingFields` returns the fields for your desired listing. 
-``` tsx
+- Create a a new array of fields of type `ListingField<NewListingType>[]`, where `NewListingType` is a placeholder for the actual listing type.  
+``` ts
 const newListingFields: ListingField<NewListingType>[] = [
     // example field 
     {
@@ -271,9 +246,9 @@ const newListingFields: ListingField<NewListingType>[] = [
     },
     // ... other fields 
 ];
-
-// ... 
-
+```
+- Add a type check to ensure that `listingFields` returns the fields for your desired listing. 
+``` tsx
 export default function ListingDetails( ... ) {
     // ... 
     const listingFields = useMemo(() => {
@@ -294,7 +269,7 @@ export default function ListingDetails( ... ) {
 
 ### `ProfileMatch`
 
-::: tip Description
+::: note Description
 For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
 ::: 
 
@@ -357,7 +332,7 @@ export default function ProfileMatch(...) {
 ```
 
 ### `InterestForm`
-::: tip Description
+::: note Description
 For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. For a not logged in and onboarded user, `InterestForm` will not render. 
 ::: 
 
@@ -389,71 +364,28 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 **Creating a New Question**
 
 1. Create a new Input Component and a new state to track the input. Update useEffect to reset the state when listingData changes. 
-2. Add a new field to the `Responses` type, corresponding to this new input 
-3. In `handleInsert`, add an error check if this new field is required for certain listing types 
-4. In `handleInsert`, conditionally add the new input to `responses` to be inserted into supabase
+``` ts
+const [newState, setNewState] = useState('');
+// other states ... 
 
-```tsx
+useEffect(() => {
+    // (1) Reset form fields when caseData changes
+    setNewState('');
+    // reset other states ... 
+}, [listingData]);
+```
+2. Add a new field to the `Responses` type, corresponding to this new input 
+``` tsx
 interface Responses {
   start_date?: Date;
   needs_interpreter?: boolean;
   interest_reason: string;
-  // (2) add new fields as necessary 
-}
-
-export default function InterestForm( ... ) {
-    const [newState, setNewState] = useState('');
-    // other states ... 
-    
-    useEffect(() => {
-        // (1) Reset form fields when caseData changes
-        setNewState('');
-        // reset other states ... 
-    }, [listingData]);
-
-    const handleInsert = async () => {
-        // Error handling, check if required fields are unfilled.
-        if (
-            // other conditional checks ... 
-            other-checks
-            // (3) new error handling check 
-            || newState === ''
-        ) {
-            setMissingInfo(true);
-            return;
-        }
-
-        const responses: Responses = { interest_reason: '' };
-        if (auth && auth.userId) {
-            // (4) conditionally add newState to responses
-            const newInterest: Interest = {
-            listing_id: listingData.id,
-            listing_type:
-                listingData.listing_type === 'CASE' && interpretation
-                    ? 'CASE_INT'
-                    : listingData.listing_type,
-                user_id: auth.userId,
-                form_response: responses,
-            };
-            await upsertInterest(newInterest);
-        }
-    }
-
-    return (
-        <Styles.FormContainer>
-            <H3>Submit Interest</H3>
-            {submitted ? (
-                <Styles.EmptySpace>
-                    <P>Your submission has been received!</P>
-                </Styles.EmptySpace>
-            ) : (
-                <Flex $gap="30px" $direction="column">
-                    {/* (1) New Interest Question Input*/}
-                    {/*... Existing Questions*/}
-                </Flex>
-    )
+  // (2) add new fields as necessary here
 }
 ```
+3. In `handleInsert`, add an error check if this new field is required for certain listing types 
+
+4. In `handleInsert`, conditionally add the new input to `responses` to be inserted into supabase
 
 ## Cases
 
