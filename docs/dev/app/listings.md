@@ -21,27 +21,27 @@ The listing pages are all instances of `ListingPage`. The ListingPage contains a
 **ListingPage Props**
 
 ListingPage component has the following arguments with the following types: 
-- `filters`: *Filter[]*
+- `filters`: **`Filter[]`**
 
     A list of filters (see following section on customizing filters). Each filter in the list creates a new dropdown filter button. 
 
-- `resetFilters`: *() => void*
+- `resetFilters`: **`() => void`**
 
     A no-argument function that clears all filters, triggered when "Reset Filters" is clicked. 
 
-- `filteredListings`: *Listing[]*
+- `filteredListings`: **`Listing[]`**
     
     A list of listings, filtered by the currenlty selected filter options. This should be a memoized constant dependent on selected filters and listing data. 
 
-- `selectedListing`: *Listing | null*
+- `selectedListing`: **`Listing | null`**
 
     The currently selected listing whose ListingDetails will be displayed and whose ListingCard will be highlighted. In the above example, the defualt `selectedListing` is the first item of the `filteredListings` if one exists. 
 
-- `setSelectedListing`: *(listing: Listing | null) => void*
+- `setSelectedListing`: **`(listing: Listing | null) => void`**
 
     Of the form `lisitng => setSelectedListing(listing)` as above, this function is used to set/update the selectedListing when it changes, i.e. when the user clicks on a new listing. 
 
--  (optional)`interpretation`: *boolean*
+-  (optional)`interpretation`: **`boolean`**
 
     Default value, false. A boolean specifying whether the current listing page is for interpretations or not. Used to differentiate between CaseInterpretations and Cases. 
 
@@ -133,12 +133,29 @@ It is possible to modify the display of the existing filters or add/delete fitle
 
 **Fields of a Filter**
 
-- `id`: unique identifier of the filter's dropwdown button
-- `options`: All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. For the map, keys are the actual values stored, and values are the displayed value
-- `placeholder`: The placeholder display text on the filter dropdown when no values of the current filter are selected. 
-- `value`: The selected values of the filter. This should be tracked as a state in the main component, and its corresponding setState function should be passed into `onChange` below.
-- `onChange`: Usually of the form `newValue => setFieldFilters(newValue)`. This function is called when the values of the filter dropdown is changed, i.e. when the user selects/deselects a value of a the current filter. 
-- (optional) `fullText`: A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
+- `id`: **`string`**
+
+    unique identifier of the filter's dropwdown button
+
+- `options`: **`Set<string> | Map<string, string>`**
+
+    All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. For the map, keys are the actual values stored, and values are the displayed value.
+
+- `placeholder`: **`string`**
+
+    The placeholder display text on the filter dropdown when no values of the current filter are selected. 
+
+- `value`: **`Set<string>`**
+
+    The selected values of the filter. This should be tracked as a state in the main component, and its corresponding setState function should be passed into `onChange` below.
+
+- `onChange`: **`(newValue: Set<string>) => void`**
+    
+    Usually of the form `newValue => setFieldFilters(newValue)`. This function is called when the values of the filter dropdown is changed, i.e. when the user selects/deselects a value of a the current filter. 
+
+- (optional) `fullText`: **`string`**
+    
+    A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
 
 ### `ListingCard` 
 
@@ -148,15 +165,32 @@ ListingCard renders each listing card, containing the condensed listing informat
 
 **ListingCard Props**
 
-- `listing`: *Listing*. The listing whose ListingCard will be rendered. The rendering of fields is dependent on the `listing_type` of `listing`. 
-- (optional) `isSelected`: *boolean*. Default value: false. If true, the card will be highlighted. 
-- (optional) `onClick`: *(id: UUID) => void*. An additional event handler triggered when the ListingCard is clicked. 
-- (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
+- `listing`: **`Listing`**
+
+    The listing whose ListingCard will be rendered. The rendering of fields is dependent on the `listing_type` of `listing`. 
+
+- (optional) `isSelected`: **`boolean`**
+    
+    Default value: false. If true, the card will be highlighted. 
+
+- (optional) `onClick`: **`(id: UUID) => void`**
+
+    An additional event handler triggered when the ListingCard is clicked. 
+
+- (optional) `interpretation`: **`boolean`**
+
+    Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
 
-- Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} interpretation />`
-- Non-Langauge Support listings: `<ListingCard listing={listingData} isSelected={isSelected} />`
+- Langauge Support listings: 
+``` tsx
+<ListingCard listing={listingData} isSelected={isSelected} interpretation />
+```
+- Non-Langauge Support listings: 
+``` tsx
+<ListingCard listing={listingData} isSelected={isSelected} />
+```
 
 ### `ListingDetails`
 ::: tip Description
@@ -167,13 +201,24 @@ ListingCard renders each listing card, containing the condensed listing informat
 
 **ListingDetails Props**
 
-- `listingData`: *Listing*. The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
-- (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
+- **`listingData`**: `Listing`
+
+    The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
+
+- (optional) **`interpretation`**: `boolean`
+    
+    Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
 
-- Langauge Support listings: `<ListingDetails listingData={listingData} interpretation />`
-- Non-Langauge Support listings: `<ListingDetails listingData={listingData} />`
+- Langauge Support listings: 
+``` tsx
+<ListingDetails listingData={listingData} interpretation />
+```
+- Non-Langauge Support listings: 
+``` tsx
+<ListingDetails listingData={listingData} />
+```
 
 #### How to Customize Fields In ListingDetails 
 
@@ -248,6 +293,7 @@ export default function ListingDetails( ... ) {
 ```
 
 ### `ProfileMatch`
+
 ::: tip Description
 For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
 ::: 
@@ -257,18 +303,25 @@ For a logged in and onboarded user, `ProfileMatch` indicates aspects of their pr
     - The `yellowExclaimation` icon indicates that the user's data does not match a listing's details, but it is not a strict requirement. In particular, `yellowExclaimation` is used when an attorney does not match the language for the case.
 
 **ProfileMatch Props**
-- `listingData`: *Listing*. 
+
+- `listingData`: **`Listing`**
 
     The listing whose ProfileMatch will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 
-- (optional) `interpretation`: *boolean*. 
+- (optional) `interpretation`: **`boolean`**
 
     Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
 
-- Langauge Support listings: `<ProfileMatch listingData={listingData} interpretation />`
-- Non-Langauge Support listings: `<ProfileMatch listingData={listingData} />`
+- Langauge Support listings: 
+``` tsx
+<ProfileMatch listingData={listingData} interpretation />
+```
+- Non-Langauge Support listings: 
+``` tsx
+<ProfileMatch listingData={listingData} />
+```
 
 #### How to Customize ProfileMatch Fields
 
@@ -311,15 +364,30 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 - `handleInsert` is used to handle the insertion of the user's responses to the interest form into the `interests table`. After error-checking that all required fields (according to listing type) are valid and filled out, the user's responses are upserted. If the a user submits multiple forms for one case, only the most recent response will be saved on the `interests` table.
 
 **InterestForm Props**
-- `listingData`: *Listing*. The listing whose InterestForm will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
-- (optional) `interpretation`: *boolean*. Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
+
+- **`listingData`**: `Listing` 
+
+    The listing whose InterestForm will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
+
+- (optional) **`interpretation`**: `boolean`. 
+    
+    Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
 **Example Usage**
-- Langauge Support listings: `<InterestForm listingData={listingData} interpretation />`
-- Non-Langauge Support listings: `<InterestForm listingData={listingData} />`
+
+- Langauge Support listings: 
+``` tsx
+<InterestForm listingData={listingData} interpretation />
+```
+- Non-Langauge Support listings: 
+``` tsx
+<InterestForm listingData={listingData} />
+```
 
 #### How to Customize InterestForm Questions 
+
 **Creating a New Question**
+
 1. Create a new Input Component and a new state to track the input. Update useEffect to reset the state when listingData changes. 
 2. Add a new field to the `Responses` type, corresponding to this new input 
 3. In `handleInsert`, add an error check if this new field is required for certain listing types 
@@ -388,6 +456,7 @@ export default function InterestForm( ... ) {
 ```
 
 ## Cases
+
 - Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
 
 - `getAllCases` queries the database to retrieve all Case listings from the `cases`, `cases-languages`,`cases-reliefs` tables. 
