@@ -9,7 +9,9 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
 | Filters | 1. Remote/In Person <br/> 2. Languages  <br/> 3. Adjudicating Agency <br/> 4. Country of Origin | 1. Country Field <br/> 2. Language(s) | 1. Listing Type <br/> 2. Language(s) |
 | Listing Highlights | 1. Relief sought <br/> 2. Time Commitment <br/> 3. Remote/In Person <br/> 4. Adjudicating Agency <br/> 5. Client Languages <br/> 6. Client Country of Origin <br/> 7. Client Location* | 1. Country Field <br/> 2. Language(s) <br/> 3. Expected Deliverable | **DOC** <br/> 1. Language(s) <br/> 2. Number of Pages  <br/>  <br/> **CASE_INT** <br/> 1. Language(s)  <br/> 2. Time Commitment  <br/> 3. Remote/In Person  <br/>  <br/> **INT**  <br/> 1. Language(s) <br/> 2. Remote/In Person |
 
-(*) Note: If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
+::: note (*) Note: 
+If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
+::: 
 
 ## **Components Used**
 
@@ -88,56 +90,48 @@ It is possible to modify the display of the existing filters or add/delete fitle
 
 **Adding a New Filter** 
 
+Below is an example of adding a new filter called `filter1`, whose options are `string`s. 
 1. Create a new state to track the filter's selected values. 
     - Make sure to reset the filter's state in the `resetFilters` function.
+``` ts
+const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
+// ... 
+const resetFilters = useCallback(() => {
+    setFilter1Filters(new Set());
+    // reset other filters ... 
+}, []);
+```
 2. Define the filter's possible options. 
-    - Many of the filters in the codebase use `useMemo`, with a dependency on `listingData` since the filter options (e.g. for langauges) are dependent on the options from listings. 
-3. For the `filters` prop, add a new `Filter` object in the array. 
-4. Update `filteredListings` by adding an additional filter for the current filter's values. 
-
-Below is an example of adding a new filter called `filter1`. 
-
-``` tsx
-function Page() {
-    const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
-    // other filter states etc ... 
-
-    // Create a list of filter value options (2) 
-    const filter1Options = useMemo(
+    - Many of the filters in the codebase use `useMemo` with a dependency on `listingData` since the filter options (e.g. for langauges) are dependent on the options from listings. 
+``` ts
+ const filter1Options = useMemo(
         () => {...} // get filter options from listingData 
         [listingData],
     );
-
-    // update filteredListings based on filter options  (4)
-    const filteredListings = useMemo( 
-        () => {...},
-        [listingData, filter1Filters, languageFilters]
-    )
-
-    // Clear all filters (1)
-    const resetFilters = useCallback(() => {
-        setFilter1Filters(new Set());
-        // reset other filters ... 
-    }, []);
-
-    // ... 
-
-    return (
-        <ListingPage 
-            filters= {[
-                {
-                    id: 'filter1',
-                    options: filter1Options,
-                    value: filter1Filters,
-                    onChange: newValue => setFilter1Filters(newValue),
-                    placeholder: 'Filter1',
-                },
-                // other filters ... 
-            ]}
-            // other props 
-        />
-    );
-}
+```
+3. Update `filteredListings` by adding an additional filter for the current filter's values. 
+``` tsx
+const filteredListings = useMemo( 
+    () => {...}, 
+    // see codebase for example of filtering based on selected filter values 
+    [listingData, filter1Filters, ...]
+)
+```
+4. Add a new `Filter` object to the array of the `filters` prop. 
+``` tsx
+ <ListingPage 
+    filters={[
+        {
+            id: 'filter1',
+            options: filter1Options,
+            value: filter1Filters,
+            onChange: newValue => setFilter1Filters(newValue),
+            placeholder: 'Filter1',
+        },
+        // other filters ... 
+    ]}
+    // other props 
+/>
 ```
 
 ## `ListingCard` 
@@ -348,11 +342,11 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 
 **InterestForm Props**
 
-- **`listingData`**: `Listing` 
+- `listingData`: **`Listing`**
 
     The listing whose InterestForm will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 
-- (optional) **`interpretation`**: `boolean`. 
+- (optional) `interpretation`: **`boolean`**
     
     Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
