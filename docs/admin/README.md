@@ -15,3 +15,7 @@ icon: door-open
 ## Legal Server
 
 -   [View Details](/admin/legalserver)
+
+## Brevo
+
+-   [View Details](/admin/brevo)

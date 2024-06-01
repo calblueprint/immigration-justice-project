@@ -4,14 +4,13 @@ icon: wrench
 
 # Retool
 
-[Retool Link](https://abaijp.retool.com/apps/fe259556-7ac6-11ee-a31b-6fa060fbb72b/Case%20Portal)
-This page will serve as a guide for how to utilize the Retool Admin Dashboard. 
+This page will serve as a guide for how to utilize the [Retool Admin Dashboard](https://abaijp.retool.com/apps/fe259556-7ac6-11ee-a31b-6fa060fbb72b/Case%20Portal).
 For information regarding how to make edits to the dashboard, please refer the developer documentation for Retool.
 
 ## Navigating the Admin Dashboard
 
 The main purpose of this dashboard is to give admin the ability to review listings, submitted interests from volunteers, and registered user accounts.
-The admin dashboard consists of 5 total pages, that you can navigate to using the navbar pictured below:
+The admin dashboard consists of 5 total pages that you can navigate to using the navbar pictured below:
 
 ![retool navigation bar](/assets/image/retool-navbar.png)
 
@@ -70,11 +69,11 @@ In all listing portals, admin have the ability to view listings that are current
 
 To browse listings, admins can scroll through the table on the left, where each row corresponds to a listing. The table provides limited information about the listings, helping admins identify which listing to examine further. Clicking on a row displays all the available information for that listing in the container to the right of the table.
 
-For more information on how to update which fields are visible in each of the listing tables, please refer to the developer documentation for the Retool admin dashboard.
+For more information on how to update which fields are visible in each of the listing tables, please refer to the developer documentation for the Retool Admin Dashboard.
 
 #### Cases Portal
 
-Since all data for case listings is stored on LegalServer, admins are limited to only browsing case listings on the Retool admin dashboard.
+Since all data for case listings is stored on LegalServer, admins are limited to only browsing case listings on the Retool Admin Dashboard.
 All other actions must be performed on LegalServer, but admins can sync the database with LegalServer using the "Sync" button at the bottom of the table.
  
 ![sync button for case listings](/assets/image/retool-sync-cases.png)
@@ -156,6 +155,15 @@ Clicking on a listing from the horizontal scroll view will filter the table to d
 
 ## Users Directory
 
-This directory contains user profiles with information such as names, contact details, roles, and other relevant attributes. Admins can browse through the table, where each row represents a user profile. Clicking on a row will display the associated user information in the container to the left of the table.
+This directory contains registered user profiles with information such as names, contact details, roles, and other relevant attributes. Admins can browse through the table, where each row represents a user profile. Clicking on a row will display the associated user information in the container to the left of the table.
 
 ![reviewing registered users](/assets/image/retool-users.png) 
+
+
+## Admin Privileges
+
+### Removing Admin
+
+### Adding Admin
+
+### Request a Non-Profit Account

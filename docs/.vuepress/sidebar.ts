@@ -1,7 +1,7 @@
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
-    "/admin": ["/admin/intro", "/admin/retool", "/admin/legalserver"],
+    "/admin": ["/admin/intro", "/admin/retool", "/admin/legalserver", "/admin/brevo"],
     "/dev": [
         {
             text: "Project Overview",
