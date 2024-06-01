@@ -165,5 +165,3 @@ This directory contains registered user profiles with information such as names,
 ### Removing Admin
 
 ### Adding Admin
-
-### Request a Non-Profit Account
