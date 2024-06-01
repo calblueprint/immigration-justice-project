@@ -28,6 +28,18 @@ The project leverages LegalServer's [Reports API](https://help.legalserver.org/a
 - `interpreter_needed` **→** helps determine if a case needs a volunteer interpreter
 - `custom_custom_matter_custom_lookup_b6a226e574a50b6849998214b82e3570_expn` **→** adjudicating agency 
 
+## Updating Case Data
+
+Given that we cannot make edits directly to LegalServer data, admin must make sure consistently maintain the cases data on LegalServer. Admin should be updating the fields listed above when necessary to ensure that there are as few missing or incorrect fields as possible for each case. 
+
+::: warning Important
+    Fields with missing data will be presented to volunteers as "To Be Determined"/"TBD" 
+    or "Not Available."
+:::
+
+In particular, admin should ensure the Case Status and Disposition fields have the correct values so that pro bono case opportunities are displayed to the correct user groups. For more information about how we display cases to volunteers, please refer to the [Cases Displayed to Volunteers](legalserver.md#cases-displayed-to-volunteers) section below.
+
+Ensuring the accuracy of case data on LegalServer is vital for the project's longevity and for providing volunteers with reliable and consistent opportunities.
 
 ## Cases Displayed to Volunteers
 

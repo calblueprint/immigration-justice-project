@@ -2,10 +2,10 @@
 icon: wrench
 ---
 
-# Retool
+# Retool Dashboard
 
 This page will serve as a guide for how to utilize the [Retool Admin Dashboard](https://abaijp.retool.com/apps/fe259556-7ac6-11ee-a31b-6fa060fbb72b/Case%20Portal).
-For information regarding how to make edits to the dashboard, please refer the developer documentation for Retool.
+For information regarding how to make edits to the dashboard, please refer the [developer documentation](../dev/retool.md) for Retool.
 
 ## Navigating the Admin Dashboard
 
@@ -33,11 +33,11 @@ Each page on the admin dashboard also features a brief description and informati
 
 ## Listing Portals 
 
-Similar to the client app, the Admin Dashboard has 3 main portals for listings: **Cases Portal**, 
+Similar to the client-facing app, the Admin Dashboard has 3 main portals for listings: **Cases Portal**, 
 **Limited Case Assignments Portal**, and the **Language Support Portal**.
 In these listing portals, admin can browse through relevant listings, create new listings, as well as edit and delete existing listings. 
 
-Here is an outline which portals the listings pertain to on the admin dashboard:
+Here is an outline regarding which portals the listings pertain to on the admin dashboard:
 - **Cases Portal**
     - Cases 
     - Case Interpretations 
@@ -69,7 +69,7 @@ In all listing portals, admin have the ability to view listings that are current
 
 To browse listings, admins can scroll through the table on the left, where each row corresponds to a listing. The table provides limited information about the listings, helping admins identify which listing to examine further. Clicking on a row displays all the available information for that listing in the container to the right of the table.
 
-For more information on how to update which fields are visible in each of the listing tables, please refer to the developer documentation for the Retool Admin Dashboard.
+For more information on how to update which fields are visible in each of the listing tables, please refer to the [developer documentation](../dev/retool.md) for the Retool Admin Dashboard.
 
 #### Cases Portal
 
@@ -91,8 +91,7 @@ the two listing types.
 ### Creating Listings 
 ::: info Note:
 Case-Specific listings cannot be created through the Retool Admin Dashboard. Case-Specific listings should be created on LegalServer.
-Refer to this page for more information regarding LegalServer and Case-Specific listings. 
-<!-- Link to the Retool developer documentation! -->
+Refer to the [LegalServer admin documentation](legalserver.md) for more information regarding LegalServer and Case-Specific listings. 
 :::
 
 To create a listing, you will need to access the form in the tabbed container. Clicking on the "Create New" tab will allow you to access the form to create a new listing. Once all of the information has been input, clicking on the "Create New Listing" button at the bottom of the form should upload the listing to the database, making it visuble to volunteers.
@@ -109,8 +108,7 @@ After creating a new listing, it should appear in the corresponding listing tabl
 
 ::: info Note:
 Case-Specific listings cannot be edited through the Retool Admin Dashboard. Case-Specific listings should be updated on LegalServer.
-Refer to this page for more information regarding LegalServer and Case-Specific listings.
-<!-- Link to the Retool developer documentation! -->
+Refer to the [LegalServer admin documentation](legalserver.md) for more information regarding LegalServer and Case-Specific listings.
 :::
 
 Similarly, to edit a listing, you will need to access the form in the tabbed container. Clicking on the "Edit" tab will allow you to access the form to edit an existing listing. Once all edits have been made, clicking on the "Update Listing" button at the bottom of the form should upload the listing to the database, making all edits visible to the volunteers.
@@ -124,8 +122,7 @@ After editing a listing, the edits should reflect in the corresponding listing t
 
 ::: info Note:
 Case-Specific listings cannot be deleted through the Retool Admin Dashboard. Case-Specific listings should be updated on LegalServer.
-Refer to this page for more information regarding LegalServer and Case-Specific listings.
-<!-- Link to the Retool developer documentation! -->
+Refer to the [LegalServer admin documentation](legalserver.md) for more information regarding LegalServer and Case-Specific listings.
 :::
 
 To delete a listing, you will need to access the form in the tabbed container. To delete a listing, click on the "Edit" tab. Near the bottom of the edit form, you can find a red "Delete Listing" button. **Clicking this button will delete the selected listing along with all user-submitted interests for volunteering.**
@@ -159,9 +156,3 @@ This directory contains registered user profiles with information such as names,
 
 ![reviewing registered users](/assets/image/retool-users.png) 
 
-
-## Admin Privileges
-
-### Removing Admin
-
-### Adding Admin
