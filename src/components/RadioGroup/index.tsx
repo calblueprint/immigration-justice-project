@@ -60,8 +60,8 @@ export default function RadioGroup({
               id={`${name}${o}`}
               name={name}
               value={`${name}${o}`}
-              checked={value ? value === `${name}${o}` : undefined}
-              defaultChecked={defaultValue === o}
+              checked={value ? value === o : undefined}
+              defaultChecked={defaultValue ? defaultValue === o : undefined}
               onChange={() => handleChange(o)}
             />
             {o}
