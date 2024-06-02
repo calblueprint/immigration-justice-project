@@ -4,10 +4,10 @@ The settings/profile page is divided up by sections to make the information more
 
 Currently, we have the following sections:
 
--   Account
--   Basic Information
--   Availability
--   Roles (and role-specific information)
+- Account
+- Basic Information
+- Availability
+- Roles (and role-specific information)
 
 ::: note Account Section
 The account section displays the user's email and a hardcoded obfuscated string to represent the password.
@@ -39,13 +39,29 @@ An example usage can be found in `SettingsSection/AvailabilitySection.tsx`.
 
 The `SettingSection` component has the following props:
 
--   `title` (`string`) - specifies the title of the section.
--   `isEditing` (`boolean`) - used to determine whether to display values or allow edit via form controls.
--   `startEdit` (`() => void`) - callback function triggered when the user clicks the edit button.
--   `cancelEdit` (`() => void`) - callback function triggered when the user wants to cancel editing.
--   `isSubmitting` (`boolean`) - indicator of whether the user is currently submitting.
--   `canEdit` (`boolean`) - indicator of whether or not to show an edit button.
-    -   Default: `true`
+- `title`: **`string`**
+
+  Specifies the title of the section.
+
+- `isEditing`: **`boolean`**
+
+  Used to determine whether to display values or allow edit via form controls.
+
+- `startEdit`: **`() => void`**
+
+  Callback function triggered when the user clicks the edit button.
+
+- `cancelEdit`: **`() => void`**
+
+  Callback function triggered when the user wants to cancel editing.
+
+- `isSubmitting`: **`boolean`**
+
+  Indicator of whether the user is currently submitting.
+
+- `canEdit`: **`boolean`**
+
+  Indicator of whether or not to show an edit button. Defaults to `true`.
 
 ### Editing Fields
 
@@ -53,14 +69,32 @@ Each section also contains one or more fields (i.e. time commitment), which can 
 
 The `SettingField` component has the following props:
 
--   `label` (`string`) - specifies the label for the field
--   `render` (`({ field, fieldState }: FieldProps) => ReactNode`) - render function for the form input
--   `extractValue` (`(v: FieldValue) => string`) - callback function to format the underlying value into a user-facing string (i.e. format a Date object into a human-readable string)
-    -   Default: `v => (typeof v === 'string' ? v : String(v))`
--   `naValue` (`string`) - specifies what to display when the value is undefined or null
-    -   Default: `'N/A'`
--   `required` (`boolean`) - indicator of whether to mark the field as required
-    -   Default: `true`
+- `label`: **`string`**
+
+  Specifies the label for the field.
+
+- `render`: **`({ field, fieldState }: FieldProps) => ReactNode`**
+
+  Render function for the form input.
+
+- `extractValue`: **`(v: FieldValue) => string`**
+
+  Callback function to format the underlying value into a user-facing string (i.e. format a `Date` object into a human-readable string).
+  Default function is
+
+  ```typescript:no-line-numbers
+  v => (typeof v === 'string' ? v : String(v))
+  ```
+
+- `naValue`: **`string`**
+
+  Specifies what to display when the value is `undefined` or `null`.
+  Default is "N/A".
+
+- `required`: **`boolean`**
+
+  Indicator of whether to mark the field as required.
+  Defaults to `true`.
 
 Here is an example of a `SettingField` usage:
 
@@ -79,8 +113,8 @@ Additionally, for the Account section, we have also defined a `ReadOnlySettingFi
 
 The `ReadOnlySettingField` component has the following props:
 
--   `label` (`string`) - specifies the label for the field
--   `value` (`string`) - specifies the value for the field
+- `label` (`string`) - specifies the label for the field
+- `value` (`string`) - specifies the value for the field
 
 ### Editing Forms
 
