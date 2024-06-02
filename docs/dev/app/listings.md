@@ -4,10 +4,25 @@ All three listing pages contain a filter bar at the top, a scrollable list of Li
 
 ## Listing Page Comparison 
 
+<style>
+table th:first-of-type {
+    width: 15%;
+}
+table th:nth-of-type(2) {
+    width: 30%;
+}
+table th:nth-of-type(3) {
+    width: 25%;
+}
+table th:nth-of-type(4) {
+    width: 25%;
+}
+</style>
+
 | Listing Page | Case | Limited Case Assignments | Language Support |
-|--------------|------|---------------------|------------------------------|
-| Filters | 1. Remote/In Person <br/> 2. Languages  <br/> 3. Adjudicating Agency <br/> 4. Country of Origin | 1. Country Field <br/> 2. Language(s) | 1. Listing Type <br/> 2. Language(s) |
-| Listing Highlights | 1. Relief sought <br/> 2. Time Commitment <br/> 3. Remote/In Person <br/> 4. Adjudicating Agency <br/> 5. Client Languages <br/> 6. Client Country of Origin <br/> 7. Client Location* | 1. Country Field <br/> 2. Language(s) <br/> 3. Expected Deliverable | **DOC** <br/> 1. Language(s) <br/> 2. Number of Pages  <br/>  <br/> **CASE_INT** <br/> 1. Language(s)  <br/> 2. Time Commitment  <br/> 3. Remote/In Person  <br/>  <br/> **INT**  <br/> 1. Language(s) <br/> 2. Remote/In Person |
+|:------------:|------|--------------------------|------------------|
+| Filters | <ol><li>Remote/In Person</li><li>Languages</li><li>Adjudicating Agency</li><li>Country of Origin</li></ol> | <ol><li>Country Field</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> |
+| Listing Highlights | <ol><li>Relief sought</li><li>Time Commitment</li><li>Remote/In Person</li><li>Adjudicating Agency</li><li>Client Languages</li><li>Client Country of Origin</li><li>__*__ Client Location</li></ol> | <ol><li>Country Field</li><li>Language(s)</li><li>Expected Deliverable</li></ol> | **DOC** <ol><li>Language(s)</li><li>Number of Pages</li></ol> **CASE_INT** <ol><li>Language(s)</li><li>Time Commitment</li><li> Remote/In Person </li></ol> **INT** <ol><li>Language(s) </li><li>Remote/In Person</li></ol> |
 
 ::: note (*) Note: 
 If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
@@ -23,7 +38,7 @@ If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `t
 
 ## `ListingPage`
 
-::: note Description
+::: tip Description
 The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
 :::
 
@@ -136,9 +151,8 @@ const filteredListings = useMemo(
 
 ## `ListingCard` 
 
-::: note Description
+::: tip Description
 ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. ![Example ListingCard](/assets/image/example_ListingCard.png)
-
 :::
 
 **ListingCard Props**
@@ -171,7 +185,8 @@ ListingCard renders each listing card, containing the condensed listing informat
 ```
 
 ## `ListingDetails`
-::: note Description
+
+::: tip Description
 `ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
 :::
 
@@ -271,7 +286,7 @@ export default function ListingDetails( ... ) {
 
 ## `ProfileMatch`
 
-::: note Description
+::: tip Description
 For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
 ::: 
 
@@ -317,7 +332,7 @@ interface MatchField<T extends Listing> {
 - `getText`: takes in the listing `data`, `profiledata`, and `match` (from `getMatch` above). Returns a string of what should be displayed next to the icon. 
 
 Then, call `renderIconGroup` on the match field, as below: 
-```tsx
+``` tsx
 const newFieldMatch: MatchField<NewListingType> = {
     getMatch: (data, profileData) => some_boolean_or_undefined_value
     getText: (data, profileData, match) => some_text
@@ -334,7 +349,8 @@ export default function ProfileMatch(...) {
 ```
 
 ## `InterestForm`
-::: note Description
+
+::: tip Description
 For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. For a not logged in and onboarded user, `InterestForm` will not render. 
 ::: 
 
@@ -388,3 +404,11 @@ interface Responses {
 3. In `handleInsert`, add an error check if this new field is required for certain listing types 
 
 4. In `handleInsert`, conditionally add the new input to `responses` to be inserted into supabase
+
+**Existing Questions**
+
+| Question | Case | Limited Case Assignments | Document Translation | Case Interpretation | One-Time Interpretation |
+|----|:----:|:----:|:----:|:----:|:----:|
+| What is the earliest date you can contact the client? | ✅ **Required** | | | ✅ **Required** | ✅ **Required** | 
+| Do you need language interpretation help for the client?  | ✅ **Required** | | | | |
+| Why are you interested in this case? | ✅ Optional | ✅ **Required** | ✅ **Required** | ✅ Optional | ✅ Optional | 
