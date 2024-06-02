@@ -108,7 +108,7 @@ It is possible to modify the display of the existing filters or add/delete fitle
 Below is an example of adding a new filter called `filter1`, whose options are `string`s. 
 1. Create a new state to track the filter's selected values. 
     - Make sure to reset the filter's state in the `resetFilters` function.
-``` ts
+```ts
 const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
 // ... 
 const resetFilters = useCallback(() => {
@@ -118,7 +118,7 @@ const resetFilters = useCallback(() => {
 ```
 2. Define the filter's possible options. 
     - Many of the filters in the codebase use `useMemo` with a dependency on `listingData` since the filter options (e.g. for langauges) are dependent on the options from listings. 
-``` ts
+```ts
  const filter1Options = useMemo(
         () => {...} // get filter options from listingData 
         [listingData],
@@ -152,7 +152,9 @@ const filteredListings = useMemo(
 ## `ListingCard` 
 
 ::: tip Description
-ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. ![Example ListingCard](/assets/image/example_ListingCard.png)
+ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. 
+
+![Example ListingCard](/assets/image/example_ListingCard.png)
 :::
 
 **ListingCard Props**
@@ -176,11 +178,11 @@ ListingCard renders each listing card, containing the condensed listing informat
 **Example Usage**
 
 - Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ListingCard listing={listingData} isSelected={isSelected} interpretation />
 ```
 - Non-Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ListingCard listing={listingData} isSelected={isSelected} />
 ```
 
@@ -205,11 +207,11 @@ ListingCard renders each listing card, containing the condensed listing informat
 **Example Usage**
 
 - Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ListingDetails listingData={listingData} interpretation />
 ```
 - Non-Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ListingDetails listingData={listingData} />
 ```
 
@@ -307,11 +309,11 @@ For a logged in and onboarded user, `ProfileMatch` indicates aspects of their pr
 **Example Usage**
 
 - Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ProfileMatch listingData={listingData} interpretation />
 ```
 - Non-Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <ProfileMatch listingData={listingData} />
 ```
 
@@ -369,11 +371,11 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 **Example Usage**
 
 - Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <InterestForm listingData={listingData} interpretation />
 ```
 - Non-Langauge Support listings: 
-``` tsx
+``` tsx:no-line-numbers
 <InterestForm listingData={listingData} />
 ```
 
