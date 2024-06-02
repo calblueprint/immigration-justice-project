@@ -2,7 +2,7 @@
 icon: wrench
 ---
 
-# Retool Dashboard
+# Admin Dashboard
 
 This page will serve as a guide for how to utilize the [Retool Admin Dashboard](https://abaijp.retool.com/apps/fe259556-7ac6-11ee-a31b-6fa060fbb72b/Case%20Portal).
 For information regarding how to make edits to the dashboard, please refer the [developer documentation](../dev/retool.md) for Retool.
@@ -113,7 +113,7 @@ Refer to the [LegalServer admin documentation](legalserver.md) for more informat
 
 Similarly, to edit a listing, you will need to access the form in the tabbed container. Clicking on the "Edit" tab will allow you to access the form to edit an existing listing. Once all edits have been made, clicking on the "Update Listing" button at the bottom of the form should upload the listing to the database, making all edits visible to the volunteers.
 
-![creating a limited case assignment listing](/assets/image/retool-edit-listing.png) 
+![editing a limited case assignment listing](/assets/image/retool-edit-listing.png) 
 
 
 After editing a listing, the edits should reflect in the corresponding listing table. If the edits are not reflected in the table, refresh the the table by clicking on the circular arrow at the bottom right corner.
@@ -131,8 +131,7 @@ To delete a listing, you will need to access the form in the tabbed container. T
 
 
 ::: warning
-    After deleting a listing, there will be no way to revert this action. The listing and 
-    its corresponding interest submissions will be permanently deleted!
+After deleting a listing, there will be no way to revert this action. The listing and its corresponding interest submissions will be permanently deleted!
 :::
 
 ## Reviewing Interests

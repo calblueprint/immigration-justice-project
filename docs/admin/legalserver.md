@@ -33,8 +33,7 @@ The project leverages LegalServer's [Reports API](https://help.legalserver.org/a
 Given that we cannot make edits directly to LegalServer data, admin must make sure consistently maintain the cases data on LegalServer. Admin should be updating the fields listed above when necessary to ensure that there are as few missing or incorrect fields as possible for each case. 
 
 ::: warning Important
-    Fields with missing data will be presented to volunteers as "To Be Determined"/"TBD" 
-    or "Not Available."
+Fields with missing data will be presented to volunteers as "To Be Determined"/"TBD" or "Not Available."
 :::
 
 In particular, admin should ensure the Case Status and Disposition fields have the correct values so that pro bono case opportunities are displayed to the correct user groups. For more information about how we display cases to volunteers, please refer to the [Cases Displayed to Volunteers](legalserver.md#cases-displayed-to-volunteers) section below.
@@ -46,10 +45,7 @@ Ensuring the accuracy of case data on LegalServer is vital for the project's lon
 To help determine which cases are shown to volunteers, we use LegalServer's Disposition and Case Status fields. Currently, we consider cases with a Disposition field set to "Open" or "Pending" as seeking a volunteer attorney and/or interpreter.
 
 ::: tip Terminology
-    Both attorneys and interpreters can volunteer for open pro bono case opportunities. 
-    When cases are are displayed on the Cases page, we often refer to them as cases or 
-    case listings. If they are displayed on the Language Support page, we may refer to 
-    them as case interpretations or case interpretation listings.
+Both attorneys and interpreters can volunteer for open pro bono case opportunities. When cases are are displayed on the Cases page, we often refer to them as cases or case listings. If they are displayed on the Language Support page, we may refer to them as case interpretations or case interpretation listings.
 :::
 
 ### Cases Displayed to Attorneys
@@ -78,8 +74,7 @@ Currently, we use the type of relief sought and whether the client is detained t
 - **custody seeking bond help** → 15-20 hrs over course of 3 weeks
 
 ::: warning
-    If no data is found for the type of relief sought or whether the client is detained, 
-    the time commitment field will be displayed as "To Be Determined" to volunteers.
+If no data is found for the type of relief sought or whether the client is detained, the time commitment field will be displayed as "To Be Determined" to volunteers.
 :::
 
 ### How to Update the Mapping
