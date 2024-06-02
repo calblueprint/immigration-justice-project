@@ -2,8 +2,6 @@
 next: /dev/retool
 ---
 
-[[toc]]
-
 # Supabase
 
 Supabase is an open source Firebase alternative that provides many services, among which we use the [PostgreSQL](https://www.postgresql.org/) database, authentication, and convenient APIs to access its services.
