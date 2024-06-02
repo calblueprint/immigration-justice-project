@@ -25,7 +25,7 @@ This function fetches all document translation listings, each joined with the co
 
 `get_interpretations`
 
-This function fetches all one-off interpretation listings, each joined with the corresponding language requirements aggregated in an array.
+This function fetches all one-time interpretation listings, each joined with the corresponding language requirements aggregated in an array.
 
 `get_lca`
 
@@ -47,4 +47,4 @@ This function is used by triggers to delete interest applications associated wit
 
 [Database triggers](https://supabase.com/docs/guides/database/postgres/triggers) are used to listen for events in the database, such as deleting a row from a table.
 
-Currently, we employ triggers to listen for any deleted listings in cases, document translation, (one-off) interpretation, and limited case assignments. When any listing is deleted, the corresponding trigger will call `delete_interests_of_listing`, which will drop any interest applications associated with that listing.
+Currently, we employ triggers to listen for any deleted listings in cases, document translation, one-time interpretation, and limited case assignments. When any listing is deleted, the corresponding trigger will call `delete_interests_of_listing`, which will drop any interest applications associated with that listing.
