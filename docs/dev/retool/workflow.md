@@ -1,17 +1,98 @@
 # Retool Workflow
 
-[Retool workflows](https://retool.com/products/workflows) are great for automated tasks that need to be run on intervals. For our project, we use Retool workflows to routinely sync our database with Legal Server every day. Additionally, we take advantage of Retool workflows to create function abstractions that chain REST APIs to create, edit, or delete listings (i.e. limited case assignments) via the Retool application.
+[Retool workflows](https://retool.com/products/workflows) are great for automated tasks that need to be run on intervals. For our project, we use Retool workflows to routinely sync our database with LegalServer every day. Additionally, we take advantage of Retool workflows to create function abstractions that chain REST APIs to create, edit, or delete listings (i.e. limited case assignments) via the Retool application.
 
-## Legal Server Sync
+## LegalServer Sync
 
-To get data from Legal Server, we added the provided API link as a REST API resource.
-After fetching data from Legal Server using said resource, we processed it as follows:
+To get data from LegalServer, we added the provided API link as a REST API resource.
+After fetching data from LegalServer using said resource, we processed it as follows:
 
-1. Filter to only open cases
+1. Filter to only cases seeking volunteers
 2. Search legal problem code for keywords (i.e. asylum)
-3. Determine time commitment by legal problems
+3. Determine time commitment based on the case's relief sought code and whether the client is detained
 4. Upsert cases and relevant languages and relief codes to Supabase
-5. Delete old stored cases that do not match what's stored in Legal Server
+5. Delete old stored cases that do not match what's stored in LegalServer
+
+## Other Workflows
+
+As mentioned, we also take advantage of Retool workflows to create function abstractions that chain REST APIs to create, edit, or delete listings in the admin dashboard. All of the following are already in use by the admin dashboard.
+
+### Add Document Translation
+
+This workflow creates a new document translation listing based on the following parameters:
+
+- `deadline`: **`timestamp`**
+
+  A timestamp string to represent the deadline. Can be `YYYY-MM-DD` or timezone specific.
+
+- `numpages`: **`number`**
+
+  The number of pages for the document.
+
+- `docLanguages`: **`string[]`**
+
+  The required languages for the translation.
+
+- `documentTitle`: **`string`**
+
+  The title of the document or listing.
+
+- `docSummary`: **`string`**
+
+  A summary for the document or listing.
+
+### Add One-Time Interpretation
+
+This workflow creates a new one-time interpretation listing based on the following parameters:
+
+- `title`: **`string`**
+
+  The title for the listing.
+
+- `summary`: **`string`**
+
+  A summary for the listing.
+
+- `isRemote`: **`boolean`**
+
+  An indicator of whether the listing is remote or in person.
+
+- `languages`: **`string[]`**
+
+  A list of languages the interpreter should know for the listing.
+
+### Add LCA
+
+This workflow creates a new limited case assignment listing based on the following parameters:
+
+- `title`: **`string`**
+
+  The title of the assignment or listing.
+
+- `summary`: **`string`**
+
+  A summary for the assignment or listing.
+
+- `deliverableType`: **`string`**
+
+  The type of deliverable.
+
+- `country`: **`string`**
+
+  The relevant country for the assignment.
+
+- `deadline`: **`timestamp`**
+
+  A timestamp string to represent the deadline.
+  Can be `YYYY-MM-DD` or timezone specific.
+
+- `researchTopic`: **`string`**
+
+  The research topic for the assignment.
+
+### Edits
+
+The listing-adding workflows above each has a corresponding workflow to edit the respective listing type. The only added parameter is the `id`: **`uuid`** of the listing.
 
 ## Supabase REST API
 
@@ -20,7 +101,7 @@ The Supabase REST API resource on Retool (titled IJP Supabase Service) uses the 
 :::
 
 We use this API to make requests to Supabase such as inserting, deleting, and modifying data.
-For example, in syncing to Legal Server, we need to use this resource to upsert (insert, or update if it already exists) the cases data that we fetched from Legal Server.
+For example, in syncing to LegalServer, we need to use this resource to upsert (insert, or update if it already exists) the cases data that we fetched from LegalServer.
 
 Here's a general framework for the REST API:
 
