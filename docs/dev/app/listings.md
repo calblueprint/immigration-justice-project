@@ -36,6 +36,8 @@ If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `t
         - `ProfileMatch`
         - `InterestForm`
 
+![ListingPage Component Structure](/assets/image/listing_page_components.png)
+
 ## `ListingPage`
 
 ::: tip Description
