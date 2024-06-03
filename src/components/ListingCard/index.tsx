@@ -73,7 +73,7 @@ export default function ListingCard({
   const remoteInfo = useMemo(() => {
     if (listing.listing_type === 'CASE' || listing.listing_type === 'INT') {
       if (listing.is_remote === null || listing.is_remote === undefined) {
-        return 'Not Available';
+        return 'To Be Determined';
       }
       return listing.is_remote ? 'Remote' : 'In Person';
     }
