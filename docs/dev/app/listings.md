@@ -31,6 +31,7 @@ If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `t
 ## **Components Used**
 
 - `ListingPage`
+    - `FilterDropdown`
     - `ListingCard` 
     - `ListingDetails`
         - `ProfileMatch`
@@ -75,35 +76,58 @@ ListingPage component has the following arguments with the following types:
 
 See the codebase for an implementation example of a listing page, using the `ListingPage` component. The `limited-case-assignments` page may be the most straightforward example. 
 
-### Customizing Filters 
+## `FilterDropdown`
 
-It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an array of `Filter`'s. The fields of the custom type `Filter` are defined below. See any of the listing pages in the code base for an example implementation. 
+**Description**
 
-**Fields of a Filter**
+`FilterDropdown` is the dropdown button used for filters. When clicked, the dropdown reveals the options for the filter. The user can select filter option(s), which are used to filter the listings displayed on the page. 
 
-- `id`: **`string`**
-
-    unique identifier of the filter's dropwdown button
+**FilterDropdown Props**
 
 - `options`: **`Set<string> | Map<string, string>`**
 
-    All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. If a map is used, the keys are the actual values stored, while values are the displayed value.
+   All options for a given filter that a user can select from (derived from the listing data). This can be a map or a set. A map is used when you want the options' display-text to be different from the stored-text. If a map is used, the keys are the actual values stored, while values are the displayed value.
+
+- `multi`: **`boolean`**
+
+    Specifies whether the dropdown should be multi-select. (If `multi` is false, the dropdown button will be single-select.) In the `ListingPage` component, `multi` is specified as true for all `FilterDropdown`s.
 
 - `placeholder`: **`string`**
 
-    The placeholder display text on the filter dropdown when no values of the current filter are selected. 
+   The placeholder display text on the filter dropdown when no values of the current filter are selected.
 
 - `value`: **`Set<string>`**
 
-    The selected values of the filter. This should be tracked as a state in the main component, and its corresponding setState function should be passed into `onChange` below.
+   The selected values of the filter. This should be tracked as a state in the main component, and its corresponding setState function should be passed into `onChange` below.
 
 - `onChange`: **`(newValue: Set<string>) => void`**
-    
-    Usually of the form `newValue => setFieldFilters(newValue)`. This function is called when the values of the filter dropdown is changed, i.e. when the user selects/deselects a value of a the current filter. 
+  
+   Usually of the form `newValue => setFieldFilters(newValue)`. This function is called when the values of the filter dropdown is changed, i.e. when the user selects/deselects a value of the current filter.
 
 - (optional) `fullText`: **`string`**
-    
-    A string that is the default display name of the filter dropdown button. Currenlty, this is only used for the "Remote/In Person" filter. 
+  
+   A string that is the default display name of the filter dropdown button. Currently, this is only used for the "Remote/In Person" filter.
+
+::: note
+The `FilterDropdown` component can create either single-select or multi-select buttons. However, on the listing pages, all `FilterDropdown` instances are specified to be multi-select. Additionally, for the purpose of adding a filter button to the listing pages, you do not have to directly create any new `FilterDropdown` instances. You only have to modify the `filters` prop of `ListingPages`, and each object in the `filters` array will be mapped into `FilterDropdown` instances.
+:::
+
+### Customizing Filters of a ListingPage
+
+It is possible to modify the display of the existing filters or add/delete fitlers of listing pages by modifying the argument passed into the `filters` prop of the `ListingPage` component. The `filters` prop must be of type `Filter[]`, i.e. an array of `Filter`'s. The fields of the custom type `Filter` are defined below. See any of the listing pages in the code base for an example implementation. 
+
+```ts:no-line-numbers
+interface Filter {
+  id: string;
+  options: Set<string> | Map<string, string>;
+  placeholder: string;
+  value: Set<string>;
+  onChange: (newValue: Set<string>) => void;
+  fullText?: string;
+}
+```
+
+The fields of the `Filter` interface include all the props of the `FilterDropdown` component, as well as an additional `id` field, which is the unique identifier of the filter's dropdown button. Additionally, since the `FilterDropdown` instaces are mulit-select by default, there is no field for `multi`.
 
 **Adding a New Filter** 
 
