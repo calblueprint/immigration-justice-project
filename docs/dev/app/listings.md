@@ -108,7 +108,7 @@ It is possible to modify the display of the existing filters or add/delete fitle
 Below is an example of adding a new filter called `filter1`, whose options are `string`s. 
 1. Create a new state to track the filter's selected values. 
     - Make sure to reset the filter's state in the `resetFilters` function.
-```ts
+```ts:no-line-numbers
 const [filter1Filters, setFilter1Filters] = useState(new Set<string>());
 // ... 
 const resetFilters = useCallback(() => {
@@ -118,14 +118,14 @@ const resetFilters = useCallback(() => {
 ```
 2. Define the filter's possible options. 
     - Many of the filters in the codebase use `useMemo` with a dependency on `listingData` since the filter options (e.g. for langauges) are dependent on the options from listings. 
-```ts
+```ts:no-line-numbers
  const filter1Options = useMemo(
         () => {...} // get filter options from listingData 
         [listingData],
     );
 ```
 3. Update `filteredListings` by adding an additional filter for the current filter's values. 
-``` tsx
+``` tsx:no-line-numbers
 const filteredListings = useMemo( 
     () => {...}, 
     // see codebase for example of filtering based on selected filter values 
@@ -133,7 +133,7 @@ const filteredListings = useMemo(
 )
 ```
 4. Add a new `Filter` object to the array of the `filters` prop. 
-``` tsx
+``` tsx:no-line-numbers
  <ListingPage 
     filters={[
         {
@@ -189,7 +189,7 @@ ListingCard renders each listing card, containing the condensed listing informat
 ## `ListingDetails`
 
 ::: tip Description
-`ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in and complete onboarding.
+`ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in or complete onboarding.
 :::
 
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
@@ -228,7 +228,7 @@ To customize fields for existing listing types, modify the array of fields for t
 
 All fields are of type `ListingField<T>[]` (i.e. an array of `ListingField`s), where `ListingField` is defined below: 
 
-``` ts
+```ts:no-line-numbers
 interface ListingField<T extends Listing> {
   label: string;
   getValue: (data: T) => string;
@@ -237,7 +237,7 @@ interface ListingField<T extends Listing> {
 
 For example, below is how you would add a new field to `lcaFields`. Note that the order of the array determines the order that the fields are rendered. 
 
-``` ts
+```ts:no-line-numbers
 const lcaFields: ListingField<LimitedCaseAssignment>[] = [
     // existing fields ...
     
@@ -254,7 +254,7 @@ const lcaFields: ListingField<LimitedCaseAssignment>[] = [
 **For a New Listing Type**
 
 - Create a a new array of fields of type `ListingField<NewListingType>[]`, where `NewListingType` is a placeholder for the actual listing type.  
-``` ts
+```ts:no-line-numbers
 const newListingFields: ListingField<NewListingType>[] = [
     // example field 
     {
@@ -267,7 +267,7 @@ const newListingFields: ListingField<NewListingType>[] = [
 ];
 ```
 - Add a type check to ensure that `listingFields` returns the fields for your desired listing. 
-``` tsx
+```tsx:no-line-numbers
 export default function ListingDetails( ... ) {
     // ... 
     const listingFields = useMemo(() => {
@@ -320,7 +320,7 @@ For a logged in and onboarded user, `ProfileMatch` indicates aspects of their pr
 ### How to Customize ProfileMatch Fields
 
 The easiest way to create a new profile match field is to create a new constant of type `MatchField` as defined below. 
-```ts
+```ts:no-line-numbers
 interface MatchField<T extends Listing> {
   getMatch: (data: T, profileData: Profile) => boolean | undefined;
   getText: (
@@ -334,7 +334,7 @@ interface MatchField<T extends Listing> {
 - `getText`: takes in the listing `data`, `profiledata`, and `match` (from `getMatch` above). Returns a string of what should be displayed next to the icon. 
 
 Then, call `renderIconGroup` on the match field, as below: 
-``` tsx
+``` tsx:no-line-numbers
 const newFieldMatch: MatchField<NewListingType> = {
     getMatch: (data, profileData) => some_boolean_or_undefined_value
     getText: (data, profileData, match) => some_text
@@ -384,7 +384,7 @@ For a logged in and onboarded user, `InterestForm` enables a user to submit an i
 **Creating a New Question**
 
 1. Create a new Input Component and a new state to track the input. Update useEffect to reset the state when listingData changes. 
-``` ts
+```ts:no-line-numbers
 const [newState, setNewState] = useState('');
 // other states ... 
 
@@ -395,7 +395,7 @@ useEffect(() => {
 }, [listingData]);
 ```
 2. Add a new field to the `Responses` type, corresponding to this new input 
-``` tsx
+``` tsx:no-line-numbers
 interface Responses {
   start_date?: Date;
   needs_interpreter?: boolean;
