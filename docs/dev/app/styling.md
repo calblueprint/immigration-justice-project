@@ -1,4 +1,4 @@
-# Miscellaneous 
+# Styling 
 
 ## Changing/Adding Icons 
 
