@@ -41,9 +41,9 @@ If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `t
 
 ## `ListingPage`
 
-::: tip Description
+**Description**
+
 The listing pages are all instances of `ListingPage`. The ListingPage contains an array of filters as the header, a scrollable list of ListingCards on the left, and the ListingDetails of the currently selected listing card on the right.
-:::
 
 **ListingPage Props**
 
@@ -109,7 +109,7 @@ See the codebase for an implementation example of a listing page, using the `Lis
    A string that is the default display name of the filter dropdown button. Currently, this is only used for the "Remote/In Person" filter.
 
 ::: note
-The `FilterDropdown` component can create either single-select or multi-select buttons. However, on the listing pages, all `FilterDropdown` instances are specified to be multi-select. Additionally, for the purpose of adding a filter button to the listing pages, you do not have to directly create any new `FilterDropdown` instances. You only have to modify the `filters` prop of `ListingPages`, and each object in the `filters` array will be mapped into `FilterDropdown` instances.
+The `FilterDropdown` component can create either single-select or multi-select buttons. However, on the listing pages, all `FilterDropdown` instances are specified to be multi-select. Additionally, for the purpose of adding a filter button to the listing pages, you do not have to directly create any new `FilterDropdown` instances; you only have to modify the `filters` prop of `ListingPages`. Each object in the `filters` array will be mapped into `FilterDropdown` instances.
 :::
 
 ### Customizing Filters of a ListingPage
@@ -155,7 +155,8 @@ const resetFilters = useCallback(() => {
 const filteredListings = useMemo( 
     () => {...}, 
     // see codebase for example of filtering based on selected filter values 
-    [listingData, filter1Filters, ...]
+    [listingData, filter1Filters, ...] 
+    // all filter-states should be included as dependencies
 )
 ```
 4. Add a new `Filter` object to the array of the `filters` prop. 
@@ -177,11 +178,11 @@ const filteredListings = useMemo(
 
 ## `ListingCard` 
 
-::: tip Description
+**Description**
+
 ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. 
 
 ![Example ListingCard](/assets/image/example_ListingCard.png)
-:::
 
 **ListingCard Props**
 
@@ -214,19 +215,19 @@ ListingCard renders each listing card, containing the condensed listing informat
 
 ## `ListingDetails`
 
-::: tip Description
+**Description**
+
 `ListingDetails` displays the details of a selected listing. If the user is logged in and onboarded, the ProfileMatch and InterestForm appear. Otherwise, the Profilematch and InterestForm will be replaced by buttons directing the user to log in or complete onboarding.
-:::
 
 - To display the fields underneath "Highlights", an instance of the `ListingFields` component is used. For nullable fields, if a listing field is null/undefined, the field will appear as "Not Available." However, some fields are non-nullable.
 
 **ListingDetails Props**
 
-- **`listingData`**: `Listing`
+- `listingData`: **`Listing`**
 
     The listing whose ListingDetails will be rendered. The rendering of fields is dependent on the `listing_type` of `listingData`. 
 
-- (optional) **`interpretation`**: `boolean`
+- (optional) `interpretation`: **`boolean`**
     
     Default value: false. Should be `true` for Langauge Support listings. Used to distinguish between Case Interpretations and Cases. 
 
@@ -314,9 +315,9 @@ export default function ListingDetails( ... ) {
 
 ## `ProfileMatch`
 
-::: tip Description
+**Description**
+
 For a logged in and onboarded user, `ProfileMatch` indicates aspects of their profile meet the requirements of a listing. For a not logged in and onboarded user, `ProfileMatch` will not render. 
-::: 
 
 - `matchIcon` conditionally renders the match icon based on the value of the argument, `match`, of type `boolean | undefined`. If `match` is undefined, the `grayDot` icon is returned, indicating that the listing does not include information about a given field. 
 - `renderIconGroup` renders the icon and text for a match-field. It takes in the argument `fields` of type `MatchField`. However, for fields that require the `yellowExclaimation` icon, `renderIconGroup` is not used. 
@@ -378,9 +379,9 @@ export default function ProfileMatch(...) {
 
 ## `InterestForm`
 
-::: tip Description
+**Description**
+
 For a logged in and onboarded user, `InterestForm` enables a user to submit an interest for the current listing. This interest is saved in the `interests` table. For a not logged in and onboarded user, `InterestForm` will not render. 
-::: 
 
 - `handleInsert` is used to handle the insertion of the user's responses to the interest form into the `interests table`. After error-checking that all required fields (according to listing type) are valid and filled out, the user's responses are upserted. If the a user submits multiple forms for one case, only the most recent response will be saved on the `interests` table.
 
