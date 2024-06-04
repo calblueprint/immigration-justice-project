@@ -180,9 +180,7 @@ const filteredListings = useMemo(
 
 **Description**
 
-ListingCard renders each listing card, containing the condensed listing information. Below is an example of a selected Case ListingCard. 
-
-![Example ListingCard](/assets/image/example_ListingCard.png)
+ListingCard renders each listing card, containing the condensed listing information. 
 
 **ListingCard Props**
 
