@@ -2,7 +2,7 @@
 
 All three listing pages contain a filter bar at the top, a scrollable list of Listing Cards on the left, and the Listing Details of the currently selected listing card on the right. Differences in display between listing pages are listed below. Then, the usage and functionality of components used to bulid the listing pages are explained. 
 
-## Listing Page Comparison 
+![ListingPage Component Structure](/assets/image/listing_page_components.png)
 
 <style>
 table th:first-of-type {
@@ -19,16 +19,7 @@ table th:nth-of-type(4) {
 }
 </style>
 
-| Listing Page | Case | Limited Case Assignments | Language Support |
-|:------------:|------|--------------------------|------------------|
-| Filters | <ol><li>Remote/In Person</li><li>Languages</li><li>Adjudicating Agency</li><li>Country of Origin</li></ol> | <ol><li>Country Field</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> |
-| Listing Highlights | <ol><li>Relief sought</li><li>Time Commitment</li><li>Remote/In Person</li><li>Adjudicating Agency</li><li>Client Languages</li><li>Client Country of Origin</li><li>__*__ Client Location</li></ol> | <ol><li>Country Field</li><li>Language(s)</li><li>Expected Deliverable</li></ol> | **DOC** <ol><li>Language(s)</li><li>Number of Pages</li></ol> **CASE_INT** <ol><li>Language(s)</li><li>Time Commitment</li><li> Remote/In Person </li></ol> **INT** <ol><li>Language(s) </li><li>Remote/In Person</li></ol> |
-
-::: note (*) Note: 
-If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
-::: 
-
-## **Components Used**
+## Components Used
 
 - `ListingPage`
     - `FilterDropdown`
@@ -37,7 +28,16 @@ If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `t
         - `ProfileMatch`
         - `InterestForm`
 
-![ListingPage Component Structure](/assets/image/listing_page_components.png)
+### Listing Page Comparison 
+
+| Listing Page | Case | Limited Case Assignments | Language Support |
+|:------------:|------|--------------------------|------------------|
+| Filters | <ol><li>Remote/In Person</li><li>Languages</li><li>Adjudicating Agency</li><li>Country of Origin</li></ol> | <ol><li>Country Field</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> | <ol><li>Listing Type</li><li>Language(s)</li></ol> |
+| Listing Highlights | <ol><li>Relief sought</li><li>Time Commitment</li><li>Remote/In Person</li><li>Adjudicating Agency</li><li>Client Languages</li><li>Client Country of Origin</li><li>__*__ Client Location</li></ol> | <ol><li>Country Field</li><li>Language(s)</li><li>Expected Deliverable</li></ol> | **DOC** <ol><li>Language(s)</li><li>Number of Pages</li></ol> **CASE_INT** <ol><li>Language(s)</li><li>Time Commitment</li><li> Remote/In Person </li></ol> **INT** <ol><li>Language(s) </li><li>Remote/In Person</li></ol> |
+
+::: info (*) Client Location: 
+If the client is in custody (i.e., `is_detained`, pulled from LegalServer, is `true`), "Client Location" appears as "Custody Location." Otherwise, it remains as Client Location.
+::: 
 
 ## `ListingPage`
 
@@ -108,7 +108,7 @@ See the codebase for an implementation example of a listing page, using the `Lis
   
    A string that is the default display name of the filter dropdown button. Currently, this is only used for the "Remote/In Person" filter.
 
-::: note
+::: info FilterDropdown vs. ListingPage filters
 The `FilterDropdown` component can create either single-select or multi-select buttons. However, on the listing pages, all `FilterDropdown` instances are specified to be multi-select. Additionally, for the purpose of adding a filter button to the listing pages, you do not have to directly create any new `FilterDropdown` instances; you only have to modify the `filters` prop of `ListingPages`. Each object in the `filters` array will be mapped into `FilterDropdown` instances.
 :::
 
