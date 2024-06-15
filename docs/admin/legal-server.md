@@ -1,5 +1,0 @@
----
-icon: briefcase
----
-
-# Legal Server
