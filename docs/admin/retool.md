@@ -1,7 +1,3 @@
----
-icon: wrench
----
-
 # Admin Dashboard
 
 This page will serve as a guide for how to utilize the [Retool Admin Dashboard](https://abaijp.retool.com/apps/fe259556-7ac6-11ee-a31b-6fa060fbb72b/Case%20Portal).

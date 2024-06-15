@@ -1,7 +1,3 @@
----
-icon: door-open
----
-
 # Admins
 
 ## Admin Intro

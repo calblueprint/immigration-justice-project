@@ -1,7 +1,3 @@
----
-icon: briefcase
----
-
 # LegalServer
 
 [LegalServer](https://www.legalserver.org) is a web-based case management software used by the Immigration Justice Project (IJP) to find open pro bono case opportunities. We've integrated IJP's instance of LegalServer into our project to pull limited, anonymous data about active cases. This data is displayed to volunteer attorneys and interpreters on the *Cases* and *Language Support* pages.
