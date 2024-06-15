@@ -6,7 +6,7 @@ icon: envelope
 
 Brevo is an email marketing and communication platform that provides tools for sending transactional and marketing emails, managing contact lists, automating email campaigns, and analyzing email performance. [Brevo's SMTP service](https://help.brevo.com/hc/en-us/articles/209462765-What-is-Brevo-SMTP#h_01EJ8W8R9XSB1D00A4BDMZMAM3) offers a free plan with a rate limit of 300 emails per day. 
 
-Click [here](PUBLISHED NOTION DOC OF BREVO RESEARCH) for more information regarding the Brevo integration.
+Click [here](https://calblueprint.notion.site/Brevo-Documentation-Research-c8f5e7b5a05f4fc9a9fd6de0f9a37f3b?pvs=4) for more information regarding the Brevo integration.
 
 ## Why is Brevo Important?
 

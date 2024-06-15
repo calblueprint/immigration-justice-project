@@ -1,7 +1,31 @@
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
-    "/admin": ["/admin/intro", "/admin/retool", "/admin/legalserver", "/admin/brevo"],
+    "/admin": [
+          { 
+            text: "Admin Intro",
+            link: "/admin/intro",
+            icon: "door-open",
+
+        },
+        {
+            text: "Retool",
+            link: "/admin/retool",
+            icon: "wrench",
+            children: ["listing-portals", "reviewing-interests", "users-directory"]
+        },
+        {
+            text: "LegalServer",
+            link: "/admin/legalserver",
+            icon: "briefcase"
+        },
+        {
+            text:"Brevo",
+            link: "/admin/brevo",
+            icon: "envelope"
+
+        }
+    ],
     "/dev": [
         {
             text: "Project Overview",

@@ -6,7 +6,7 @@ icon: briefcase
 
 [LegalServer](https://www.legalserver.org) is a web-based case management software used by the Immigration Justice Project (IJP) to find open pro bono case opportunities. We've integrated IJP's instance of LegalServer into our project to pull limited, anonymous data about active cases. This data is displayed to volunteer attorneys and interpreters on the *Cases* and *Language Support* pages.
 
-Click [here](LEGALSERVER USE PUBLISHED NOTION DOC) for more information about Blueprint's use of LegalServer.
+Click [here](https://calblueprint.notion.site/Blueprint-s-Use-of-LegalServer-e4834aa084e641a182a33761b8822651?pvs=4) for more information about Blueprint's use of LegalServer.
 
 
 ## Data Retrieved
@@ -21,12 +21,15 @@ The project leverages LegalServer's [Reports API](https://help.legalserver.org/a
 - `city` **→** current city the client lives in 
 - `state` **→** current state the client lives in
 - `matter_builtin_lookup_country_country_of_origin_expn` **→** client’s country of origin
-- `person_builtin_lookup_living_arrangement...` **→** living arrangement (ex. “Immigration detention”)
-- `custom_custom_matter_custom_lookup_c9222481eaa6062f0b243da18f9add22_expn` **→** current living location, Loren, current custody location (in detention center, shelter, etc.)
+- `person_builtin_lookup_living_arrangement...` **→** living arrangement (ex. “Immigration detention”) to help determine if a client is detained
+- `custom_custom_matter_custom_lookup_c9222481eaa6062f0b243da18f9add22_expn` **→** current living location to help determine if a client is detained (in detention center, shelter, etc.)
 - `pb_opportunity_summary` **→** case summary
 - `pb_opportunity_note` **→** case title
 - `interpreter_needed` **→** helps determine if a case needs a volunteer interpreter
 - `custom_custom_matter_custom_lookup_b6a226e574a50b6849998214b82e3570_expn` **→** adjudicating agency 
+- `next_filing_deadline_605` **→** next court/filing deadline
+- `remote_appearance_604` **→** in person vs. remote appearance
+
 
 ## Updating Case Data
 
