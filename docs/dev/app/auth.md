@@ -9,7 +9,8 @@ prev: /dev/app/
 **Log In**
 
 `src/app/(auth)/login`
-- After a successful login, the user is redirected as follows: 
+- If the user is already logged in, this page will automatically redirect based on the auth and profile contexts. 
+- After a successful login, the user is redirected based on the profile context, as follows: 
     - Incomplete onboarding -> onboarding
     - Complete onboarding -> listing page corresponding to the user's role 
 
@@ -86,7 +87,7 @@ New users creating an account for the first time will go through the sign-up flo
 1. Users are prompted to create a new account with an email and password. 
 
 Edge Cases 
-- Attempting to create a new account with an existing user's email: we do not specifically prevent users from creating a new 
+- Attempting to create a new account with an existing user's email: 
 ### Password Complexity 
 
 **Editing Password Complexity Conditions**
