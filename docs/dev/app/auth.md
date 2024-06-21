@@ -6,7 +6,7 @@ prev: /dev/app/
 
 ## User Auth Flows 
 
-**Log In**
+### **Log In**
 
 `src/app/(auth)/login`
 - If the user is already logged in, this page will automatically redirect based on the auth and profile contexts. 
@@ -18,12 +18,12 @@ prev: /dev/app/
 The following applies to any rerouting based on the user's profile roles. If the user is an Attorney/Legal Fellow *and* an Interpreter, the user will be rerouted to the listing page corresponding to their non-interpreter role. This means: if the user's role includes Attorney, they're routed to the `cases` listings page; if their role includes Legal Fellow, they're routed to `limited-case-assignments` listings. The user is only rerouted to `interpretation` listings if their only role is Interpreter. See [Onboarding](./onboarding) for more info about Profile Roles.
 :::
 
-**Sign Up**
+### **Sign Up**
 
 `src/app/(auth)/signup`
 - User is sent an email 
 
-**Forgot Password**
+### **Forgot Password**
 
 forgot-password -> send reset-password link to email 
 user clicks link in email -> reset-password 
@@ -34,17 +34,22 @@ The `reset-password` page is only accessible via the reset-password link sent to
 
 ## Supabase
 
-`supabase.auth.getSession`: see Supabase's documentation. 
+Supabase's documentation for all auth functions can be found [here](https://supabase.com/docs/reference/javascript/auth-api). Below, the links take you to the specific section of the documentation for each function. 
 
-`supabase.auth.signInWithPassword`
+`supabase.auth.getSession`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-getsession). 
 
-`supabase.auth.onAuthStateChange`
+`supabase.auth.signInWithPassword`:  see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-signinwithpassword
+). 
 
-`supabase.auth.signInWithPassword`
+`supabase.auth.onAuthStateChange`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-onauthstatechange). 
 
-`supabase.auth.signOut`
+`supabase.auth.signInWithPassword`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-signinwithpassword). 
 
-`supabase.auth.signUp`
+`supabase.auth.signOut`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-signout). 
+
+`supabase.auth.signUp`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-signup). 
+
+`supabase.auth.resend`: see [Supabase's documentation](https://supabase.com/docs/reference/javascript/auth-resend). 
 
 ## Contexts
 
