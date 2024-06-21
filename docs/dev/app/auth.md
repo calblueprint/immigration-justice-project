@@ -8,8 +8,9 @@ prev: /dev/app/
 
 ### **Log In**
 
-`src/app/(auth)/login`
-- If the user is already logged in, this page will automatically redirect based on the auth and profile contexts. 
+Users with existing accounts can log in with their email accounts and passwords. From `/login`, users can also navigate to `/signup` or `/forgot-password` instead. For implementation, see `src/app/(auth)/login`.
+
+- If the user is already logged in, the user will be automatically redirected from `/login` to another page based on the auth and profile contexts. 
 - After a successful login, the user is redirected based on the profile context, as follows: 
     - Incomplete onboarding -> onboarding
     - Complete onboarding -> listing page corresponding to the user's role 
@@ -20,17 +21,39 @@ The following applies to any rerouting based on the user's profile roles. If the
 
 ### **Sign Up**
 
-`src/app/(auth)/signup`
-- User is sent an email 
+New users creating an account for the first time will go through the sign-up flow, handled in `src/app/(auth)/signup`. Users can also navigate from `/signup` to the login flow if they already have an account. 
+
+1. Users are prompted to create a new account with an email and password. 
+2. If the new account credentials are valid, the user is directed to the `/verification-email-sent` page, indicating that an account-verification email has been sent to them. The user can also choose to resend the email on this page, if they think there has been an error. 
+3. After the user clicks on the verification-link sent via email, the user is directed to `/email-verified`. From this page, users are directed to navigate back to Onboarding.  
+
+Edge Cases 
+- Currently, users cannot sign up with an email that is already registered, and they're given a general ("Something went wrong. Please try again.") error message when attempting to do so.
+- Accounts that have not been verified are/are not allowed to login regularly and continue to onboarding. 
 
 ### **Forgot Password**
 
-forgot-password -> send reset-password link to email 
-user clicks link in email -> reset-password 
+Implemented in `src/app/(auth)/forgot-password`, the forgot password flow is as follows: 
+
+1. On `/forgot-password`, the user inputs the email associated with their account. After clicking "Send Email", they can choose to click "Resend Email."
+2. An email is sent to that email address.
+3. After clicking on the link sent via email, the user is directed to `/reset-password`, where they set a new password and confirm the password. 
+4. If a valid new password is inputted, the user is directed to `/confirm-reset-password`, which instructs the user to navigate to `/login`.
+    * A new password is considered valid if it meets the same password complexity requirements and is different from previous passwords. The latter condition is checked using Supabase's `verifyNewPassword` function.
 
 ::: info Access to `reset-password` page
 The `reset-password` page is only accessible via the reset-password link sent to the user's email, trigged from the Forgot Password page. If a user routes to `\reset-password` manually, the page will appear blank. 
 :::
+
+### Password Complexity 
+
+**Editing Password Complexity Conditions**
+
+Used for both the signup and the forgot-password flow, password complexity conditions can be modified in the PasswordComplexity component. Each requirement is an instance of `PasswordRequirement`. See the codebase (`src/components/PasswordComplexity`) for examples of how `PasswordRequirement` components can be instantiated and used. The current complexity conditions include: 
+- At least 1 uppercase letter
+- At least 1 lowercase letter
+- At least 1 number (0-9)
+- At least 8 characters
 
 ## Supabase
 
@@ -85,20 +108,3 @@ import { useAuth } from '@/utils/AuthProvider';
 
 const auth = useAuth();
 ```
-
-## Sign Up Flow
-
-New users creating an account for the first time will go through the sign-up flow, handled in `src/app/(auth)/signup`. 
-1. Users are prompted to create a new account with an email and password. 
-
-Edge Cases 
-- Attempting to create a new account with an existing user's email: 
-### Password Complexity 
-
-**Editing Password Complexity Conditions**
-
-Password complexity conditions can be modified in the PasswordComplexity component. Each requirement is an instance of `PasswordRequirement`. See the codebase (`src/components/PasswordComplexity`) for examples of how `PasswordRequirement` components can be instantiated and used. The current complexity conditions include: 
-- At least 1 uppercase letter
-- At least 1 lowercase letter
-- At least 1 number (0-9)
-- At least 8 characters
