@@ -1,3 +1,7 @@
+---
+next: /dev/deployment
+---
+
 # Retool Workflow
 
 [Retool workflows](https://retool.com/products/workflows) are great for automated tasks that need to be run on intervals. For our project, we use Retool workflows to routinely sync our database with LegalServer every day. Additionally, we take advantage of Retool workflows to create function abstractions that chain REST APIs to create, edit, or delete listings (i.e. limited case assignments) via the Retool application.
