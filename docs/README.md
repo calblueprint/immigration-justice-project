@@ -2,12 +2,8 @@
 home: true
 icon: home
 title: Immigration Justice Project
-heroImage: /assets/image/ijp_logo_full.png
+heroImage: /assets/image/ijp_logo_full_dark.png
 heroImageDark: /assets/image/ijp_logo_full_dark.png
-bgImage: https://theme-hope-assets.vuejs.press/bg/6-light.svg
-bgImageDark: https://theme-hope-assets.vuejs.press/bg/6-dark.svg
-bgImageStyle:
-    background-attachment: fixed
 heroFullScreen: true
 heroText: IJP Documentation
 tagline: Documentation for the user portal application developed by Cal Blueprint
@@ -27,40 +23,31 @@ actions:
 
 highlights:
     - header: Goal of the Project
-      image: /invalid-path
-      bgImage: https://theme-hope-assets.vuejs.press/bg/3-light.svg
-      bgImageDark: https://theme-hope-assets.vuejs.press/bg/5-dark.svg
-      highlights:
-          - title: Lorem ipsum dolor sit amet.
-          - title: Lorem ipsum dolor sit amet.
-          - title: Lorem ipsum dolor sit amet.
-          - title: Lorem ipsum dolor sit amet.
+      description: <b>The primary goal of this project is to streamline the process of matching IJP's volunteers to active probono volunteer opportunities.</b> Our mission was to build a web application for IJP volunteers to browse through and apply to available voluunteer opportunities, and for admins to review interests and match volunteers to opportunities through an admin dashboard.
+      image: /assets/image/layout.svg 
+
+      
 
     - header: Core Features
-      description: Lorem ipsum dolor sit amet.
-      bgImage: https://theme-hope-assets.vuejs.press/bg/1-light.svg
-      bgImageDark: https://theme-hope-assets.vuejs.press/bg/1-dark.svg
+      description: 
       features:
           - title: Listing Pages
             icon: suitcase
-            details: Lorem ipsum
-            link: /guide/
+            details: >
+              The main web application features 3 listing pages: <b>Cases Page</b>, <b>Limited Case Assignments Page</b>, & <b>Language Support Page</b>. On each page, users can browse, filter, and apply to listings.
 
-          - title: User Accounts
+          - title: Volunteer User Accounts
             icon: address-card
-            details: Lorem ipsum
-            link: /guide/
+            details: Volunteers that sign up for an account on the web application will gain access to submitting interests for available volunteer opportunities, and will be added to IJP's database of volunteers.
 
-          - title: Admin Access
+          - title: Admin Dashboard
             icon: person-chalkboard
-            details: Lorem ipsum
-            link: /guide/
+            details: The Retool Admin Dashboard enables admins to manage volunteer opportunity listings, volunteer interest submissions, and user accounts of the main web application.
+
 
     - header: Editing this Site
-      description: This site is powered by <a href="https://v2.vuepress.vuejs.org/">VuePress</a> using <a href="https://theme-hope.vuejs.press/">Theme Hope</a>. The Markdown sources can be found on our <a href="https://github.com/calblueprint/immigration-justice-project/tree/docs" target="_blank">GitHub repo</a> on the docs branch.<br/><br/>Run <code>npm docs:dev</code> to run the documentation site locally. By default, it will be hosted at <code>localhost:8080</code>, or whichever link the terminal displays.<br/><br/><b>Resources:</b>
-      image: /assets/image/blog.svg
-      bgImage: https://theme-hope-assets.vuejs.press/bg/2-light.svg
-      bgImageDark: https://theme-hope-assets.vuejs.press/bg/2-dark.svg
+      description: This site is powered by <a href="https://v2.vuepress.vuejs.org/">VuePress</a> using <a href="https://theme-hope.vuejs.press/">Theme Hope</a>. The Markdown sources can be found on our <a href="https://github.com/calblueprint/immigration-justice-project/tree/docs" target="_blank">GitHub repo</a> on the docs branch.<br/><br/>Run <code>npm docs:dev</code> to run the documentation site locally. By default, it will be hosted at <code>localhost:8080</code>, or whichever link the terminal displays.<br/><br/>We use Netlify for continuous deployment. It's configured to auto-build and deploy to <a href="https://immigration-justice-project-docs.netlify.app">https://immigration-justice-project-docs.netlify.app</a> whenever a commit is pushed to the immigration-justice-project/docs branch.<br/><br/><b>Resources:</b>
+      image: /assets/image/advanced.svg
       highlights:
           - title: Guide to VuePress
             icon: book
@@ -82,9 +69,12 @@ highlights:
             details: Read through the basics of Markdown to write content
             link: https://commonmark.org/help/
 
+    - header: Contact
+      description: For any questions about the admin or developer side of this project, contact Alvaro Ortiz at <a href="mailto:varortz@berkeley.edu">varortz@berkeley.edu</a>
+      
+
     - header: About
       description: This project was built by one of <a href="https://calblueprint.org/">Cal Blueprint</a>'s team during the 2023-2024 school year.
-      image: /assets/image/advanced.svg
       features:
           - title:
 

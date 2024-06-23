@@ -1,17 +1,3 @@
-# Admins
+# Admin Intro
 
-## Admin Intro
-
--   [View Details](/admin/intro)
-
-## Retool
-
--   [View Details](/admin/retool)
-
-## Legal Server
-
--   [View Details](/admin/legalserver)
-
-## Brevo
-
--   [View Details](/admin/brevo)
+ This guide is for members of the Immigration Justice Project staff, to understand how to perform administrative tasks necessary to manage the Immigration Justice Project application developed by Blueprint. For an introduction to the project, please refer to the [homepage](/#introduction).

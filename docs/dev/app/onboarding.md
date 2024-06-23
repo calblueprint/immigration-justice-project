@@ -1,7 +1,5 @@
 # Onboarding
 
-[[toc]]
-
 ## The Onboarding Process
 
 After the user first created their account, they will be prompted to complete an onboarding process to fill in information about their profile.
