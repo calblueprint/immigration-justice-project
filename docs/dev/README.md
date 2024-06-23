@@ -7,7 +7,7 @@ icon: book-open
 The project can be split into two parts:
 
 -   The [main user portal application](/dev/app/), built using Next.js
--   The [admin dashboard](/dev/retool), built using Retool
+-   The [admin dashboard](/dev/retool/), built using Retool
 
 ## Navigating this Site
 

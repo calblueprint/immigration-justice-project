@@ -4,7 +4,7 @@ export default sidebar({
     "/admin": [
           { 
             text: "Admin Intro",
-            link: "/admin/intro",
+            link: "/admin/",
             icon: "door-open",
 
         },
@@ -37,7 +37,7 @@ export default sidebar({
             icon: "window-restore",
             prefix: "/dev/app/",
             link: "/dev/app/",
-            children: ["auth", "onboarding", "listings", "settings", "supabase", "styling"]
+            children: ["getting-started", "auth", "onboarding", "listings", "settings", "supabase", "styling"]
         },
         {
             text: "Retool",
@@ -45,11 +45,6 @@ export default sidebar({
             link: "/dev/retool/",
             icon: "wrench",
             children: ["app", "workflow"]
-        },
-        {
-            text: "Deployment",
-            link: "/dev/deployment",
-            icon: "rocket"
         }
     ],
     "/design": ["/design/"]
